@@ -30,5 +30,9 @@
 						 double, int, int, char, char, short = 24byte
 						 ![패딩 바이트를 최소화 할 수 있는 구조](https://blog.kakaocdn.net/dn/dqtfWm/btqUwy3kb9I/eVnfymjwPxxrKKMhL2toqk/img.png)
 
-
-
+## C++
+* Rvalue Lvalue
+	*  R-value 는 값 그 자체를 이야기 한다.  수정할 수 없는 값들. ex) 임시객체, 상수(literal)
+	*  L-value 는 주소 정보를 포함한 값들을 이야기 한다. 수정할 수 있는 값들. ex) 객체
+* 이동생성자
+	* Rvalue reference
