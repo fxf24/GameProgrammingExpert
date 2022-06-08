@@ -1,4 +1,5 @@
 #include <iostream>
+
 using namespace std;
 
 template <typename T>
@@ -77,11 +78,11 @@ public:
 	}
 };
 
-
 int main()
 {
 	FowardList<int> a;
 
+	
 	while (1)
 	{
 		a.PrintAll(); 

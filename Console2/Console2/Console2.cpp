@@ -1,7 +1,8 @@
 ﻿#include <iostream>
 #include <forward_list> // 단방향 리스트
 #include <list> // 양방향 리스트
-
+#include <vector>
+#include <string>
 using namespace std;
 
 class A
@@ -14,6 +15,17 @@ public:
         return a;
     }
 };
+
+class B
+{
+public:
+    int a;
+};
+
+void FuncA(B&& a)
+{
+    cout << a.a << endl;
+}
 
 int main()
 {
@@ -44,6 +56,11 @@ int main()
     // 반복자 리턴
     //
 
+    FuncA(B());
+
+    vector<B> e;
+    e.push_back(B());
+    e.emplace_back(3, "abc");
 
 }
 
