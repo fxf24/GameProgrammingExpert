@@ -34,14 +34,51 @@ public:
 		return head;
 	}
 
+	int Size()
+	{
+		return size;
+	}
+
 	void Insert(T data, int idx)
 	{
+		if (idx > size) return;
 
+		OnePathNode<T>* in = new OnePathNode<T>;
+		in->value = data;
+
+		if (head)
+		{
+			OnePathNode<T>* temp = head;
+			for (int i = 0; i < idx-1; i++)
+			{
+				temp = temp->next;
+			}
+			in->next = temp->next;
+			temp->next = in;
+			size++;
+		}
+		else
+		{
+			head = in;
+			size++;
+		}
 	}
 
 	void Erase(int idx)
 	{
+		if (head)
+		{
+			OnePathNode<T>* temp = head;
+			for (int i = 0; i < idx - 1; i++)
+			{
+				temp = temp->next;
+			}
+			
 
+			int num = temp->value;
+			delete temp;
+			size--;
+		}
 	}
 
 	void PushFront(T data)
@@ -55,9 +92,13 @@ public:
 			OnePathNode<T>* second = head;
 			head = temp;
 			head->next = second;
+			size++;
 		}
 		else
+		{
 			head = temp;
+			size++;
+		}
 	}
 
 	T PopFront()
@@ -69,6 +110,7 @@ public:
 
 			int num = temp->value;
 			delete temp;
+			size--;
 			return num;
 		}
 
@@ -100,7 +142,7 @@ int main()
 		cout << endl;
 
 		int Select;
-		cout << "1. 삽입 2. 삭제" << endl;
+		cout << "1. 삽입 2. 삭제 3. 중간삽입 4. 중간삭제" << endl;
 		cin >> Select;
 		if (Select == 1)
 		{
@@ -108,9 +150,26 @@ int main()
 			cin >> input;
 			a.PushFront(input);
 		}
-		else
+		else if (Select == 2)
 		{
 			cout << "Pop: " << a.PopFront() << endl;
+		}
+		else if (Select == 3)
+		{
+			cout << "입력할 값: " ;
+			int data;
+			cin >> data;
+			cout << "위치: ";
+			int idx;
+			cin >> idx;
+			a.Insert(data, idx);
+		}
+		else
+		{
+			cout << "삭제할 위치: ";
+			int input;
+			cin >> input;
+			a.Erase(input);
 		}
 	}
 	return 0;
