@@ -40,4 +40,17 @@
 	* &&를 매개변수 값으로 갖는다.
 	* 메모리를 재할당 하지 않는다.
 	* 얕은복사 후 원본의 소유권을 이전하는 방식으로 객체를 생성
+### Tree
+* 전위 순회 (Preorder)
+	* Root -> Left -> Right 순으로 순회한다.
+	* ![](https://t1.daumcdn.net/cfile/tistory/999E283D5AE877F614)
+	* 1 2 4 8 9 5 10 11 3 6 12 13 7 14 15
+* 중위 순회 (Inorder)
+	* Left -> Root -> Right 순으로 순회한다.
+	* ![](https://t1.daumcdn.net/cfile/tistory/99E18C365AE877F602)
+	* 8 4 9 2 10 5 11 1 12 6 13 3 14 7 15
+* 후위 순회 (Postorder)
+	* Left -> Right -> Root 순으로 순회한다.
+	* ![](https://t1.daumcdn.net/cfile/tistory/9924604B5AE877F609)
+	* 8 9 4 10 11 5 2 12 13 6 14 15 7 3 1
 
