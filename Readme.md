@@ -34,5 +34,10 @@
 * Rvalue Lvalue
 	*  R-value 는 값 그 자체를 이야기 한다.  수정할 수 없는 값들. ex) 임시객체, 상수(literal)
 	*  L-value 는 주소 정보를 포함한 값들을 이야기 한다. 수정할 수 있는 값들. ex) 객체
+* Rvalue reference
+	* && 를 이용해 Rvalue 참조
 * 이동생성자
-	* Rvalue reference
+	* &&를 매개변수 값으로 갖는다.
+	* 메모리를 재할당 하지 않는다.
+	* 얕은복사 후 원본의 소유권을 이전하는 방식으로 객체를 생성
+

@@ -50,7 +50,17 @@ public:
 
 	T PopFront()
 	{
+		if (head)
+		{
+			OnePathNode<T>* temp = head;
+			head = head->next;
 
+			int num = temp->value;
+			delete temp;
+			return num;
+		}
+
+		return -1;
 	}
 
 	void PrintAll()
@@ -88,9 +98,7 @@ int main()
 		}
 		else
 		{
-			int input;
-			cin >> input;
-			a.PushFront(input);
+			cout << "Pop: " << a.PopFront() << endl;
 		}
 	}
 	return 0;
