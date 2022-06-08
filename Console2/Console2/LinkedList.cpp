@@ -49,9 +49,13 @@ public:
 		if (head)
 		{
 			OnePathNode<T>* temp = head;
-			for (int i = 0; i < idx-1; i++)
+
+			if (idx > 1)
 			{
-				temp = temp->next;
+				for (int i = 0; i < idx-1; i++)
+				{
+					temp = temp->next;
+				}
 			}
 			in->next = temp->next;
 			temp->next = in;
@@ -69,14 +73,18 @@ public:
 		if (head)
 		{
 			OnePathNode<T>* temp = head;
-			for (int i = 0; i < idx - 1; i++)
-			{
-				temp = temp->next;
-			}
 			
+			if (idx > 2)
+			{
+				for (int i = 0; i < idx - 2; i++)
+				{
+					temp = temp->next;
+				}
+			}
+			OnePathNode<T>* temp2 = temp->next;
+			temp->next = temp->next->next;
 
-			int num = temp->value;
-			delete temp;
+			delete temp2;
 			size--;
 		}
 	}
