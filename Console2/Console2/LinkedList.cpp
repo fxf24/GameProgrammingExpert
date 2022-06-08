@@ -22,6 +22,7 @@ class FowardList
 {
 private:
 	OnePathNode<T>* head = nullptr;
+	int size = 0;
 
 public:
 	T& Front() 
@@ -31,6 +32,16 @@ public:
 	OnePathNode<T>* Begin()
 	{
 		return head;
+	}
+
+	void Insert(T data, int idx)
+	{
+
+	}
+
+	void Erase(int idx)
+	{
+
 	}
 
 	void PushFront(T data)
