@@ -42,6 +42,7 @@ public:
 	void Insert(T data, int idx)
 	{
 		if (idx > size) return;
+		if (idx == 0) { PushFront(data); return; }
 
 		OnePathNode<T>* in = new OnePathNode<T>;
 		in->value = data;
@@ -50,37 +51,31 @@ public:
 		{
 			OnePathNode<T>* temp = head;
 
-			if (idx > 1)
+			for (int i = 0; i < idx-1; i++)
 			{
-				for (int i = 0; i < idx-1; i++)
-				{
-					temp = temp->next;
-				}
+				temp = temp->next;
 			}
+
 			in->next = temp->next;
 			temp->next = in;
-			size++;
-		}
-		else
-		{
-			head = in;
 			size++;
 		}
 	}
 
 	void Erase(int idx)
 	{
+		if (idx > size) return;
+		if (idx == 0) { PopFront(); return;}
+
 		if (head)
 		{
 			OnePathNode<T>* temp = head;
 			
-			if (idx > 2)
+			for (int i = 0; i < idx - 1; i++)
 			{
-				for (int i = 0; i < idx - 2; i++)
-				{
-					temp = temp->next;
-				}
+				temp = temp->next;
 			}
+
 			OnePathNode<T>* temp2 = temp->next;
 			temp->next = temp->next->next;
 
