@@ -44,19 +44,46 @@ struct TreeNode
 
 	TreeNode* Find(int data)
 	{
-		if (data == value) return this;
+		if (data == value)
+		{
+			return this;
+		}
 		else if (data > value)
 		{
-			if (!Rchild)
-				Rchild->Find(data);
+			if (Rchild)
+			{
+				return Rchild->Find(data);
+			}
 		}
 		else if (data < value)
 		{
-			if (!Lchild)
-				Lchild->Find(data);
+			if (Lchild)
+			{
+				return Lchild->Find(data);
+			}
 		}
 
 		return nullptr;
+	}
+
+	TreeNode* LowestRightSubNode()
+	{
+		TreeNode* iter = Rchild;
+
+		while (1)
+		{
+			if (iter->Lchild)
+				iter = iter->Lchild;
+			else
+			{
+				if (iter->Parent->value > iter->value)
+					iter->Parent->Lchild = nullptr;
+				else if (iter->Parent->value < iter->value)
+					iter->Parent->Rchild = nullptr;
+
+				return iter;
+			}
+		}
 	}
 
 	void PreOrder()
@@ -74,7 +101,6 @@ struct TreeNode
 		cout << value << "->";
 		if (Rchild)
 			Rchild->InOrder();
-
 	}
 	void PostOrder()
 	{
@@ -110,22 +136,67 @@ public:
 	{
 		TreeNode* iter = Root->Find(data);
 
-		if (iter->Rchild && iter->Lchild)
+		if (!iter)
+		{
+			cout << "존재하지 않는 노드 입니다" << endl;
+			return;
+		}
+		
+		if (iter == Root)
+		{
+			TreeNode* LRSN = iter->LowestRightSubNode();
+			if (LRSN)
+			{
+				LRSN->Lchild = iter->Lchild;
+				if (iter->Lchild)
+					iter->Lchild->Parent = LRSN;
+				LRSN->Parent = iter->Parent;
+				LRSN->Rchild = iter->Rchild;
+				if (iter->Rchild)
+					iter->Rchild->Parent = LRSN;
+			}
+			Root = LRSN;
+			delete iter;
+		}
+		else if (!iter->Rchild && !iter->Lchild)
 		{
 			if (iter->Parent->value > iter->value)
 			{
-				iter->Parent->Lchild = iter->Lchild;
-				iter->Lchild->Parent = iter->Parent;
-				iter->Lchild->Rchild = iter->Rchild;
-				iter->Rchild->Parent = iter->Lchild;
+				iter->Parent->Lchild = nullptr;
 				delete iter;
 			}
 			else if (iter->Parent->value < iter->value)
 			{
-				iter->Parent->Rchild = iter->Rchild;
-				iter->Rchild->Parent = iter->Parent;
-				iter->Rchild->Lchild = iter->Lchild;
-				iter->Lchild->Parent = iter->Rchild;
+				iter->Parent->Rchild = nullptr;
+				delete iter;
+			}
+		}
+		else if (iter->Rchild && iter->Lchild)
+		{
+			if (iter->Parent->value > iter->value)
+			{
+				TreeNode* LRSN = iter->LowestRightSubNode();
+				iter->Parent->Lchild = LRSN;
+				LRSN->Lchild = iter->Lchild;
+				if (iter->Lchild)
+					iter->Lchild->Parent = LRSN;
+				LRSN->Parent = iter->Parent;
+				LRSN->Rchild = iter->Rchild;
+				if (iter->Rchild)
+					iter->Rchild->Parent = LRSN;
+				delete iter;
+			}
+			else if (iter->Parent->value < iter->value)
+			{
+				TreeNode* LRSN = iter->LowestRightSubNode();
+				iter->Parent->Rchild = LRSN;
+				LRSN->Lchild = iter->Lchild;
+				if (iter->Lchild)
+					iter->Lchild->Parent = LRSN;
+				LRSN->Parent = iter->Parent;
+				LRSN->Rchild = iter->Rchild;
+				if (iter->Rchild)
+					iter->Rchild->Parent = LRSN;
 				delete iter;
 			}
 		}
@@ -133,12 +204,29 @@ public:
 		{
 			if (iter->Parent->value > iter->value)
 			{
-				
+				iter->Parent->Lchild = iter->Rchild;
+				iter->Rchild->Parent = iter->Parent;
 				delete iter;
 			}
 			else if (iter->Parent->value < iter->value)
 			{
-
+				iter->Parent->Lchild = iter->Rchild;
+				iter->Rchild->Parent = iter->Parent;
+				delete iter;
+			}
+		}
+		else if (iter->Lchild)
+		{
+			if (iter->Parent->value > iter->value)
+			{
+				iter->Parent->Lchild = iter->Lchild;
+				iter->Lchild->Parent = iter->Parent;
+				delete iter;
+			}
+			else if (iter->Parent->value < iter->value)
+			{
+				iter->Parent->Lchild = iter->Lchild;
+				iter->Lchild->Parent = iter->Parent;
 				delete iter;
 			}
 		}
