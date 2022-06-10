@@ -1,0 +1,7 @@
+Computer Graphics
+
+래스터 그래픽 - bmp, gif, jpg, png etc.
+픽셀 데이터로 이미지를 저장한다.
+
+벡터 그래픽 - svg
+점과 선 데이터로 이미지를 저장한다.

@@ -54,3 +54,52 @@
 	* ![](https://t1.daumcdn.net/cfile/tistory/9924604B5AE877F609)
 	* 8 9 4 10 11 5 2 12 13 6 14 15 7 3 1
 
+## Computer Graphics
+### 래스터 그래픽, 벡터 그래픽
+* 래스터 그래픽
+	* bmp, gif, jpg, png
+	* 픽셀 데이터로 이미지를 저장한다.
+* 벡터 그래픽 
+	* svg
+	* 점과 선 데이터로 이미지를 저장한다.
+
+### 해상도
+* 가로 방향 픽셀 수 X 세로 방향 픽셀 수
+* 출력 대상이 디스플레이 이기 때문에 해상도의 범위를 벗어 날 수 없다.
+
+### 픽셀
+* 그래픽스의 최소 단위
+* RGBA의 값을 담고 있다.
+* 직사각형들로 이루어져 있다.
+
+### 렌더링 파이프라인
+* 정점, 선 데이터를 백버퍼(해상도 크기) 출력
+
+### 행렬
+* 행렬 곱을 통해 좌표를 변환해 준다.
+	* 위치변환 (Translation) - 중심점이 원점에서 이동한 값
+		* ![](http://www.opengl-tutorial.org/assets/images/tuto-3-matrix/translationMatrix.png)
+	* 크기변환 (중심점 으로부터) (Scaling) - 정점이 중심정에서 멀어진 비율 값
+		* ![](http://www.opengl-tutorial.org/assets/images/tuto-3-matrix/scalingMatrix.png)
+	* 회전변환 (중심점 으로부터) (Rotation) - 원래 회전값에서 + a 값
+		* ![{\displaystyle {\begin{pmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{pmatrix}}}](https://wikimedia.org/api/rest_v1/media/math/render/svg/ab40477843fea7939707c800ffd3b668ee8ce685)
+
+
+### 좌표
+* 공간내에 원점(0, 0, 0)으로부터 멀어진 값
+* 정점 : 중심점에서 멀어진 꼭지점 좌표값
+
+### 벡터
+* 방향, 크기를 나타내는 것
+* 앞 좌표를 원점으로 생략하면 끝점값으로 표현
+* 원점으로부터 좌표도 벡터로 표현이 가능
+* 벡터의 스칼라곱
+	* 스칼라 : 벡터의 길이, 크기
+	* v1 * 2
+* 벡터와 벡터의 합연산
+	* v1 + v2
+	* ![](https://blog.kakaocdn.net/dn/bsDAHw/btqw1uJ6aSg/5NL7FmQ2mFk4ptFWDOLPUK/img.png)
+* 벡터의 내적, 외적
+	* 내적 : 결과값이 스칼라
+	* 
+	* 외적 : 결과값이 벡터
