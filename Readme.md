@@ -99,7 +99,9 @@
 * 벡터와 벡터의 합연산
 	* v1 + v2
 	* ![](https://blog.kakaocdn.net/dn/bsDAHw/btqw1uJ6aSg/5NL7FmQ2mFk4ptFWDOLPUK/img.png)
-* 벡터의 내적, 외적
-	* 내적 : 결과값이 스칼라
-	* 
-	* 외적 : 결과값이 벡터
+* 내적
+	* A · B = |A| |B| Cosθ
+	* 결과값이 스칼라
+* 외적
+	* A x B = C
+	* 결과값이 벡터
