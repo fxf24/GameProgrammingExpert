@@ -1,8 +1,4 @@
-﻿// ProjectD3D.cpp : 애플리케이션에 대한 진입점을 정의합니다.
-//
-
-#include "framework.h"
-#include "ProjectD3D.h"
+﻿#include "framework.h"
 
 #define MAX_LOADSTRING 100
 
@@ -98,7 +94,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
