@@ -23,3 +23,7 @@ extern HINSTANCE		g_hInst;
 extern HWND				g_hwnd;
 extern HDC				g_hdc;
 extern HDC				g_MemDC;
+
+#define INPUT Input::GetInstance()
+#define TIMER Timer::GetInstance()
+#define DELTA Timer::GetInstance()->GetDeltaTime()

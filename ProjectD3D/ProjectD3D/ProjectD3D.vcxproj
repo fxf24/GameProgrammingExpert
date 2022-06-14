@@ -141,9 +141,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="ObRect.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="ObRect.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Types.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
