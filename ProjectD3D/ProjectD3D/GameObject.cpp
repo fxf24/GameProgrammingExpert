@@ -9,6 +9,8 @@ GameObject::GameObject()
 	scale.y = 1.0f;
 
 	rotation = 0;
+
+	parent = nullptr;
 }
 
 void GameObject::Update()
@@ -17,7 +19,20 @@ void GameObject::Update()
 	R = Matrix::CreateRotationZ(rotation);
 	T = Matrix::CreateTranslation(position.x, position.y,0.0f);
 
-	W = S * R * T;
+	RT = R * T;
+	W = S * RT;
+
+	if (parent)
+	{
+		W *= parent->RT;
+		RT *= parent->RT;
+	}
+
+	// ¿Á±Õ »£√‚
+	for (int i = 0; i < children.size(); i++)
+	{
+		children[i]->Update();
+	}
 }
 
 void GameObject::Render()

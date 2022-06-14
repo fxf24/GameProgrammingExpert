@@ -21,6 +21,27 @@ void MainGame::Init()
 
     rc.rotation = 0.0f;
 
+    rc.children.push_back(&rc2);
+    rc2.parent = &rc;
+
+    rc2.position.x = 100.0f;
+    rc2.position.y = 100.0f;
+      
+    rc2.scale.x = 50.0f;
+    rc2.scale.y = 50.0f;
+      
+    rc2.rotation = 0.0f;
+
+    rc2.children.push_back(&rc3);
+    rc3.parent = &rc2;
+      
+    rc3.position.x = 50.0f;
+    rc3.position.y = 50.0f;
+      
+    rc3.scale.x = 25.0f;
+    rc3.scale.y = 25.0f;
+      
+    rc3.rotation = 0.0f;
 }
 MainGame::~MainGame()
 {
@@ -46,11 +67,11 @@ void MainGame::Update()
     }
     if (INPUT->KeyPress('1'))
     {
-        rc.rotation += 0.1f;
+        rc.rotation += 0.02f;
     }
     if (INPUT->KeyPress('2'))
     {
-        rc.rotation -= 0.1f;
+        rc.rotation -= 0.02f;
     }
     if (INPUT->KeyPress('3'))
     {
@@ -68,6 +89,8 @@ void MainGame::Update()
     {
         rc.scale.y -= 0.1f;
     }
+    rc2.rotation += 0.02f;
+
     rc.Update();
 
     InvalidateRect(g_hwnd, NULL, false);

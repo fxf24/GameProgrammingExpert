@@ -113,7 +113,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
             //한프레임
 
             //고정프레임이 있다면 델타가 그만큼 커질때까지 업데이트로 못감
-            TIMER->Chronometry(30);
+            TIMER->Chronometry(200);
 
             INPUT->Update();
             mg->Update();

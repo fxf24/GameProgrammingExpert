@@ -3,6 +3,8 @@ class MainGame : public Scene
 {
 private:
 	ObRect		rc;
+	ObRect		rc2;
+	ObRect		rc3;
 
 public:
 	~MainGame();

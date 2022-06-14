@@ -32,4 +32,10 @@ void ObRect::Render()
     LineTo(g_MemDC, TransfomVertex[2].x, TransfomVertex[2].y);
     LineTo(g_MemDC, TransfomVertex[3].x, TransfomVertex[3].y);
     LineTo(g_MemDC, TransfomVertex[0].x, TransfomVertex[0].y);
+
+    // ¿Á±Õ »£√‚
+    for (int i = 0; i < children.size(); i++)
+    {
+        children[i]->Render();
+    }
 }
