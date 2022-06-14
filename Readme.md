@@ -83,7 +83,12 @@
 		* ![](http://www.opengl-tutorial.org/assets/images/tuto-3-matrix/scalingMatrix.png)
 	* 회전변환 (중심점 으로부터) (Rotation) - 원래 회전값에서 + a 값
 		* ![{\displaystyle {\begin{pmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{pmatrix}}}](https://wikimedia.org/api/rest_v1/media/math/render/svg/ab40477843fea7939707c800ffd3b668ee8ce685)
-
+* 행렬은 왼손좌표계, 행우선으로 사용할 것 이다.
+* vertex * 4x4 matrix 를 할때, vertex 뒤의 두값은 고정되어 있다. 
+* 3번째는 위치, 4번째는 동차라고 한다.
+* 동차  
+	* 0 - 노멀(법선)변환
+	* 1 - 좌표변환
 
 ### 좌표
 * 공간내에 원점(0, 0, 0)으로부터 멀어진 값
@@ -105,3 +110,4 @@
 * 외적
 	* A x B = C
 	* 결과값이 벡터
+
