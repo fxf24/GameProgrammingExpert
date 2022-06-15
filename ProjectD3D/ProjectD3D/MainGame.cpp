@@ -96,7 +96,7 @@ void MainGame::Update()
     {
         Sun.rotation += DELTA * TORADIAN * power;
 
-        power -= DELTA * TORADIAN * 1000.0f;
+        power -= DELTA * TORADIAN * 3600.0f;
         if (power <= 0.0f)
         {
             rotate = not rotate;
