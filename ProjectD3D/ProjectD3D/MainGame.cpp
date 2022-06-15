@@ -9,39 +9,33 @@ void MainGame::Init()
     HBITMAP	 m_hOldBitmap, m_hBitmap;
     HDC	hdc = GetDC(g_hwnd); //기존핸들
     g_MemDC = CreateCompatibleDC(hdc);	//
-    m_hBitmap = CreateCompatibleBitmap(hdc, 800, 600);//만들크기
+    m_hBitmap = CreateCompatibleBitmap(hdc, 1800, 900);//만들크기
     m_hOldBitmap = (HBITMAP)SelectObject(g_MemDC, m_hBitmap);
     ReleaseDC(g_hwnd, hdc);
     //
-    rc.position.x = 400.0f;
-    rc.position.y = 300.0f;
+    Sun.position.x = 900.0f;
+    Sun.position.y = 400.0f;
 
-    rc.scale.x = 100.0f;
-    rc.scale.y = 100.0f;
+    Sun.scale.x = 100.0f;
+    Sun.scale.y = 100.0f;
 
-    rc.rotation = 0.0f;
+    rotate = false;
+    for (int i = 0; i < 5; i++)
+    {
+        Sun.children.push_back(&SunBone[i]);
+        SunBone[i].parent = &Sun;
 
-    rc.children.push_back(&rc2);
-    rc2.parent = &rc;
+        SunBone[i].children.push_back(&Planet[i]);
+        Planet[i].parent = &SunBone[i];
 
-    rc2.position.x = 100.0f;
-    rc2.position.y = 100.0f;
-      
-    rc2.scale.x = 50.0f;
-    rc2.scale.y = 50.0f;
-      
-    rc2.rotation = 0.0f;
+        Planet[i].position.x = 80.0f * (i + 1);
+        Planet[i].position.y = 80.0f * (i + 1);
 
-    rc2.children.push_back(&rc3);
-    rc3.parent = &rc2;
-      
-    rc3.position.x = 50.0f;
-    rc3.position.y = 50.0f;
-      
-    rc3.scale.x = 25.0f;
-    rc3.scale.y = 25.0f;
-      
-    rc3.rotation = 0.0f;
+        Planet[i].scale.x = 50.0f;
+        Planet[i].scale.y = 50.0f;
+    }
+   
+
 }
 MainGame::~MainGame()
 {
@@ -49,49 +43,72 @@ MainGame::~MainGame()
 
 void MainGame::Update()
 {
+    if (INPUT->KeyDown(VK_SPACE))
+    {
+        rotate = not rotate;
+        power = DELTA * TORADIAN * 360.0f * 10000.0f;
+    }
+
     if (INPUT->KeyPress(VK_UP) )
     {
-        rc.position.y += 0.5f;
+        // 초당 100 변화량
+        Sun.position.y -= DELTA * 100;
     }
     if (INPUT->KeyPress(VK_DOWN) )
     {
-        rc.position.y -= 0.5f;
+        Sun.position.y += DELTA * 100;
     }
     if (INPUT->KeyPress(VK_LEFT) )
     {
-        rc.position.x -= 0.5f;
+        Sun.position.x -= DELTA * 100;
     }
     if (INPUT->KeyPress(VK_RIGHT) )
     {
-        rc.position.x += 0.5f;
+        Sun.position.x += DELTA * 100;
     }
     if (INPUT->KeyPress('1'))
     {
-        rc.rotation += 0.02f;
+        Sun.rotation += DELTA * TORADIAN * 360.0f;
     }
     if (INPUT->KeyPress('2'))
     {
-        rc.rotation -= 0.02f;
+        Sun.rotation -= 0.02f;
     }
     if (INPUT->KeyPress('3'))
     {
-        rc.scale.x += 0.1f;
+        Sun.scale.x += 0.1f;
     }
     if (INPUT->KeyPress('4'))
     {
-        rc.scale.x -= 0.1f;
+        Sun.scale.x -= 0.1f;
     }
     if (INPUT->KeyPress('5'))
     {
-        rc.scale.y += 0.1f;
+        Sun.scale.y += 0.1f;
     }
     if (INPUT->KeyPress('6'))
     {
-        rc.scale.y -= 0.1f;
+        Sun.scale.y -= 0.1f;
     }
-    rc2.rotation += 0.02f;
+    //Sun.rotation += DELTA * TORADIAN * 10.0f;
 
-    rc.Update();
+    if (rotate)
+    {
+        Sun.rotation += DELTA * TORADIAN * power;
+
+        power -= DELTA * TORADIAN * 1000.0f;
+        if (power <= 0.0f)
+        {
+            rotate = not rotate;
+        }
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        //SunBone[i].rotation += DELTA * TORADIAN * 30.0f * (i + 1);
+    }
+
+    Sun.Update();
 
     InvalidateRect(g_hwnd, NULL, false);
 }
@@ -102,12 +119,14 @@ void MainGame::Render()
     g_hdc = BeginPaint(g_hwnd, &ps);
 
     //바탕색 깔기
-    PatBlt(g_MemDC, 0, 0, 800, 600,WHITENESS);
+    PatBlt(g_MemDC, 0, 0, 1800, 900,WHITENESS);
 
-    
-    rc.Render();
+    wstring text = L"FPS: " + to_wstring(TIMER->GetFPS());
+    TextOut(g_MemDC, 0, 0, text.c_str(), text.size());
+    wstring text2 = L"Click Space to Spin";
+    TextOut(g_MemDC, 0, 20, text2.c_str(), text2.size());
 
-
+    Sun.Render();
     /*MoveToEx(g_MemDC,100,100,nullptr);
     LineTo(g_MemDC, 200, 100);
     LineTo(g_MemDC, 200, 200);
@@ -118,7 +137,7 @@ void MainGame::Render()
 
 
     //고속 복사 g_MemDC에서 g_hdc로
-    BitBlt(g_hdc, 0, 0, 800, 600,
+    BitBlt(g_hdc, 0, 0, 1800, 900,
         g_MemDC, 0, 0, SRCCOPY);
 
     EndPaint(g_hwnd, &ps);

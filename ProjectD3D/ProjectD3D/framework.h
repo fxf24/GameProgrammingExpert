@@ -28,3 +28,5 @@ extern HDC				g_MemDC;
 #define INPUT Input::GetInstance()
 #define TIMER Timer::GetInstance()
 #define DELTA Timer::GetInstance()->GetDeltaTime()
+
+#define TORADIAN 0.01745329f

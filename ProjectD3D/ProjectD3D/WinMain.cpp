@@ -63,8 +63,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
         WS_OVERLAPPEDWINDOW,
         0,			//창의 시작 x좌표
         0,			//창의 시작 y좌표
-        800,		//창의 너비
-        600,		//창의 높이
+        1800,		//창의 너비
+        900,		//창의 높이
         nullptr,
         nullptr,
         hInstance,	//등록될 인스턴스
@@ -75,7 +75,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
         return FALSE;
 
     //화면 작업 사이즈 영역 계산
-    SetWindowSize(0, 0, 800, 600);
+    SetWindowSize(0, 0, 1800, 900);
 
     //	생성한 프로그램을 디스플레이의 최상위로 올린다
     ShowWindow(g_hwnd, nCmdShow);
@@ -122,6 +122,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
     }
     //프로그램 종료 준비
     INPUT->DeleteSingleton();
+    TIMER->DeleteSingleton();
+
     //생성된 윈도우 삭제
     DestroyWindow(g_hwnd);
     //등록된 프로그램 해제
