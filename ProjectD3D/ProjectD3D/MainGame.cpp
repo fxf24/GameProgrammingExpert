@@ -46,7 +46,7 @@ void MainGame::Update()
     if (INPUT->KeyDown(VK_SPACE))
     {
         rotate = true;
-        power += DELTA * TORADIAN * 360.0f * 10000.0f;
+        power += 720.0f;
     }
 
     if (INPUT->KeyPress(VK_UP) )
@@ -96,7 +96,7 @@ void MainGame::Update()
     {
         Sun.rotation += DELTA * TORADIAN * power;
 
-        power -= DELTA * TORADIAN * 3600.0f;
+        power -= 2.0f;
         if (power <= 0.0f)
         {
             rotate = not rotate;
