@@ -24,8 +24,8 @@ void GameObject::Update()
 
 	if (parent)
 	{
-		W *= parent->RT;
 		RT *= parent->RT;
+		W *= parent->RT;
 	}
 
 	// ¿Á±Õ »£√‚
