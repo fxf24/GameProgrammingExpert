@@ -8,6 +8,7 @@ private:
 	ObRect		Planet[5];
 
 	vector<ObRect*> bullet;
+	vector<Vector2> bullet_dir;
 
 	float		power;
 	float		bullet_count = 0;

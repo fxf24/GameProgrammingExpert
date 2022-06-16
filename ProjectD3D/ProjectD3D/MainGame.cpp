@@ -74,8 +74,7 @@ void MainGame::Update()
         if (bullet_count <= 10)
             bullet_count++;
 
-
-
+        bullet_dir.push_back(Dir);
     }
 
     if (INPUT->KeyPress(VK_UP) )
@@ -125,7 +124,7 @@ void MainGame::Update()
     {
         for (int i = 0; i < bullet_count; i++)
         {
-            bullet[i]->position += Dir * DELTA * 1000.0f;
+            bullet[i]->position += bullet_dir[i] * DELTA * 1800.0f;
         }
     }
 
