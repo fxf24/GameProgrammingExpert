@@ -19,6 +19,7 @@ void MainGame::Init()
     Sun.scale.x = 100.0f;
     Sun.scale.y = 100.0f;
 
+    power = 0;
     rotate = false;
     for (int i = 0; i < 5; i++)
     {
@@ -44,8 +45,8 @@ void MainGame::Update()
 {
     if (INPUT->KeyDown(VK_SPACE))
     {
-        rotate = not rotate;
-        power = DELTA * TORADIAN * 360.0f * 10000.0f;
+        rotate = true;
+        power += DELTA * TORADIAN * 360.0f * 10000.0f;
     }
 
     if (INPUT->KeyPress(VK_UP) )
