@@ -7,6 +7,7 @@ HWND                g_hwnd;     //창 관리자
 HDC                 g_hdc;
 HDC			        g_MemDC;	//더블버퍼링용
 Scene* mg;
+Vector2             g_Mouse;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 //**윈도우 프로시저** (프로시저)
@@ -159,6 +160,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //프로그램 종료 호출 함수
         PostQuitMessage(0);
         break;
+    }
+    case WM_MOUSEMOVE:
+    {
+        g_Mouse.x = (float)LOWORD(lParam);
+        g_Mouse.y = (float)HIWORD(lParam);
     }
     }
     return (DefWindowProc(hWnd, message, wParam, lParam));

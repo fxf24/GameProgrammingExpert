@@ -20,7 +20,7 @@ void MainGame::Init()
     Sun.scale.y = 100.0f;
 
     power = 0;
-    rotate = false;
+
     for (int i = 0; i < 5; i++)
     {
         Sun.children.push_back(&SunBone[i]);
@@ -36,6 +36,16 @@ void MainGame::Init()
         Planet[i].scale.y = 50.0f;
     }
 
+    for (int i = 0; i < 10; i++)
+    {
+        bullet.push_back(new ObRect());
+
+        bullet[i]->position.x = 900.0f;
+        bullet[i]->position.y = 400.0f;
+
+        bullet[i]->scale.x = 10.0f;
+        bullet[i]->scale.y = 1.0f;
+    }
 }
 MainGame::~MainGame()
 {
@@ -43,28 +53,48 @@ MainGame::~MainGame()
 
 void MainGame::Update()
 {
+    Vector2 Dir = g_Mouse - Sun.position;
+    Dir.Normalize();
+
+    Sun.rotation = atan2f(Dir.y, Dir.x);
+
+    for (int i = 0; i < 10; i++)
+    {
+        bullet[i]->rotation = Sun.rotation;
+    }
+
+    if (INPUT->KeyPress('W'))
+    {
+        Sun.position += Dir * DELTA * 100;
+    }
+
     if (INPUT->KeyDown(VK_SPACE))
     {
-        rotate = true;
-        power += 720.0f;
+        //power += 720.0f;
+        if (bullet_count <= 10)
+            bullet_count++;
+
+
+
     }
 
     if (INPUT->KeyPress(VK_UP) )
     {
-        // 초당 100 변화량
-        Sun.position.y -= DELTA * 100;
+        //                              초당 100 변화량
+        //                                  100 p/s
+        Sun.position += Vector2(cosf(45 * TORADIAN), -sinf(45 * TORADIAN)) * DELTA * 100;
     }
     if (INPUT->KeyPress(VK_DOWN) )
     {
-        Sun.position.y += DELTA * 100;
+        Sun.position += Vector2(0, 1) * DELTA * 100;
     }
     if (INPUT->KeyPress(VK_LEFT) )
     {
-        Sun.position.x -= DELTA * 100;
+        Sun.position += Vector2(-1, 0) * DELTA * 100;
     }
     if (INPUT->KeyPress(VK_RIGHT) )
     {
-        Sun.position.x += DELTA * 100;
+        Sun.position += Vector2(1, 0) * DELTA * 100;
     }
     if (INPUT->KeyPress('1'))
     {
@@ -91,16 +121,18 @@ void MainGame::Update()
         Sun.scale.y -= 0.1f;
     }
     //Sun.rotation += DELTA * TORADIAN * 10.0f;
+    if (bullet_count > 0)
+    {
+        for (int i = 0; i < bullet_count; i++)
+        {
+            bullet[i]->position += Dir * DELTA * 1000.0f;
+        }
+    }
 
-    if (rotate)
+    if (power >= 0.0f)
     {
         Sun.rotation += DELTA * TORADIAN * power;
-
-        power -= 2.0f;
-        if (power <= 0.0f)
-        {
-            rotate = not rotate;
-        }
+        power -= DELTA * 360.0f;
     }
 
     for (int i = 0; i < 5; i++)
@@ -109,7 +141,10 @@ void MainGame::Update()
     }
 
     Sun.Update();
-
+    for (int i = 0; i < 10; i++)
+    {
+        bullet[i]->Update();
+    }
     InvalidateRect(g_hwnd, NULL, false);
 }
 
@@ -127,6 +162,10 @@ void MainGame::Render()
     TextOut(g_MemDC, 0, 20, text2.c_str(), text2.size());
 
     Sun.Render();
+    for (int i = 0; i < 10; i++)
+    {
+        bullet[i]->Render();
+    }
     /*MoveToEx(g_MemDC,100,100,nullptr);
     LineTo(g_MemDC, 200, 100);
     LineTo(g_MemDC, 200, 200);

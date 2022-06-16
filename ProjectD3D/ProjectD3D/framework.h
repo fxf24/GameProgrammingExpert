@@ -1,10 +1,12 @@
 ﻿#pragma once
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 
 #include <windows.h>
 #include <math.h>
 #include <string>
 #include <chrono>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -24,6 +26,7 @@ extern HINSTANCE		g_hInst;
 extern HWND				g_hwnd;
 extern HDC				g_hdc;
 extern HDC				g_MemDC;
+extern Vector2			g_Mouse;
 
 #define INPUT Input::GetInstance()
 #define TIMER Timer::GetInstance()

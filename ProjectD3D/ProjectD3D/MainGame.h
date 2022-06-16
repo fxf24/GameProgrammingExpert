@@ -7,9 +7,10 @@ private:
 	
 	ObRect		Planet[5];
 
-	bool		rotate;
-	float		power;
+	vector<ObRect*> bullet;
 
+	float		power;
+	float		bullet_count = 0;
 
 public:
 	~MainGame();
