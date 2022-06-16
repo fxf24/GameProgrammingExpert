@@ -158,7 +158,7 @@ void MainGame::Render()
 
     wstring text = L"FPS: " + to_wstring(TIMER->GetFPS());
     TextOut(g_MemDC, 0, 0, text.c_str(), text.size());
-    wstring text2 = L"Click Space to Spin";
+    wstring text2 = L"Click Space to Shoot";
     TextOut(g_MemDC, 0, 20, text2.c_str(), text2.size());
 
     Sun.Render();
