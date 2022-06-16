@@ -2,18 +2,13 @@
 class MainGame : public Scene
 {
 private:
-	ObRect	rc;
-	ObRect	rc2;
-	ObRect	rc3;
+	ObRect		Sun;
+	ObRect		SunBone[5];
+	
+	ObRect		Planet[5];
 
-	ObRect	rc4;
-	ObRect	rc5;
-
-	ObRect	rc6;
-	ObRect	rc7;
-
-	ObRect	rc8;
-	ObRect	rc9;
+	bool		rotate;
+	float		power;
 
 
 public:
