@@ -26,14 +26,14 @@ void MainGame::Init()
         Sun.children.push_back(&SunBone[i]);
         SunBone[i].parent = &Sun;
 
-        SunBone[i].children.push_back(&Planet[i]);
+        /*SunBone[i].children.push_back(&Planet[i]);
         Planet[i].parent = &SunBone[i];
 
         Planet[i].position.x = 80.0f * (i + 1);
         Planet[i].position.y = 80.0f * (i + 1);
 
         Planet[i].scale.x = 50.0f;
-        Planet[i].scale.y = 50.0f;
+        Planet[i].scale.y = 50.0f;*/
     }
 
     for (int i = 0; i < 10; i++)
@@ -58,23 +58,34 @@ void MainGame::Update()
 
     Sun.rotation = atan2f(Dir.y, Dir.x);
 
-    for (int i = 0; i < 10; i++)
-    {
-        bullet[i]->rotation = Sun.rotation;
-    }
-
     if (INPUT->KeyPress('W'))
     {
-        Sun.position += Dir * DELTA * 100;
+        Sun.position += Vector2(0, -1) * DELTA * 100;
+    }
+    if (INPUT->KeyPress('S'))
+    {
+        Sun.position += Vector2(0, 1) * DELTA * 100;
+    }
+    if (INPUT->KeyPress('A'))
+    {
+        Sun.position += Vector2(-1, 0) * DELTA * 100;
+    }
+    if (INPUT->KeyPress('D'))
+    {
+        Sun.position += Vector2(1, 0) * DELTA * 100;
     }
 
     if (INPUT->KeyDown(VK_SPACE))
     {
         //power += 720.0f;
-        if (bullet_count <= 10)
+        if (bullet_count < 10)
+        {
             bullet_count++;
 
-        bullet_dir.push_back(Dir);
+            bullet_dir.push_back(Dir);
+            bullet[bullet_count - 1]->position = Sun.position;
+            bullet[bullet_count - 1]->rotation = Sun.rotation;
+        } 
     }
 
     if (INPUT->KeyPress(VK_UP) )
@@ -120,7 +131,7 @@ void MainGame::Update()
         Sun.scale.y -= 0.1f;
     }
     //Sun.rotation += DELTA * TORADIAN * 10.0f;
-    if (bullet_count > 0)
+    if (bullet_count > 0 && bullet_count <= 10)
     {
         for (int i = 0; i < bullet_count; i++)
         {
@@ -159,11 +170,19 @@ void MainGame::Render()
     TextOut(g_MemDC, 0, 0, text.c_str(), text.size());
     wstring text2 = L"Click Space to Shoot";
     TextOut(g_MemDC, 0, 20, text2.c_str(), text2.size());
+    wstring text3 = L"Press WASD to Move";
+    TextOut(g_MemDC, 0, 40, text3.c_str(), text3.size());
+    wstring text4 = L"Ammo : " + to_wstring(10 - (int)bullet_count);
+    TextOut(g_MemDC, 0, 60, text4.c_str(), text4.size());
 
     Sun.Render();
-    for (int i = 0; i < 10; i++)
+
+    if (bullet_count > 0 && bullet_count <= 10)
     {
-        bullet[i]->Render();
+        for (int i = 0; i < bullet_count; i++)
+        {
+            bullet[i]->Render();
+        }
     }
     /*MoveToEx(g_MemDC,100,100,nullptr);
     LineTo(g_MemDC, 200, 100);
