@@ -1,17 +1,11 @@
 #pragma once
+#include "Bullet.h"
+
 class MainGame : public Scene
 {
 private:
 	ObRect		Sun;
-	ObRect		SunBone[5];
-	
-	ObRect		Planet[5];
-
-	vector<ObRect*> bullet;
-	vector<Vector2> bullet_dir;
-
-	float		power;
-	float		bullet_count = 0;
+	Bullet		bullet[20];
 
 public:
 	~MainGame();

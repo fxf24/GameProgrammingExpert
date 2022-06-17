@@ -17,6 +17,12 @@
     <ClInclude Include="Timer.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="ObLine.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp" />
@@ -34,6 +40,12 @@
     <ClCompile Include="Timer.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="ObLine.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl" />
@@ -44,6 +56,9 @@
     </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{54d9bf7a-f70c-41b2-af95-dadeb12b3977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor">
+      <UniqueIdentifier>{e00b504a-8545-46a9-8a5d-f4ad53958e72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

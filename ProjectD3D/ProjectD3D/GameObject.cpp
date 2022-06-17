@@ -11,10 +11,14 @@ GameObject::GameObject()
 	rotation = 0;
 
 	parent = nullptr;
+	visible = true;
 }
 
 void GameObject::Update()
 {
+	//if (not active) return;
+
+
 	S = Matrix::CreateScale(scale.x, scale.y,1.0f);
 	R = Matrix::CreateRotationZ(rotation);
 	T = Matrix::CreateTranslation(position.x, position.y,0.0f);
@@ -37,5 +41,35 @@ void GameObject::Update()
 
 void GameObject::Render()
 {
+	//if (not active) return;
 
+
+	//Right
+	axis->scale.x = scale.x;
+
+	Vector2 Right = GetRight();
+	axis->rotation = atan2f(Right.y, Right.x);
+	axis->position = Vector2(W._41, W._42);
+	axis->Update();
+	axis->Render();
+
+	//Down
+	axis->scale.x = scale.y;
+
+	Vector2 Down = GetDown();
+	axis->rotation = atan2f(Down.y, Down.x);
+	axis->Update();
+	axis->Render();
+}
+
+ObLine* GameObject::axis = nullptr;
+
+void GameObject::CreateStaticMember()
+{
+	axis = new ObLine();
+}
+
+void GameObject::DeleteStaticMember()
+{
+	delete axis;
 }

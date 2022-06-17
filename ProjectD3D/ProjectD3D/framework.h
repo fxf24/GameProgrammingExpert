@@ -17,6 +17,7 @@ using namespace SimpleMath;
 
 #include "GameObject.h"
 #include "ObRect.h"
+#include "ObLine.h"
 
 #include "Types.h"
 #include "Input.h"
