@@ -22,8 +22,12 @@ void ObLine::Render()
         }
         //0->1->2->3->0
 
+        endPoint = TransfomVertex[1];
+
         MoveToEx(g_MemDC, TransfomVertex[0].x, TransfomVertex[0].y, NULL);
         LineTo(g_MemDC, TransfomVertex[1].x, TransfomVertex[1].y);
+
+
     }
 
     // Àç±Í È£Ãâ
@@ -32,3 +36,4 @@ void ObLine::Render()
         children[i]->Render();
     }
 }
+

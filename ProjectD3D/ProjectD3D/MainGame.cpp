@@ -21,6 +21,7 @@ void MainGame::Init()
     Sun.scale.x = 100.0f;
     Sun.scale.y = 100.0f;
 
+    ammo_count = 20;
 }
 
 MainGame::~MainGame()
@@ -52,13 +53,24 @@ void MainGame::Update()
         Sun.position += Vector2(1, 0) * DELTA * 100;
     }
 
+    if (INPUT->KeyDown('R'))
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            bullet[i].visible = false;
+            bullet[i].gravity = 0.0f;
+        }
+        ammo_count = 20;
+    }
+
     if (INPUT->KeyDown(VK_LBUTTON))
     {
         for (int i = 0; i < 20; i++)
         {
             if (not bullet[i].visible)
             {
-                bullet[i].Shoot(Sun.position, Sun.GetRight(), 1800.0f);
+                bullet[i].Shoot(Sun.endPoint, Sun.GetRight(), 1000.0f);
+                ammo_count--;
                 break;
             }
         }
@@ -82,12 +94,12 @@ void MainGame::Render()
 
     wstring text = L"FPS: " + to_wstring(TIMER->GetFPS());
     TextOut(g_MemDC, 0, 0, text.c_str(), text.size());
-    wstring text2 = L"Click Space to Shoot";
+    wstring text2 = L"Click LButton to Shoot, R to reload";
     TextOut(g_MemDC, 0, 20, text2.c_str(), text2.size());
     wstring text3 = L"Press WASD to Move";
     TextOut(g_MemDC, 0, 40, text3.c_str(), text3.size());
-    /*wstring text4 = L"Ammo : " + to_wstring(10 - (int)bullet_count);
-    TextOut(g_MemDC, 0, 60, text4.c_str(), text4.size());*/
+    wstring text4 = L"Ammo : " + to_wstring(ammo_count);
+    TextOut(g_MemDC, 0, 60, text4.c_str(), text4.size());
 
     Sun.Render();
 

@@ -6,6 +6,7 @@ class MainGame : public Scene
 private:
 	ObRect		Sun;
 	Bullet		bullet[20];
+	int			ammo_count;
 
 public:
 	~MainGame();

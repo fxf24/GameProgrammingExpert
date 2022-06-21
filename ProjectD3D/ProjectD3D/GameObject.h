@@ -8,6 +8,7 @@ public:
 
 	Vector2				position;
 	Vector2				scale;
+	Vector2				endPoint;
 	float				rotation;
 	GameObject*			parent;
 	vector<GameObject*> children;

@@ -5,6 +5,7 @@ class Bullet : public ObLine
 
 public:
 	float scalar;
+	float gravity;
 
 	Bullet();
 	void Update() override;

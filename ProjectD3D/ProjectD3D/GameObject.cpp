@@ -53,6 +53,8 @@ void GameObject::Render()
 	axis->Update();
 	axis->Render();
 
+	endPoint = axis->GetEndPoint();
+
 	//Down
 	axis->scale.x = scale.y;
 
