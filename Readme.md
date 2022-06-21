@@ -130,3 +130,9 @@
 ### 공간
 * X, Y, Z 를 보통 World Space라고 한다.
 * 오브젝트의 X, Y, Z는 RIGHT, UP, Forward(Front) 등으로 부르며, Local Space라고 한다.
+* Pipeline DX
+* Matrix
+* View
+* projection
+* ndc(clip)
+* viewport
