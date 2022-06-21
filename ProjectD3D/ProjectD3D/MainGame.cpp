@@ -22,6 +22,8 @@ void MainGame::Init()
     Sun.scale.y = 100.0f;
 
     ammo_count = 20;
+
+    gravity = 0.0f;
 }
 
 MainGame::~MainGame()
@@ -53,12 +55,19 @@ void MainGame::Update()
         Sun.position += Vector2(1, 0) * DELTA * 100;
     }
 
+    if (INPUT->KeyDown(VK_SPACE))
+    {
+        gravity = -350.0f;
+    }
+    Sun.position += Vector2(0.0f, 1.0f) * gravity * DELTA;
+    gravity += 100.0f * DELTA;
+
+
     if (INPUT->KeyDown('R'))
     {
         for (int i = 0; i < 20; i++)
         {
             bullet[i].visible = false;
-            bullet[i].gravity = 0.0f;
         }
         ammo_count = 20;
     }

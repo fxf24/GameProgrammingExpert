@@ -8,6 +8,8 @@ private:
 	Bullet		bullet[20];
 	int			ammo_count;
 
+	float gravity;
+
 public:
 	~MainGame();
 	void Init() override;
