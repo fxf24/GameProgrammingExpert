@@ -130,9 +130,48 @@
 ### 공간
 * X, Y, Z 를 보통 World Space라고 한다.
 * 오브젝트의 X, Y, Z는 RIGHT, UP, Forward(Front) 등으로 부르며, Local Space라고 한다.
-* Pipeline DX
-* Matrix
-* View
-* projection
-* ndc(clip)
-* viewport
+* ![](https://lh4.googleusercontent.com/XR_CmhGtmK4M5_izjpP5aJ3TKKH25fPmVL8vZZRa_ZOEdkfn58cpeggHOoxtjRNRiQQRqf7rSDU0rXXGmRnAo_k-vmJg7zce2Lv4zo7Q2YE-sg_ceexbKtO0teWLFZsHEqbOPadM)
+* Model(Local) Space 는 Object Pivot이 Local 좌표계 상에서 원점에 존재하는 공간이다.
+* World Space 는 Object를 공간 상에서 특정한 World로 이동 및 회전, Scale 된 좌표이다. 이는 Model Matrix로 변환이 이루어진다.
+* View(Camera) Space는 World 상에서 놓여진 Object를 그것을 바라보는 카메라의 시점으로 옮긴 공간이다. View Matrix의 곱하기 연산으로 이뤄진다.
+* Clip Space는 카메라의 Frustum 공간 밖, 즉 보여지는 공간 밖에 위치해 있어서 보여지지 않는 오브젝트를 걸러낸다. 그리고, 카메라의 뷰에 따라서 Perspective View, Orthogonal View를 적용한 상태로 만드는 변환 공간이다. 이 변환은 Projection Matrix 적용으로 이뤄진다.
+* Clip Space에서 NDC(Normalized Device Coordinate) 공간을 따로 분리하기도 하는데, 이는 디바이스에서 사용하기 위순 Normalized 된 형태의 좌표계로 변환 시키는 연산이다. Vertex 값을 Homogeneous Coordinate의 w값으로 나눈다. (x, y, z, w) -> (x/w, y/w, z/w, 1). 이 연산은 최적화를 위해서 Cliping이 일어난 후에 발생한다.
+* Screen Space는 Clip Space의 좌표들을 Screen 좌표계, 즉 화면에 보이는 공간으로 이동시키는 변환이다. Viewport Transformation 연산으로 이뤄진다.
+
+### View Transformation
+* 카메라로 표현한다.
+* World space에서 camera space로 표현한다.
+* Object의 모든 점들을 카메라 관점에서의 점으로 바꾼다.
+* 카메라의 위치와 방향을 설정해야 하고, 카메라의 frame을 설정해야 한다.
+* ![](https://blog.kakaocdn.net/dn/bQlEv9/btq107RaGuZ/KGHh9wvXqdG30bEjLW0BsK/img.png)
+* Eye point : 카메라의 위치
+* Look-at point : 타겟 물체의 위치
+* Up vector : 카메라에 수직인 방향을 나타내는 벡터
+* ![](https://blog.kakaocdn.net/dn/c7yHxT/btq11y8U8KV/vxEoQb4KxVlAyXB0XkOKJ0/img.png)
+
+### NDC
+* Normalized Device Coordinate
+* (-1, -1) ~ (1, 1) 의 종횡비 1:1 비율을 가진 2차원 좌표계를 의미한다. 뷰 스페이스의 모든 3차원 좌표는 이 2차원 좌표계로 사영된다.
+
+### Projection
+* 컴퓨터 크래픽스에서의 projection은 주로 3D coordinate 를 2D screen coordinate로 매핑하는 것을 말한다.
+* 그러나 실제로 하는 것은 3D -> 3D으로, 임의의 view volume을 canonical view volume으로 매핑하는 것이다.
+* 차원이 낮아진다고 해서 물체의 깊이를 표현하는 z값이 필요없어지는 것은 아니다.
+* 어떤 물체가 앞에있는지를 판단하는 depth test를 위해서 남아있다.
+* Orthogonal Projection
+	* 직육면체를 view volume으로 사용한다.
+	* 이 view volume을 canonical view volume 으로 만든다.
+	* 원근법을 표현하지 못한다.
+	* 직육면체를 정육면체로 변환하는 것이기 때문에 결국 scaling과 translation의 조합이다.
+	* ![](https://blog.kakaocdn.net/dn/bwRT78/btq1WK4kon0/RlLhRp2GyEVc2KDZFFyTgK/img.png)
+* Perspective Projection
+	* 원근감, 소실점이 있다.
+	* viewing frustum을 canonical view volume으로 매핑하는 것이다.
+	* ![](https://blog.kakaocdn.net/dn/bu3zrh/btq1XMm8s45/w7MaXCglHXwY9i8pT6f9g1/img.png)
+	* ![](https://blog.kakaocdn.net/dn/rXCPi/btq13AfiXYn/8JMhrdOjelDQ9mzPmdQUpk/img.png)
+
+
+### Viewport Transformation
+* Viewport는 화면의 사각형 모양의 viewing region이다.
+* ![](https://blog.kakaocdn.net/dn/UuhjK/btq18D9IB2Y/mZ7xMAPglOK8yj1JcaASZk/img.png)
+
