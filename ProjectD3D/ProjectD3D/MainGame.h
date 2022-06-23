@@ -1,14 +1,14 @@
 #pragma once
-#include "Bullet.h"
+//#include "Bullet.h"
 
 class MainGame : public Scene
 {
 private:
-	ObRect		Sun;
-	Bullet		bullet[20];
-	int			ammo_count;
 
-	float gravity;
+	Camera*		Cam;
+	ObRect		Sun;
+	ObRect		SunBone[5];
+	ObRect		Planet[5];
 
 public:
 	~MainGame();

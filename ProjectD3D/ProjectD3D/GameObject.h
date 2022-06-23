@@ -2,14 +2,12 @@
 class GameObject
 {
 public:
-	//bool				active;
 	bool				visible;
-	static class ObLine* axis;
+	static class Camera* cam;
 
-	Vector2				position;
-	Vector2				scale;
-	Vector2				endPoint;
-	float				rotation;
+	Vector3				position;
+	Vector3				scale;
+	Vector3				rotation;
 	GameObject*			parent;
 	vector<GameObject*> children;
 
@@ -23,7 +21,8 @@ public:
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
 
-	Vector2 GetRight() { return Vector2(RT._11, RT._12); }
-	Vector2 GetDown() { return Vector2(RT._21, RT._22); }
+	Vector3 GetRight() { return Vector3(RT._11, RT._12,RT._13); }
+	Vector3 GetUp() { return Vector3(RT._21, RT._22, RT._23); }
+	Vector3 GetForward() { return Vector3(RT._31, RT._32, RT._33); }
 };
 

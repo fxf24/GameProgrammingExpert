@@ -17,11 +17,8 @@
     <ClInclude Include="Timer.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="ObLine.h">
+    <ClInclude Include="Camera.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,11 +37,8 @@
     <ClCompile Include="Timer.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="ObLine.cpp">
+    <ClCompile Include="Camera.cpp">
       <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

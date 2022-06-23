@@ -2,7 +2,7 @@
 class ObRect :public GameObject
 {
 	//POINT a;
-	Vector2 vertex[4];
+	Vector3 vertex[4];
 public:
 	ObRect();
 	~ObRect()override;

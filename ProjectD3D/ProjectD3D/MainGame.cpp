@@ -1,11 +1,13 @@
 
 #include "framework.h"
 #include "MainGame.h"
-#include "Bullet.h"
+
+
 
 void MainGame::Init()
 {
     GameObject::CreateStaticMember();
+
 
     //MemDc 메모리상의 dc를 하나더 추가
     HBITMAP	 m_hOldBitmap, m_hBitmap;
@@ -14,16 +16,35 @@ void MainGame::Init()
     m_hBitmap = CreateCompatibleBitmap(hdc, 1800, 900);//만들크기
     m_hOldBitmap = (HBITMAP)SelectObject(g_MemDC, m_hBitmap);
     ReleaseDC(g_hwnd, hdc);
-    
-    Sun.position.x = 900.0f;
-    Sun.position.y = 400.0f;
 
-    Sun.scale.x = 100.0f;
-    Sun.scale.y = 100.0f;
+    Cam = new Camera();
+    GameObject::cam = Cam;
 
-    ammo_count = 20;
+    Cam->position = Vector3(0.0f, 0.0f, -10.0f);
 
-    gravity = 0.0f;
+
+    //
+    Sun.position.x = 0.0f;
+    Sun.position.y = 0.0f;
+
+    Sun.scale.x = 1.0f;
+    Sun.scale.y = 1.0f;
+
+    for (int i = 0; i < 5; i++)
+    {
+        Sun.children.push_back(&SunBone[i]);
+        SunBone[i].parent = &Sun;
+
+        SunBone[i].children.push_back(&Planet[i]);
+        Planet[i].parent = &SunBone[i];
+
+        Planet[i].position.x = 2.0f * (i + 1);
+        Planet[i].position.y = 2.0f * (i + 1);
+
+        Planet[i].scale.x = 1.0f;
+        Planet[i].scale.y = 1.0f;
+    }
+
 }
 
 MainGame::~MainGame()
@@ -33,63 +54,15 @@ MainGame::~MainGame()
 
 void MainGame::Update()
 {
-    Vector2 Dir = g_Mouse - Sun.position;
-    Dir.Normalize();
-
-    Sun.rotation = atan2f(Dir.y, Dir.x);
-
-    if (INPUT->KeyPress('W'))
+    if (INPUT->KeyPress(VK_LEFT))
     {
-        Sun.position += Vector2(0, -1) * DELTA * 100;
+        Cam->position += Vector3(-1.0f,0.0f,0.0f) * 100.0f * DELTA;
     }
-    if (INPUT->KeyPress('S'))
-    {
-        Sun.position += Vector2(0, 1) * DELTA * 100;
-    }
-    if (INPUT->KeyPress('A'))
-    {
-        Sun.position += Vector2(-1, 0) * DELTA * 100;
-    }
-    if (INPUT->KeyPress('D'))
-    {
-        Sun.position += Vector2(1, 0) * DELTA * 100;
-    }
+    Sun.rotation.y += 60.0f * TORADIAN * DELTA;
 
-    if (INPUT->KeyDown(VK_SPACE))
-    {
-        gravity = -350.0f;
-    }
-    Sun.position += Vector2(0.0f, 1.0f) * gravity * DELTA;
-    gravity += 100.0f * DELTA;
-
-
-    if (INPUT->KeyDown('R'))
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            bullet[i].visible = false;
-        }
-        ammo_count = 20;
-    }
-
-    if (INPUT->KeyDown(VK_LBUTTON))
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            if (not bullet[i].visible)
-            {
-                bullet[i].Shoot(Sun.endPoint, Sun.GetRight(), 1000.0f);
-                ammo_count--;
-                break;
-            }
-        }
-    }
-
+    Cam->Update();
     Sun.Update();
-    for (int i = 0; i < 20; i++)
-    {
-        bullet[i].Update();
-    }
+
     InvalidateRect(g_hwnd, NULL, false);
 }
 
@@ -101,21 +74,12 @@ void MainGame::Render()
     //바탕색 깔기
     PatBlt(g_MemDC, 0, 0, 1800, 900,WHITENESS);
 
-    wstring text = L"FPS: " + to_wstring(TIMER->GetFPS());
+    wstring text = L"FPS:" + to_wstring(TIMER->GetFPS());
     TextOut(g_MemDC, 0, 0, text.c_str(), text.size());
-    wstring text2 = L"Click LButton to Shoot, R to reload";
-    TextOut(g_MemDC, 0, 20, text2.c_str(), text2.size());
-    wstring text3 = L"Press WASD to Move";
-    TextOut(g_MemDC, 0, 40, text3.c_str(), text3.size());
-    wstring text4 = L"Ammo : " + to_wstring(ammo_count);
-    TextOut(g_MemDC, 0, 60, text4.c_str(), text4.size());
+
 
     Sun.Render();
 
-    for (int i = 0; i < 20; i++)
-    {
-        bullet[i].Render();
-    }
 
     //고속 복사 g_MemDC에서 g_hdc로
     BitBlt(g_hdc, 0, 0, 1800, 900,
