@@ -27,7 +27,7 @@ void MainGame::Init()
 
     Cam->x = 900.0f;
     Cam->w = 900.0f;
-    Cam2->x = 900.0f;
+    Cam2->w = 900.0f;
 
     //
     Sun.position.x = 0.0f;
@@ -90,6 +90,7 @@ void MainGame::Update()
     Sun.rotation.y += 60.0f * TORADIAN * DELTA;
 
     Cam->Update();
+    Cam2->Update();
     Sun.Update();
 
     InvalidateRect(g_hwnd, NULL, false);
