@@ -3,6 +3,8 @@ class Camera : public GameObject
 {
 public:
 	Matrix view,proj,viewport;
+	float fov;
+	float x, y, w, h;
 	Camera();
 	~Camera();
 	void Update() override;

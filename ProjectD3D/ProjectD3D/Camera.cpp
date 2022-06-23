@@ -2,9 +2,12 @@
 
 Camera::Camera()
 {
-    viewport = CreateViewport(0, 0, 1800.0f, 900.0f, 0.0f, 1.0f);
-    proj = Matrix::CreatePerspectiveFieldOfView(
-        60.0f*TORADIAN, 1800.0f / 900.0f, 0.001f, 1000.0f);
+   
+    x = 0.0f;
+    y = 0.0f;
+    w = 1800.0f;
+    h = 900.0f;
+    fov = 60.0f * TORADIAN;
 }
 
 Camera::~Camera()
@@ -14,7 +17,13 @@ Camera::~Camera()
 void Camera::Update()
 {
     GameObject::Update();
-    view = RT.Invert();
+    
+    viewport = CreateViewport(x, y, w, h, 0.0f, 1.0f);
+    proj = Matrix::CreatePerspectiveFieldOfView(
+        fov, 1800.0f / 900.0f, 0.001f, 1000.0f);
+
+    view = RT.Invert(); // ¿ªÇà·Ä
+
 }
 
 Matrix Camera::CreateViewport(float x, float y, float w, float h, float minz, float maxz)

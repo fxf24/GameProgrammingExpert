@@ -4,7 +4,7 @@ ObRect::ObRect()
 {
     vertex[0] = Vector3(-0.5f, -0.5f,0.0f);
     vertex[1] = Vector3(-0.5f, 0.5f ,0.0f);
-    vertex[2] = Vector3(0.5f, 0.5f  ,0.0f) ;
+    vertex[2] = Vector3(0.5f, 0.5f  ,0.0f);
     vertex[3] = Vector3(0.5f, -0.5f ,0.0f);
 }
 

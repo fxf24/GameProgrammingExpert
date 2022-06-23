@@ -18,10 +18,16 @@ void MainGame::Init()
     ReleaseDC(g_hwnd, hdc);
 
     Cam = new Camera();
+    Cam2 = new Camera();
     GameObject::cam = Cam;
 
     Cam->position = Vector3(0.0f, 0.0f, -10.0f);
+    Cam2->position = Vector3(0.0f, 0.0f, 10.0f);
+    Cam2->rotation.y = 3.14f;
 
+    Cam->x = 900.0f;
+    Cam->w = 900.0f;
+    Cam2->x = 900.0f;
 
     //
     Sun.position.x = 0.0f;
@@ -54,9 +60,32 @@ MainGame::~MainGame()
 
 void MainGame::Update()
 {
-    if (INPUT->KeyPress(VK_LEFT))
+    if (INPUT->KeyPress('1'))
     {
-        Cam->position += Vector3(-1.0f,0.0f,0.0f) * 100.0f * DELTA;
+        Cam->fov += 3.14f * DELTA;
+    }
+    if (INPUT->KeyPress('2'))
+    {
+        Cam->fov -= 3.14f * DELTA;
+    }
+
+
+    if (INPUT->KeyPress('A'))
+    {
+        Cam->position += -Cam->GetRight() * 100.0f * DELTA;
+    }
+    if (INPUT->KeyPress('D'))
+    {
+        Cam->position += Cam->GetRight() * 100.0f * DELTA;
+    }
+
+    if (INPUT->KeyPress('W'))
+    {
+        Cam->position += Cam->GetForward() * 100.0f * DELTA;
+    }
+    if (INPUT->KeyPress('S'))
+    {
+        Cam->position += -Cam->GetForward() * 100.0f * DELTA;
     }
     Sun.rotation.y += 60.0f * TORADIAN * DELTA;
 
@@ -77,9 +106,10 @@ void MainGame::Render()
     wstring text = L"FPS:" + to_wstring(TIMER->GetFPS());
     TextOut(g_MemDC, 0, 0, text.c_str(), text.size());
 
-
+    GameObject::cam = Cam;
     Sun.Render();
-
+    GameObject::cam = Cam2;
+    Sun.Render();
 
     //고속 복사 g_MemDC에서 g_hdc로
     BitBlt(g_hdc, 0, 0, 1800, 900,
