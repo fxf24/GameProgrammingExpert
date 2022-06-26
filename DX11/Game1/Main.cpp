@@ -13,47 +13,71 @@ Main::~Main()
 
 void Main::Init()
 {
-    for (int i = 0; i < 2; i++)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            int idx = 2 * i + j;
-            Cam[idx] = new Camera();
-            Cam[idx]->x = 900.0f * j;
-            Cam[idx]->y = 450.0f * i;
-            Cam[idx]->w = 900.0f;
-            Cam[idx]->h = 450.0f;
-        }
-    }
-    
-    Cam[0]->position = Vector3(0.0f, 0.0f, -10.0f);
-    Cam[1]->position = Vector3(0.0f, 0.0f, 10.0f);
-    Cam[1]->rotation.y = 3.14f;
+    Cam = new Camera();
 
-    Cam[2]->position = Vector3(0.0f, 0.0f, 10.0f);
-    Cam[2]->rotation.y = 3.14f;
-    Cam[3]->position = Vector3(0.0f, 0.0f, -10.0f);
+    Cam->x = 0;
+    Cam->y = 0;
+
+    Cam->w = 1800.0f;
+    Cam->h = 900.0f;
+
+    Cam->position = Vector3(0.0f, 0.0f, -10.0f);
 
     Sun.position.x = 0.0f;
     Sun.position.y = 0.0f;
+    Sun.position.z = -0.5f;
+
 
     Sun.scale.x = 1.0f;
     Sun.scale.y = 1.0f;
 
-    for (int i = 0; i < 5; i++)
-    {
-        Sun.children.push_back(&SunBone[i]);
-        SunBone[i].parent = &Sun;
 
-        SunBone[i].children.push_back(&Planet[i]);
-        Planet[i].parent = &SunBone[i];
+    Planet[0].position.x = -0.5f;
+    Planet[0].position.y = 0.0f;
+    Planet[0].position.z = 0.0f;
+    
 
-        Planet[i].position.x = 2.0f * (i + 1);
-        Planet[i].position.y = 2.0f * (i + 1);
+    Planet[0].scale.x = 1.0f;
+    Planet[0].scale.y = 1.0f;
 
-        Planet[i].scale.x = 1.0f;
-        Planet[i].scale.y = 1.0f;
-    }
+    Planet[0].rotation.y = 90.0f * TORADIAN;
+
+    Planet[1].position.x = 0.5f;
+    Planet[1].position.y = 0.0f;
+    Planet[1].position.z = 0.0f;
+           
+    Planet[1].scale.x = 1.0f;
+    Planet[1].scale.y = 1.0f;
+           
+    Planet[1].rotation.y = -90.0f * TORADIAN;
+
+    Planet[2].position.x = 0.0f;
+    Planet[2].position.y = 0.0f;
+    Planet[2].position.z = 0.5f;
+           
+    Planet[2].scale.x = 1.0f;
+    Planet[2].scale.y = 1.0f;
+           
+    Planet[2].rotation.y = -180.0f * TORADIAN;
+
+    Planet[3].position.x = 0.0f;
+    Planet[3].position.y = -0.5f;
+    Planet[3].position.z = 0.0f;
+           
+    Planet[3].scale.x = 1.0f;
+    Planet[3].scale.y = 1.0f;
+           
+    Planet[3].rotation.x = -90.0f * TORADIAN;
+
+    Planet[4].position.x = 0.0f;
+    Planet[4].position.y = 0.5f;
+    Planet[4].position.z = 0.0f;
+           
+    Planet[4].scale.x = 1.0f;
+    Planet[4].scale.y = 1.0f;
+           
+    Planet[4].rotation.x = 90.0f * TORADIAN;
+
 }
 
 void Main::Release()
@@ -64,7 +88,7 @@ void Main::Release()
 
 void Main::Update()
 {
-    /*if (INPUT->KeyPress('1'))
+    if (INPUT->KeyPress('1'))
     {
         Cam->fov += 3.14f * DELTA;
     }
@@ -75,27 +99,50 @@ void Main::Update()
 
     if (INPUT->KeyPress('A'))
     {
-        Cam->position += -Cam->GetRight() * 100.0f * DELTA;
+        Cam->position += -Cam->GetRight() * 10.0f * DELTA;
     }
     if (INPUT->KeyPress('D'))
     {
-        Cam->position += Cam->GetRight() * 100.0f * DELTA;
+        Cam->position += Cam->GetRight() * 10.0f * DELTA;
     }
     if (INPUT->KeyPress('W'))
     {
-        Cam->position += Cam->GetForward() * 100.0f * DELTA;
+        Cam->position += Cam->GetUp() * 10.0f * DELTA;
     }
     if (INPUT->KeyPress('S'))
     {
-        Cam->position += -Cam->GetForward() * 100.0f * DELTA;
-    }*/
-    Sun.rotation.y += 60.0f * TORADIAN * DELTA;
-
-    for (int i = 0; i < 4; i++)
-    {
-        Cam[i]->Update();
+        Cam->position += -Cam->GetUp() * 10.0f * DELTA;
     }
-    
+    if (INPUT->KeyPress('Q'))
+    {
+        Cam->position += Cam->GetForward() * 10.0f * DELTA;
+    }
+    if (INPUT->KeyPress('E'))
+    {
+        Cam->position += -Cam->GetForward() * 10.0f * DELTA;
+    }
+    if (INPUT->KeyPress('I'))
+    {
+        Cam->rotation.x -= 1.0f * DELTA;
+    }
+    if (INPUT->KeyPress('K'))
+    {
+        Cam->rotation.x += 1.0f * DELTA;
+    }
+    if (INPUT->KeyPress('J'))
+    {
+        Cam->rotation.y -= 1.0f * DELTA;
+    }
+    if (INPUT->KeyPress('L'))
+    {
+        Cam->rotation.y += 1.0f * DELTA;
+    }
+
+    Cam->Update();
+    for (int i = 0; i < 5; i++)
+    {
+        Planet[i].Update();
+    }
     Sun.Update();
 }
 
@@ -105,11 +152,12 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
-    for (int i = 0; i < 4; i++)
+    Cam->Set();
+    for (int i = 0; i < 5; i++)
     {
-        Cam[i]->Set();
-        Sun.Render();
+        Planet[i].Render();
     }
+    Sun.Render();
 }
 
 void Main::ResizeScreen()

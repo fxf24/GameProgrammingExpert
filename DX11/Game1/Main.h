@@ -4,10 +4,10 @@
 class Main : public Scene
 {
 private:
-	Camera*		Cam[4];
+	Camera*		Cam;
 	
 	ObRect		Sun;
-	ObRect		SunBone[5];
+	ObRect		SunBone[4];
 	ObRect		Planet[5];
 public:
 	Main();
