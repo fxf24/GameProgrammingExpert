@@ -123,19 +123,19 @@ void Main::Update()
     }
     if (INPUT->KeyPress('I'))
     {
-        Cam->rotation.x -= 1.0f * DELTA;
+        Cam->rotation.x -= 2.0f * DELTA;
     }
     if (INPUT->KeyPress('K'))
     {
-        Cam->rotation.x += 1.0f * DELTA;
+        Cam->rotation.x += 2.0f * DELTA;
     }
     if (INPUT->KeyPress('J'))
     {
-        Cam->rotation.y -= 1.0f * DELTA;
+        Cam->rotation.y -= 2.0f * DELTA;
     }
     if (INPUT->KeyPress('L'))
     {
-        Cam->rotation.y += 1.0f * DELTA;
+        Cam->rotation.y += 2.0f * DELTA;
     }
 
     Cam->Update();
