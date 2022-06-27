@@ -18,6 +18,10 @@ GameObject::GameObject()
 	visible = true;
 
 	shader = nullptr;
+	shader = new Shader();
+	shader->LoadFile("0.Exam.hlsl", VertexType::P);
+	mesh = new Mesh();
+	mesh->LoadFile("0.Rect.mesh");
 }
 
 void GameObject::Update()
@@ -51,6 +55,20 @@ void GameObject::Render()
 	D3D->GetDC()->Map(WBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	memcpy_s(mappedResource.pData, sizeof(Matrix), &TW, sizeof(Matrix));
 	D3D->GetDC()->Unmap(WBuffer, 0);
+	
+	if (visible)
+	{
+		//GameObject::Render();
+		shader->Set();
+		mesh->Set();
+		D3D->GetDC()->DrawIndexed(4, 0,0);
+	}
+
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children[i]->Render();
+	}
 }
 
 ID3D11Buffer* GameObject::WBuffer = nullptr;

@@ -47,6 +47,11 @@ using namespace SimpleMath;
 #include "../Libs/ImGui/ImGuiFileDialog.h"
 #include "../Libs/ImGui/ImGuiFileDialogConfig.h"
 
+//File
+#include "BinaryFile.h"
+#include "Xml.h"
+
+
 //Macro(Pascal)
 #define Check(hr)			{ assert(SUCCEEDED(hr)); }
 #define SafeRelease(p)		{ if(p){ (p)->Release(); (p) = nullptr; } }
@@ -74,8 +79,9 @@ extern Application App;//Extern Global
 
 #include "VertexType.h"
 #include "Shader.h"
+#include "Mesh.h"
+
 #include "GameObject.h"
-#include "ObRect.h"
 #include "Camera.h"
 
 #include "Util.h"

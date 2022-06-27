@@ -21,10 +21,10 @@ PixelInput VS(VertexInput input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
-    if (input.Position.x < 900)
-    {
-        return float4(1, 0, 0, 1);
-    }
+    //if (input.Position.x <400)
+    //{
+    //    return float4(1, 0, 0, 1);
+    //}
 
     return float4(0, 0, 0, 1);
 }

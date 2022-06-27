@@ -29,9 +29,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="ObRect.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>GameObject\Member</Filter>
     </ClInclude>
@@ -40,6 +37,15 @@
     </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryFile.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>GameObject\Member</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +57,9 @@
     </Filter>
     <Filter Include="GameObject\Member">
       <UniqueIdentifier>{09dc338e-ffeb-4250-8eb8-8d54dd34faf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{7c96a0eb-73ac-4004-9e3f-7512dbe02f2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +87,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="ObRect.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>GameObject\Member</Filter>
     </ClCompile>
@@ -89,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryFile.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>GameObject\Member</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

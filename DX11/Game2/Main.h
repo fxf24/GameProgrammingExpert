@@ -4,6 +4,8 @@ class Main : public Scene
 private:
 
 public:
+	Main();
+	~Main();
 	virtual void Init() override;
 	virtual void Release() override; //«ÿ¡¶
 	virtual void Update() override;

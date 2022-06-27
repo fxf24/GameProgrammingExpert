@@ -4,11 +4,10 @@
 class Main : public Scene
 {
 private:
-	Camera*		Cam;
-	
-	ObRect		Sun;
-	ObRect		SunBone[4];
-	ObRect		Planet[5];
+	Camera*			Cam[4];
+	GameObject		Sun;
+	GameObject		SunBone[5];
+	GameObject		Planet[5];
 public:
 	Main();
 	~Main();

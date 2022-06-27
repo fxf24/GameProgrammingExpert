@@ -9,6 +9,7 @@ public:
 	GameObject*			parent;
 	vector<GameObject*> children;
 	Shader*				shader;
+	Mesh*				mesh;
 
 	Matrix		S, R, T, RT, W;
 
