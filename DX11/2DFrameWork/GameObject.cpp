@@ -21,7 +21,7 @@ GameObject::GameObject()
 	shader = new Shader();
 	shader->LoadFile("0.Exam.hlsl", VertexType::P);
 	mesh = new Mesh();
-	mesh->LoadFile("0.Rect.mesh");
+	mesh->LoadFile("0.Cube.mesh");
 }
 
 void GameObject::Update()
@@ -61,7 +61,7 @@ void GameObject::Render()
 		//GameObject::Render();
 		shader->Set();
 		mesh->Set();
-		D3D->GetDC()->DrawIndexed(4, 0,0);
+		D3D->GetDC()->DrawIndexed(14, 0,0);
 	}
 
 

@@ -6,74 +6,102 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    //vertexType = VertexType::P;
-    //primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+    vertexType = VertexType::P;
+    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 
 
-    //VertexP* Vertex;
-    //byteWidth = sizeof(VertexP);
-    //file = "0.Rect2.mesh";
+    VertexP* Vertex;
+    byteWidth = sizeof(VertexP);
+    file = "0.Cube.mesh";
 
-    //vertexCount = 4;
-    //indexCount = 4;
+    vertexCount = 8;
+    indexCount = 14;
 
-    //Vertex = new VertexP[vertexCount];
-    //indices = new UINT[indexCount];
+    Vertex = new VertexP[vertexCount];
+    indices = new UINT[indexCount];
 
-    //Vertex[0].position.x = -0.7f;
-    //Vertex[0].position.y = -0.7f;
-    //Vertex[0].position.z = 0.0f;
+    Vertex[0].position.x = -0.5f;
+    Vertex[0].position.y = -0.5f;
+    Vertex[0].position.z = 0.5f;
 
-    //Vertex[1].position.x = -0.7f;
-    //Vertex[1].position.y = 0.7f;
-    //Vertex[1].position.z = 0.0f;
+    Vertex[1].position.x = -0.5f;
+    Vertex[1].position.y = 0.5f;
+    Vertex[1].position.z = 0.5f;
 
-    //Vertex[2].position.x = 0.7f;
-    //Vertex[2].position.y = -0.7f;
-    //Vertex[2].position.z = 0.0f;
+    Vertex[2].position.x = 0.5f;
+    Vertex[2].position.y = -0.5f;
+    Vertex[2].position.z = 0.5f;
 
-    //Vertex[3].position.x = 0.7f;
-    //Vertex[3].position.y = 0.7f;
-    //Vertex[3].position.z = 0.0f;
+    Vertex[3].position.x = 0.5f;
+    Vertex[3].position.y = 0.5f;
+    Vertex[3].position.z = 0.5f;
 
-    //indices[0] = 0;
-    //indices[1] = 1;
-    //indices[2] = 2;
-    //indices[3] = 3;
+    Vertex[4].position.x = -0.5f;
+    Vertex[4].position.y = -0.5f;
+    Vertex[4].position.z = -0.5f;
 
+    Vertex[5].position.x = -0.5f;
+    Vertex[5].position.y = 0.5f;
+    Vertex[5].position.z = -0.5f;
 
-    /////////////////////////////////////////////////////
-    //vertices = (void*)Vertex;
-    ////CreateVertexBuffer
-    //{
-    //    D3D11_BUFFER_DESC desc;
-    //    desc = { 0 };
-    //    desc.Usage = D3D11_USAGE_DEFAULT;
-    //    desc.ByteWidth = byteWidth * vertexCount;
-    //    desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    Vertex[6].position.x = 0.5f;
+    Vertex[6].position.y = -0.5f;
+    Vertex[6].position.z = -0.5f;
 
-    //    D3D11_SUBRESOURCE_DATA data = { 0 };
-    //    data.pSysMem = vertices;
+    Vertex[7].position.x = 0.5f;
+    Vertex[7].position.y = 0.5f;
+    Vertex[7].position.z = -0.5f;
 
-    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
-    //    assert(SUCCEEDED(hr));
-    //}
+    indices[0] = 0;
+    indices[1] = 1;
+    indices[2] = 2;
+    indices[3] = 3;
+    indices[4] = 7;
+    indices[5] = 1;
 
-    ////Create Index Buffer
-    //{
-    //    D3D11_BUFFER_DESC desc;
-    //    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-    //    desc.ByteWidth = sizeof(UINT) * indexCount;
-    //    desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    indices[6] = 5;
+    indices[7] = 0;
+    indices[8] = 4;
+    indices[9] = 2;
+    indices[10] = 6;
+    indices[11] = 7;
 
-    //    D3D11_SUBRESOURCE_DATA data = { 0 };
-    //    data.pSysMem = indices;
+    indices[12] = 4;
+    indices[13] = 5;
+    
 
-    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
-    //    assert(SUCCEEDED(hr));
-    //}
-    ////저장용
-    //SaveFile(file);
+    ///////////////////////////////////////////////////
+    vertices = (void*)Vertex;
+    //CreateVertexBuffer
+    {
+        D3D11_BUFFER_DESC desc;
+        desc = { 0 };
+        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.ByteWidth = byteWidth * vertexCount;
+        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = vertices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+
+    //Create Index Buffer
+    {
+        D3D11_BUFFER_DESC desc;
+        ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+        desc.ByteWidth = sizeof(UINT) * indexCount;
+        desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = indices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+    //저장용
+    SaveFile(file);
 }
 
 
