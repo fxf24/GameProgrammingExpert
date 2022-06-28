@@ -6,7 +6,7 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    vertexType = VertexType::P;
+    /*vertexType = VertexType::P;
     primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 
 
@@ -67,10 +67,149 @@ Mesh::Mesh()
     indices[11] = 7;
 
     indices[12] = 4;
-    indices[13] = 5;
+    indices[13] = 5;*/
     
 
     ///////////////////////////////////////////////////
+
+    vertexType = VertexType::PC;
+    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+
+
+    VertexPC* Vertex;
+    byteWidth = sizeof(VertexPC);
+    file = "1.Circle.mesh";
+    vertexCount = 360;
+    indexCount = 360 * 2;
+    //3*2*3 ¿« ¿Œµ¶Ω∫
+    Vertex = new VertexPC[vertexCount];
+    indices = new UINT[indexCount];
+
+    for (int i = 0; i < 360; i++)
+    {
+        Vertex[i].position = Vector3(cosf(i * TORADIAN), sinf(i * TORADIAN), 0);
+        Vertex[i].color = Color(0, 1, 0);
+        indices[i * 2] = i;
+        indices[i * 2 + 1] = (i + 1) % 360;
+    }
+
+    //0,1,2,3 (ª°∞£ªˆ)
+    //Vertex[0].position = Vector3(-1, -1, -1);
+    //Vertex[0].color = Color(1, 0, 0);
+    //Vertex[1].position = Vector3(-1, 1, -1);
+    //Vertex[1].color = Color(1, 0, 0);
+    //Vertex[2].position = Vector3(1, 1, -1);
+    //Vertex[2].color = Color(1, 0, 0);
+    //Vertex[3].position = Vector3(1, -1, -1);
+    //Vertex[3].color = Color(1, 0, 0);
+
+
+    ////ª°∞£ªˆ∏È
+    //indices[0] = 0;
+    //indices[1] = 1;
+    //indices[2] = 2;
+
+    //indices[3] = 2;
+    //indices[4] = 3;
+    //indices[5] = 0;
+
+    ////4,5,6,7 (≥Ïªˆ)
+    //Vertex[4].position = Vector3(1, -1, -1);
+    //Vertex[4].color = Color(0, 1, 0);
+    //Vertex[5].position = Vector3(1, 1, -1);
+    //Vertex[5].color = Color(0, 1, 0);
+    //Vertex[6].position = Vector3(1, 1, 1);
+    //Vertex[6].color = Color(0, 1, 0);
+    //Vertex[7].position = Vector3(1, -1, 1);
+    //Vertex[7].color = Color(0, 1, 0);
+
+    //indices[6] = 4;
+    //indices[7] = 5;
+    //indices[8] = 6;
+
+    //indices[9] = 6;
+    //indices[10] = 7;
+    //indices[11] = 4;
+
+    ////8,9,10,11 (∆ƒ∂ıªˆ)
+    //Vertex[8].position = Vector3(-1, 1, -1);
+    //Vertex[8].color = Color(0, 0, 1);
+    //Vertex[9].position = Vector3(-1, 1, 1);
+    //Vertex[9].color = Color(0, 0, 1);
+    //Vertex[10].position = Vector3(1, 1, 1);
+    //Vertex[10].color = Color(0, 0, 1);
+    //Vertex[11].position = Vector3(1, 1, -1);
+    //Vertex[11].color = Color(0, 0, 1);
+
+    //indices[0 + 12] = 8;
+    //indices[1 + 12] = 9;
+    //indices[2 + 12] = 10;
+
+    //indices[3 + 12] = 10;
+    //indices[4 + 12] = 11;
+    //indices[5 + 12] = 8;
+
+    ////12,13,14,15 (≥Î∂ıªˆ)
+    //Vertex[12].position = Vector3(-1, -1, -1);
+    //Vertex[12].color = Color(1, 1, 0);
+    //Vertex[13].position = Vector3(-1, -1, 1);
+    //Vertex[13].color = Color(1, 1, 0);
+    //Vertex[14].position = Vector3(1, -1, 1);
+    //Vertex[14].color = Color(1, 1, 0);
+    //Vertex[15].position = Vector3(1, -1, -1);
+    //Vertex[15].color = Color(1, 1, 0);
+
+
+    ////≥Î∂ıªˆ
+    //indices[18] = 13;
+    //indices[19] = 12;
+    //indices[20] = 14;
+
+    //indices[21] = 15;
+    //indices[22] = 14;
+    //indices[23] = 12;
+
+    ////16,17,18,19 (∫–»´ªˆ)
+    //Vertex[16].position = Vector3(-1, -1, 1);
+    //Vertex[16].color = Color(1, 0, 1);
+    //Vertex[17].position = Vector3(-1, 1, 1);
+    //Vertex[17].color = Color(1, 0, 1);
+    //Vertex[18].position = Vector3(1, 1, 1);
+    //Vertex[18].color = Color(1, 0, 1);
+    //Vertex[19].position = Vector3(1, -1, 1);
+    //Vertex[19].color = Color(1, 0, 1);
+
+
+    ////∫–»´ªˆ∏È
+    //indices[24] = 17;
+    //indices[25] = 16;
+    //indices[26] = 18;
+
+    //indices[27] = 19;
+    //indices[28] = 18;
+    //indices[29] = 16;
+
+    ////20,21,22,23 («œ¥√ªˆ)
+    //Vertex[20].position = Vector3(-1, -1, -1);
+    //Vertex[20].color = Color(0, 1, 1);
+    //Vertex[21].position = Vector3(-1, 1, -1);
+    //Vertex[21].color = Color(0, 1, 1);
+    //Vertex[22].position = Vector3(-1, 1, 1);
+    //Vertex[22].color = Color(0, 1, 1);
+    //Vertex[23].position = Vector3(-1, -1, 1);
+    //Vertex[23].color = Color(0, 1, 1);
+
+
+    ////«œ¥√ªˆ∏È
+    //indices[30] = 21;
+    //indices[31] = 20;
+    //indices[32] = 22;
+
+    //indices[33] = 23;
+    //indices[34] = 22;
+    //indices[35] = 20;
+
+
     vertices = (void*)Vertex;
     //CreateVertexBuffer
     {

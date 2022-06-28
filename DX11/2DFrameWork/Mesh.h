@@ -7,9 +7,9 @@ class Mesh
     //기준점에서부터의 좌표(상대좌표) x,y,z,w
     //색
     //텍스처 좌표 (uv)
+    friend class GameObject;
 
-
-public:
+private:
     ID3D11Buffer*           vertexBuffer;
     ID3D11Buffer*           indexBuffer;
     string                  file;
@@ -22,6 +22,7 @@ public:
     void*                   vertices;
     UINT*                   indices;
 
+public:
     Mesh();
     ~Mesh();
 

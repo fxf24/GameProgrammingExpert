@@ -25,6 +25,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{D881706F-2917-4F53-966D-A8261B151841}"
 	ProjectSection(SolutionItems) = preProject
 		Shaders\0.Exam.hlsl = Shaders\0.Exam.hlsl
+		Shaders\1.Cube.hlsl = Shaders\1.Cube.hlsl
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 	EndProjectSection
 EndProject
