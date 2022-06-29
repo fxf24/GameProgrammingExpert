@@ -21,7 +21,8 @@ GameObject::GameObject()
 	shader = new Shader();
 	shader->LoadFile("1.Cube.hlsl", VertexType::PC);
 	mesh = new Mesh();
-	//mesh->LoadFile("1.Cube.mesh");
+	//cout << "in" << endl;
+	mesh->LoadFile("1.Sphere.mesh");
 }
 
 void GameObject::Update()
