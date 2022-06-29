@@ -21,7 +21,6 @@ private:
     UINT                    indexCount;
     void*                   vertices;
     UINT*                   indices;
-
 public:
     Mesh();
     ~Mesh();

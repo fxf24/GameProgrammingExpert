@@ -31,7 +31,7 @@ void Main::Init()
     Cam[3]->rotation.y = 3.14f;
 
     Cam[0]->position = Vector3(0.0f, 0.0f, -7.0f);
-    //Cam[0]->rotation.z = 3.14f;
+    Cam[0]->rotation.z = 3.14f;
 
     Cam[1]->position = Vector3(0.0f, 0.0f, 7.0f);
     Cam[1]->rotation.z = 3.14f;
@@ -44,6 +44,11 @@ void Main::Init()
     Sun.scale.x = 1.0f;
     Sun.scale.y = 1.0f;
 
+    shared_ptr<Mesh> mesh = make_shared<Mesh>();
+    mesh->LoadFile("1.Sphere.mesh");
+    Sun.mesh = mesh;
+    //Sun.mesh.reset();
+    //Sun.mesh = nullptr;
     for (int i = 0; i < 5; i++)
     {
         Sun.children.push_back(&SunBone[i]);
@@ -57,7 +62,12 @@ void Main::Init()
 
         Planet[i].scale.x = 1.0f;
         Planet[i].scale.y = 1.0f;
+        Planet[i].mesh = mesh;
     }
+    //mesh = nullptr;
+    cout << mesh.use_count() << endl;
+    mesh.reset();
+    
 }
 
 void Main::Release()
@@ -68,56 +78,31 @@ void Main::Release()
 
 void Main::Update()
 {
-    if (INPUT->KeyPress('1'))
+    /*if (INPUT->KeyPress('1'))
     {
-        Cam[0]->fov += 3.14f * DELTA;
+        Cam->fov += 3.14f * DELTA;
     }
     if (INPUT->KeyPress('2'))
     {
-        Cam[0]->fov -= 3.14f * DELTA;
+        Cam->fov -= 3.14f * DELTA;
     }
 
     if (INPUT->KeyPress('A'))
     {
-        Cam[0]->position += -Cam[0]->GetRight() * 100.0f * DELTA;
+        Cam->position += -Cam->GetRight() * 100.0f * DELTA;
     }
     if (INPUT->KeyPress('D'))
     {
-        Cam[0]->position += Cam[0]->GetRight() * 100.0f * DELTA;
+        Cam->position += Cam->GetRight() * 100.0f * DELTA;
     }
     if (INPUT->KeyPress('W'))
     {
-        Cam[0]->position += Cam[0]->GetForward() * 100.0f * DELTA;
+        Cam->position += Cam->GetForward() * 100.0f * DELTA;
     }
     if (INPUT->KeyPress('S'))
     {
-        Cam[0]->position += -Cam[0]->GetForward() * 100.0f * DELTA;
-    }
-
-    if (INPUT->KeyPress('Q'))
-    {
-        Cam[0]->position += Cam[0]->GetForward() * 10.0f * DELTA;
-    }
-    if (INPUT->KeyPress('E'))
-    {
-        Cam[0]->position += -Cam[0]->GetForward() * 10.0f * DELTA;
-    }
-    if (INPUT->KeyPress('I'))
-    {
-        Cam[0]->rotation.x -= 2.0f * DELTA;
-    }
-    if (INPUT->KeyPress('K'))
-    {
-        Cam[0]->rotation.x += 2.0f * DELTA;
-    }
-    if (INPUT->KeyPress('J'))
-    {
-        Cam[0]->rotation.y -= 2.0f * DELTA;
-    }
-    if (INPUT->KeyPress('L'))
-    {
-        Cam[0]->rotation.y += 2.0f * DELTA;
-    }
+        Cam->position += -Cam->GetForward() * 100.0f * DELTA;
+    }*/
     Sun.rotation.y += 60.0f * TORADIAN * DELTA;
 
     for (int i = 0; i < 4; i++)

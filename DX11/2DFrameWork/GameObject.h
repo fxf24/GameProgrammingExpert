@@ -9,7 +9,7 @@ public:
 	GameObject*			parent;
 	vector<GameObject*> children;
 	Shader*				shader;
-	Mesh*				mesh;
+	shared_ptr<Mesh>	mesh;
 
 	Matrix		S, R, T, RT, W;
 
@@ -18,7 +18,7 @@ public:
 	static ID3D11Buffer* WBuffer;
 
 	GameObject();
-	virtual ~GameObject() {};
+	virtual ~GameObject();
 
 	virtual void Update();
 	virtual void Render();

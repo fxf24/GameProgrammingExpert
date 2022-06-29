@@ -10,13 +10,12 @@ private:
 	//Create함수로 생성된 주소를 받아온다
 	ID3D11Device*						device;			//버퍼생성
 	ID3D11DeviceContext*				deviceContext;	//렌더링파이프라인 바인딩,드로우콜
-	IDXGISwapChain*						swapChain;		//백버퍼(더블 버퍼링, 수직 동기화)
+	IDXGISwapChain*						swapChain;		//백버퍼(더블버퍼링,수직동기화)
 	ID3D11Texture2D*					backBuffer;
 	ID3D11RenderTargetView*				renderTargetView;
 	ID3D11DepthStencilView*				depthStencilView;
-	
-	ID3D11BlendState*					blendState;
 
+	ID3D11BlendState*					blendState;
 	vector<struct D3DEnumAdapterInfo*>	adapterInfos;
 	UINT								numerator;
 	UINT								denominator;
