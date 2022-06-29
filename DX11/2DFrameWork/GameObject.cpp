@@ -20,9 +20,14 @@ GameObject::GameObject()
 	shader = nullptr;
 	shader = new Shader();
 	shader->LoadFile("1.Cube.hlsl", VertexType::PC);
-	mesh = new Mesh();
-	//cout << "in" << endl;
-	mesh->LoadFile("1.Sphere.mesh");
+	mesh = nullptr;
+	//mesh = new Mesh();
+	//mesh->LoadFile("0.Rect.mesh");
+}
+
+GameObject::~GameObject()
+{
+	SafeReset(mesh);
 }
 
 void GameObject::Update()
@@ -64,7 +69,7 @@ void GameObject::Render()
 		if (mesh)
 		{
 			mesh->Set();
-			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0,0);
+			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0, 0);
 		}
 	}
 

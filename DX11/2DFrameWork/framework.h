@@ -57,6 +57,7 @@ using namespace SimpleMath;
 #define SafeRelease(p)		{ if(p){ (p)->Release(); (p) = nullptr; } }
 #define SafeDelete(p)		{ if(p){ delete (p); (p) = nullptr; } }
 #define SafeDeleteArray(p)	{ if(p){ delete[] (p); (p) = nullptr; } }
+#define SafeReset(p)		{ if(p){ (p).reset(); (p) = nullptr; } }
 //Macro(WINAPI Style)
 #define	TORADIAN			0.0174532f
 #define	PI					3.1415926f	//180
@@ -82,6 +83,7 @@ extern Application App;//Extern Global
 #include "Mesh.h"
 
 #include "GameObject.h"
+//#include "ObRect.h"
 #include "Camera.h"
 
 #include "Util.h"

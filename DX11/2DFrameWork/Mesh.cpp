@@ -6,62 +6,132 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    
-
-    //vertexType = VertexType::PC;
-    //primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+    vertexType = VertexType::PC;
+    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 
-    //VertexPC* Vertex;
-    //byteWidth = sizeof(VertexPC);
-    //file = "1.Sphere.mesh";
-    //vertexCount = 180 * 9;
-    //indexCount = 180 * 2 * 9;
-    ////3*2*3 의 인덱스
-    //Vertex = new VertexPC[vertexCount];
-    //indices = new UINT[indexCount];
+    VertexPC* Vertex;
+    byteWidth = sizeof(VertexPC);
+    vertexCount = 360;
+    indexCount = 360*2;
+    file = "1.Circle.mesh";
 
-    //for (int i = 0; i < 9; i++)
-    //{
-    //    for (int j = 0; j < 180; j++)
-    //    {
-    //        Vertex[i * 180 + j].position = Vector3(sinf((i * 20) * TORADIAN) * sinf((j * 2) * TORADIAN), cosf((i * 20) * TORADIAN), sinf((i * 20) * TORADIAN) * cosf((j * 2) * TORADIAN));
-    //        Vertex[i * 180 + j].color = Color(0, 0, 1);
-    //        indices[i * 180 * 2 + j * 2] = i * 180 + j;
-    //        indices[i * 180 * 2 + j * 2 + 1] = (((i * 180 + j + 1) % ((i+1) * 180))? ((i * 180 + j + 1) % ((i + 1) * 180)) : i * 180);
-    //    }
-    //}
+    //xyz -1 ~ 1
+    //-> + 1 -> /2 ->
+    // 0 ~ 1
 
-    //vertices = (void*)Vertex;
-    ////CreateVertexBuffer
-    //{
-    //    D3D11_BUFFER_DESC desc;
-    //    desc = { 0 };
-    //    desc.Usage = D3D11_USAGE_DEFAULT;
-    //    desc.ByteWidth = byteWidth * vertexCount;
-    //    desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vector<VertexPC> v;
+    v.push_back(VertexPC(Vector3(0, 1, 0), Color(0.5f, 1.0f, 0.5f)));
 
-    //    D3D11_SUBRESOURCE_DATA data = { 0 };
-    //    data.pSysMem = vertices;
+    int stackCount = 36;
+    int sliceCount = 72;
+    float phiStep = PI / stackCount;
+    float thetaStep = 2.0f * PI / sliceCount;
 
-    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
-    //    assert(SUCCEEDED(hr));
-    //}
+    for (UINT i = 1; i <= stackCount - 1; i++)
+    {
+        float phi = i * phiStep;
 
-    ////Create Index Buffer
-    //{
-    //    D3D11_BUFFER_DESC desc;
-    //    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-    //    desc.ByteWidth = sizeof(UINT) * indexCount;
-    //    desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+        for (UINT j = 0; j <= sliceCount; j++)
+        {
+            float theta = j * thetaStep;
 
-    //    D3D11_SUBRESOURCE_DATA data = { 0 };
-    //    data.pSysMem = indices;
+            Vector3 p = Vector3
+            (
+                (sinf(phi) * cosf(theta)),
+                (cosf(phi)),
+                (sinf(phi) * sinf(theta))
+            );
+            Color c;
+            c.x = (p.x + 1.0f) / 2.0f;
+            c.y = (p.y + 1.0f) / 2.0f;
+            c.z = (p.z + 1.0f) / 2.0f;
+            v.push_back(VertexPC(p, c));
+        }
 
-    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
-    //    assert(SUCCEEDED(hr));
-    //}
-    ////저장용
+    }
+    v.push_back(VertexPC(Vector3(0, -1, 0), Color(0.5f, 0.0f, 0.5f)));
+
+    Vertex = new VertexPC[v.size()];
+    vertexCount = v.size();
+    copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPC*>(Vertex, vertexCount));
+
+    vector<UINT> vecindices;
+
+    for (UINT i = 1; i <= sliceCount; i++)
+    {
+        vecindices.push_back(0);
+        vecindices.push_back(i + 1);
+        vecindices.push_back(i);
+    }
+
+    UINT baseIndex = 1;
+    UINT ringVertexCount = sliceCount + 1;
+    for (UINT i = 0; i < stackCount - 2; i++)
+    {
+        for (UINT j = 0; j < sliceCount; j++)
+        {
+            vecindices.push_back(baseIndex + i * ringVertexCount + j);
+            vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
+            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
+
+            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
+            vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
+            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j + 1);
+        }
+    }
+
+    UINT southPoleIndex = v.size() - 1;
+    baseIndex = southPoleIndex - ringVertexCount;
+
+    for (UINT i = 0; i < sliceCount; i++)
+    {
+        vecindices.push_back(southPoleIndex);
+        vecindices.push_back(baseIndex + i);
+        vecindices.push_back(baseIndex + i + 1);
+    }
+
+    this->indices = new UINT[vecindices.size()];
+    indexCount = vecindices.size();
+    copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(this->indices, indexCount));
+
+
+
+
+  
+
+
+    /////////////////////////////////////////////////////
+    vertices = (void*)Vertex;
+    //CreateVertexBuffer
+    {
+        D3D11_BUFFER_DESC desc;
+        desc = { 0 };
+        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.ByteWidth = byteWidth * vertexCount;
+        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = vertices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+
+    //Create Index Buffer
+    {
+        D3D11_BUFFER_DESC desc;
+        ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+        desc.ByteWidth = sizeof(UINT) * indexCount;
+        desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = indices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+    //저장용
     //SaveFile(file);
 }
 
