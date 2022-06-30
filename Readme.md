@@ -40,7 +40,19 @@
 	* &&를 매개변수 값으로 갖는다.
 	* 메모리를 재할당 하지 않는다.
 	* 얕은복사 후 원본의 소유권을 이전하는 방식으로 객체를 생성
-### Tree
+### 스마트 포인터
+* unique_ptr
+	* 하나의 스마트 포인터만이 특정 객체를 소유할 수 있도록, 객체에 소유권 개념을 도입한 스마트 포인터입니다.
+* shared_ptr
+	* 하나의 특정 객체를 사용하는 스마트 포인터가 총 몇 개인지를 확인하는 스마트 포인터입니다.
+	* use_count()를 이용하여 몇개의 스마트포인터가 사용하고 있는지 확인 가능.
+	* reset()을 통해 해제할 수 있고, use_count()가 0 이되면 자동으로 메모리 해제.
+* weak_ptr
+	* 하나 이상의 shared_ptr 인스턴스가 소유하는 객체에 대한 접근을 제공하지만, 소유자의 수에는 포함되지 않는 스마트 포인터입니다.
+	* 서로가 상대방을 가리키는 shared_ptr을 가지고 있다면, use_count가 절대 0이 되지 않으므로 메모리는 영원히 해제되지 않는다. 순환 참조(circular reference)
+	* weak_ptr은 이러한 shared_ptr인스턴스 사이의 순환 참조를 제거하기 위해서 사용됩니다.
+
+## Tree
 * 전위 순회 (Preorder)
 	* Root -> Left -> Right 순으로 순회한다.
 	* ![](https://t1.daumcdn.net/cfile/tistory/999E283D5AE877F614)
@@ -135,7 +147,7 @@
 * World Space 는 Object를 공간 상에서 특정한 World로 이동 및 회전, Scale 된 좌표이다. 이는 Model Matrix로 변환이 이루어진다.
 * View(Camera) Space는 World 상에서 놓여진 Object를 그것을 바라보는 카메라의 시점으로 옮긴 공간이다. View Matrix의 곱하기 연산으로 이뤄진다.
 * Clip Space는 카메라의 Frustum 공간 밖, 즉 보여지는 공간 밖에 위치해 있어서 보여지지 않는 오브젝트를 걸러낸다. 그리고, 카메라의 뷰에 따라서 Perspective View, Orthogonal View를 적용한 상태로 만드는 변환 공간이다. 이 변환은 Projection Matrix 적용으로 이뤄진다.
-* Clip Space에서 NDC(Normalized Device Coordinate) 공간을 따로 분리하기도 하는데, 이는 디바이스에서 사용하기 위해 Normalized 된 형태의 좌표계로 변환 시키는 연산이다. Vertex 값을 Homogeneous Coordinate의 w값으로 나눈다. (x, y, z, w) -> (x/w, y/w, z/w, 1). 이 연산은 최적화를 위해서 Cliping이 일어난 후에 발생한다.
+* Clip Space에서 NDC(Normalized Device Coordinate) 공간을 따로 분리하기도 하는데, 이는 디바이스에서 사용하기 위순 Normalized 된 형태의 좌표계로 변환 시키는 연산이다. Vertex 값을 Homogeneous Coordinate의 w값으로 나눈다. (x, y, z, w) -> (x/w, y/w, z/w, 1). 이 연산은 최적화를 위해서 Cliping이 일어난 후에 발생한다.
 * Screen Space는 Clip Space의 좌표들을 Screen 좌표계, 즉 화면에 보이는 공간으로 이동시키는 변환이다. Viewport Transformation 연산으로 이뤄진다.
 
 ### View Transformation
