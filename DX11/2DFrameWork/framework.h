@@ -81,6 +81,7 @@ extern Application App;//Extern Global
 #include "VertexType.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "ResourceManager.h"
 
 #include "GameObject.h"
 //#include "ObRect.h"
@@ -96,3 +97,4 @@ extern Application App;//Extern Global
 #define TIMER		Timer::GetInstance()
 #define DELTA		Timer::GetInstance()->GetDeltaScaleTime()
 #define RANDOM		Random::GetInstance()
+#define RESOURCE	ResourceManager::GetInstance()

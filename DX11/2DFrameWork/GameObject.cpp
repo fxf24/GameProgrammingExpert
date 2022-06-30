@@ -17,12 +17,8 @@ GameObject::GameObject()
 	parent = nullptr;
 	visible = true;
 
-	shader = nullptr;
-	shader = new Shader();
-	shader->LoadFile("1.Cube.hlsl", VertexType::PC);
-	mesh = nullptr;
-	//mesh = new Mesh();
-	//mesh->LoadFile("0.Rect.mesh");
+	shader = RESOURCE->LoadShader("1.Cube.hlsl");
+	mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
 }
 
 GameObject::~GameObject()

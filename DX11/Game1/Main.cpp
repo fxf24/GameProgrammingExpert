@@ -13,6 +13,7 @@ Main::~Main()
 
 void Main::Init()
 {
+    App.fixFrame = 10000;
     for (int i = 0; i < 2; i++)
     {
         for (int j = 0; j < 2; j++)
@@ -44,9 +45,6 @@ void Main::Init()
     Sun.scale.x = 1.0f;
     Sun.scale.y = 1.0f;
 
-    shared_ptr<Mesh> mesh = make_shared<Mesh>();
-    mesh->LoadFile("1.Sphere.mesh");
-    Sun.mesh = mesh;
     //Sun.mesh.reset();
     //Sun.mesh = nullptr;
     for (int i = 0; i < 5; i++)
@@ -62,12 +60,8 @@ void Main::Init()
 
         Planet[i].scale.x = 1.0f;
         Planet[i].scale.y = 1.0f;
-        Planet[i].mesh = mesh;
     }
-    //mesh = nullptr;
-    cout << mesh.use_count() << endl;
-    mesh.reset();
-    
+    RESOURCE->ReleaseAll();
 }
 
 void Main::Release()
@@ -78,6 +72,8 @@ void Main::Release()
 
 void Main::Update()
 {
+    ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
+
     /*if (INPUT->KeyPress('1'))
     {
         Cam->fov += 3.14f * DELTA;

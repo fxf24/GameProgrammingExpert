@@ -178,7 +178,7 @@ void Direct3D11::SetRenderTarget(ID3D11RenderTargetView* rtv, ID3D11DepthStencil
 	if (dsv == nullptr)
 		dsv = depthStencilView;
 
-	deviceContext->OMSetRenderTargets(1, &rtv, nullptr);
+	deviceContext->OMSetRenderTargets(1, &rtv, dsv);
 	
 }
 

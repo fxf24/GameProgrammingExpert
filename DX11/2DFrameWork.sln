@@ -29,6 +29,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{D881
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{413B631D-52C2-492A-8CF7-45CDA72742DD}"
+	ProjectSection(SolutionItems) = preProject
+		Contents\Mesh\0.Cube.mesh = Contents\Mesh\0.Cube.mesh
+		Contents\Mesh\0.Rect.mesh = Contents\Mesh\0.Rect.mesh
+		Contents\Mesh\0.Rect2.mesh = Contents\Mesh\0.Rect2.mesh
+		Contents\Mesh\1.BoxCollider.mesh = Contents\Mesh\1.BoxCollider.mesh
+		Contents\Mesh\1.Circle.mesh = Contents\Mesh\1.Circle.mesh
+		Contents\Mesh\1.Cube.mesh = Contents\Mesh\1.Cube.mesh
+		Contents\Mesh\1.Cube1.mesh = Contents\Mesh\1.Cube1.mesh
+		Contents\Mesh\1.Cube2.mesh = Contents\Mesh\1.Cube2.mesh
+		Contents\Mesh\1.Cube3.mesh = Contents\Mesh\1.Cube3.mesh
+		Contents\Mesh\1.Grid.mesh = Contents\Mesh\1.Grid.mesh
+		Contents\Mesh\1.Line.mesh = Contents\Mesh\1.Line.mesh
+		Contents\Mesh\1.Point.mesh = Contents\Mesh\1.Point.mesh
+		Contents\Mesh\1.Sphere.mesh = Contents\Mesh\1.Sphere.mesh
+		Contents\Mesh\1.Sphere2.mesh = Contents\Mesh\1.Sphere2.mesh
+		Contents\Mesh\1.SphereCollider.mesh = Contents\Mesh\1.SphereCollider.mesh
+		Contents\Mesh\1.Transform.mesh = Contents\Mesh\1.Transform.mesh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

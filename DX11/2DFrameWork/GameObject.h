@@ -8,7 +8,7 @@ public:
 	Vector3				rotation;
 	GameObject*			parent;
 	vector<GameObject*> children;
-	Shader*				shader;
+	shared_ptr<Shader>	shader;
 	shared_ptr<Mesh>	mesh;
 
 	Matrix		S, R, T, RT, W;
