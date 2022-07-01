@@ -15,15 +15,27 @@ GameObject::GameObject()
 	rotation.z = 0;
 
 	parent = nullptr;
+	root = nullptr;
 	visible = true;
 
 	shader = RESOURCE->LoadShader("1.Cube.hlsl");
 	mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
 }
+Actor::Actor()
+{
+	root = this;
+}
 
 GameObject::~GameObject()
 {
 	SafeReset(mesh);
+}
+
+GameObject* GameObject::Create(string name)
+{
+	GameObject* temp = new GameObject();
+	temp->name = name;
+	return temp;
 }
 
 void GameObject::Update()
@@ -96,4 +108,51 @@ void GameObject::CreateStaticMember()
 void GameObject::DeleteStaticMember()
 {
 	SafeRelease(WBuffer);
+}
+
+bool GameObject::RenderImGui()
+{
+	if (ImGui::TreeNode(name.c_str()))
+	{
+		ImGui::SliderFloat3("position", (float*)&position, -30.0f, 30.0f);
+		ImGui::SliderFloat3("rotation", (float*)&rotation, 0.0f, PI * 2.0f);
+		ImGui::SliderFloat3("scale", (float*)&scale, 0.0f, 100.0f);
+
+		for (int i = 0; i < children.size(); i++)
+		{
+			children[i]->RenderImGui();
+		}
+		ImGui::TreePop();
+	}
+	
+	return false;
+}
+
+void GameObject::AddChild(GameObject* child)
+{
+	if (root->Find(child->name))
+		return;
+	
+	root->obList[child->name] = child;
+	children.push_back(child);
+	child->parent = this;
+	child->root = root;
+}
+
+GameObject* Actor::Find(string name)
+{
+	auto it = obList.find(name);
+
+	if (it != obList.end())
+	{
+		return it->second;
+	}
+	return nullptr;
+}
+
+Actor* Actor::Create(string name)
+{
+	Actor* temp = new Actor();
+	temp->name = name;
+	return temp;
 }

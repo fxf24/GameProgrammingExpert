@@ -39,27 +39,28 @@ void Main::Init()
     Cam[1]->rotation.y = 3.14f;
 
     //
-    Sun.position.x = 0.0f;
-    Sun.position.y = 0.0f;
+    Sun = Actor::Create();
+    Sun->position.x = 0.0f;
+    Sun->position.y = 0.0f;
+    Sun->scale.x = 1.0f;
+    Sun->scale.y = 1.0f;
 
-    Sun.scale.x = 1.0f;
-    Sun.scale.y = 1.0f;
-
+    GameObject*	SunBone[5];
+    GameObject*	Planet[5];
     //Sun.mesh.reset();
     //Sun.mesh = nullptr;
     for (int i = 0; i < 5; i++)
     {
-        Sun.children.push_back(&SunBone[i]);
-        SunBone[i].parent = &Sun;
+        GameObject* SunBone = GameObject::Create("SunBone" + to_string(i));
+        Sun->AddChild(SunBone);
+        
+        GameObject* Planet = GameObject::Create("Planet" + to_string(i));
+        SunBone->AddChild(Planet);
 
-        SunBone[i].children.push_back(&Planet[i]);
-        Planet[i].parent = &SunBone[i];
-
-        Planet[i].position.x = 2.0f * (i + 1);
-        Planet[i].position.y = 2.0f * (i + 1);
-
-        Planet[i].scale.x = 1.0f;
-        Planet[i].scale.y = 1.0f;
+        Planet->position.x = 2.0f * (i + 1);
+        Planet->position.y = 2.0f * (i + 1);
+        Planet->scale.x = 1.0f;
+        Planet->scale.y = 1.0f;
     }
     RESOURCE->ReleaseAll();
 }
@@ -73,12 +74,15 @@ void Main::Release()
 void Main::Update()
 {
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
-    
+    ImGui::Begin("Hierarchy");
+    Sun->RenderImGui();
+    ImGui::End();
+
     ImGui::Checkbox("Button Enable", &checkbox);
     if (ImGui::Button("UP DOWN") && checkbox)
-        Sun.rotation.x += 180.0f * TORADIAN;
+        Sun->rotation.x += 180.0f * TORADIAN;
     if (ImGui::Button("LEFT RIGHT") && checkbox)
-        Sun.rotation.y += 180.0f * TORADIAN;
+        Sun->rotation.y += 180.0f * TORADIAN;
 
     /*if (INPUT->KeyPress('1'))
     {
@@ -105,13 +109,14 @@ void Main::Update()
     {
         Cam->position += -Cam->GetForward() * 100.0f * DELTA;
     }*/
-    Sun.rotation.y += 60.0f * TORADIAN * DELTA;
+    //Sun->rotation.y += 60.0f * TORADIAN * DELTA;
+    Sun->Find("SunBone2")->rotation.y += 60.0f * TORADIAN * DELTA;
 
     for (int i = 0; i < 4; i++)
     {
         Cam[i]->Update();
     }
-    Sun.Update();
+    Sun->Update();
 }
 
 void Main::LateUpdate()
@@ -123,7 +128,7 @@ void Main::Render()
     for (int i = 0; i < 4; i++)
     {
         Cam[i]->Set();
-        Sun.Render();
+        Sun->Render();
     }
 }
 

@@ -5,9 +5,8 @@ class Main : public Scene
 {
 private:
 	Camera*			Cam[4];
-	GameObject		Sun;
-	GameObject		SunBone[5];
-	GameObject		Planet[5];
+	Actor*		Sun;
+
 	bool checkbox = true;
 public:
 	Main();
