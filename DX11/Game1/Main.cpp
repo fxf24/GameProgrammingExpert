@@ -62,12 +62,11 @@ void Main::Init()
         Planet->scale.x = 1.0f;
         Planet->scale.y = 1.0f;
     }
-    RESOURCE->ReleaseAll();
 }
 
 void Main::Release()
 {
-	
+    RESOURCE->ReleaseAll();
 }
 
 
