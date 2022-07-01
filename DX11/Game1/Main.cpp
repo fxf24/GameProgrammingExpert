@@ -73,6 +73,12 @@ void Main::Release()
 void Main::Update()
 {
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
+    
+    ImGui::Checkbox("Button Enable", &checkbox);
+    if (ImGui::Button("UP DOWN") && checkbox)
+        Sun.rotation.x += 180.0f * TORADIAN;
+    if (ImGui::Button("LEFT RIGHT") && checkbox)
+        Sun.rotation.y += 180.0f * TORADIAN;
 
     /*if (INPUT->KeyPress('1'))
     {

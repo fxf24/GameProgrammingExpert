@@ -8,6 +8,7 @@ private:
 	GameObject		Sun;
 	GameObject		SunBone[5];
 	GameObject		Planet[5];
+	bool checkbox = true;
 public:
 	Main();
 	~Main();
