@@ -16,6 +16,7 @@ public:
 	vector<GameObject*> children;
 	shared_ptr<Shader>	shader;
 	shared_ptr<Mesh>	mesh;
+	char childName[64] = "";
 
 	Matrix		S, R, T, RT, W;
 
@@ -32,6 +33,7 @@ public:
 	virtual void Render();
 
 	void AddChild(GameObject* child);
+	void Delete();
 
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
@@ -52,4 +54,5 @@ private:
 public:
 	GameObject* Find(string name);
 	static Actor* Create(string name = "Actor");
+	void Delete(string name);
 };

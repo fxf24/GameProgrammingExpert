@@ -117,6 +117,15 @@ bool GameObject::RenderImGui()
 		ImGui::SliderFloat3("position", (float*)&position, -30.0f, 30.0f);
 		ImGui::SliderFloat3("rotation", (float*)&rotation, 0.0f, PI * 2.0f);
 		ImGui::SliderFloat3("scale", (float*)&scale, 0.0f, 100.0f);
+		
+		ImGui::InputText("Child Name", childName, 64);
+		if (ImGui::Button("Add Child"))
+		{
+			AddChild(Create(childName));
+			memset(childName, 0, 64);
+		}
+
+		Delete();
 
 		for (int i = 0; i < children.size(); i++)
 		{
@@ -132,11 +141,70 @@ void GameObject::AddChild(GameObject* child)
 {
 	if (root->Find(child->name))
 		return;
-	
+	if (child->name == "")
+		return;
+
 	root->obList[child->name] = child;
 	children.push_back(child);
 	child->parent = this;
 	child->root = root;
+}
+
+void GameObject::Delete()
+{
+	if (ImGui::Button("Delete"))
+		ImGui::OpenPopup("Delete?");
+
+	if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+
+		if (ImGui::Button("OK", ImVec2(120, 0))) 
+		{
+			if (root == this)
+			{
+				ImGui::OpenPopup("Actor");
+
+				bool unused_open = true;
+				if (ImGui::BeginPopupModal("Actor"))
+				{
+					ImGui::Text("Actor can not be deleted.\n");
+
+					if (ImGui::Button("Close"))
+						ImGui::CloseCurrentPopup();
+					ImGui::EndPopup();
+				}
+				
+				//ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				return;
+			}
+			else
+			{
+				if (!children.empty())
+				{
+					for (auto c : children)
+					{
+						c->parent = parent;
+						parent->children.push_back(c);
+					}
+					children.clear();
+				}
+
+				auto it = find(parent->children.begin(), parent->children.end(), this);
+				parent->children.erase(it);
+				root->Delete(name);
+				ImGui::CloseCurrentPopup(); 
+			}
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) 
+		{ 
+			ImGui::CloseCurrentPopup(); 
+		}
+		ImGui::EndPopup();
+	}
 }
 
 GameObject* Actor::Find(string name)
@@ -155,4 +223,10 @@ Actor* Actor::Create(string name)
 	Actor* temp = new Actor();
 	temp->name = name;
 	return temp;
+}
+
+void Actor::Delete(string name)
+{
+	auto it = obList.find(name);
+	obList.erase(it);
 }

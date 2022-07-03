@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 //DirectX d3d 11

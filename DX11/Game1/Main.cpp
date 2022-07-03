@@ -108,8 +108,8 @@ void Main::Update()
     {
         Cam->position += -Cam->GetForward() * 100.0f * DELTA;
     }*/
-    //Sun->rotation.y += 60.0f * TORADIAN * DELTA;
-    Sun->Find("SunBone2")->rotation.y += 60.0f * TORADIAN * DELTA;
+    Sun->rotation.y += 60.0f * TORADIAN * DELTA;
+    //Sun->Find("SunBone2")->rotation.y += 60.0f * TORADIAN * DELTA;
 
     for (int i = 0; i < 4; i++)
     {
