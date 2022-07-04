@@ -29,6 +29,7 @@ Actor::Actor()
 GameObject::~GameObject()
 {
 	SafeReset(mesh);
+	SafeReset(shader);
 }
 
 GameObject* GameObject::Create(string name)
@@ -38,11 +39,18 @@ GameObject* GameObject::Create(string name)
 	return temp;
 }
 
+void GameObject::Release()
+{
+	for (auto it = children.begin(); it != children.end(); it++)
+	{
+		SafeRelease(it->second);
+	}
+	delete this;
+}
+
 void GameObject::Update()
 {
 	//if (not active)return;
-
-
 
 	S = Matrix::CreateScale(scale.x, scale.y, scale.z);
 	R = Matrix::CreateFromYawPitchRoll(rotation.y, rotation.x, rotation.z);
@@ -55,11 +63,10 @@ void GameObject::Update()
 		RT *= parent->RT;
 	}
 	//¿Á±Õ»£√‚
-	for (int i = 0; i < children.size(); i++)
+	for (auto it = children.begin(); it != children.end(); it++)
 	{
-		children[i]->Update();
+		it->second->Update();
 	}
-
 }
 
 void GameObject::Render()
@@ -81,10 +88,9 @@ void GameObject::Render()
 		}
 	}
 
-
-	for (int i = 0; i < children.size(); i++)
+	for (auto it = children.begin(); it != children.end(); it++)
 	{
-		children[i]->Render();
+		it->second->Render();
 	}
 }
 
@@ -124,12 +130,21 @@ bool GameObject::RenderImGui()
 			AddChild(Create(childName));
 			memset(childName, 0, 64);
 		}
-
-		Delete();
-
-		for (int i = 0; i < children.size(); i++)
+		ImGui::SameLine();
+		if (ImGui::Button("Delete"))
 		{
-			children[i]->RenderImGui();
+			root->DeleteObject(name);
+			ImGui::TreePop();
+			return true;
+		}
+
+		for (auto it = children.begin(); it != children.end(); it++)
+		{
+			if (it->second->RenderImGui())
+			{
+				ImGui::TreePop();
+				return true;
+			}
 		}
 		ImGui::TreePop();
 	}
@@ -141,70 +156,20 @@ void GameObject::AddChild(GameObject* child)
 {
 	if (root->Find(child->name))
 		return;
-	if (child->name == "")
-		return;
 
 	root->obList[child->name] = child;
-	children.push_back(child);
+	children[child->name] = child;
 	child->parent = this;
 	child->root = root;
 }
 
-void GameObject::Delete()
+void Actor::Release()
 {
-	if (ImGui::Button("Delete"))
-		ImGui::OpenPopup("Delete?");
-
-	if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	for (auto it = children.begin(); it != children.end(); it++)
 	{
-		ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
-
-		if (ImGui::Button("OK", ImVec2(120, 0))) 
-		{
-			if (root == this)
-			{
-				ImGui::OpenPopup("Actor");
-
-				bool unused_open = true;
-				if (ImGui::BeginPopupModal("Actor"))
-				{
-					ImGui::Text("Actor can not be deleted.\n");
-
-					if (ImGui::Button("Close"))
-						ImGui::CloseCurrentPopup();
-					ImGui::EndPopup();
-				}
-				
-				//ImGui::CloseCurrentPopup();
-				ImGui::EndPopup();
-				return;
-			}
-			else
-			{
-				if (!children.empty())
-				{
-					for (auto c : children)
-					{
-						c->parent = parent;
-						parent->children.push_back(c);
-					}
-					children.clear();
-				}
-
-				auto it = find(parent->children.begin(), parent->children.end(), this);
-				parent->children.erase(it);
-				root->Delete(name);
-				ImGui::CloseCurrentPopup(); 
-			}
-		}
-		ImGui::SetItemDefaultFocus();
-		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0))) 
-		{ 
-			ImGui::CloseCurrentPopup(); 
-		}
-		ImGui::EndPopup();
+		SafeRelease(it->second);
 	}
+	delete this;
 }
 
 GameObject* Actor::Find(string name)
@@ -225,8 +190,24 @@ Actor* Actor::Create(string name)
 	return temp;
 }
 
-void Actor::Delete(string name)
+bool Actor::DeleteObject(string Name)
 {
-	auto it = obList.find(name);
+	if (Name == name) return false;
+
+	auto it = obList.find(Name);
+
+	if (it == obList.end()) return false;
+
+	GameObject* Target = it->second;
+	GameObject* Parent = it->second->parent;
+
+	Parent->children.erase(Parent->children.find(Name));
+
+	for (auto it = Target->children.begin(); it != Target->children.end(); it++)
+	{
+		SafeRelease(it->second);
+	}
+	SafeDelete(Target);
 	obList.erase(it);
+	return false;
 }

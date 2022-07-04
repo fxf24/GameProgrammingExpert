@@ -13,75 +13,58 @@ Main::~Main()
 
 void Main::Init()
 {
-    App.fixFrame = 10000;
-    for (int i = 0; i < 2; i++)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            int idx = 2 * i + j;
-            Cam[idx] = new Camera();
-            Cam[idx]->w = 900.0f;
-            Cam[idx]->h = 450.0f;
-            Cam[idx]->x = j * 900.0f;
-            Cam[idx]->y = i * 450.0f;
-        }
-    }
+    App.fixFrame = 1000000;
+    Cam = new Camera();
+    Camera::main = Cam;
 
-    Cam[2]->position = Vector3(0.0f, 0.0f, -7.0f);
-    Cam[3]->position = Vector3(0.0f, 0.0f, 7.0f);
-    Cam[3]->rotation.y = 3.14f;
+    Grid = Actor::Create();
+    Grid->mesh = RESOURCE->LoadMesh("1.Grid.mesh");
 
-    Cam[0]->position = Vector3(0.0f, 0.0f, -7.0f);
-    Cam[0]->rotation.z = 3.14f;
-
-    Cam[1]->position = Vector3(0.0f, 0.0f, 7.0f);
-    Cam[1]->rotation.z = 3.14f;
-    Cam[1]->rotation.y = 3.14f;
-
-    //
     Sun = Actor::Create();
     Sun->position.x = 0.0f;
     Sun->position.y = 0.0f;
     Sun->scale.x = 1.0f;
     Sun->scale.y = 1.0f;
 
-    GameObject*	SunBone[5];
-    GameObject*	Planet[5];
     //Sun.mesh.reset();
     //Sun.mesh = nullptr;
     for (int i = 0; i < 5; i++)
     {
         GameObject* SunBone = GameObject::Create("SunBone" + to_string(i));
         Sun->AddChild(SunBone);
-        
         GameObject* Planet = GameObject::Create("Planet" + to_string(i));
         SunBone->AddChild(Planet);
 
         Planet->position.x = 2.0f * (i + 1);
         Planet->position.y = 2.0f * (i + 1);
+
         Planet->scale.x = 1.0f;
         Planet->scale.y = 1.0f;
     }
+    //
 }
 
 void Main::Release()
 {
     RESOURCE->ReleaseAll();
+    Sun->Release();
+    Grid->Release();
 }
 
 
 void Main::Update()
 {
-    ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
-    ImGui::Begin("Hierarchy");
+    Camera::ControlMainCam();
+
+    
+
+    ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
+    ImGui::Begin("Hierirchy");
+    //ImVec2 pos(200, 200);
+    //ImGui::SetWindowPos(pos);
+    //ImGui::SetWindowSize(pos);
     Sun->RenderImGui();
     ImGui::End();
-
-    ImGui::Checkbox("Button Enable", &checkbox);
-    if (ImGui::Button("UP DOWN") && checkbox)
-        Sun->rotation.x += 180.0f * TORADIAN;
-    if (ImGui::Button("LEFT RIGHT") && checkbox)
-        Sun->rotation.y += 180.0f * TORADIAN;
 
     /*if (INPUT->KeyPress('1'))
     {
@@ -111,10 +94,8 @@ void Main::Update()
     Sun->rotation.y += 60.0f * TORADIAN * DELTA;
     //Sun->Find("SunBone2")->rotation.y += 60.0f * TORADIAN * DELTA;
 
-    for (int i = 0; i < 4; i++)
-    {
-        Cam[i]->Update();
-    }
+    Cam->Update();
+    Grid->Update();
     Sun->Update();
 }
 
@@ -124,16 +105,15 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
-    for (int i = 0; i < 4; i++)
-    {
-        Cam[i]->Set();
-        Sun->Render();
-    }
+    Cam->Set();
+    Grid->Render();
+    Sun->Render();
 }
 
 void Main::ResizeScreen()
 {
-
+    Cam->w = App.GetWidth();
+    Cam->h = App.GetHeight();
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)

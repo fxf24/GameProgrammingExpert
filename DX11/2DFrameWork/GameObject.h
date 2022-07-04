@@ -1,8 +1,10 @@
 #pragma once
 class GameObject
 {
+	friend class Actor;
 protected:
 	GameObject();
+	virtual ~GameObject();
 
 public:
 	bool				visible;
@@ -13,7 +15,7 @@ public:
 	string				name;  //key
 	class Actor*		root;
 	GameObject*			parent;
-	vector<GameObject*> children;
+	map<string, GameObject*> children;
 	shared_ptr<Shader>	shader;
 	shared_ptr<Mesh>	mesh;
 	char childName[64] = "";
@@ -24,16 +26,15 @@ public:
 	//상수버퍼
 	static ID3D11Buffer* WBuffer;
 
-	virtual ~GameObject();
-
 	//생성함수
 	static GameObject* Create(string name = "GameObject");
+	void Release();
 
 	virtual void Update();
 	virtual void Render();
 
 	void AddChild(GameObject* child);
-	void Delete();
+	//void Delete();
 
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
@@ -51,8 +52,10 @@ class Actor : public GameObject
 private:
 	Actor();
 	unordered_map<string, GameObject*> obList;
+
 public:
-	GameObject* Find(string name);
-	static Actor* Create(string name = "Actor");
-	void Delete(string name);
+	void Release();
+	GameObject*		Find(string name);
+	static Actor*	Create(string name = "Actor");
+	bool			DeleteObject(string Name);
 };

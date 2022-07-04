@@ -22,7 +22,7 @@ void Camera::Update()
     viewport.height = h;
 
     proj = Matrix::CreatePerspectiveFieldOfView(
-        fov, 1800.0f / 900.0f, 0.001f, 1000.0f);
+        fov, 1800.0f / 900.0f, 0.001f, 100000.0f);
 
     view = RT.Invert();
     
@@ -41,6 +41,7 @@ void Camera::Set()
 
 
 ID3D11Buffer* Camera::VPBuffer = nullptr;
+Camera* Camera::main = nullptr;
 void Camera::CreateStaticMember()
 {
     D3D11_BUFFER_DESC desc = { 0 };
@@ -58,4 +59,49 @@ void Camera::CreateStaticMember()
 void Camera::DeleteStaticMember()
 {
     SafeRelease(VPBuffer);
+}
+
+void Camera::ControlMainCam()
+{
+    if (not main) return;
+
+	if (INPUT->KeyPress('W'))
+	{
+		//                                  초당100움직임 xyz/s
+		main->position += main->GetForward() * DELTA * 300.0f;
+	}
+	if (INPUT->KeyPress('S'))
+	{
+		main->position -= main->GetForward() * DELTA * 300.0f;
+	}
+	if (INPUT->KeyPress('A'))
+	{
+		main->position -= main->GetRight() * DELTA * 300.0f;
+	}
+	if (INPUT->KeyPress('D'))
+	{
+		main->position += main->GetRight() * DELTA * 300.0f;
+	}
+	if (INPUT->KeyPress('Q'))
+	{
+		main->position += main->GetUp() * DELTA * 300.0f;
+	}
+	if (INPUT->KeyPress('E'))
+	{
+		main->position -= main->GetUp() * DELTA * 300.0f;
+	}
+
+	//마우스 우클릭시
+	if (INPUT->KeyPress(VK_RBUTTON))
+	{
+		Vector3 Rot;
+		Rot.x = INPUT->movePosition.y * 0.001f;
+		Rot.y = INPUT->movePosition.x * 0.001f;
+		main->rotation += Rot;
+	}
+	//휠키로 카메라 앞뒤조절
+	main->position+= main->GetForward() * INPUT->wheelMoveValue.z;
+
+
+
 }

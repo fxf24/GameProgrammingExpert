@@ -4,10 +4,9 @@
 class Main : public Scene
 {
 private:
-	Camera*			Cam[4];
-	Actor*		Sun;
-
-	bool checkbox = true;
+	Camera*			Cam;
+	Actor*			Sun;
+	Actor*			Grid;
 public:
 	Main();
 	~Main();
