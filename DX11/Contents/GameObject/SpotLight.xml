@@ -1,0 +1,9 @@
+<Root R="0.47508347" G="0.47503597" B="0.47503597" A="0.5" Name="PointLight" Type="3" isVisible="true" isAxis="true" BoneIndex="135">
+    <Light isActive="1" lightType="1" inner="89" outer="33" directionX="0" directionY="-1" directionZ="0" positionX="0" positionY="300" positionZ="0" range="1000" colorR="1" colorG="1" colorB="1"/>
+    <Transform>
+        <Position X="0" Y="300" Z="0"/>
+        <Scale X="1" Y="1" Z="1"/>
+        <Rotation X="0" Y="0" Z="0"/>
+    </Transform>
+    <Children Size="0"/>
+</Root>

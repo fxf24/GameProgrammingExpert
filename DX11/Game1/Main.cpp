@@ -42,6 +42,42 @@ void Main::Init()
         Planet->scale.y = 1.0f;
     }
     //
+
+
+    Temp = Actor::Create();
+
+    Xml::XMLDocument* doc = new Xml::XMLDocument();
+    string path = "../Contents/GameObject/Sun.xml";
+    Xml::XMLError result = doc->LoadFile(path.c_str());
+    if (result != Xml::XML_SUCCESS) return;
+    Xml::XMLElement* ob;
+    ob = doc->FirstChildElement();
+    Temp->name = ob->Attribute("Name");
+
+    Xml::XMLElement* component;
+    if (component = ob->FirstChildElement("Mesh"))
+    {
+        string file = component->Attribute("File");
+        SafeReset(Temp->mesh);
+        Temp->mesh = RESOURCE->LoadMesh(file);
+    }
+    if (component = ob->FirstChildElement("Transform"))
+    {
+        Xml::XMLElement* trans = component->FirstChildElement("Position");
+        Temp->position.x = trans->FloatAttribute("X");
+        Temp->position.y = trans->FloatAttribute("Y");
+        Temp->position.z = trans->FloatAttribute("Z");
+
+        trans = component->FirstChildElement("Scale");
+        Temp->scale.x = trans->FloatAttribute("X");
+        Temp->scale.y = trans->FloatAttribute("Y");
+        Temp->scale.z = trans->FloatAttribute("Z");
+
+        trans = component->FirstChildElement("Rotation");
+        Temp->rotation.x = trans->FloatAttribute("X");
+        Temp->rotation.y = trans->FloatAttribute("Y");
+        Temp->rotation.z = trans->FloatAttribute("Z");
+    }
 }
 
 void Main::Release()
@@ -56,47 +92,18 @@ void Main::Update()
 {
     Camera::ControlMainCam();
 
-    
-
     ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
-    ImGui::Begin("Hierirchy");
-    //ImVec2 pos(200, 200);
-    //ImGui::SetWindowPos(pos);
-    //ImGui::SetWindowSize(pos);
-    Sun->RenderImGui();
+    ImGui::Begin("Hierarchy");
+    Sun->RenderHierarchy();
     ImGui::End();
 
-    /*if (INPUT->KeyPress('1'))
-    {
-        Cam->fov += 3.14f * DELTA;
-    }
-    if (INPUT->KeyPress('2'))
-    {
-        Cam->fov -= 3.14f * DELTA;
-    }
-
-    if (INPUT->KeyPress('A'))
-    {
-        Cam->position += -Cam->GetRight() * 100.0f * DELTA;
-    }
-    if (INPUT->KeyPress('D'))
-    {
-        Cam->position += Cam->GetRight() * 100.0f * DELTA;
-    }
-    if (INPUT->KeyPress('W'))
-    {
-        Cam->position += Cam->GetForward() * 100.0f * DELTA;
-    }
-    if (INPUT->KeyPress('S'))
-    {
-        Cam->position += -Cam->GetForward() * 100.0f * DELTA;
-    }*/
-    Sun->rotation.y += 60.0f * TORADIAN * DELTA;
-    //Sun->Find("SunBone2")->rotation.y += 60.0f * TORADIAN * DELTA;
+    //Sun->rotation.y += 60.0f * TORADIAN * DELTA;
+    Sun->Find("SunBone2")->rotation.y += 60.0f * TORADIAN * DELTA;
 
     Cam->Update();
     Grid->Update();
-    Sun->Update();
+    //Sun->Update();
+    Temp->Update();
 }
 
 void Main::LateUpdate()
@@ -107,7 +114,8 @@ void Main::Render()
 {
     Cam->Set();
     Grid->Render();
-    Sun->Render();
+    //Sun->Render();
+    Temp->Render();
 }
 
 void Main::ResizeScreen()
@@ -120,7 +128,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, in
 {
 	App.SetAppName(L"Game1");
 	App.SetInstance(instance);
-	App.InitWidthHeight(1800.0f, 900.0f);
+	App.InitWidthHeight(1000.0f, 500.0f);
     WIN->Create();
     D3D->Create();
 	Main * main = new Main();

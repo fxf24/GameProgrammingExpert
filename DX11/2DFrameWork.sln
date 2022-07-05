@@ -29,9 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{D881
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{413B631D-52C2-492A-8CF7-45CDA72742DD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{852E6C92-D85E-4DAF-BE16-FE5264C1BC50}"
 	ProjectSection(SolutionItems) = preProject
-		Contents\Mesh\0.Cube.mesh = Contents\Mesh\0.Cube.mesh
 		Contents\Mesh\0.Rect.mesh = Contents\Mesh\0.Rect.mesh
 		Contents\Mesh\0.Rect2.mesh = Contents\Mesh\0.Rect2.mesh
 		Contents\Mesh\1.BoxCollider.mesh = Contents\Mesh\1.BoxCollider.mesh
@@ -47,6 +46,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{413B631D-5
 		Contents\Mesh\1.Sphere2.mesh = Contents\Mesh\1.Sphere2.mesh
 		Contents\Mesh\1.SphereCollider.mesh = Contents\Mesh\1.SphereCollider.mesh
 		Contents\Mesh\1.Transform.mesh = Contents\Mesh\1.Transform.mesh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{74B610B8-761D-43C2-A5E3-C5695A953DC2}"
+	ProjectSection(SolutionItems) = preProject
+		Contents\GameObject\Billboard.xml = Contents\GameObject\Billboard.xml
+		Contents\GameObject\Blur.xml = Contents\GameObject\Blur.xml
+		Contents\GameObject\box.xml = Contents\GameObject\box.xml
+		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
+		Contents\GameObject\Cam2.xml = Contents\GameObject\Cam2.xml
+		Contents\GameObject\CubeMan.xml = Contents\GameObject\CubeMan.xml
+		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
+		Contents\GameObject\Line.xml = Contents\GameObject\Line.xml
+		Contents\GameObject\Map.xml = Contents\GameObject\Map.xml
+		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
+		Contents\GameObject\Model.xml = Contents\GameObject\Model.xml
+		Contents\GameObject\Plane.xml = Contents\GameObject\Plane.xml
+		Contents\GameObject\Pop.xml = Contents\GameObject\Pop.xml
+		Contents\GameObject\PostEffect.xml = Contents\GameObject\PostEffect.xml
+		Contents\GameObject\Rain.xml = Contents\GameObject\Rain.xml
+		Contents\GameObject\SkySphere.xml = Contents\GameObject\SkySphere.xml
+		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
+		Contents\GameObject\SpotLight.xml = Contents\GameObject\SpotLight.xml
+		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
+		Contents\GameObject\Terrain.xml = Contents\GameObject\Terrain.xml
+		Contents\GameObject\UI.xml = Contents\GameObject\UI.xml
+		Contents\GameObject\UI2.xml = Contents\GameObject\UI2.xml
 	EndProjectSection
 EndProject
 Global

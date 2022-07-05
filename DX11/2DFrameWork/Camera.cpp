@@ -21,14 +21,15 @@ void Camera::Update()
     viewport.width = w;
     viewport.height = h;
 
-    proj = Matrix::CreatePerspectiveFieldOfView(
-        fov, 1800.0f / 900.0f, 0.001f, 100000.0f);
-
+    
     view = RT.Invert();
     
 }
 void Camera::Set()
 {
+	proj = Matrix::CreatePerspectiveFieldOfView(
+		fov, w / h, 0.001f, 100000.0f);
+
     Matrix TVP = view * proj;
     TVP = TVP.Transpose();
     D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -61,34 +62,34 @@ void Camera::DeleteStaticMember()
     SafeRelease(VPBuffer);
 }
 
-void Camera::ControlMainCam()
+void Camera::ControlMainCam(float scalar)
 {
     if (not main) return;
 
 	if (INPUT->KeyPress('W'))
 	{
 		//                                  초당100움직임 xyz/s
-		main->position += main->GetForward() * DELTA * 300.0f;
+		main->position += main->GetForward() * DELTA * scalar;
 	}
 	if (INPUT->KeyPress('S'))
 	{
-		main->position -= main->GetForward() * DELTA * 300.0f;
+		main->position -= main->GetForward() * DELTA * scalar;
 	}
 	if (INPUT->KeyPress('A'))
 	{
-		main->position -= main->GetRight() * DELTA * 300.0f;
+		main->position -= main->GetRight() * DELTA * scalar;
 	}
 	if (INPUT->KeyPress('D'))
 	{
-		main->position += main->GetRight() * DELTA * 300.0f;
+		main->position += main->GetRight() * DELTA * scalar;
 	}
 	if (INPUT->KeyPress('Q'))
 	{
-		main->position += main->GetUp() * DELTA * 300.0f;
+		main->position += main->GetUp() * DELTA * scalar;
 	}
 	if (INPUT->KeyPress('E'))
 	{
-		main->position -= main->GetUp() * DELTA * 300.0f;
+		main->position -= main->GetUp() * DELTA * scalar;
 	}
 
 	//마우스 우클릭시

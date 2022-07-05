@@ -1,0 +1,34 @@
+<Root R="0.5" G="0.5" B="0.5" A="0.5" Name="UIImage" Type="5" isVisible="true" isAxis="false">
+    <UIImage pivotX="0.5" pivotY="0" R="0.5" G="0.5" B="0.5" A="0.5"/>
+    <Mesh File="6.UI.mesh"/>
+    <Material File="UI3.mtl"/>
+    <Shader File="6.UI.hlsl" VertexType="6"/>
+    <Transform>
+        <Position X="-0.94999999" Y="0" Z="0"/>
+        <Scale X="0.89999998" Y="1" Z="1"/>
+        <Rotation X="0" Y="0" Z="0"/>
+    </Transform>
+    <Children Size="2"/>
+    <Child0 Name="None" Type="5" isVisible="true" isAxis="false">
+        <UIImage pivotX="0" pivotY="-0.5" R="0.78431374" G="0.19607843" B="0.19607843" A="0.50196081"/>
+        <Mesh File="6.UI.mesh"/>
+        <Material File="UI2.mtl"/>
+        <Shader File="6.UI.hlsl" VertexType="6"/>
+        <Transform>
+            <Position X="-0.44444448" Y="0.40000001" Z="0"/>
+            <Scale X="0.1" Y="0.1" Z="1"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Transform>
+        <Children Size="0"/>
+    </Child0>
+    <Child1 Name="None23" Type="7" isVisible="true" isAxis="false">
+        <Text R="0.81958801" G="0.11634102" B="0.7625339" A="1" str="Item1" font="Courier" fontsize="34.681999"/>
+        <Mesh File="7.Billboard.mesh"/>
+        <Transform>
+            <Position X="-0.44444448" Y="0.30000001" Z="0"/>
+            <Scale X="1" Y="1" Z="1"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Transform>
+        <Children Size="0"/>
+    </Child1>
+</Root>

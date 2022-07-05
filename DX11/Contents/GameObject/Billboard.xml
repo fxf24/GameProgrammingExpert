@@ -1,0 +1,12 @@
+<Root R="0.5" G="0.5" B="0.5" A="0.5" Name="Billboad" Type="6" isVisible="true" isAxis="false" BoneIndex="272">
+    <Billboard pivotX="0" pivotY="0"/>
+    <Mesh File="7.Billboard.mesh"/>
+    <Material File="UI4.mtl"/>
+    <Shader File="7.Billboard.hlsl" VertexType="7"/>
+    <Transform>
+        <Position X="0" Y="250" Z="0"/>
+        <Scale X="200" Y="100" Z="1"/>
+        <Rotation X="0" Y="0" Z="0"/>
+    </Transform>
+    <Children Size="0"/>
+</Root>

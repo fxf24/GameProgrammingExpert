@@ -1,0 +1,12 @@
+<Root R="0.5" G="0.5" B="0.5" A="0.5" Name="UIImage" Type="5" isVisible="true" isAxis="false">
+    <UIImage pivotX="0" pivotY="0" R="0.5" G="0.5" B="0.5" A="0.5"/>
+    <Mesh File="6.UI.mesh"/>
+    <Material File="UI2.mtl"/>
+    <Shader File="6.Blur.hlsl" VertexType="6"/>
+    <Transform>
+        <Position X="0" Y="0" Z="0"/>
+        <Scale X="2.0999999" Y="2.0999999" Z="0.1"/>
+        <Rotation X="0" Y="0" Z="0"/>
+    </Transform>
+    <Children Size="0"/>
+</Root>

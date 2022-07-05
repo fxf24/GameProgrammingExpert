@@ -6,14 +6,12 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-
     vertexType = VertexType::PC;
     primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 
     VertexPC* Vertex;
     byteWidth = sizeof(VertexPC);
-
     vertexCount = 360;
     indexCount = 360*2;
     file = "1.Circle.mesh";
@@ -97,6 +95,13 @@ Mesh::Mesh()
     indexCount = vecindices.size();
     copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(this->indices, indexCount));
 
+
+
+
+  
+
+
+    /////////////////////////////////////////////////////
     vertices = (void*)Vertex;
     //CreateVertexBuffer
     {
@@ -126,6 +131,7 @@ Mesh::Mesh()
         HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
         assert(SUCCEEDED(hr));
     }
+    //ÀúÀå¿ë
     //SaveFile(file);
 }
 

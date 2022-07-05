@@ -1,30 +1,32 @@
 #pragma once
+
+
+
 class GameObject
 {
 	friend class Actor;
 protected:
 	GameObject();
 	virtual ~GameObject();
-
 public:
 	bool				visible;
 	Vector3				position;
 	Vector3				scale;
 	Vector3				rotation;
 
-	string				name;  //key
+	string				name;	//key
 	class Actor*		root;
 	GameObject*			parent;
-	map<string, GameObject*> children;
+	map<string,GameObject*> children;
 	shared_ptr<Shader>	shader;
 	shared_ptr<Mesh>	mesh;
-	char childName[64] = "";
 
 	Matrix		S, R, T, RT, W;
 
 
 	//상수버퍼
 	static ID3D11Buffer* WBuffer;
+	
 
 	//생성함수
 	static GameObject* Create(string name = "GameObject");
@@ -34,28 +36,28 @@ public:
 	virtual void Render();
 
 	void AddChild(GameObject* child);
-	//void Delete();
 
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
 
-	bool RenderImGui();
+	bool RenderHierarchy();
+	void RenderDetail();
 
 	Vector3 GetRight() { return Vector3(RT._11, RT._12,RT._13); }
 	Vector3 GetUp() { return Vector3(RT._21, RT._22, RT._23); }
 	Vector3 GetForward() { return Vector3(RT._31, RT._32, RT._33); }
 };
-
 class Actor : public GameObject
 {
 	friend GameObject;
 private:
 	Actor();
 	unordered_map<string, GameObject*> obList;
-
 public:
-	void Release();
-	GameObject*		Find(string name);
+	void			Release();
 	static Actor*	Create(string name = "Actor");
-	bool			DeleteObject(string Name);
+	GameObject*		Find(string name);
+	bool            DeleteObject(string Name);
+
 };
+
