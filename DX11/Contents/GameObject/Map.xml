@@ -1,5 +1,60 @@
 <Root Name="Sun" isVisible="true">
-    <Mesh File="1.Sphere.mesh">
+    <Mesh File="1.Sphere.mesh"/>
+    <Shader File="1.Cube.hlsl"/>
+    <Transform>
         <Position X="0" Y="0" Z="0"/>
-    </Mesh>
+        <Scale X="100" Y="100" Z="100"/>
+        <Rotation X="30.134001" Y="-15.6" Z="0"/>
+    </Transform>
+    <Children Size="2"/>
+    <Child0 Name="EarthBone" isVisible="true">
+        <Mesh File="1.Point.mesh"/>
+        <Shader File="1.Cube.hlsl"/>
+        <Transform>
+            <Position X="-0.25" Y="0" Z="0"/>
+            <Scale X="0.5" Y="0.5" Z="0.5"/>
+            <Rotation X="-5" Y="276.43201" Z="0"/>
+        </Transform>
+        <Children Size="1"/>
+        <Child0 Name="Earth" isVisible="true">
+            <Mesh File="1.Sphere.mesh"/>
+            <Shader File="1.Cube.hlsl"/>
+            <Transform>
+                <Position X="8.3999996" Y="1.15" Z="-1.3"/>
+                <Scale X="1" Y="1" Z="1"/>
+                <Rotation X="-1.1" Y="-309.23199" Z="-0.89999998"/>
+            </Transform>
+            <Children Size="1"/>
+            <Child0 Name="Moon" isVisible="true">
+                <Mesh File="1.Sphere.mesh"/>
+                <Shader File="1.Cube.hlsl"/>
+                <Transform>
+                    <Position X="2.55" Y="0" Z="0"/>
+                    <Scale X="0.5" Y="0.5" Z="0.5"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                </Transform>
+                <Children Size="0"/>
+            </Child0>
+        </Child0>
+    </Child0>
+    <Child1 Name="MarsBone" isVisible="true">
+        <Mesh File="1.Point.mesh"/>
+        <Shader File="1.Cube.hlsl"/>
+        <Transform>
+            <Position X="0" Y="0" Z="0"/>
+            <Scale X="0.5" Y="0.5" Z="0.5"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Transform>
+        <Children Size="1"/>
+        <Child0 Name="Mars" isVisible="true">
+            <Mesh File="1.Sphere.mesh"/>
+            <Shader File="1.Cube.hlsl"/>
+            <Transform>
+                <Position X="12" Y="0" Z="0"/>
+                <Scale X="1" Y="1" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child0>
+    </Child1>
 </Root>

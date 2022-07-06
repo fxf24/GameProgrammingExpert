@@ -24,7 +24,7 @@ protected:
 	GameObject();
 	virtual ~GameObject();
 	void  SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
-	void  LoadObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
+	void  LoadObject(Xml::XMLElement* This);
 public:
 	void Release();
 	virtual void Update();
