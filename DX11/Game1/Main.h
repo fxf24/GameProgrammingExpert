@@ -19,4 +19,7 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
+
+public:
+	void GenerateXML(GameObject* go, Xml::XMLElement* element);
 };
