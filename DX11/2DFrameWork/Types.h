@@ -8,7 +8,7 @@ class Application
 	friend class Gui;
 	friend class Input;
 private:
-
+	float		x, y;
 	float		width;
 	float		height;
 	HINSTANCE	instance;
@@ -24,12 +24,11 @@ public:
 public:
 	Application() :instance(nullptr), handle(nullptr), vSync(false), fullScreen(false)
 		, appName(L" "), width(1280.0f), height(720.0f), background(Color(0.7f, 0.7f, 0.7f, 1.0f))
-		, fixFrame(400), deltaScale(1.0f), soundScale(1.0f) {}
+		, fixFrame(400), deltaScale(1.0f), soundScale(1.0f),x(0.0f),y(0.0f) {}
 	float	GetWidth() { return width; }
 	float	GetHeight() { return height; }
 	float	GetHalfWidth() { return width / 2.0f; }
 	float	GetHalfHeight() { return height / 2.0f; }
-	void	InitWidthHeight(float width, float height) { this->width = width; this->height = height;}
 	void	SetInstance(HINSTANCE instance)
 	{ 
 		if(!this->instance)

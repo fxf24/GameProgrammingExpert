@@ -4,8 +4,8 @@ Camera::Camera()
 {
     fov = 60.0f * TORADIAN;
     x = y = 0.0f;
-    w = 1800.0f;
-    h = 900.0f;
+    w = App.GetWidth();
+    h = App.GetHeight();
 }
 
 Camera::~Camera()

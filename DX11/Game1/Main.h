@@ -7,9 +7,6 @@ private:
 	Camera*			Cam;
 	Actor*			Sun;
 	Actor*			Grid;
-	Actor*			Temp;
-
-
 public:
 	Main();
 	~Main();

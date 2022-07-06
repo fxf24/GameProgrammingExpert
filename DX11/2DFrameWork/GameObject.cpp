@@ -2,18 +2,6 @@
 
 GameObject::GameObject()
 {
-	position.x = 0;
-	position.y = 0;
-	position.z = 0;
-
-	scale.x = 1.0f;
-	scale.y = 1.0f;
-	scale.z = 1.0f;
-
-	rotation.x = 0;
-	rotation.y = 0;
-	rotation.z = 0;
-
 	parent = nullptr;
 	root = nullptr;
 	visible = true;
@@ -33,6 +21,7 @@ GameObject::~GameObject()
 	SafeReset(shader);
 }
 
+
 GameObject* GameObject::Create(string name)
 {
 	GameObject* temp = new GameObject();
@@ -49,29 +38,41 @@ void GameObject::Release()
 	delete this;
 }
 
-void GameObject::Update()
+
+void Actor::Release()
 {
-	//if (not active)return;
-
-
-
-	S = Matrix::CreateScale(scale.x, scale.y, scale.z);
-	R = Matrix::CreateFromYawPitchRoll(rotation.y, rotation.x, rotation.z);
-	T = Matrix::CreateTranslation(position.x, position.y, position.z);
-	RT = R * T;
-	W = S * RT;
-	if (parent)
-	{
-		S = S * parent->S;
-		RT *= parent->RT;
-		W *= parent->W;
-	}
-	//재귀호출
 	for (auto it = children.begin(); it != children.end(); it++)
 	{
-		it->second->Update();
+		SafeRelease(it->second);
 	}
+	delete this;
+}
 
+void Actor::ReleaseMember()
+{
+	for (auto it = children.begin(); it != children.end(); it++)
+	{
+		it->second->Release();
+	}
+	SafeReset(mesh);
+	SafeReset(shader);
+	obList.clear();
+	children.clear();
+}
+
+Actor* Actor::Create(string name)
+{
+	Actor* temp = new Actor();
+	temp->name = name;
+	return temp;
+}
+
+
+void GameObject::Update()
+{
+	Transform::Update(parent);
+	for (auto it = children.begin(); it != children.end(); it++)
+		it->second->Update();
 }
 
 void GameObject::Render()
@@ -84,7 +85,6 @@ void GameObject::Render()
 	
 	if (visible)
 	{
-		//GameObject::Render();
 		shader->Set();
 		if (mesh)
 		{
@@ -122,88 +122,6 @@ void GameObject::DeleteStaticMember()
 	SafeRelease(WBuffer);
 }
 
-bool GameObject::RenderHierarchy()
-{
-	if (ImGui::TreeNode(name.c_str()))
-	{
-		if (ImGui::IsItemToggledOpen() or
-			ImGui::IsItemClicked())
-		{
-			GUI->target = this;
-		}
-		static char childName[32] = "None";
-		ImGui::InputText("childName", childName, 32);
-
-		if (ImGui::Button("addChid"))
-		{
-			AddChild(GameObject::Create(childName));
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("delete"))
-		{
-			root->DeleteObject(name);
-			GUI->target = nullptr;
-			ImGui::TreePop();
-			return true; //하위자식까지는 접근하지 않기
-		}
-		// l->r
-		for (auto it = children.begin(); it != children.end(); it++)
-		{
-			if (it->second->RenderHierarchy())
-			{
-				ImGui::TreePop();
-				GUI->target = nullptr;
-				return true;
-			}
-		}
-		ImGui::TreePop();
-	}
-	return false;
-}
-
-void GameObject::RenderDetail()
-{
-	ImGui::Text(name.c_str());
-	if (ImGui::BeginTabBar("MyTabBar"))
-	{
-		if (ImGui::BeginTabItem("Transform"))
-		{
-			ImGui::SliderFloat3("position", (float*)&position, -30.0f, 30.0f);
-			ImGui::SliderFloat3("rotation", (float*)&rotation, 0.0f, PI * 2.0f);
-			ImGui::SliderFloat3("scale", (float*)&scale, 0.0f, 10.0f);
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem("Mesh"))
-		{
-			if (mesh)
-			{
-				ImGui::Text(mesh->file.c_str());
-			}
-			if (GUI->FileImGui("Save", "Save Mesh",
-				".mesh", "../Contents/Mesh"))
-			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
-				mesh->SaveFile(path);
-			}
-			ImGui::SameLine();
-			if (GUI->FileImGui("Load", "Load Mesh",
-				".mesh", "../Contents/Mesh"))
-			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
-				SafeReset(mesh);
-				mesh = RESOURCE->LoadMesh(path);
-			}
-			ImGui::SameLine();
-			if(ImGui::Button("Delete"))
-			{
-				SafeReset(mesh);
-			}
-			ImGui::EndTabItem();
-		}
-		ImGui::EndTabBar();
-	}
-}
-
 void GameObject::AddChild(GameObject* child)
 {
 	if (root->Find(child->name))
@@ -214,21 +132,6 @@ void GameObject::AddChild(GameObject* child)
 	child->root = root;
 }
 
-void Actor::Release()
-{
-	for (auto it = children.begin();it != children.end(); it++)
-	{
-		SafeRelease(it->second);
-	}
-	delete this;
-}
-
-Actor* Actor::Create(string name)
-{
-	Actor* temp = new Actor();
-	temp->name = name;
-	return temp;
-}
 
 GameObject* Actor::Find(string name)
 {

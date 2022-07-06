@@ -12,7 +12,7 @@ class Mesh
 private:
     ID3D11Buffer*           vertexBuffer;
     ID3D11Buffer*           indexBuffer;
-    string                  file;
+  
     D3D_PRIMITIVE_TOPOLOGY  primitiveTopology;
     VertexType              vertexType;
     UINT                    byteWidth;
@@ -21,6 +21,8 @@ private:
     UINT                    indexCount;
     void*                   vertices;
     UINT*                   indices;
+public:
+    string                  file;
 public:
     Mesh();
     ~Mesh();

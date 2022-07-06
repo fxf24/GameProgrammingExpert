@@ -84,7 +84,7 @@ extern Application App;//Extern Global
 #include "VertexType.h"
 #include "Shader.h"
 #include "Mesh.h"
-
+#include "Transform.h"
 #include "ResourceManager.h"
 
 #include "GameObject.h"

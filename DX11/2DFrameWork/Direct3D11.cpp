@@ -145,6 +145,7 @@ void Direct3D11::Create()
 	}
 
 	CreateBackBuffer(App.width, App.height);
+	//ResizeScreen(App.width, App.height);
 	isCreated = true;
 }
 
