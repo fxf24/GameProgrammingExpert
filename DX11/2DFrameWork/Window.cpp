@@ -35,6 +35,7 @@ WPARAM Window::Run(Scene* main)
 			D3D->Present();
 		}
 	}
+	WIN->Save();
 	GameObject::DeleteStaticMember();
 	Camera::DeleteStaticMember();
 
@@ -42,9 +43,52 @@ WPARAM Window::Run(Scene* main)
 	INPUT->DeleteSingleton();
 	GUI->DeleteSingleton();
 	RANDOM->DeleteSingleton();
+	RESOURCE->DeleteSingleton();
 	Destroy();
 
 	return msg.wParam;
+}
+
+void Window::Load()
+{
+	ifstream fin;
+	string file = "window.ini";
+	fin.open(file.c_str(), ios::in);
+	string temp;
+	if (fin.is_open())
+	{
+		string temp;
+		fin >> temp >> App.width >> App.height;
+		fin >> temp >> App.x >> App.y;
+		fin.close();
+	}
+
+	RECT rect = { 0, 0, (LONG)App.GetWidth(), (LONG)App.GetHeight() };
+	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+	MoveWindow
+	(
+		App.handle
+		, (LONG)App.x, (LONG)App.y
+		, rect.right - rect.left, rect.bottom - rect.top
+		, TRUE
+	);
+}
+
+void Window::Save()
+{
+	RECT rc;
+	GetWindowRect(App.handle, &rc);
+	App.x = rc.left;
+	App.y = rc.top;
+	ofstream fout;
+	string file = "window.ini";
+	fout.open(file.c_str(), ios::out);
+	if (fout.is_open())
+	{
+		fout << "Size " << App.width << " " << App.height << endl;
+		fout << "Pos " << App.x << " " << App.y << endl;
+		fout.close();
+	}
 }
 
 void Window::Create()
@@ -95,24 +139,13 @@ void Window::Create()
 	);
 	assert(App.handle != NULL);
 
-	RECT rect = { 0, 0, (LONG)App.GetWidth(), (LONG)App.GetHeight() };
-
-	UINT centerX = (GetSystemMetrics(SM_CXSCREEN) - (UINT)App.GetWidth()) / 2;
-	UINT centerY = (GetSystemMetrics(SM_CYSCREEN) - (UINT)App.GetHeight()) / 2;
-
-	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
-	MoveWindow
-	(
-		App.handle
-		, centerX, centerY
-		, rect.right - rect.left, rect.bottom - rect.top
-		, TRUE
-	);
+	
 	ShowWindow(App.handle, SW_SHOWNORMAL);
 	SetForegroundWindow(App.handle);
 	SetFocus(App.handle);
 
 	ShowCursor(true);
+	WIN->Load();
 }
 
 void Window::Destroy()

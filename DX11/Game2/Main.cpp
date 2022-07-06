@@ -37,8 +37,6 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, in
 {
 	App.SetAppName(L"Game2");
 	App.SetInstance(instance);
-	App.InitWidthHeight(224.0f * 2.0f, 800.0f);
-
 	WIN->Create();
 	D3D->Create();
 	Main* main = new Main();

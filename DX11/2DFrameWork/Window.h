@@ -13,5 +13,7 @@ public:
 	void	Create();
 	void	Destroy();
 	WPARAM	Run(Scene* main);
+	void	Load();
+	void	Save();
 };
 

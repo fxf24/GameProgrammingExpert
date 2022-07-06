@@ -170,6 +170,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VertexType.h" />
@@ -181,13 +182,16 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Direct3D11.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GOImGui.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="GOSaveLoad.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="VertexType.cpp" />
     <ClCompile Include="Window.cpp" />

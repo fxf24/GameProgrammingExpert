@@ -50,6 +50,9 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>GameObject\Member</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -110,6 +113,15 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>GameObject\Member</Filter>
+    </ClCompile>
+    <ClCompile Include="GOSaveLoad.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GOImGui.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

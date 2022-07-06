@@ -7,9 +7,6 @@ private:
 	Camera*			Cam;
 	Actor*			Sun;
 	Actor*			Grid;
-	Actor*			Temp;
-
-
 public:
 	Main();
 	~Main();
@@ -19,7 +16,4 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
-
-public:
-	void GenerateXML(GameObject* go, Xml::XMLElement* element);
 };
