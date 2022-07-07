@@ -5,7 +5,8 @@ class GameObject : public Transform
 	friend class Actor;
 	//static
 private:
-	static ID3D11Buffer* WBuffer;
+	static ID3D11Buffer*	WBuffer;
+	static GameObject*		axis;
 public:
 	static GameObject* Create(string name = "GameObject");
 	static void CreateStaticMember();
@@ -35,6 +36,8 @@ public:
 
 	//Getter Setter
 };
+
+
 class Actor : public GameObject
 {
 	friend GameObject;

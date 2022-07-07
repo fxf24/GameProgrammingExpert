@@ -78,8 +78,8 @@ void Window::Save()
 {
 	RECT rc;
 	GetWindowRect(App.handle, &rc);
-	App.x = rc.left;
-	App.y = rc.top;
+	App.x = (float)rc.left;
+	App.y = (float)rc.top;
 	ofstream fout;
 	string file = "window.ini";
 	fout.open(file.c_str(), ios::out);

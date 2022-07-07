@@ -23,8 +23,8 @@ Mesh::Mesh()
     vector<VertexPC> v;
     v.push_back(VertexPC(Vector3(0, 1, 0), Color(0.5f, 1.0f, 0.5f)));
 
-    int stackCount = 36;
-    int sliceCount = 72;
+    UINT stackCount = 36;
+    UINT sliceCount = 72;
     float phiStep = PI / stackCount;
     float thetaStep = 2.0f * PI / sliceCount;
 
@@ -53,12 +53,12 @@ Mesh::Mesh()
     v.push_back(VertexPC(Vector3(0, -1, 0), Color(0.5f, 0.0f, 0.5f)));
 
     Vertex = new VertexPC[v.size()];
-    vertexCount = v.size();
+    vertexCount = (UINT)v.size();
     copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPC*>(Vertex, vertexCount));
 
     vector<UINT> vecindices;
 
-    for (UINT i = 1; i <= sliceCount; i++)
+    for (UINT i = 1; i <= (UINT)sliceCount; i++)
     {
         vecindices.push_back(0);
         vecindices.push_back(i + 1);
@@ -81,7 +81,7 @@ Mesh::Mesh()
         }
     }
 
-    UINT southPoleIndex = v.size() - 1;
+    UINT southPoleIndex =(UINT) v.size() - 1;
     baseIndex = southPoleIndex - ringVertexCount;
 
     for (UINT i = 0; i < sliceCount; i++)
@@ -92,7 +92,7 @@ Mesh::Mesh()
     }
 
     this->indices = new UINT[vecindices.size()];
-    indexCount = vecindices.size();
+    indexCount = (UINT)vecindices.size();
     copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(this->indices, indexCount));
 
 

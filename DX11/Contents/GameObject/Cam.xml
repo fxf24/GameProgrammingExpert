@@ -1,9 +1,0 @@
-<Root R="0.5" G="0.5" B="0.5" A="0.5" Name="Camera" Type="2" isVisible="true" isAxis="false">
-    <Cam isOrtho="false" Fov="1.0471976" Near="0.0099999998" Far="100000"/>
-    <Transform>
-        <Position X="-268.99515" Y="239.45462" Z="426.24088"/>
-        <Scale X="1" Y="1" Z="1"/>
-        <Rotation X="0.26700011" Y="2.3560002" Z="0"/>
-    </Transform>
-    <Children Size="0"/>
-</Root>

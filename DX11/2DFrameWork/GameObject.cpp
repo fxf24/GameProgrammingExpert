@@ -7,7 +7,9 @@ GameObject::GameObject()
 	visible = true;
 
 	shader = RESOURCE->LoadShader("1.Cube.hlsl");
-	mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
+	//mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
+	mesh = make_shared<Mesh>();
+
 }
 Actor::Actor()
 {
@@ -92,7 +94,15 @@ void GameObject::Render()
 			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0, 0);
 		}
 	}
+	if (GUI->target == this)
+	{
+		if (!parent)
+			axis->W = axis->S * T;
+		else
+			axis->W = axis->S * T * parent->W;
 
+		axis->Render();
+	}
 
 	for (auto it = children.begin(); it != children.end(); it++)
 	{
@@ -102,6 +112,7 @@ void GameObject::Render()
 
 
 ID3D11Buffer* GameObject::WBuffer = nullptr;
+GameObject* GameObject::axis = nullptr;
 void GameObject::CreateStaticMember()
 {
 	D3D11_BUFFER_DESC desc = { 0 };
@@ -115,11 +126,17 @@ void GameObject::CreateStaticMember()
 	assert(SUCCEEDED(hr));
 
 	D3D->GetDC()->VSSetConstantBuffers(0, 1, &WBuffer);
+
+	axis = new GameObject();
+	axis->mesh = RESOURCE->LoadMesh("1.Transform.mesh");
+	axis->shader = RESOURCE->LoadShader("1.Cube.hlsl");
+	axis->S = Matrix::CreateScale(Vector3(500.0f, 500.0f, 500.0f));
 }
 
 void GameObject::DeleteStaticMember()
 {
 	SafeRelease(WBuffer);
+	SafeDelete(axis);
 }
 
 void GameObject::AddChild(GameObject* child)

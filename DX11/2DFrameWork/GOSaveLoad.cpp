@@ -8,10 +8,8 @@ void Actor::Save(string file)
 	doc->LinkEndChild(ob);
 
 	SaveObject(ob, doc);
-
 	string path = "../Contents/GameObject/" + file;
 	doc->SaveFile(path.c_str());
-
 	SafeDelete(doc);
 }
 
@@ -37,51 +35,46 @@ void Actor::Load(string file)
 void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 {
 	This->SetAttribute("Name", name.c_str());
-	This->SetAttribute("isVisible", visible);
-
-	Xml::XMLElement* Mesh = doc->NewElement("Mesh");
-	This->LinkEndChild(Mesh);
-	Mesh->SetAttribute("File", mesh->file.c_str());
-
-	Xml::XMLElement* Shader = doc->NewElement("Shader");
-	This->LinkEndChild(Shader);
-	Shader->SetAttribute("File", shader->file.c_str());
-
-	Xml::XMLElement* Transform = doc->NewElement("Transform");
-	This->LinkEndChild(Transform);
-
-	Xml::XMLElement* Position = doc->NewElement("Position");
-	Transform->LinkEndChild(Position);
-	Position->SetAttribute("X", position.x);
-	Position->SetAttribute("Y", position.y);
-	Position->SetAttribute("Z", position.z);
-
+	This->SetAttribute("Visible", visible);
+	if (mesh)
+	{
+		Xml::XMLElement* Mesh = doc->NewElement("Mesh");
+		This->LinkEndChild(Mesh);
+		Mesh->SetAttribute("File", mesh->file.c_str());
+	}
+	if (shader)
+	{
+		Xml::XMLElement* Shader = doc->NewElement("Shader");
+		This->LinkEndChild(Shader);
+		Shader->SetAttribute("File", shader->file.c_str());
+	}
+	Xml::XMLElement* Trans = doc->NewElement("Transform");
+	Xml::XMLElement* Pos = doc->NewElement("Position");
 	Xml::XMLElement* Scale = doc->NewElement("Scale");
-	Transform->LinkEndChild(Scale);
+	Xml::XMLElement* Rot = doc->NewElement("Rotation");
+	This->LinkEndChild(Trans);
+	Trans->LinkEndChild(Pos);
+	Trans->LinkEndChild(Scale);
+	Trans->LinkEndChild(Rot);
+	Pos->SetAttribute("X", position.x);
+	Pos->SetAttribute("Y", position.y);
+	Pos->SetAttribute("Z", position.z);
 	Scale->SetAttribute("X", scale.x);
 	Scale->SetAttribute("Y", scale.y);
 	Scale->SetAttribute("Z", scale.z);
-
-	Xml::XMLElement* Rotation = doc->NewElement("Rotation");
-	Transform->LinkEndChild(Rotation);
-	Rotation->SetAttribute("X", rotation.x);
-	Rotation->SetAttribute("Y", rotation.y);
-	Rotation->SetAttribute("Z", rotation.z);
-
-	Xml::XMLElement* Children = doc->NewElement("Children");
-	This->LinkEndChild(Children);
-	Children->SetAttribute("Size", (int)children.size());
-
-	if (children.size() > 0)
+	Rot->SetAttribute("X", rotation.x);
+	Rot->SetAttribute("Y", rotation.y);
+	Rot->SetAttribute("Z", rotation.z);
+	Xml::XMLElement* Chidren = doc->NewElement("Children");
+	This->LinkEndChild(Chidren);
+	Chidren->SetAttribute("Size", (int)children.size());
+	int i = 0;
+	for (auto it = children.begin(); it != children.end(); it++)
 	{
-		int i = 0;
-		for (auto it = children.begin(); it != children.end(); it++)
-		{
-			string child = "Child" + to_string(i++);
-			Xml::XMLElement* Child = doc->NewElement(child.c_str());
-			This->LinkEndChild(Child);
-			it->second->SaveObject(Child, doc);
-		}
+		string temp = "Child" + to_string(i++);
+		Xml::XMLElement* Child = doc->NewElement(temp.c_str());
+		This->LinkEndChild(Child);
+		it->second->SaveObject(Child, doc);
 	}
 }
 
@@ -91,7 +84,7 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 	Xml::XMLElement* transform;
 	string file;
 
-	visible = This->BoolAttribute("isVisible");
+	visible = This->BoolAttribute("Visible");
 
 	if (component = This->FirstChildElement("Mesh"))
 	{
@@ -105,6 +98,7 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		SafeReset(shader);
 		shader = RESOURCE->LoadShader(file);
 	}
+
 
 	component = This->FirstChildElement("Transform");
 	transform = component->FirstChildElement("Position");

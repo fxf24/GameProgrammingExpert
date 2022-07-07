@@ -192,7 +192,7 @@ void Direct3D11::Clear(Color color, ID3D11RenderTargetView* rtv, ID3D11DepthSten
 		dsv = depthStencilView;
 
 	deviceContext->ClearRenderTargetView(rtv, color);
-	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 1);
 	
 }
 

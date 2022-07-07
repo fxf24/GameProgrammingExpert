@@ -16,8 +16,9 @@ void Main::Init()
     Cam = new Camera();
     Camera::main = Cam;
     Grid = Actor::Create();
-    Grid->mesh = RESOURCE->LoadMesh("1.Grid.mesh");
+    Grid->Load("Grid.xml");
     Sun = Actor::Create();
+    Sun->Load("Sun.xml");
 }
 
 void Main::Release()
@@ -35,6 +36,7 @@ void Main::Update()
     ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
     Sun->RenderHierarchy();
+    Grid->RenderHierarchy();
     ImGui::End();
 
 

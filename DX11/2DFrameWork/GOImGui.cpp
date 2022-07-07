@@ -3,6 +3,7 @@
 
 bool GameObject::RenderHierarchy()
 {
+	ImGui::PushID(this);
 	if (ImGui::TreeNode(name.c_str()))
 	{
 		if (ImGui::IsItemToggledOpen() or
@@ -10,19 +11,32 @@ bool GameObject::RenderHierarchy()
 		{
 			GUI->target = this;
 		}
-		static char childName[32] = "None";
-		ImGui::InputText("childName", childName, 32);
+		//ImGui::PopUp
+		
 
-		if (ImGui::Button("addChid"))
+		if (ImGui::Button("addChild"))
 		{
-			AddChild(GameObject::Create(childName));
+			ImGui::OpenPopup("childName");
+			
 		}
+		if (ImGui::BeginPopup("childName"))
+		{
+			static char childName[32] = "None";
+			ImGui::InputText("childName", childName, 32);
+			if (ImGui::Button("Create"))
+			{
+				AddChild(GameObject::Create(childName));
+			}
+			ImGui::EndPopup();
+		}
+
 		ImGui::SameLine();
 		if (ImGui::Button("delete"))
 		{
 			root->DeleteObject(name);
 			GUI->target = nullptr;
 			ImGui::TreePop();
+			ImGui::PopID();
 			return true; //하위자식까지는 접근하지 않기
 		}
 		// l->r
@@ -31,12 +45,14 @@ bool GameObject::RenderHierarchy()
 			if (it->second->RenderHierarchy())
 			{
 				ImGui::TreePop();
+				ImGui::PopID();
 				GUI->target = nullptr;
 				return true;
 			}
 		}
 		ImGui::TreePop();
 	}
+	ImGui::PopID();
 	return false;
 }
 
@@ -49,7 +65,9 @@ void GameObject::RenderDetail()
 		if (ImGui::BeginTabItem("Transform"))
 		{
 			ImGui::DragFloat3("position", (float*)&position,0.05f);
-			ImGui::DragFloat3("rotation", (float*)&rotation, 0.05f, 0.0f, PI * 2.0f);
+			ImGui::SliderAngle("rotationX", &rotation.x);
+			ImGui::SliderAngle("rotationY", &rotation.y);
+			ImGui::SliderAngle("rotationZ", &rotation.z);
 			ImGui::DragFloat3("scale", (float*)&scale, 0.05f);
 			ImGui::EndTabItem();
 		}
@@ -103,8 +121,6 @@ void Actor::RenderDetail()
 				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
 				Load(path);
 			}
-
-
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();

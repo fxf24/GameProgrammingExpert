@@ -28,7 +28,7 @@ void Camera::Update()
 void Camera::Set()
 {
 	proj = Matrix::CreatePerspectiveFieldOfView(
-		fov, w / h, 0.001f, 100000.0f);
+		fov, w / h, 0.001f, 1000.0f);
 
     Matrix TVP = view * proj;
     TVP = TVP.Transpose();

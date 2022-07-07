@@ -42,7 +42,7 @@ using namespace SimpleMath;
 #include "../Libs/ImGui/imgui_internal.h"
 #include "../Libs/ImGui/imgui_impl_dx11.h"
 #include "../Libs/ImGui/imgui_impl_win32.h"
-#pragma comment(lib, "../Libs/ImGui/ImGui.lib")
+#pragma comment(lib, "../Libs/ImGui/example_win32_directx11.lib")
 
 //Dialog
 #include "../Libs/ImGui/dirent.h"

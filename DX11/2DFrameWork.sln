@@ -48,30 +48,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{852E6C92-D
 		Contents\Mesh\1.Transform.mesh = Contents\Mesh\1.Transform.mesh
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{74B610B8-761D-43C2-A5E3-C5695A953DC2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{BFA27AB7-9C4D-442D-AF74-F2966E3816EC}"
 	ProjectSection(SolutionItems) = preProject
-		Contents\GameObject\Billboard.xml = Contents\GameObject\Billboard.xml
-		Contents\GameObject\Blur.xml = Contents\GameObject\Blur.xml
-		Contents\GameObject\box.xml = Contents\GameObject\box.xml
-		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
-		Contents\GameObject\Cam2.xml = Contents\GameObject\Cam2.xml
-		Contents\GameObject\CubeMan.xml = Contents\GameObject\CubeMan.xml
 		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
-		Contents\GameObject\Line.xml = Contents\GameObject\Line.xml
-		Contents\GameObject\Map.xml = Contents\GameObject\Map.xml
-		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
-		Contents\GameObject\Model.xml = Contents\GameObject\Model.xml
-		Contents\GameObject\Plane.xml = Contents\GameObject\Plane.xml
-		Contents\GameObject\Pop.xml = Contents\GameObject\Pop.xml
-		Contents\GameObject\PostEffect.xml = Contents\GameObject\PostEffect.xml
-		Contents\GameObject\Rain.xml = Contents\GameObject\Rain.xml
-		Contents\GameObject\SkySphere.xml = Contents\GameObject\SkySphere.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
-		Contents\GameObject\SpotLight.xml = Contents\GameObject\SpotLight.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
-		Contents\GameObject\Terrain.xml = Contents\GameObject\Terrain.xml
-		Contents\GameObject\UI.xml = Contents\GameObject\UI.xml
-		Contents\GameObject\UI2.xml = Contents\GameObject\UI2.xml
 	EndProjectSection
 EndProject
 Global
