@@ -77,8 +77,7 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		int i = 0;
 		for (auto it = children.begin(); it != children.end(); it++)
 		{
-			string child = "Child" + to_string(i);
-			i++;
+			string child = "Child" + to_string(i++);
 			Xml::XMLElement* Child = doc->NewElement(child.c_str());
 			This->LinkEndChild(Child);
 			it->second->SaveObject(Child, doc);
