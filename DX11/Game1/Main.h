@@ -7,6 +7,9 @@ private:
 	Camera*			Cam;
 	Actor*			Sun;
 	Actor*			Grid;
+	float			armLegSwing, neckSwing;
+	bool			state;
+
 public:
 	Main();
 	~Main();

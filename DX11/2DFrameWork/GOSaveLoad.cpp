@@ -110,6 +110,7 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 	scale.x = transform->FloatAttribute("X");
 	scale.y = transform->FloatAttribute("Y");
 	scale.z = transform->FloatAttribute("Z");
+
 	transform = component->FirstChildElement("Rotation");
 	rotation.x = transform->FloatAttribute("X");
 	rotation.y = transform->FloatAttribute("Y");
