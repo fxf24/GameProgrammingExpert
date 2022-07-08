@@ -16,13 +16,11 @@ void Main::Init()
     Cam = new Camera();
     Camera::main = Cam;
     Grid = Actor::Create();
-    Grid->Load("Grid.xml");
+    Grid->LoadFile("Grid.xml");
     Sun = Actor::Create();
-    Sun->Load("CubeMan.xml");
+    Sun->LoadFile("Sun.xml");
 
-    state = true;
-    neckSwing = 0.0f;
-    armLegSwing = 0.0f;
+    cubeMan = new CubeMan();
 }
 
 void Main::Release()
@@ -30,6 +28,7 @@ void Main::Release()
     RESOURCE->ReleaseAll();
     Sun->Release();
     Grid->Release();
+    cubeMan->Release();
 }
 
 
@@ -41,57 +40,14 @@ void Main::Update()
     ImGui::Begin("Hierarchy");
     Sun->RenderHierarchy();
     Grid->RenderHierarchy();
+    cubeMan->RenderHierarchy();
+
     ImGui::End();
 
-    if (INPUT->KeyPress(VK_UP))
-    {
-        Sun->Find("Body")->position -= Sun->GetForward() * DELTA * 10.0f;
-       
-        Sun->Find("LLegJoint")->rotation.x = sinf(armLegSwing * TORADIAN) / 4.0f;
-        Sun->Find("RLegJoint")->rotation.x = -sinf(armLegSwing * TORADIAN) / 4.0f;
-        Sun->Find("LSholder")->rotation.x = -sinf(armLegSwing * TORADIAN) / 4.0f;
-        Sun->Find("RSholder")->rotation.x = sinf(armLegSwing * TORADIAN) / 4.0f;
-        armLegSwing += DELTA * 500.0f;
-        Sun->Find("Neck")->rotation.y = 0.0f;
-        state = false;
-    }
-    else if (INPUT->KeyPress(VK_DOWN))
-    {
-        Sun->Find("Body")->position += Sun->GetForward() * DELTA * 10.0f;
 
-        Sun->Find("LLegJoint")->rotation.x = sinf(armLegSwing * TORADIAN) / 4.0f;
-        Sun->Find("RLegJoint")->rotation.x = -sinf(armLegSwing * TORADIAN) / 4.0f;
-        Sun->Find("LSholder")->rotation.x = -sinf(armLegSwing * TORADIAN) / 4.0f;
-        Sun->Find("RSholder")->rotation.x = sinf(armLegSwing * TORADIAN) / 4.0f;
-        armLegSwing += DELTA * 500.0f;
-        Sun->Find("Neck")->rotation.y = 0.0f;
-        state = false;
-    }
-    else 
-        state = true;
-
-    if (INPUT->KeyPress(VK_LEFT))
-    {
-        Sun->Find("Body")->rotation.y -= 1.0f * TORADIAN;
-    }
-    if (INPUT->KeyPress(VK_RIGHT))
-    {
-        Sun->Find("Body")->rotation.y += 1.0f * TORADIAN;
-    }
-
-    if (state)
-    {
-        Sun->Find("Neck")->rotation.y = sinf(neckSwing * 1.0f * TORADIAN) / 3.0f;
-        neckSwing += DELTA * 500.0f;
-        Sun->Find("LLegJoint")->rotation.x = 0.0f;
-        Sun->Find("RLegJoint")->rotation.x = 0.0f;
-        Sun->Find("LSholder")->rotation.x = 0.0f;
-        Sun->Find("RSholder")->rotation.x = 0.0f;
-    }
-
-    //swing = 0.0f;
     Cam->Update();
     Grid->Update();
+    cubeMan->Update();
     Sun->Update();
 }
 
@@ -104,6 +60,8 @@ void Main::Render()
     Cam->Set();
     Grid->Render();
     Sun->Render();
+    cubeMan->Render();
+
 }
 
 void Main::ResizeScreen()

@@ -14,6 +14,7 @@ public:
 	//member
 public:
 	string						name;	//key
+	bool						visible;
 	class Actor*				root;
 	GameObject*					parent;
 	map<string, GameObject*>	children;
@@ -23,16 +24,16 @@ public:
 	//Method
 protected:
 	GameObject();
-	virtual ~GameObject();
-	void  SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
-	void  LoadObject(Xml::XMLElement* This);
+	virtual	~GameObject();
+	void			SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
+	void			LoadObject(Xml::XMLElement* This);
 public:
-	void Release();
-	virtual void Update();
-	virtual void Render();
-	void AddChild(GameObject* child);
-	bool RenderHierarchy();
-	virtual void RenderDetail();
+	void			Release();
+	virtual void	Update();
+	virtual void	Render();
+	void			AddChild(GameObject* child);
+	bool			RenderHierarchy();
+	virtual void	RenderDetail();
 
 	//Getter Setter
 };
@@ -45,7 +46,7 @@ private:
 	unordered_map<string, GameObject*> obList;
 public:
 	string			file;
-private:
+protected:
 	Actor();
 public:
 	void			Release();
@@ -53,8 +54,8 @@ public:
 	static Actor*	Create(string name = "Actor");
 	GameObject*		Find(string name);
 	bool            DeleteObject(string Name);
-	void			Save(string file);
-	void			Load(string file);
-	void			RenderDetail();
+	void			SaveFile(string file);
+	void			LoadFile(string file);
+	void			RenderDetail() override;
 };
 

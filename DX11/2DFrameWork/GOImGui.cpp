@@ -1,5 +1,13 @@
 #include "framework.h"
 
+void Transform::RenderImGui()
+{
+	ImGui::DragFloat3("position", (float*)&position, 0.05f);
+	ImGui::SliderAngle("rotationX", &rotation.x);
+	ImGui::SliderAngle("rotationY", &rotation.y);
+	ImGui::SliderAngle("rotationZ", &rotation.z);
+	ImGui::DragFloat3("scale", (float*)&scale, 0.05f);
+}
 
 bool GameObject::RenderHierarchy()
 {
@@ -11,13 +19,9 @@ bool GameObject::RenderHierarchy()
 		{
 			GUI->target = this;
 		}
-		//ImGui::PopUp
-		
-
 		if (ImGui::Button("addChild"))
 		{
 			ImGui::OpenPopup("childName");
-			
 		}
 		if (ImGui::BeginPopup("childName"))
 		{
@@ -64,11 +68,7 @@ void GameObject::RenderDetail()
 	{
 		if (ImGui::BeginTabItem("Transform"))
 		{
-			ImGui::DragFloat3("position", (float*)&position,0.05f);
-			ImGui::SliderAngle("rotationX", &rotation.x);
-			ImGui::SliderAngle("rotationY", &rotation.y);
-			ImGui::SliderAngle("rotationZ", &rotation.z);
-			ImGui::DragFloat3("scale", (float*)&scale, 0.05f);
+			Transform::RenderImGui();
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Mesh"))
@@ -89,7 +89,7 @@ void GameObject::RenderDetail()
 			{
 				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
 				SafeReset(mesh);
-				mesh = RESOURCE->LoadMesh(path);
+				mesh = RESOURCE->meshes.Load(path);
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Delete"))
@@ -98,6 +98,27 @@ void GameObject::RenderDetail()
 			}
 			ImGui::EndTabItem();
 		}
+		if (ImGui::BeginTabItem("Shader"))
+		{
+			if (shader)
+			{
+				ImGui::Text(shader->file.c_str());
+			}
+			if (GUI->FileImGui("Load", "Load Shader",
+				".hlsl", "../Shaders"))
+			{
+				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				SafeReset(shader);
+				shader = RESOURCE->shaders.Load(path);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete"))
+			{
+				SafeReset(shader);
+			}
+			ImGui::EndTabItem();
+		}
+
 		ImGui::EndTabBar();
 	}
 }
@@ -112,19 +133,17 @@ void Actor::RenderDetail()
 				".xml", "../Contents/GameObject"))
 			{
 				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
-				Save(path);
+				SaveFile(path);
 			}
 			ImGui::SameLine();
 			if (GUI->FileImGui("Load", "Load Actor",
 				".xml", "../Contents/GameObject"))
 			{
 				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
-				Load(path);
+				LoadFile(path);
 			}
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();
 	}
-
-
 }

@@ -1,8 +1,8 @@
 #include "Framework.h"
 
 Shader::Shader():
-geometryShader(nullptr), vertexLayout(nullptr), vertexShader(nullptr)
-, pixelShader(nullptr)
+ vertexLayout(nullptr), vertexShader(nullptr)
+, pixelShader(nullptr)//,geometryShader(nullptr)
 {
     
 }
@@ -12,13 +12,13 @@ Shader::~Shader()
     SafeRelease(vertexLayout);
     SafeRelease(vertexShader);
     SafeRelease(pixelShader);
-    SafeRelease(geometryShader);
+    //SafeRelease(geometryShader);
 }
 
-void Shader::LoadFile(string file, VertexType vertextype)
+void Shader::LoadFile(string file)
 {
     this->file = file;
-    this->vertextype = vertextype;
+    this->vertextype = (VertexType)(file[0]-48);
     //컴파일결과를 담아놓는 인터페이스
     ID3D10Blob* VsBlob;
     ID3D10Blob* PsBlob;
@@ -140,11 +140,6 @@ void Shader::LoadFile(string file, VertexType vertextype)
         break;
     }
 
-    
-
-
-    
-
     D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
         "PS", "ps_5_0", flags, 0, &PsBlob, nullptr);
 
@@ -155,30 +150,30 @@ void Shader::LoadFile(string file, VertexType vertextype)
     SafeRelease(PsBlob);
 }
 
-void Shader::LoadGeometryFile(string file)
-{
-    SafeRelease(geometryShader);
-
-    ID3D10Blob* GsBlob;
-
-    wstring path = L"../Shaders/" + Util::ToWString(file);
-
-    DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
-
-
-    D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
-        "GS", "gs_5_0", flags, 0, &GsBlob, nullptr);
-
-    D3D->GetDevice()->CreateGeometryShader(GsBlob->GetBufferPointer(), GsBlob->GetBufferSize(),
-        nullptr, &geometryShader);
-
-    SafeRelease(GsBlob);
-}
+//void Shader::LoadGeometryFile(string file)
+//{
+//    SafeRelease(geometryShader);
+//
+//    ID3D10Blob* GsBlob;
+//
+//    wstring path = L"../Shaders/" + Util::ToWString(file);
+//
+//    DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+//
+//
+//    D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+//        "GS", "gs_5_0", flags, 0, &GsBlob, nullptr);
+//
+//    D3D->GetDevice()->CreateGeometryShader(GsBlob->GetBufferPointer(), GsBlob->GetBufferSize(),
+//        nullptr, &geometryShader);
+//
+//    SafeRelease(GsBlob);
+//}
 
 void Shader::Set()
 {
     D3D->GetDC()->VSSetShader(vertexShader, 0, 0);
     D3D->GetDC()->PSSetShader(pixelShader, 0, 0);
-    D3D->GetDC()->GSSetShader(geometryShader, 0, 0);
+    //D3D->GetDC()->GSSetShader(geometryShader, 0, 0);
     D3D->GetDC()->IASetInputLayout(vertexLayout);
 }

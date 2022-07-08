@@ -29,3 +29,4 @@ void Transform::Update(GameObject* parent)
 		W *= parent->W;
 	}
 }
+

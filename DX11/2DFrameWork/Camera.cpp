@@ -98,10 +98,11 @@ void Camera::ControlMainCam(float scalar)
 		Vector3 Rot;
 		Rot.x = INPUT->movePosition.y * 0.001f;
 		Rot.y = INPUT->movePosition.x * 0.001f;
-		//Rot.z = INPUT->movePosition.z * 0.001f;
-		//main->position += Rot;
 		main->rotation += Rot;
 	}
 	//휠키로 카메라 앞뒤조절
 	main->position+= main->GetForward() * INPUT->wheelMoveValue.z * DELTA * scalar;
+
+
+
 }

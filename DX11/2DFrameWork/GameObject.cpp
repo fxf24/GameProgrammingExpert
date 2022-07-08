@@ -6,10 +6,11 @@ GameObject::GameObject()
 	root = nullptr;
 	visible = true;
 
-	shader = RESOURCE->LoadShader("1.Cube.hlsl");
+	shader = RESOURCE->shaders.Load("1.Cube.hlsl");
+		// = RESOURCE->LoadShader("1.Cube.hlsl");
 	//mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
-	mesh = make_shared<Mesh>();
-
+	//mesh = make_shared<Mesh>();
+	mesh = nullptr;
 }
 Actor::Actor()
 {
@@ -87,9 +88,9 @@ void GameObject::Render()
 	
 	if (visible)
 	{
-		shader->Set();
-		if (mesh)
+		if (mesh and shader)
 		{
+			shader->Set();
 			mesh->Set();
 			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0, 0);
 		}
@@ -128,8 +129,8 @@ void GameObject::CreateStaticMember()
 	D3D->GetDC()->VSSetConstantBuffers(0, 1, &WBuffer);
 
 	axis = new GameObject();
-	axis->mesh = RESOURCE->LoadMesh("1.Transform.mesh");
-	axis->shader = RESOURCE->LoadShader("1.Cube.hlsl");
+	axis->mesh = RESOURCE->meshes.Load("1.Transform.mesh");
+	axis->shader  = RESOURCE->shaders.Load("1.Cube.hlsl");
 	axis->S = Matrix::CreateScale(Vector3(500.0f, 500.0f, 500.0f));
 }
 

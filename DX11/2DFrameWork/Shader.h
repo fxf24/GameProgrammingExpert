@@ -6,12 +6,12 @@ class Shader
     ID3D11PixelShader*      pixelShader;
    
 public:
-    ID3D11GeometryShader*   geometryShader;
+    //ID3D11GeometryShader*   geometryShader;
     VertexType              vertextype;
     string                  file;
     Shader();
     ~Shader();
-    void LoadFile(string file, VertexType vertextype);
-    void LoadGeometryFile(string file);
+    void LoadFile(string file);
+    //void LoadGeometryFile(string file);
     void Set();
 };

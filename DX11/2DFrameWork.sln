@@ -50,7 +50,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{852E6C92-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{BFA27AB7-9C4D-442D-AF74-F2966E3816EC}"
 	ProjectSection(SolutionItems) = preProject
-		Contents\GameObject\CubeMan.xml = Contents\GameObject\CubeMan.xml
 		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
