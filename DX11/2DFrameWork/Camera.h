@@ -19,6 +19,6 @@ public:
 
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
-	static void ControlMainCam(float scalar = 10.0f);
+	void ControlMainCam(float scalar = 10.0f);
 };
 

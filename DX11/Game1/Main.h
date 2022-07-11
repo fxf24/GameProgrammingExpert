@@ -8,6 +8,7 @@ private:
 	Actor*			Sun;
 	Actor*			Grid;
 	CubeMan*		cubeMan;
+	Actor* center;
 public:
 	Main();
 	~Main();

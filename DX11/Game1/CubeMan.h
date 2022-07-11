@@ -12,6 +12,7 @@ private:
 	PlayerState state;
 	float		shaketime;
 	float		mul;
+	float		gravity;
 
 private:
 	void Idle();

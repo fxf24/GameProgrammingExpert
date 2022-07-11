@@ -6,6 +6,7 @@ Camera::Camera()
     x = y = 0.0f;
     w = App.GetWidth();
     h = App.GetHeight();
+	position.z = -10.0f;
 }
 
 Camera::~Camera()
@@ -22,7 +23,7 @@ void Camera::Update()
     viewport.height = h;
 
     
-    view = RT.Invert();
+	view = RT.Invert();
     
 }
 void Camera::Set()
@@ -102,7 +103,4 @@ void Camera::ControlMainCam(float scalar)
 	}
 	//휠키로 카메라 앞뒤조절
 	main->position+= main->GetForward() * INPUT->wheelMoveValue.z * DELTA * scalar;
-
-
-
 }

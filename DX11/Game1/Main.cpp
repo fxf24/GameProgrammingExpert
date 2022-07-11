@@ -13,12 +13,18 @@ Main::~Main()
 
 void Main::Init()
 {
+    center = Actor::Create();
+    GameObject* CamBone = GameObject::Create("CamBone");
+    center->AddChild(CamBone);
+
     Cam = new Camera();
+    Cam->name = "Cam";
+    CamBone->AddChild(Cam);
     Camera::main = Cam;
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
-    Sun = Actor::Create();
-    Sun->LoadFile("Sun.xml");
+    //Sun = Actor::Create();
+    //Sun->LoadFile("Sun.xml");
 
     cubeMan = new CubeMan();
 }
@@ -26,7 +32,7 @@ void Main::Init()
 void Main::Release()
 {
     RESOURCE->ReleaseAll();
-    Sun->Release();
+    //Sun->Release();
     Grid->Release();
     cubeMan->Release();
 }
@@ -34,21 +40,20 @@ void Main::Release()
 
 void Main::Update()
 {
-    Camera::ControlMainCam();
+    Camera::main->ControlMainCam();
 
     ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
-    Sun->RenderHierarchy();
+    //Sun->RenderHierarchy();
     Grid->RenderHierarchy();
     cubeMan->RenderHierarchy();
-
+    center->RenderHierarchy();
     ImGui::End();
-
 
     Cam->Update();
     Grid->Update();
     cubeMan->Update();
-    Sun->Update();
+    //Sun->Update();
 }
 
 void Main::LateUpdate()
@@ -59,7 +64,7 @@ void Main::Render()
 {
     Cam->Set();
     Grid->Render();
-    Sun->Render();
+    //Sun->Render();
     cubeMan->Render();
 
 }
