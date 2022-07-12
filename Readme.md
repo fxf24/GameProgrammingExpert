@@ -194,10 +194,24 @@
 ### 포워드, 디퍼드 렌더링
 * 포워드 렌더링
 	* 전통적인 렌더링 방식
-	*  
+	*  3D공간에 존재하는 폴리곤을 픽셀화 하여, 그 픽셀마다 쉐이딩과 라이팅 연산을 더하는 방식으로 묘사한다.
+	*	
 * 디퍼드 렌더링
 	* 
-### 퐁 쉐이딩 (Pong Shading), PBR (Physically Based Rendering)
-* 퐁 쉐이딩
+### 퐁 쉐이딩 (Phong Shading), PBR (Physically Based Rendering)
+* 퐁 쉐이딩 (Phong Shading)
+	* 포면의 점들간의 보간작업을 진행하는 테크닉을 가리키는 용어이다.
 	* Ambient + Diffuse + Specular = Phong Reflection
-	* 
+		* Phong Reflection :빛의 양을 계산해 내는 작업.
+	* 각 픽셀에 대한 노말벡터를 구하고, 이 노말벡터 값을 Phong reflection 모델에서 요구하는 노말벡터 값에 대입하여 빛의 세기를 얻을 수 있다.
+* PBR (Physically Base Rendering)
+	* 포면의 재질에 따른 빛의 반사가 물리적으로 어떻게 이루어지는지를 시뮬레이션해서 그래픽을 표현하는 기법
+	* 물체의 거칠기(Roughness)에 따라 정반사와 난반사의 비율이 바뀌는데, 보통 표면이 거칠수록 난반사의 비율이 커지고 반대로 표면이 매끄러울수록(Glossiness) 정반사의 비율이 커진다.
+	* Specular / Glossiness
+		* 재질의 기본색 : Diffuse Texture
+		* 재질의 반사광 : Specular Texture
+		* 재질의 거칠기 : Glossiness Texture
+	* Metalic / Roughness
+		* 재질의 기본색 : Base Color Texture
+		* 재질의 반사광 : Metallic Texture
+		* 재질의 거칠기 : Roughness Texture
