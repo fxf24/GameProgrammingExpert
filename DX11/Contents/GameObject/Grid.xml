@@ -1,4 +1,4 @@
-<Root Name="Grid" Visible="true">
+<Root Name="Grid" Visible="true" ObType="1">
     <Mesh File="1.Grid.mesh"/>
     <Shader File="1.Cube.hlsl"/>
     <Transform>

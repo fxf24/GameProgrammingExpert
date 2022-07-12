@@ -1,4 +1,4 @@
-<Root Name="Root" Visible="true">
+<Root Name="Root" Visible="true" ObType="1">
     <Mesh File="1.Sphere.mesh"/>
     <Shader File="1.Cube.hlsl"/>
     <Transform>

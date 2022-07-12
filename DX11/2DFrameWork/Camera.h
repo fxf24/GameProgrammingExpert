@@ -9,19 +9,19 @@ public:
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
 	static void ControlMainCam(float scalar = 10.0f);
+	static Camera* Create(string name = "Camera");
 private:
-	Viewport	viewport;
 	Matrix		view,proj;
 public:
-	float fov,nearZ,farZ;
-	float x, y, w, h;
+	bool		ortho;
+	Viewport	viewport;
+	float		fov,nearZ,farZ, width, height;
+protected:
 	Camera();
 	~Camera();
-	void Update() override;
-	void Set();
-	//상수버퍼
-	
-	void SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
-	void LoadObject(Xml::XMLElement* This);
+public:
+	void	Update() override;
+	void	Set();
+	void	RenderDetail();
 };
 

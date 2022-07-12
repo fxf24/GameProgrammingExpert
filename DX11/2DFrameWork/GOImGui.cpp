@@ -163,3 +163,29 @@ void Actor::RenderDetail()
 		ImGui::EndTabBar();
 	}
 }
+
+
+
+void Camera::RenderDetail()
+{
+	Actor::RenderDetail();
+	if (ImGui::BeginTabBar("MyTabBar3"))
+	{
+		if (ImGui::BeginTabItem("Camera"))
+		{
+			ImGui::Checkbox("ortho", &ortho);
+			ImGui::SliderAngle("fov", &fov,0,180.0f);
+			ImGui::DragFloat("nearZ", &nearZ, 0.05f,0.00001f);
+			ImGui::DragFloat("farZ", &farZ, 0.05f, 0.00001f,1.0f);
+			ImGui::DragFloat("width", &width, 0.05f,1.0f);
+			ImGui::DragFloat("height", &height, 0.05f, 1.0f);
+			ImGui::DragFloat("x", &viewport.x, 0.05f, 0.0f);
+			ImGui::DragFloat("y", &viewport.y, 0.05f, 0.0f);
+			ImGui::DragFloat("w", &viewport.width, 0.05f, 1.0f);
+			ImGui::DragFloat("h", &viewport.height, 0.05f, 1.0f);
+
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
+}

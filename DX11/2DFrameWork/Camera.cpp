@@ -3,40 +3,47 @@
 Camera::Camera()
 {
 	fov = 60.0f * TORADIAN;
-	x = y = 0.0f;
-	w = App.GetWidth();
-	h = App.GetHeight();
+	viewport.x = 0.0f;
+	viewport.y = 0.0f;
+	width= App.GetWidth();
+	height = App.GetHeight();
+	viewport.width = App.GetWidth();
+	viewport.height = App.GetHeight();
 	nearZ = 0.001f;
-	farZ = 100000.0f;
+	farZ = 1000.0f;
+	type = ObType::Camera;
+	ortho = false;
 }
-
 Camera::~Camera()
 {
+}
+
+Camera* Camera::Create(string name)
+{
+	Camera* temp = new Camera();
+	temp->name = name;
+	return temp;
 }
 
 void Camera::Update()
 {
     GameObject::Update();
-
-	viewport.x = x;
-	viewport.y = y;
-	viewport.width = w;
-	viewport.height = h;
-
-    view = RT.Invert();
 }
 void Camera::Set()
 {
-	proj = Matrix::CreatePerspectiveFieldOfView(
-		fov, w / h, nearZ, farZ);
+	view = RT.Invert();
+	if (ortho)
+		proj = Matrix::CreateOrthographic(width, height, nearZ, farZ);
+	else
+		proj = Matrix::CreatePerspectiveFieldOfView(fov, width / height,nearZ, farZ);
+	Matrix TVP = view * proj;
+	TVP = TVP.Transpose();
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	D3D->GetDC()->Map(VPBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	memcpy_s(mappedResource.pData, sizeof(Matrix), &TVP, sizeof(Matrix));
+	D3D->GetDC()->Unmap(VPBuffer, 0);
 
-    Matrix TVP = view * proj;
-    TVP = TVP.Transpose();
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    D3D->GetDC()->Map(VPBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    memcpy_s(mappedResource.pData, sizeof(Matrix), &TVP, sizeof(Matrix));
-    D3D->GetDC()->Unmap(VPBuffer, 0);
-
+	
     D3D->GetDC()->RSSetViewports(1, viewport.Get11());
 }
 
@@ -102,3 +109,4 @@ void Camera::ControlMainCam(float scalar)
 	//휠키로 카메라 앞뒤조절
 	main->MoveWorldPos(main->GetForward() * INPUT->wheelMoveValue.z * DELTA);
 }
+

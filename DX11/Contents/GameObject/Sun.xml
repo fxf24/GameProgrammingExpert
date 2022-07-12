@@ -1,4 +1,4 @@
-<Root Name="Sun" Visible="true">
+<Root Name="Sun" Visible="true" ObType="1">
     <Mesh File="1.Sphere.mesh"/>
     <Shader File="1.Cube.hlsl"/>
     <Transform>
@@ -7,7 +7,7 @@
         <Rotation X="-0.41887903" Y="-0.33161256" Z="1.2740904"/>
     </Transform>
     <Children Size="2"/>
-    <Child0 Name="EarthBone" Visible="true">
+    <Child0 Name="EarthBone" Visible="true" ObType="0">
         <Mesh File="1.Point.mesh"/>
         <Shader File="1.Cube.hlsl"/>
         <Transform>
@@ -16,7 +16,7 @@
             <Rotation X="-5" Y="276.43201" Z="0"/>
         </Transform>
         <Children Size="1"/>
-        <Child0 Name="Earth" Visible="true">
+        <Child0 Name="Earth" Visible="true" ObType="0">
             <Mesh File="1.Sphere.mesh"/>
             <Shader File="1.Cube.hlsl"/>
             <Transform>
@@ -25,7 +25,7 @@
                 <Rotation X="-1.1" Y="-309.23199" Z="-0.89999998"/>
             </Transform>
             <Children Size="1"/>
-            <Child0 Name="Moon" Visible="true">
+            <Child0 Name="Moon" Visible="true" ObType="0">
                 <Mesh File="1.Sphere.mesh"/>
                 <Shader File="1.Cube.hlsl"/>
                 <Transform>
@@ -37,7 +37,7 @@
             </Child0>
         </Child0>
     </Child0>
-    <Child1 Name="MarsBone" Visible="true">
+    <Child1 Name="MarsBone" Visible="true" ObType="0">
         <Mesh File="1.Point.mesh"/>
         <Shader File="1.Cube.hlsl"/>
         <Transform>
@@ -46,7 +46,7 @@
             <Rotation X="0" Y="0" Z="0"/>
         </Transform>
         <Children Size="1"/>
-        <Child0 Name="Mars" Visible="true">
+        <Child0 Name="Mars" Visible="true" ObType="0">
             <Mesh File="1.Sphere.mesh"/>
             <Shader File="1.Cube.hlsl"/>
             <Transform>

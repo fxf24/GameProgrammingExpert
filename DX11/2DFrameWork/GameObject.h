@@ -1,9 +1,16 @@
 #pragma once
 
+enum class ObType
+{
+	GameObject,
+	Actor,
+	Camera
+
+};
+
 class GameObject : public Transform
 {
 	friend class Actor;
-	friend class Camera;
 	//static
 private:
 	static ID3D11Buffer*	WBuffer;
@@ -13,6 +20,8 @@ public:
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
 	//member
+protected:
+	ObType						type;
 public:
 	string						name;	//key
 	bool						visible;
@@ -25,8 +34,8 @@ public:
 protected:
 	GameObject();
 	virtual	~GameObject();
-	void			SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
-	void			LoadObject(Xml::XMLElement* This);
+	void	SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
+	void	LoadObject(Xml::XMLElement* This);
 public:
 	void			Release();
 	virtual void	Update();
@@ -56,6 +65,6 @@ public:
 	bool            DeleteObject(string Name);
 	void			SaveFile(string file);
 	void			LoadFile(string file);
-	void			RenderDetail() override;
+	virtual void	RenderDetail();
 };
 

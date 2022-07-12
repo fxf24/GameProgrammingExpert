@@ -2,6 +2,7 @@
 
 GameObject::GameObject()
 {
+	type = ObType::GameObject;
 	root = nullptr;
 	visible = true;
 	shader = RESOURCE->shaders.Load("1.Cube.hlsl");
@@ -12,6 +13,7 @@ GameObject::GameObject()
 }
 Actor::Actor()
 {
+	type = ObType::Actor;
 	root = this;
 }
 

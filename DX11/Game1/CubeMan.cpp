@@ -2,7 +2,7 @@
 
 CubeMan::CubeMan()
 {
-	LoadFile("New_Character.xml");
+	LoadFile("Character2.xml");
 	state = PlayerState::IDLE;
 	shaketime = 0.0f;
 	mul = 1.0f;
@@ -12,7 +12,7 @@ CubeMan::CubeMan()
 void CubeMan::Update()
 {
 	shaketime += DELTA;
-	if (shaketime > 0.25f)
+	if (shaketime > 0.5f)
 	{
 		mul *= -1.0f;
 		shaketime -= 0.5f;
@@ -60,10 +60,6 @@ void CubeMan::Idle()
 	//°í°³Á£±â,Â÷·ÇÀÚ¼¼À¯Áö
 	Find("Head")->rotation.y += mul * DELTA;
 
-	Find("LeftPelvisMuscle")->rotation.x = 0.0f;
-	Find("RightPelvisMuscle")->rotation.x = 0.0f;
-	Find("LeftDeltoidMuscle")->rotation.x = 0.0f;
-	Find("RightDeltoidMuscle")->rotation.x = 0.0f;
 	//idle to walk
 	if (INPUT->KeyDown(VK_UP))
 	{
@@ -78,14 +74,10 @@ void CubeMan::Walk()
 	//ÆÈ´Ù¸®ÈÖÁ£±â,°í°³°íÁ¤
 	Find("Head")->rotation.y = 0.0f;
 
-	Find("LeftPelvisMuscle")->rotation.x -= mul * DELTA;
-	Find("RightPelvisMuscle")->rotation.x += mul * DELTA;
-	Find("LeftDeltoidMuscle")->rotation.x -= mul * DELTA;
-	Find("RightDeltoidMuscle")->rotation.x += mul * DELTA;
 	//walk to idle
 	if (INPUT->KeyUp(VK_UP))
 	{
 		state = PlayerState::IDLE;
-		shaketime = 0.0f;
+		shaketime = 0.25f;
 	}
 }
