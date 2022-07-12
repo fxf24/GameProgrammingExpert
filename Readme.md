@@ -187,3 +187,17 @@
 * Viewport는 화면의 사각형 모양의 viewing region이다.
 * ![](https://blog.kakaocdn.net/dn/UuhjK/btq18D9IB2Y/mZ7xMAPglOK8yj1JcaASZk/img.png)
 
+### 법선벡터
+* 법선벡터는 물체의 표면에서 수직으로 튀어나온 벡터이다.
+* 종법선, 접선벡터
+
+### 포워드, 디퍼드 렌더링
+* 포워드 렌더링
+	* 전통적인 렌더링 방식
+	*  
+* 디퍼드 렌더링
+	* 
+### 퐁 쉐이딩 (Pong Shading), PBR (Physically Based Rendering)
+* 퐁 쉐이딩
+	* Ambient + Diffuse + Specular = Phong Reflection
+	* 
