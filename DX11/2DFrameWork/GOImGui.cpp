@@ -2,7 +2,23 @@
 
 void Transform::RenderImGui()
 {
-	ImGui::DragFloat3("position", (float*)&position, 0.05f);
+	ImGui::Checkbox("WorldPos", &worldPos);
+	if (worldPos)
+	{
+		//get
+		Vector3 wol = GetWorldPos();
+		if (ImGui::DragFloat3("WorldPos", (float*)&wol, 0.05f))
+			//set
+			SetWorldPos(wol);
+	}
+	else
+	{
+		Vector3 loc = GetLocalPos();
+		if (ImGui::DragFloat3("LocalPos", (float*)&loc, 0.05f))
+			SetLocalPos(loc);
+	}
+
+
 	ImGui::SliderAngle("rotationX", &rotation.x);
 	ImGui::SliderAngle("rotationY", &rotation.y);
 	ImGui::SliderAngle("rotationZ", &rotation.z);

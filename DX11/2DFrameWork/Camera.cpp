@@ -2,11 +2,12 @@
 
 Camera::Camera()
 {
-    fov = 60.0f * TORADIAN;
-    x = y = 0.0f;
-    w = App.GetWidth();
-    h = App.GetHeight();
-	position.z = -10.0f;
+	fov = 60.0f * TORADIAN;
+	x = y = 0.0f;
+	w = App.GetWidth();
+	h = App.GetHeight();
+	nearZ = 0.001f;
+	farZ = 100000.0f;
 }
 
 Camera::~Camera()
@@ -17,19 +18,17 @@ void Camera::Update()
 {
     GameObject::Update();
 
-    viewport.x = x;
-    viewport.y = y;
-    viewport.width = w;
-    viewport.height = h;
+	viewport.x = x;
+	viewport.y = y;
+	viewport.width = w;
+	viewport.height = h;
 
-    
-	view = RT.Invert();
-    
+    view = RT.Invert();
 }
 void Camera::Set()
 {
 	proj = Matrix::CreatePerspectiveFieldOfView(
-		fov, w / h, 0.001f, 1000.0f);
+		fov, w / h, nearZ, farZ);
 
     Matrix TVP = view * proj;
     TVP = TVP.Transpose();
@@ -40,7 +39,6 @@ void Camera::Set()
 
     D3D->GetDC()->RSSetViewports(1, viewport.Get11());
 }
-
 
 ID3D11Buffer* Camera::VPBuffer = nullptr;
 Camera* Camera::main = nullptr;
@@ -70,27 +68,27 @@ void Camera::ControlMainCam(float scalar)
 	if (INPUT->KeyPress('W'))
 	{
 		//                                  초당100움직임 xyz/s
-		main->position += main->GetForward() * DELTA * scalar;
+		main->MoveWorldPos(main->GetForward() * DELTA * scalar);
 	}
 	if (INPUT->KeyPress('S'))
 	{
-		main->position -= main->GetForward() * DELTA * scalar;
+		main->MoveWorldPos(-main->GetForward() * DELTA * scalar);
 	}
 	if (INPUT->KeyPress('A'))
 	{
-		main->position -= main->GetRight() * DELTA * scalar;
+		main->MoveWorldPos(-main->GetRight() * DELTA * scalar);
 	}
 	if (INPUT->KeyPress('D'))
 	{
-		main->position += main->GetRight() * DELTA * scalar;
+		main->MoveWorldPos(main->GetRight() * DELTA * scalar);
 	}
 	if (INPUT->KeyPress('Q'))
 	{
-		main->position += main->GetUp() * DELTA * scalar;
+		main->MoveWorldPos(-main->GetUp() * DELTA * scalar);
 	}
 	if (INPUT->KeyPress('E'))
 	{
-		main->position -= main->GetUp() * DELTA * scalar;
+		main->MoveWorldPos(main->GetUp() * DELTA * scalar);
 	}
 
 	//마우스 우클릭시
@@ -102,5 +100,5 @@ void Camera::ControlMainCam(float scalar)
 		main->rotation += Rot;
 	}
 	//휠키로 카메라 앞뒤조절
-	main->position+= main->GetForward() * INPUT->wheelMoveValue.z * DELTA * scalar;
+	main->MoveWorldPos(main->GetForward() * INPUT->wheelMoveValue.z * DELTA);
 }

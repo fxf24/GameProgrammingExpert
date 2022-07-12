@@ -59,7 +59,10 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		string temp = "Child" + to_string(i++);
 		Xml::XMLElement* Child = doc->NewElement(temp.c_str());
 		This->LinkEndChild(Child);
-		it->second->SaveObject(Child, doc);
+		if (it->second->name == "Cam")
+			((Camera*)it->second)->SaveObject(Child, doc);
+		else
+			it->second->SaveObject(Child, doc);
 	}
 }
 
@@ -92,9 +95,19 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		string Tag = "Child" + to_string(i);
 		Xml::XMLElement* ob = This->FirstChildElement(Tag.c_str());
 		string childName = ob->Attribute("Name");
-		GameObject* temp = GameObject::Create(childName);
-		AddChild(temp);
-		temp->LoadObject(ob);
+		if (childName == "Cam")
+		{
+			Camera* temp = new Camera();
+			temp->name = childName;
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
+		else
+		{
+			GameObject* temp = GameObject::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}	
 	}
 }
 void Transform::SaveTransform(Xml::XMLElement* This, Xml::XMLDocument* doc)
@@ -137,3 +150,71 @@ void Transform::LoadTransform(Xml::XMLElement* This)
 	rotation.z = transform->FloatAttribute("Z");
 }
 
+void Camera::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
+{
+	This->SetAttribute("Name", name.c_str());
+
+	Transform::SaveTransform(This, doc);
+
+	Xml::XMLElement* Camera = doc->NewElement("Camera");
+	Xml::XMLElement* Sight = doc->NewElement("Sight");
+	Xml::XMLElement* Size = doc->NewElement("Size");
+	This->LinkEndChild(Camera);
+	Camera->LinkEndChild(Sight);
+	Camera->LinkEndChild(Size);
+
+	Sight->SetAttribute("fov", fov);
+	Sight->SetAttribute("nearZ", nearZ);
+	Sight->SetAttribute("farZ", farZ);
+
+	Size->SetAttribute("x", x);
+	Size->SetAttribute("y", y);
+	Size->SetAttribute("w", w);
+	Size->SetAttribute("h", h);
+
+	Xml::XMLElement* Chidren = doc->NewElement("Children");
+	This->LinkEndChild(Chidren);
+	Chidren->SetAttribute("Size", (int)children.size());
+	int i = 0;
+	for (auto it = children.begin(); it != children.end(); it++)
+	{
+		string temp = "Child" + to_string(i++);
+		Xml::XMLElement* Child = doc->NewElement(temp.c_str());
+		This->LinkEndChild(Child);
+		it->second->SaveObject(Child, doc);
+	}
+}
+
+void Camera::LoadObject(Xml::XMLElement* This)
+{
+	Xml::XMLElement* component;
+	string file;
+
+	Transform::LoadTransform(This);
+
+	Xml::XMLElement* Camera;
+	component = This->FirstChildElement("Camera");
+	Camera = component->FirstChildElement("Sight");
+	fov = Camera->FloatAttribute("fov");
+	nearZ = Camera->FloatAttribute("nearZ");
+	farZ = Camera->FloatAttribute("farZ");
+	Camera = component->FirstChildElement("Size");
+	x = Camera->FloatAttribute("x");
+	y = Camera->FloatAttribute("y");
+	w = Camera->FloatAttribute("w");
+	h = Camera->FloatAttribute("h");
+
+	Camera::main = this;
+	component = This->FirstChildElement("Children");
+	int size = component->IntAttribute("Size");
+
+	for (int i = 0; i != size; i++)
+	{
+		string Tag = "Child" + to_string(i);
+		Xml::XMLElement* ob = This->FirstChildElement(Tag.c_str());
+		string childName = ob->Attribute("Name");
+		GameObject* temp = GameObject::Create(childName);
+		AddChild(temp);
+		temp->LoadObject(ob);
+	}
+}

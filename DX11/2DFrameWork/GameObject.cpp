@@ -2,10 +2,8 @@
 
 GameObject::GameObject()
 {
-	parent = nullptr;
 	root = nullptr;
 	visible = true;
-
 	shader = RESOURCE->shaders.Load("1.Cube.hlsl");
 		// = RESOURCE->LoadShader("1.Cube.hlsl");
 	//mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
@@ -73,7 +71,7 @@ Actor* Actor::Create(string name)
 
 void GameObject::Update()
 {
-	Transform::Update(parent);
+	Transform::Update();
 	for (auto it = children.begin(); it != children.end(); it++)
 		it->second->Update();
 }
@@ -99,6 +97,8 @@ void GameObject::Render()
 	{
 		if (!parent)
 			axis->W = axis->S * T;
+		else if (worldPos)
+			axis->W = axis->S * Matrix::CreateTranslation(GetWorldPos());
 		else
 			axis->W = axis->S * T * parent->W;
 

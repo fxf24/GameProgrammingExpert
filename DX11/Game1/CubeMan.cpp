@@ -2,10 +2,11 @@
 
 CubeMan::CubeMan()
 {
-	LoadFile("CubeMan.xml");
+	LoadFile("New_Character.xml");
 	state = PlayerState::IDLE;
 	shaketime = 0.0f;
 	mul = 1.0f;
+	jumping = false;
 }
 
 void CubeMan::Update()
@@ -16,6 +17,8 @@ void CubeMan::Update()
 		mul *= -1.0f;
 		shaketime -= 0.5f;
 	}
+
+
 	switch (state)
 	{
 	case PlayerState::IDLE:
@@ -25,7 +28,6 @@ void CubeMan::Update()
 		Walk();
 		break;
 	}
-
 	if (INPUT->KeyPress(VK_LEFT))
 	{
 		rotation.y -= DELTA;
@@ -34,29 +36,34 @@ void CubeMan::Update()
 	{
 		rotation.y += DELTA;
 	}
-	if (INPUT->KeyDown(VK_SPACE))
+	if (INPUT->KeyDown(VK_SPACE)and not jumping)
 	{
-		gravity = 30.0f;
-		if (position.y <= 0.0f)
-			position.y = 0.1f;
+		jumping = true;
+		gravity = -30.0f;
 	}
 
-	if (position.y > 0.0f)
+	if (jumping)
 	{
-		position.y += gravity * DELTA;
-		gravity -= 60.0f * DELTA;
+		MoveWorldPos(-UP * gravity * DELTA);
+		gravity += 30.0f * DELTA;
+		if (gravity > 30.0f)
+		{
+			jumping = false;
+		}
 	}
+
 	GameObject::Update();
 }
 
 void CubeMan::Idle()
 {
-	Find("Neck")->rotation.y += mul * DELTA;
+	//°í°³Á£±â,Â÷·ÇÀÚ¼¼À¯Áö
+	Find("Head")->rotation.y += mul * DELTA;
 
-	Find("LLegJoint")->rotation.x = 0.0f;
-	Find("RLegJoint")->rotation.x = 0.0f;
-	Find("LSholder")->rotation.x  = 0.0f;
-	Find("RSholder")->rotation.x  = 0.0f;
+	Find("LeftPelvisMuscle")->rotation.x = 0.0f;
+	Find("RightPelvisMuscle")->rotation.x = 0.0f;
+	Find("LeftDeltoidMuscle")->rotation.x = 0.0f;
+	Find("RightDeltoidMuscle")->rotation.x = 0.0f;
 	//idle to walk
 	if (INPUT->KeyDown(VK_UP))
 	{
@@ -67,13 +74,15 @@ void CubeMan::Idle()
 
 void CubeMan::Walk()
 {
-	position -= GetForward() * 10.0f * DELTA;
-	Find("Neck")->rotation.y = 0.0f;
+	position += GetForward() * 10.0f * DELTA;
+	//ÆÈ´Ù¸®ÈÖÁ£±â,°í°³°íÁ¤
+	Find("Head")->rotation.y = 0.0f;
 
-	Find("LLegJoint")->rotation.x += mul * DELTA;
-	Find("RLegJoint")->rotation.x -= mul * DELTA;
-	Find("LSholder")->rotation.x  -= mul * DELTA ;
-	Find("RSholder")->rotation.x  += mul * DELTA ;
+	Find("LeftPelvisMuscle")->rotation.x -= mul * DELTA;
+	Find("RightPelvisMuscle")->rotation.x += mul * DELTA;
+	Find("LeftDeltoidMuscle")->rotation.x -= mul * DELTA;
+	Find("RightDeltoidMuscle")->rotation.x += mul * DELTA;
+	//walk to idle
 	if (INPUT->KeyUp(VK_UP))
 	{
 		state = PlayerState::IDLE;

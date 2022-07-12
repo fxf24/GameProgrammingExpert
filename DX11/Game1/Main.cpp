@@ -13,20 +13,19 @@ Main::~Main()
 
 void Main::Init()
 {
-    center = Actor::Create();
-    GameObject* CamBone = GameObject::Create("CamBone");
-    center->AddChild(CamBone);
-
-    Cam = new Camera();
+    /*Cam = new Camera();
     Cam->name = "Cam";
-    CamBone->AddChild(Cam);
-    Camera::main = Cam;
+    Camera::main = Cam;*/
+    
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
-    //Sun = Actor::Create();
-    //Sun->LoadFile("Sun.xml");
+   /* Sun = Actor::Create();
+    Sun->LoadFile("Sun.xml");*/
 
     cubeMan = new CubeMan();
+    //Cam = (Camera*)cubeMan->Find("Cam");
+    //cubeMan->AddChild(Cam);
+    //Cam->SaveFile()
 }
 
 void Main::Release()
@@ -40,20 +39,20 @@ void Main::Release()
 
 void Main::Update()
 {
-    Camera::main->ControlMainCam();
+    Camera::ControlMainCam();
 
     ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
     //Sun->RenderHierarchy();
     Grid->RenderHierarchy();
     cubeMan->RenderHierarchy();
-    center->RenderHierarchy();
     ImGui::End();
 
-    Cam->Update();
+
+    Camera::main->Update();
     Grid->Update();
-    cubeMan->Update();
     //Sun->Update();
+    cubeMan->Update();
 }
 
 void Main::LateUpdate()
@@ -62,17 +61,16 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
-    Cam->Set();
+    Camera::main->Set();
     Grid->Render();
     //Sun->Render();
     cubeMan->Render();
-
 }
 
 void Main::ResizeScreen()
 {
-    Cam->w = App.GetWidth();
-    Cam->h = App.GetHeight();
+    Camera::main->w = App.GetWidth();
+    Camera::main->h = App.GetHeight();
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)

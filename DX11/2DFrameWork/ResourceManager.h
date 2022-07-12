@@ -37,4 +37,3 @@ public:
 	Resource<Shader> shaders;
 	void ReleaseAll();
 };
-

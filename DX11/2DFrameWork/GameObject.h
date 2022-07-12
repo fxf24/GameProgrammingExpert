@@ -3,6 +3,7 @@
 class GameObject : public Transform
 {
 	friend class Actor;
+	friend class Camera;
 	//static
 private:
 	static ID3D11Buffer*	WBuffer;
@@ -16,7 +17,6 @@ public:
 	string						name;	//key
 	bool						visible;
 	class Actor*				root;
-	GameObject*					parent;
 	map<string, GameObject*>	children;
 	shared_ptr<Shader>			shader;
 	shared_ptr<Mesh>			mesh;

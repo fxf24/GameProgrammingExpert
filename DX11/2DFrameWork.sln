@@ -48,10 +48,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{852E6C92-D
 		Contents\Mesh\1.Transform.mesh = Contents\Mesh\1.Transform.mesh
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{8868F4AA-1148-492A-9DA1-CD0F2E76514B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{43EE15CB-EF69-4C6A-A9DD-389C87A90E1E}"
 	ProjectSection(SolutionItems) = preProject
-		Contents\GameObject\CubeMan.xml = Contents\GameObject\CubeMan.xml
+		Contents\GameObject\Character.xml = Contents\GameObject\Character.xml
 		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
+		Contents\GameObject\New_Character.xml = Contents\GameObject\New_Character.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
 	EndProjectSection
