@@ -6,22 +6,23 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    vertexType = VertexType::PC;
+    vertexType = VertexType::PCN;
     primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 
-    VertexPC* Vertex;
-    byteWidth = sizeof(VertexPC);
+    VertexPCN* Vertex;
+    byteWidth = sizeof(VertexPCN);
     vertexCount = 360;
     indexCount = 360*2;
-    file = "1.Circle.mesh";
+    file = "2.Sphere.mesh";
 
     //xyz -1 ~ 1
     //-> + 1 -> /2 ->
     // 0 ~ 1
 
-    vector<VertexPC> v;
-    v.push_back(VertexPC(Vector3(0, 1, 0), Color(0.5f, 1.0f, 0.5f)));
+    vector<VertexPCN> v;
+    v.push_back(VertexPCN(Vector3(0, 1, 0), Color(0.5f, 1.0f, 0.5f),
+        Vector3(0, 1, 0)));
 
     UINT stackCount = 36;
     UINT sliceCount = 72;
@@ -46,15 +47,16 @@ Mesh::Mesh()
             c.x = (p.x + 1.0f) / 2.0f;
             c.y = (p.y + 1.0f) / 2.0f;
             c.z = (p.z + 1.0f) / 2.0f;
-            v.push_back(VertexPC(p, c));
+            v.push_back(VertexPCN(p, c, p));
         }
 
     }
-    v.push_back(VertexPC(Vector3(0, -1, 0), Color(0.5f, 0.0f, 0.5f)));
+    v.push_back(VertexPCN(Vector3(0, -1, 0), Color(0.5f, 0.0f, 0.5f),
+        Vector3(0, -1, 0)));
 
-    Vertex = new VertexPC[v.size()];
+    Vertex = new VertexPCN[v.size()];
     vertexCount = (UINT)v.size();
-    copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPC*>(Vertex, vertexCount));
+    copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPCN*>(Vertex, vertexCount));
 
     vector<UINT> vecindices;
 

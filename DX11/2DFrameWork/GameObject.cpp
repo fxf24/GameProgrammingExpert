@@ -5,11 +5,12 @@ GameObject::GameObject()
 	type = ObType::GameObject;
 	root = nullptr;
 	visible = true;
-	shader = RESOURCE->shaders.Load("1.Cube.hlsl");
+	//shader = RESOURCE->shaders.Load("1.Cube.hlsl");
 		// = RESOURCE->LoadShader("1.Cube.hlsl");
 	//mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
 	//mesh = make_shared<Mesh>();
 	mesh = nullptr;
+	shader = nullptr;
 }
 Actor::Actor()
 {
