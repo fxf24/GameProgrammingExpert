@@ -31,18 +31,16 @@ PixelInput VS(VertexInput input)
 float4 PS(PixelInput input) : SV_TARGET
 {
     float4 BaseColor = input.Color;
-    float3 DirectionLight = -normalize(float3(1, -1, 0));
+    float3 DirectionLight = -normalize(float3(0, -1, 0));
     float3 Normal = normalize(input.Normal);
     float Diffuse = saturate(dot(DirectionLight, Normal));
     
     float3 RecflectLight = reflect(DirectionLight, Normal);
     float3 ViewDir = normalize(ViewPos.xyz - input.wPostion.xyz);
-    float Specular;
-    //Diffuse = saturate(dot(ViewDir, Normal));
+    float Specular = pow(saturate(dot(-RecflectLight, ViewDir)), 32) * 0.5f;
     
-    //            a   + d
-    BaseColor *= 0.2f + Diffuse;
-    
+    // ambient + diffuse + specular
+    BaseColor *= 0.2f + Diffuse + Specular;
     
     return BaseColor;
 }
