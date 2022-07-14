@@ -1,6 +1,5 @@
 #pragma once
 
-
 class Main : public Scene
 {
 private:

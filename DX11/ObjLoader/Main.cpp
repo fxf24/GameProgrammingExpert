@@ -56,6 +56,13 @@ void Main::Update()
         ifstream fin;
         fin.open(file, ios::in);
         if (!fin.is_open()) return;
+
+        vector<VertexPCN> v;
+        vector<Vector3> position;
+        vector<Vector3> normal;
+
+        vector<UINT> vecindices;
+
         while (!fin.eof())
         {
             string Input;
@@ -75,26 +82,53 @@ void Main::Update()
                     {
 
                     }
-                    if (Input[1] == 'n')
+                    else if (Input[1] == 'n')
                     {
-
+                        Vector3 no;
+                        fin >> no.x >> no.y >> no.z;
+                        normal.push_back(no);
                     }
                     else
                     {
                         Vector3 pos;
                         fin >> pos.x >> pos.y >> pos.z;
+                        position.push_back(pos);
                     }
                 }
                 //f¿œ∂ß ex) 1/10/1 posision/uv/normal index number
                 else 
                 {
-
+                    string index;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        fin >> index;
+                        vecindices.push_back(index[0]-'0' -1);
+                    }
                 }
             }
         }
 
+        for (int i = 0; i < position.size(); i++)
+        {
+            v.push_back(VertexPCN(position[i], Color(0.5f, 0.5f, 0.5f), normal[i]));
+        }
+
+        int vertexCount = v.size();
+        int indexCount = vecindices.size();
+
+        VertexPCN* Vertex = new VertexPCN[vertexCount];
+        copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPCN*>(Vertex, vertexCount));
+
+        UINT* indices = new UINT[indexCount];
+        copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(indices, indexCount));
+
+        void* vertices = (void*)Vertex;
         Actor* temp = Actor::Create(path);
-        //temp->mesh = new Mesh();
+        Mesh* mesh = new Mesh(vertices, (UINT)vertexCount, indices, (UINT)indexCount, VertexType::PCN);
+        mesh->file = "2." + path + ".mesh";
+        mesh->SaveFile(mesh->file);
+        temp->mesh = RESOURCE->meshes.Load("2." + path + ".mesh");
+        temp->shader = RESOURCE->shaders.Load("2.Cube.hlsl");
         List.push_back(temp);
 
         /*SafeReset(mesh);
