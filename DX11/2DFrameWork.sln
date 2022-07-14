@@ -63,6 +63,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{8B34
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjLoader", "ObjLoader\ObjLoader.vcxproj", "{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Obj", "Obj", "{1C935081-C208-430D-B94F-B35A1059C594}"
+	ProjectSection(SolutionItems) = preProject
+		Obj\box.obj = Obj\box.obj
+		Obj\Map.obj = Obj\Map.obj
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -95,6 +106,14 @@ Global
 		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x64.Build.0 = Release|x64
 		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x86.ActiveCfg = Release|Win32
 		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x86.Build.0 = Release|Win32
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Debug|x64.ActiveCfg = Debug|x64
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Debug|x64.Build.0 = Debug|x64
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Debug|x86.ActiveCfg = Debug|Win32
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Debug|x86.Build.0 = Debug|Win32
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Release|x64.ActiveCfg = Release|x64
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Release|x64.Build.0 = Release|x64
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Release|x86.ActiveCfg = Release|Win32
+		{859E9A2A-DF44-4BAE-AB50-BDAF24C63C52}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

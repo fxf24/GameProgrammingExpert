@@ -137,6 +137,12 @@ Mesh::Mesh()
     //SaveFile(file);
 }
 
+Mesh::Mesh(void* vertices, UINT vertexCount, UINT* indices, UINT indexCount, VertexType type)
+{
+    vertexType = type;
+    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+}
+
 
 Mesh::~Mesh()
 {
