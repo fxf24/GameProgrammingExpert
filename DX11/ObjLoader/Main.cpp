@@ -70,7 +70,6 @@ void Main::Update()
             {
                 if (Input[0] == 'v')
                 {
-
                     if (Input[1] == 't')
                     {
 
