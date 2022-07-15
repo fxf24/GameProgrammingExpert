@@ -141,6 +141,55 @@ Mesh::Mesh(void* vertices, UINT vertexCount, UINT* indices, UINT indexCount, Ver
 {
     vertexType = type;
     primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+    switch (type)
+    {
+    case VertexType::P:
+        byteWidth = sizeof(VertexP);
+        break;
+    case VertexType::PC:
+        byteWidth = sizeof(VertexPC);
+        break;
+    case VertexType::PCN:
+        byteWidth = sizeof(VertexPCN);
+        break;
+    }
+    ////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////
+    this->vertices = vertices;
+    this->vertexCount = vertexCount;
+    this->indices = indices;
+    this->indexCount = indexCount;
+
+    //CreateVertexBuffer
+    {
+        D3D11_BUFFER_DESC desc;
+        desc = { 0 };
+        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.ByteWidth = byteWidth * vertexCount;
+        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = vertices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+
+    //Create Index Buffer
+    {
+        D3D11_BUFFER_DESC desc;
+        ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+        desc.ByteWidth = sizeof(UINT) * indexCount;
+        desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = indices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
+        assert(SUCCEEDED(hr));
+    }
 }
 
 
