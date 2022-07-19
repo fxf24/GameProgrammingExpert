@@ -25,7 +25,8 @@ public:
     string                  file;
 public:
     Mesh();
-    Mesh(void* vertices, UINT vertexCount, UINT* indices, UINT indexCount, VertexType type);
+    Mesh(void* vertices, UINT vertexCount, UINT* indices,
+        UINT indexCount, VertexType type);
     ~Mesh();
 
     void Set(); // binding

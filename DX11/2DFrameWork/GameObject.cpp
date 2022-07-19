@@ -93,6 +93,10 @@ void GameObject::Render()
 		{
 			shader->Set();
 			mesh->Set();
+
+			if (texture)
+				texture->Set(1);
+
 			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0, 0);
 		}
 	}

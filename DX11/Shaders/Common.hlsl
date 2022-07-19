@@ -11,3 +11,6 @@ cbuffer PS_ViewPos : register(b0)
 {
     float4 ViewPos;
 }
+
+Texture2D TextureD : register(t1);
+SamplerState SamplerD : register(s1);

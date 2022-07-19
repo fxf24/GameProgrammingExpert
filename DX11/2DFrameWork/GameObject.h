@@ -29,7 +29,7 @@ public:
 	map<string, GameObject*>	children;
 	shared_ptr<Shader>			shader;
 	shared_ptr<Mesh>			mesh;
-
+	shared_ptr<Texture>			texture;
 	//Method
 protected:
 	GameObject();

@@ -1,10 +1,11 @@
 #pragma once
 
+
 class Main : public Scene
 {
 private:
-	Camera* Cam;
-	Actor* Grid;
+	Camera*		Cam;
+	Actor*		Grid;
 	vector<Actor*> List;
 
 public:
@@ -16,4 +17,5 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
+	void ReadMaterial(string file);
 };

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Main.h"
 
+
 Main::Main()
 {
 
@@ -13,19 +14,19 @@ Main::~Main()
 
 void Main::Init()
 {
-    Grid = Actor::Create();
-    Grid->LoadFile("Grid.xml");
-
     Cam = Camera::Create();
     Cam->LoadFile("Cam.xml");
     Camera::main = Cam;
+
+    Grid = Actor::Create();
+    Grid->LoadFile("Grid.xml");
 }
 
 void Main::Release()
 {
     RESOURCE->ReleaseAll();
+    Cam->Release();
     Grid->Release();
-
 }
 
 
@@ -35,13 +36,14 @@ void Main::Update()
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
-    Grid->RenderHierarchy();
     Cam->RenderHierarchy();
+    Grid->RenderHierarchy();
     for (size_t i = 0; i < List.size(); i++)
     {
         List[i]->RenderHierarchy();
     }
 
+    //Cam->RenderHierarchy();
     ImGui::End();
 
     ImGui::Begin("ObjLoader");
@@ -50,90 +52,138 @@ void Main::Update()
         ".obj", "../Obj"))
     {
         string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
-        
         string file = "../Obj/" + path;
         //파일 열기
         ifstream fin;
         fin.open(file, ios::in);
         if (!fin.is_open()) return;
 
-        vector<VertexPCN> v;
-        vector<Vector3> position;
-        vector<Vector3> normal;
-
-        vector<UINT> vecindices;
+        vector<Vector3> P;
+        vector<Vector2> T;
+        vector<Vector3> N;
+        vector<UINT> Indices;
+        vector<VertexPTN> Vertices;
+        string objName = path.substr(0, path.size() - 4);
+        Actor* temp = Actor::Create(objName);
+        List.push_back(temp);
 
         while (!fin.eof())
         {
             string Input;
             fin >> Input;
-
-            if (Input[0] != 'v' && Input[0] != 'f')
+            if (Input[0] == 'm')
             {
-                char c[128];
-                fin.getline(c, 128);
+                string mtl;
+                fin >> mtl;
+                mtl = mtl.substr(2, mtl.size());
+                ReadMaterial("../Obj/" + mtl);
+            }
+            else if (Input[0] == 'g')
+            {
+                static int gCount = -1;
+                static string name;
+                gCount++;
+                if (gCount == 1)
+                {
+                    fin >> name;
+                    
+
+                }
+                if (gCount == 2)
+                {
+                    //버텍랑 인덱스가지고 게임오브젝트 만들기
+                    GameObject* temp2
+                        = GameObject::Create(name);
+
+                    VertexPTN* copyVertex =
+                        new VertexPTN[Vertices.size()];
+                    
+                    copy(Vertices.begin(), Vertices.end(),
+                        stdext::checked_array_iterator<VertexPTN*>
+                        (copyVertex, Vertices.size()));
+
+                    UINT* copyIdx =
+                        new UINT[Indices.size()];
+
+                    copy(Indices.begin(), Indices.end(),
+                        stdext::checked_array_iterator<UINT*>
+                        (copyIdx, Indices.size()));
+
+               
+                    temp2->mesh
+                        = make_shared<Mesh>(copyVertex, Vertices.size(),
+                            copyIdx, Indices.size(),VertexType::PTN);
+                    temp2->mesh->file = name;
+                    temp->AddChild(temp2);
+                    temp2->shader = make_shared<Shader>();
+                    temp2->shader->LoadFile("3.cube.hlsl");
+
+                    temp2->texture = make_shared<Texture>();
+                    temp2->texture->LoadFile("box.jpg");
+
+                    Vertices.clear();
+                    Indices.clear();
+
+                    gCount = 0;
+                }
+            }
+            else if (Input[0] == 'v')
+            {
+                if (Input[1] == 't')
+                {
+                    Vector2 uv;
+                    float temp;
+                    fin >> uv.x >> uv.y >> temp;
+                    T.push_back(uv);
+                }
+                else if (Input[1] == 'n')
+                {
+                    Vector3 nor;
+                    fin >> nor.x >> nor.y >> nor.z;
+                    N.push_back(nor);
+                }
+                else
+                {
+                    Vector3 pos;
+                    fin >> pos.x >> pos.y >> pos.z;
+                    P.push_back(pos);
+                }
+            }
+            else if (Input[0] == 'f')
+            {
+                int idx[3]; char slash;
+                VertexPTN ptn;
+                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                ptn.position = P[idx[0] - 1];
+                ptn.uv = T[idx[1] - 1];
+                ptn.normal = N[idx[2] - 1];
+                Indices.push_back(Vertices.size());
+                Vertices.push_back(ptn);
+
+                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                ptn.position = P[idx[0] - 1];
+                ptn.uv = T[idx[1] - 1];
+                ptn.normal = N[idx[2] - 1];
+                Indices.push_back(Vertices.size());
+                Vertices.push_back(ptn);
+
+                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                ptn.position = P[idx[0] - 1];
+                ptn.uv = T[idx[1] - 1];
+                ptn.normal = N[idx[2] - 1];
+                Indices.push_back(Vertices.size());
+                Vertices.push_back(ptn);
             }
             else
             {
-                if (Input[0] == 'v')
-                {
-                    if (Input[1] == 't')
-                    {
-
-                    }
-                    else if (Input[1] == 'n')
-                    {
-                        Vector3 no;
-                        fin >> no.x >> no.y >> no.z;
-                        normal.push_back(no);
-                    }
-                    else
-                    {
-                        Vector3 pos;
-                        fin >> pos.x >> pos.y >> pos.z;
-                        position.push_back(pos);
-                    }
-                }
-                //f일때 ex) 1/10/1 posision/uv/normal index number
-                else 
-                {
-                    string index;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        fin >> index;
-                        vecindices.push_back(index[0]-'0' -1);
-                    }
-                }
+                //한줄 건너뛰기
+                char c[128];
+                fin.getline(c, 128);
             }
         }
 
-        for (int i = 0; i < position.size(); i++)
-        {
-            v.push_back(VertexPCN(position[i], Color(0.5f, 0.5f, 0.5f), normal[i]));
-        }
-
-        int vertexCount = v.size();
-        int indexCount = vecindices.size();
-
-        VertexPCN* Vertex = new VertexPCN[vertexCount];
-        copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPCN*>(Vertex, vertexCount));
-
-        UINT* indices = new UINT[indexCount];
-        copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(indices, indexCount));
-
-        void* vertices = (void*)Vertex;
-        Actor* temp = Actor::Create(path);
-        Mesh* mesh = new Mesh(vertices, (UINT)vertexCount, indices, (UINT)indexCount, VertexType::PCN);
-        mesh->file = "2." + path + ".mesh";
-        mesh->SaveFile(mesh->file);
-        temp->mesh = RESOURCE->meshes.Load("2." + path + ".mesh");
-        temp->shader = RESOURCE->shaders.Load("2.Cube.hlsl");
-        List.push_back(temp);
-
-        /*SafeReset(mesh);
-        mesh = RESOURCE->meshes.Load(path);*/
+        
     }
-
     ImGui::End();
 
     Cam->Update();
@@ -164,6 +214,22 @@ void Main::ResizeScreen()
     Cam->height = App.GetHeight();
     Cam->viewport.width = App.GetWidth();
     Cam->viewport.height = App.GetHeight();
+}
+
+void Main::ReadMaterial(string file)
+{
+    ifstream fin;
+    fin.open(file, ios::in);
+    if (!fin.is_open()) return;
+
+    while (!fin.eof())
+    {
+        string Input;
+        fin >> Input;
+        if (Input[0] == 'm')
+        {
+        }
+    }
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)

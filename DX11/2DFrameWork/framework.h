@@ -85,6 +85,7 @@ extern Application App;//Extern Global
 #include "Shader.h"
 #include "Mesh.h"
 #include "Transform.h"
+#include "Texture.h"
 #include "ResourceManager.h"
 
 #include "GameObject.h"

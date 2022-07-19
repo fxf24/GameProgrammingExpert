@@ -134,7 +134,23 @@ void GameObject::RenderDetail()
 			}
 			ImGui::EndTabItem();
 		}
+		if (ImGui::BeginTabItem("Material"))
+		{
+			if (texture)
+				texture->RenderDetail();
 
+			if (GUI->FileImGui("Load DiffuseMap", "Load DiffuseMap",
+				".dds,.jpg,.tga,.png,.bmp", "../Contents/Texture"))
+			{
+				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				Util::Replace(&path, "\\", "/");
+				size_t tok = path.find("/Texture/") + 9;
+				path = path.substr(tok, path.length());
+				SafeReset(texture);
+				texture = RESOURCE->textures.Load(path);
+			}
+			ImGui::EndTabItem();
+		}
 		ImGui::EndTabBar();
 	}
 }
