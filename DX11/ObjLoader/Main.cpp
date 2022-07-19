@@ -66,6 +66,7 @@ void Main::Update()
         string objName = path.substr(0, path.size() - 4);
         Actor* temp = Actor::Create(objName);
         List.push_back(temp);
+        string usemtl;
 
         while (!fin.eof())
         {
@@ -78,6 +79,10 @@ void Main::Update()
                 mtl = mtl.substr(2, mtl.size());
                 ReadMaterial("../Obj/" + mtl);
             }
+            else if (Input[0] == 'u')
+            {
+                fin >> usemtl;
+            }
             else if (Input[0] == 'g')
             {
                 static int gCount = -1;
@@ -86,8 +91,6 @@ void Main::Update()
                 if (gCount == 1)
                 {
                     fin >> name;
-                    
-
                 }
                 if (gCount == 2)
                 {
@@ -116,10 +119,10 @@ void Main::Update()
                     temp2->mesh->file = name;
                     temp->AddChild(temp2);
                     temp2->shader = make_shared<Shader>();
-                    temp2->shader->LoadFile("3.cube.hlsl");
+                    temp2->shader->LoadFile("3.Cube.hlsl");
 
                     temp2->texture = make_shared<Texture>();
-                    temp2->texture->LoadFile("box.jpg");
+                    temp2->texture->LoadFile(material[usemtl]);
 
                     Vertices.clear();
                     Indices.clear();
@@ -153,26 +156,15 @@ void Main::Update()
             {
                 int idx[3]; char slash;
                 VertexPTN ptn;
-                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
-                ptn.position = P[idx[0] - 1];
-                ptn.uv = T[idx[1] - 1];
-                ptn.normal = N[idx[2] - 1];
-                Indices.push_back(Vertices.size());
-                Vertices.push_back(ptn);
-
-                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
-                ptn.position = P[idx[0] - 1];
-                ptn.uv = T[idx[1] - 1];
-                ptn.normal = N[idx[2] - 1];
-                Indices.push_back(Vertices.size());
-                Vertices.push_back(ptn);
-
-                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
-                ptn.position = P[idx[0] - 1];
-                ptn.uv = T[idx[1] - 1];
-                ptn.normal = N[idx[2] - 1];
-                Indices.push_back(Vertices.size());
-                Vertices.push_back(ptn);
+                for (int i = 0; i < 3; i++)
+                {
+                    fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                    ptn.position = P[idx[0] - 1];
+                    ptn.uv = T[idx[1] - 1];
+                    ptn.normal = N[idx[2] - 1];
+                    Indices.push_back(Vertices.size());
+                    Vertices.push_back(ptn);
+                }
             }
             else
             {
@@ -181,8 +173,6 @@ void Main::Update()
                 fin.getline(c, 128);
             }
         }
-
-        
     }
     ImGui::End();
 
@@ -222,13 +212,22 @@ void Main::ReadMaterial(string file)
     fin.open(file, ios::in);
     if (!fin.is_open()) return;
 
+    string newmtl;
+    string map_kd;
     while (!fin.eof())
     {
         string Input;
         fin >> Input;
+        if (Input[0] == 'n')
+        {
+            fin >> newmtl;
+        }
         if (Input[0] == 'm')
         {
+            fin >> map_kd;
+            material[newmtl] = map_kd;
         }
+        
     }
 }
 

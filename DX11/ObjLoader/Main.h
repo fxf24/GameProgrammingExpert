@@ -7,6 +7,7 @@ private:
 	Camera*		Cam;
 	Actor*		Grid;
 	vector<Actor*> List;
+	map<string, string> material;
 
 public:
 	Main();
