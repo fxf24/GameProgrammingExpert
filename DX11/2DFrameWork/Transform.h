@@ -19,7 +19,7 @@ public:
 	Transform();
 	virtual ~Transform() {};
     virtual void	Update();
-	void	        RenderImGui();
+	void	        RenderDetail();
 public:
 	Vector3 GetRight() { return Vector3(RT._11, RT._12, RT._13); }
 	Vector3 GetUp() { return Vector3(RT._21, RT._22, RT._23); }

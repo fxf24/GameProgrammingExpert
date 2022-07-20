@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Main.h"
-
+#include <shlwapi.h>
+#pragma comment(lib, "shlwapi.lib")
 
 Main::Main()
 {
@@ -53,6 +54,8 @@ void Main::Update()
     {
         string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
         string file = "../Obj/" + path;
+        string usemtl;
+        string mtlfile;
         //파일 열기
         ifstream fin;
         fin.open(file, ios::in);
@@ -63,10 +66,9 @@ void Main::Update()
         vector<Vector3> N;
         vector<UINT> Indices;
         vector<VertexPTN> Vertices;
-        string objName = path.substr(0, path.size() - 4);
+        objName = path.substr(0, path.size() - 4);
         Actor* temp = Actor::Create(objName);
         List.push_back(temp);
-        string usemtl;
 
         while (!fin.eof())
         {
@@ -74,14 +76,10 @@ void Main::Update()
             fin >> Input;
             if (Input[0] == 'm')
             {
-                string mtl;
-                fin >> mtl;
-                mtl = mtl.substr(2, mtl.size());
-                ReadMaterial("../Obj/" + mtl);
-            }
-            else if (Input[0] == 'u')
-            {
-                fin >> usemtl;
+              
+                fin >> mtlfile;
+                mtlfile = mtlfile.substr(2, mtlfile.size());
+                ReadMaterial(mtlfile);
             }
             else if (Input[0] == 'g')
             {
@@ -91,6 +89,8 @@ void Main::Update()
                 if (gCount == 1)
                 {
                     fin >> name;
+                    
+
                 }
                 if (gCount == 2)
                 {
@@ -116,14 +116,18 @@ void Main::Update()
                     temp2->mesh
                         = make_shared<Mesh>(copyVertex, Vertices.size(),
                             copyIdx, Indices.size(),VertexType::PTN);
-                    temp2->mesh->file = name;
+                    //"../Contents/Mesh/" + "a";
+                    string checkPath = "../Contents/Mesh/" + objName;
+                    if (!PathFileExistsA(checkPath.c_str()))
+                    {
+                        CreateDirectoryA(checkPath.c_str(), NULL);
+                    }
+                    temp2->mesh->SaveFile(objName + "/3." + name + ".mesh");
                     temp->AddChild(temp2);
                     temp2->shader = make_shared<Shader>();
-                    temp2->shader->LoadFile("3.Cube.hlsl");
-
-                    temp2->texture = make_shared<Texture>();
-                    temp2->texture->LoadFile(material[usemtl]);
-
+                    temp2->shader = RESOURCE->shaders.Load("3.cube.hlsl");
+                    temp2->material = make_shared<Material>();
+                    temp2->material = RESOURCE->materials.Load(objName +"/"+usemtl + ".mtl");
                     Vertices.clear();
                     Indices.clear();
 
@@ -152,19 +156,34 @@ void Main::Update()
                     P.push_back(pos);
                 }
             }
+            else if (Input[0] == 'u')
+            {
+                fin >> usemtl;
+            }
             else if (Input[0] == 'f')
             {
                 int idx[3]; char slash;
                 VertexPTN ptn;
-                for (int i = 0; i < 3; i++)
-                {
-                    fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
-                    ptn.position = P[idx[0] - 1];
-                    ptn.uv = T[idx[1] - 1];
-                    ptn.normal = N[idx[2] - 1];
-                    Indices.push_back(Vertices.size());
-                    Vertices.push_back(ptn);
-                }
+                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                ptn.position = P[idx[0] - 1];
+                ptn.uv = T[idx[1] - 1];
+                ptn.normal = N[idx[2] - 1];
+                Indices.push_back(Vertices.size());
+                Vertices.push_back(ptn);
+
+                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                ptn.position = P[idx[0] - 1];
+                ptn.uv = T[idx[1] - 1];
+                ptn.normal = N[idx[2] - 1];
+                Indices.push_back(Vertices.size());
+                Vertices.push_back(ptn);
+
+                fin >> idx[0] >> slash >> idx[1] >> slash >> idx[2];
+                ptn.position = P[idx[0] - 1];
+                ptn.uv = T[idx[1] - 1];
+                ptn.normal = N[idx[2] - 1];
+                Indices.push_back(Vertices.size());
+                Vertices.push_back(ptn);
             }
             else
             {
@@ -173,6 +192,8 @@ void Main::Update()
                 fin.getline(c, 128);
             }
         }
+
+        
     }
     ImGui::End();
 
@@ -209,25 +230,84 @@ void Main::ResizeScreen()
 void Main::ReadMaterial(string file)
 {
     ifstream fin;
-    fin.open(file, ios::in);
+    string mtlfile;
+    Material temp;
+    fin.open("../Obj/" + file, ios::in);
     if (!fin.is_open()) return;
 
-    string newmtl;
-    string map_kd;
     while (!fin.eof())
     {
         string Input;
         fin >> Input;
         if (Input[0] == 'n')
         {
-            fin >> newmtl;
+            fin >> mtlfile;
         }
-        if (Input[0] == 'm')
+        else if (Input[0] == 'K')
         {
-            fin >> map_kd;
-            material[newmtl] = map_kd;
+            if (Input[1] == 'a')
+            {
+                fin >> temp.ambient.x;
+                fin >> temp.ambient.y;
+                fin >> temp.ambient.z;
+                //매핑텍스쳐가 있는가?
+                temp.ambient.w = 0.0f;
+            }
+            else if (Input[1] == 'd')
+            {
+                fin >> temp.diffuse.x;
+                fin >> temp.diffuse.y;
+                fin >> temp.diffuse.z;
+                temp.diffuse.w = 0.0f;
+            }
+            else if (Input[1] == 's')
+            {
+                fin >> temp.specular.x;
+                fin >> temp.specular.y;
+                fin >> temp.specular.z;
+                temp.specular.w = 0.0f;
+            }
         }
-        
+        else if (Input[0] == 'd')
+        {
+            fin >> temp.opacity;
+        }
+        else if (Input[0] == 'i')
+        {
+            fin >> temp.shininess;
+        }
+        else if (Input[0] == 'm')
+        {
+
+            temp.diffuse.w = 1.0f;
+            temp.diffuseMap = make_shared<Texture>();
+            string textureFile;
+            fin >> textureFile;
+            size_t tok = file.find_last_of(".");
+            string checkPath = "../Contents/Texture/" + objName;
+            if (!PathFileExistsA(checkPath.c_str()))
+            {
+                CreateDirectoryA(checkPath.c_str(), NULL);
+            }
+            string orgin = "../Obj/" + textureFile;
+            string copy = "../Contents/Texture/" + objName + "/" + textureFile;
+            bool isCheck = true;
+            CopyFileA(orgin.c_str(), copy.c_str(), isCheck);
+            temp.diffuseMap->LoadFile(objName + "/" + textureFile);
+
+            checkPath = "../Contents/Material/" + objName;
+            if (!PathFileExistsA(checkPath.c_str()))
+            {
+                CreateDirectoryA(checkPath.c_str(), NULL);
+            }
+            temp.SaveFile(objName + "/" + mtlfile+".mtl");
+        }
+        else
+        {
+            //한줄 건너뛰기
+            char c[128];
+            fin.getline(c, 128);
+        }
     }
 }
 

@@ -36,5 +36,6 @@ public:
 	Resource<Mesh> meshes;
 	Resource<Shader> shaders;
 	Resource<Texture> textures;
+	Resource<Material> materials;
 	void ReleaseAll();
 };

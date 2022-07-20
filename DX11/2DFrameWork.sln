@@ -22,16 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Txt", "Txt", "{5C50A1A2-DAE
 		Txt\행렬.txt = Txt\행렬.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{BD75B2E3-5302-437E-BCBD-49027208B85F}"
-	ProjectSection(SolutionItems) = preProject
-		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
-		Contents\GameObject\Character.xml = Contents\GameObject\Character.xml
-		Contents\GameObject\Character2.xml = Contents\GameObject\Character2.xml
-		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
-		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
-		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{5606A415-270E-456A-8B3F-528394EC1DE7}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\Mesh\0.Rect.mesh = Contents\Mesh\0.Rect.mesh
@@ -67,6 +57,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{A7F6
 		Shaders\2.Cube.hlsl = Shaders\2.Cube.hlsl
 		Shaders\3.Cube.hlsl = Shaders\3.Cube.hlsl
 		Shaders\Common.hlsl = Shaders\Common.hlsl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
+	ProjectSection(SolutionItems) = preProject
+		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
+		Contents\GameObject\Character.xml = Contents\GameObject\Character.xml
+		Contents\GameObject\Character2.xml = Contents\GameObject\Character2.xml
+		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
+		Contents\GameObject\Map.xml = Contents\GameObject\Map.xml
+		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
+		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
+		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
 	EndProjectSection
 EndProject
 Global

@@ -2,9 +2,9 @@
     <Mesh File="1.Point.mesh"/>
     <Shader File="1.Cube.hlsl"/>
     <Transform>
-        <Position X="-8.0187836" Y="0" Z="37.895702"/>
+        <Position X="12.708455" Y="8.4519997" Z="-1.6423774"/>
         <Scale X="1" Y="1" Z="1"/>
-        <Rotation X="0" Y="4.2732248" Z="0"/>
+        <Rotation X="0" Y="2.9098942" Z="0"/>
     </Transform>
     <Children Size="7"/>
     <Child0 Name="Body" Visible="true" ObType="0">
@@ -20,11 +20,11 @@
     <Child1 Name="Camera" Visible="true" ObType="2">
         <Shader File="1.Cube.hlsl"/>
         <Transform>
-            <Position X="1.3992215" Y="14.846495" Z="-23.355152"/>
+            <Position X="4.3112082" Y="13.005219" Z="-16.920719"/>
             <Scale X="1" Y="1" Z="1"/>
-            <Rotation X="0.39999831" Y="-0.1179962" Z="0"/>
+            <Rotation X="0.40499473" Y="-0.14499952" Z="0"/>
         </Transform>
-        <Camera Ortho="false" Fov="1.047192" Width="1537" Height="941" NearZ="0.001" FarZ="1000" viewportX="0" viewportY="0" viewportW="1537" viewportH="941"/>
+        <Camera Ortho="false" Fov="1.047192" Width="1467" Height="962" NearZ="0.001" FarZ="1000" viewportX="0" viewportY="0" viewportW="1467" viewportH="962"/>
         <Children Size="0"/>
     </Child1>
     <Child2 Name="Head" Visible="true" ObType="0">
@@ -33,7 +33,7 @@
         <Transform>
             <Position X="0" Y="3" Z="0"/>
             <Scale X="1" Y="1" Z="1"/>
-            <Rotation X="0" Y="0.56044734" Z="0"/>
+            <Rotation X="0" Y="0.18118657" Z="0"/>
         </Transform>
         <Children Size="0"/>
     </Child2>

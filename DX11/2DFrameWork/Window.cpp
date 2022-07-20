@@ -8,6 +8,7 @@ WPARAM Window::Run(Scene* main)
 	Window::main = main;
 	GameObject::CreateStaticMember();
 	Camera::CreateStaticMember();
+	Material::CreateStaticMember();
 	MSG msg = { 0 };
 	while (true)
 	{
@@ -38,6 +39,7 @@ WPARAM Window::Run(Scene* main)
 	WIN->Save();
 	GameObject::DeleteStaticMember();
 	Camera::DeleteStaticMember();
+	Material::DeleteStaticMember();
 
 	TIMER->DeleteSingleton();
 	INPUT->DeleteSingleton();

@@ -249,6 +249,14 @@ void Mesh::Set()
 void Mesh::LoadFile(string file)
 {
     this->file = file;
+   
+
+    BinaryReader in;
+    wstring path = L"../Contents/Mesh/" + Util::ToWString(file);
+    in.Open(path);
+
+    vertexType = (VertexType)in.UInt();
+
     //ÀÐ±âÀü
     switch (vertexType)
     {
@@ -281,11 +289,6 @@ void Mesh::LoadFile(string file)
         break;
     }
 
-    BinaryReader in;
-    wstring path = L"../Contents/Mesh/" + Util::ToWString(file);
-    in.Open(path);
-
-    vertexType = (VertexType)in.UInt();
     primitiveTopology = (D3D_PRIMITIVE_TOPOLOGY)in.UInt();
     byteWidth = in.UInt();
     vertexCount = in.UInt();

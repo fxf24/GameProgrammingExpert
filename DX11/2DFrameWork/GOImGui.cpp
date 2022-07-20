@@ -1,6 +1,6 @@
 #include "framework.h"
 
-void Transform::RenderImGui()
+void Transform::RenderDetail()
 {
 	ImGui::Checkbox("WorldPos", &worldPos);
 	if (worldPos)
@@ -17,7 +17,6 @@ void Transform::RenderImGui()
 		if (ImGui::DragFloat3("LocalPos", (float*)&loc, 0.05f))
 			SetLocalPos(loc);
 	}
-
 
 	ImGui::SliderAngle("rotationX", &rotation.x);
 	ImGui::SliderAngle("rotationY", &rotation.y);
@@ -84,7 +83,7 @@ void GameObject::RenderDetail()
 	{
 		if (ImGui::BeginTabItem("Transform"))
 		{
-			Transform::RenderImGui();
+			Transform::RenderDetail();
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Mesh"))
@@ -96,14 +95,20 @@ void GameObject::RenderDetail()
 			if (GUI->FileImGui("Save", "Save Mesh",
 				".mesh", "../Contents/Mesh"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				Util::Replace(&path, "\\", "/");
+				size_t tok = path.find("/Mesh/") + 6;
+				path = path.substr(tok, path.length());
 				mesh->SaveFile(path);
 			}
 			ImGui::SameLine();
 			if (GUI->FileImGui("Load", "Load Mesh",
 				".mesh", "../Contents/Mesh"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				Util::Replace(&path, "\\", "/");
+				size_t tok = path.find("/Mesh/") + 6;
+				path = path.substr(tok, path.length());
 				SafeReset(mesh);
 				mesh = RESOURCE->meshes.Load(path);
 			}
@@ -136,18 +141,37 @@ void GameObject::RenderDetail()
 		}
 		if (ImGui::BeginTabItem("Material"))
 		{
-			if (texture)
-				texture->RenderDetail();
-
-			if (GUI->FileImGui("Load DiffuseMap", "Load DiffuseMap",
-				".dds,.jpg,.tga,.png,.bmp", "../Contents/Texture"))
+			if (material)
+			{
+				ImGui::Text(material->file.c_str());
+				material->RenderDetail();
+			}
+			if (GUI->FileImGui("Save", "Save Material",
+				".mtl", "../Contents/Material"))
 			{
 				string path = ImGuiFileDialog::Instance()->GetFilePathName();
 				Util::Replace(&path, "\\", "/");
-				size_t tok = path.find("/Texture/") + 9;
+				size_t tok = path.find("/Material/") + 10;
 				path = path.substr(tok, path.length());
-				SafeReset(texture);
-				texture = RESOURCE->textures.Load(path);
+				material->SaveFile(path);
+			}
+			ImGui::SameLine();
+			if (GUI->FileImGui("Load", "Load Material",
+				".mtl", "../Contents/Material"))
+			{
+				
+				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				Util::Replace(&path, "\\", "/");
+				size_t tok = path.find("/Material/") + 10;
+				path = path.substr(tok, path.length());
+				SafeReset(material);
+				material = RESOURCE->materials.Load(path);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete"))
+			{
+				SafeReset(material);
+				material = nullptr;
 			}
 			ImGui::EndTabItem();
 		}

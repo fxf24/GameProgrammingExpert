@@ -11,6 +11,7 @@ GameObject::GameObject()
 	//mesh = make_shared<Mesh>();
 	mesh = nullptr;
 	shader = nullptr;
+	material = nullptr;
 }
 Actor::Actor()
 {
@@ -94,10 +95,17 @@ void GameObject::Render()
 			shader->Set();
 			mesh->Set();
 
-			if (texture)
-				texture->Set(1);
+			if (material)
+				material->Set();
+			else
+				defalutMaterial->Set();
 
 			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0, 0);
+		}
+
+		for (auto it = children.begin(); it != children.end(); it++)
+		{
+			it->second->Render();
 		}
 	}
 	if (GUI->target == this)
@@ -112,15 +120,12 @@ void GameObject::Render()
 		axis->Render();
 	}
 
-	for (auto it = children.begin(); it != children.end(); it++)
-	{
-		it->second->Render();
-	}
 }
 
 
 ID3D11Buffer* GameObject::WBuffer = nullptr;
 GameObject* GameObject::axis = nullptr;
+Material* GameObject::defalutMaterial = nullptr;
 void GameObject::CreateStaticMember()
 {
 	D3D11_BUFFER_DESC desc = { 0 };
@@ -139,12 +144,14 @@ void GameObject::CreateStaticMember()
 	axis->mesh = RESOURCE->meshes.Load("1.Transform.mesh");
 	axis->shader  = RESOURCE->shaders.Load("1.Cube.hlsl");
 	axis->S = Matrix::CreateScale(Vector3(500.0f, 500.0f, 500.0f));
+	defalutMaterial = new Material();
 }
 
 void GameObject::DeleteStaticMember()
 {
 	SafeRelease(WBuffer);
 	SafeDelete(axis);
+	SafeDelete(defalutMaterial);
 }
 
 void GameObject::AddChild(GameObject* child)

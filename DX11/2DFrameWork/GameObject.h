@@ -15,6 +15,7 @@ class GameObject : public Transform
 private:
 	static ID3D11Buffer*	WBuffer;
 	static GameObject*		axis;
+	static Material*		defalutMaterial;
 public:
 	static GameObject* Create(string name = "GameObject");
 	static void CreateStaticMember();
@@ -29,7 +30,7 @@ public:
 	map<string, GameObject*>	children;
 	shared_ptr<Shader>			shader;
 	shared_ptr<Mesh>			mesh;
-	shared_ptr<Texture>			texture;
+	shared_ptr<Material>		material;
 	//Method
 protected:
 	GameObject();

@@ -5,7 +5,8 @@ class Main : public Scene
 {
 private:
 	Camera*			Cam;
-	Actor*			Sun;
+	Actor*			Map;
+	Actor*			MapSurface;
 	Actor*			Grid;
 	CubeMan*		cubeMan;
 

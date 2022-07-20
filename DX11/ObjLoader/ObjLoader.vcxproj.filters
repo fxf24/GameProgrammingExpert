@@ -7,8 +7,4 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="imgui.ini" />
-    <None Include="window.ini" />
-  </ItemGroup>
 </Project>

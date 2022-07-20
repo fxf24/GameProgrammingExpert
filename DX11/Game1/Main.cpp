@@ -17,8 +17,10 @@ void Main::Init()
     //Cam->LoadFile("Cam.xml");
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
-    Sun = Actor::Create();
-    Sun->LoadFile("Sun.xml");
+    Map = Actor::Create();
+    Map->LoadFile("Map.xml");
+    MapSurface = Actor::Create();
+    MapSurface->LoadFile("MapSurface.xml");
 
     cubeMan = new CubeMan();
     Cam = (Camera*)cubeMan->Find("Camera");
@@ -28,7 +30,8 @@ void Main::Init()
 void Main::Release()
 {
     RESOURCE->ReleaseAll();
-    Sun->Release();
+    Map->Release();
+    MapSurface->Release();
     Grid->Release();
     cubeMan->Release();
 }
@@ -40,7 +43,8 @@ void Main::Update()
 
     ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
-    Sun->RenderHierarchy();
+    Map->RenderHierarchy();
+    MapSurface->RenderHierarchy();
     Grid->RenderHierarchy();
     cubeMan->RenderHierarchy();
     //Cam->RenderHierarchy();
@@ -49,7 +53,8 @@ void Main::Update()
 
     Cam->Update();
     Grid->Update();
-    Sun->Update();
+    Map->Update();
+    MapSurface->Update();
     cubeMan->Update();
 }
 
@@ -61,7 +66,8 @@ void Main::Render()
 {
     Cam->Set();
     Grid->Render();
-    Sun->Render();
+    Map->Render();
+    MapSurface->Render();
     cubeMan->Render();
 }
 

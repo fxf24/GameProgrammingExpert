@@ -31,6 +31,7 @@ PixelInput VS(VertexInput input)
 float4 PS(PixelInput input) : SV_TARGET
 {
     float4 BaseColor = TextureD.Sample(SamplerD, input.Uv);
+    //BaseColor.rgb = Kd.rgb;
     float3 DirectionLight = normalize(float3(1, -1, 0));
     float3 Normal = normalize(input.Normal);
     float Diffuse = saturate(dot(-DirectionLight, Normal));
