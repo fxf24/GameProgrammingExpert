@@ -66,12 +66,10 @@ void Main::LateUpdate()
     Vector3 hit;
     if (Util::RayIntersectTri(cubeManTopRay, MapSurface->Find("Rectangle19"), hit))
     {
-        if (not cubeMan->GetJumpping())
-            cubeMan->SetWorldPosY(hit.y + 10.0f);
+        if (hit.y + 10.0f - cubeMan->GetPrePosition().y > 3.0f)
+            cubeMan->SetWorldPos(cubeMan->GetPrePosition());
+        cubeMan->SetSurface(hit.y + 10.0f);
         
-        if (cubeMan->GetWorldPos().y + 50.0f < hit.y)
-            cubeMan->SetWorldPos(cubeMan->GetWorldPos());
-
     }
 
 }

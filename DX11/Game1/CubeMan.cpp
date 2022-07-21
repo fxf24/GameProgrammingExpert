@@ -6,13 +6,14 @@ CubeMan::CubeMan()
 	state = PlayerState::IDLE;
 	shaketime = 0.0f;
 	mul = 1.0f;
+	surface = 0.0f;
 	jumping = false;
 }
 
 void CubeMan::Update()
 {
 	shaketime += DELTA;
-	if (shaketime > 0.5f)
+	if (shaketime > 0.25f)
 	{
 		mul *= -1.0f;
 		shaketime -= 0.5f;
@@ -24,7 +25,10 @@ void CubeMan::Update()
 		Idle();
 		break;
 	case PlayerState::WALK:
-		Walk();
+		Walk(1);
+		break;
+	case PlayerState::BACKWALK:
+		Walk(-1);
 		break;
 	}
 
@@ -36,20 +40,27 @@ void CubeMan::Update()
 	{
 		rotation.y += DELTA;
 	}
-	if (INPUT->KeyDown(VK_SPACE)and not jumping)
+	if (INPUT->KeyDown(VK_SPACE) and not jumping)
 	{
 		jumping = true;
-		gravity = -30.0f;
+		gravity = -60.0f;
 	}
 
+	
 	if (jumping)
 	{
 		MoveWorldPos(-UP * gravity * DELTA);
-		gravity += 30.0f * DELTA;
-		if (gravity > 30.0f)
+		gravity += 120.0f * DELTA;
+		if (surface > GetWorldPos().y)
 		{
 			jumping = false;
+			SetWorldPosY(surface + 0.2f);
 		}
+	}
+	else if (GetWorldPos().y - surface > 0.4f)
+	{
+		gravity = 30.0f;
+		MoveWorldPos(-UP * gravity * DELTA);
 	}
 
 	GameObject::Update();
@@ -66,11 +77,17 @@ void CubeMan::Idle()
 		state = PlayerState::WALK;
 		shaketime = 0.0f;
 	}
+	if (INPUT->KeyDown(VK_DOWN))
+	{
+		state = PlayerState::BACKWALK;
+		shaketime = 0.0f;
+	}
 }
 
-void CubeMan::Walk()
+void CubeMan::Walk(float dir)
 {
-	position += GetForward() * 10.0f * DELTA;
+	prePosition = position;
+	position += dir * GetForward() * 20.0f * DELTA;
 	//ÆÈ´Ù¸®ÈÖÁ£±â,°í°³°íÁ¤
 	Find("Head")->rotation.y = 0.0f;
 
@@ -78,6 +95,11 @@ void CubeMan::Walk()
 	if (INPUT->KeyUp(VK_UP))
 	{
 		state = PlayerState::IDLE;
-		shaketime = 0.25f;
+		shaketime = 0.0f;
+	}
+	if (INPUT->KeyUp(VK_DOWN))
+	{
+		state = PlayerState::IDLE;
+		shaketime = 0.0f;
 	}
 }
