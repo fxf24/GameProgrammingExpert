@@ -66,6 +66,7 @@ void Main::Update()
         vector<Vector3> N;
         vector<UINT> Indices;
         vector<VertexPTN> Vertices;
+        int gCount = -1;
         objName = path.substr(0, path.size() - 4);
         Actor* temp = Actor::Create(objName);
         List.push_back(temp);
@@ -83,14 +84,11 @@ void Main::Update()
             }
             else if (Input[0] == 'g')
             {
-                static int gCount = -1;
                 static string name;
                 gCount++;
                 if (gCount == 1)
                 {
                     fin >> name;
-                    
-
                 }
                 if (gCount == 2)
                 {

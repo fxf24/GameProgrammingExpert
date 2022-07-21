@@ -18,7 +18,6 @@ void CubeMan::Update()
 		shaketime -= 0.5f;
 	}
 
-
 	switch (state)
 	{
 	case PlayerState::IDLE:
@@ -28,6 +27,7 @@ void CubeMan::Update()
 		Walk();
 		break;
 	}
+
 	if (INPUT->KeyPress(VK_LEFT))
 	{
 		rotation.y -= DELTA;

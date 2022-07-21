@@ -25,6 +25,7 @@ void Main::Init()
     cubeMan = new CubeMan();
     Cam = (Camera*)cubeMan->Find("Camera");
     Camera::main = Cam;
+    cubeManTopRay.direction = Vector3(0, -1, 0);
 }
 
 void Main::Release()
@@ -60,6 +61,19 @@ void Main::Update()
 
 void Main::LateUpdate()
 {
+    cubeManTopRay.position = cubeMan->GetWorldPos();
+    cubeManTopRay.position.y += 1000.0f;
+    Vector3 hit;
+    if (Util::RayIntersectTri(cubeManTopRay, MapSurface->Find("Rectangle19"), hit))
+    {
+        if (not cubeMan->GetJumpping())
+            cubeMan->SetWorldPosY(hit.y + 10.0f);
+        
+        if (cubeMan->GetWorldPos().y + 50.0f < hit.y)
+            cubeMan->SetWorldPos(cubeMan->GetWorldPos());
+
+    }
+
 }
 
 void Main::Render()

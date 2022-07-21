@@ -32,20 +32,10 @@ float4 PS(PixelInput input) : SV_TARGET
 {
     float4 BaseColor = TextureD.Sample(SamplerD, input.Uv);
     //BaseColor.rgb = Kd.rgb;
-    float3 DirectionLight = normalize(float3(1, -1, 0));
-    float3 Normal = normalize(input.Normal);
-    float Diffuse = saturate(dot(-DirectionLight, Normal));
+    float3 DirectionLight = DirLighting(normalize(input.Normal.xyz), input.wPostion);
     
-    float3 RecflectLight = reflect(DirectionLight, Normal);
-    float3 ViewDir = normalize(ViewPos.xyz - input.wPostion.xyz);
-    float Specular = saturate(dot(ViewDir, RecflectLight));
-    Specular = pow(Specular, 10.0f);
-    //Specular *= 0.5f;
-    //Diffuse = saturate(dot(ViewDir, Normal));
-    
-    //            a   + d
-    BaseColor *= 0.2f + Diffuse + Specular;
-    
+    //                      (r*r, g*g, b*b)
+    BaseColor.rgb = saturate(BaseColor.rgb * DirectionLight);
     
     return BaseColor;
 }

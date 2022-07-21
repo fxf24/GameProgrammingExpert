@@ -8,4 +8,5 @@ namespace Util
 	wstring ToWString(string value);
 	string ToString(wstring value);
 
+	bool RayIntersectTri(Ray WRay, GameObject* Target, OUT Vector3& HitPoint);
 }

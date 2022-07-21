@@ -32,5 +32,7 @@ public:
     void Set(); // binding
     void LoadFile(string file);
     void SaveFile(string file);
+    UINT GetIndexCount() { return indexCount; }
+    const Vector3& GetVertexPosition(UINT idx);
 };
 
