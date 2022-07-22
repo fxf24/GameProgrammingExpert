@@ -69,7 +69,6 @@ void Main::LateUpdate()
         if (hit.y + 10.0f - cubeMan->GetPrePosition().y > 3.0f)
             cubeMan->SetWorldPos(cubeMan->GetPrePosition());
         cubeMan->SetSurface(hit.y + 10.0f);
-        
     }
 
 }
