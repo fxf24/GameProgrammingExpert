@@ -48,7 +48,6 @@ void Main::Update()
     MapSurface->RenderHierarchy();
     Grid->RenderHierarchy();
     cubeMan->RenderHierarchy();
-    //Cam->RenderHierarchy();
     ImGui::End();
 
 
@@ -66,34 +65,40 @@ void Main::LateUpdate()
     Vector3 hit;
     if (Util::RayIntersectTri(cubeManTopRay, MapSurface->Find("Rectangle19"), hit))
     {
-        //올라가는거
-        //if (cubeMan->GetLastPos().y > hit.y + 7.4520f)
-        //{
-        //    cubeMan->SetWorldPosY(hit.y + 10.0f);
-        //    cubeMan->WorldUpdate();
-        //}
-        ////내려가는거
-        //else
-        //{
-        //    cubeMan->SetWorldPosX(cubeMan->GetLastPos().x);
-        //    cubeMan->SetWorldPosZ(cubeMan->GetLastPos().z);
-        //    //cubeMan->Falling();
-        //    cubeMan->WorldUpdate();
-        //}
+        float LastFoot = cubeMan->GetLastPos().y - 10.0f;
+
+        //내려가야함
+        if (LastFoot > hit.y)
+        {
+            cubeMan->Falling();
+            cubeMan->WorldUpdate();
+        }
+        else if (LastFoot < hit.y)
+        {
+            cubeMan->Landing();
+
+            if(hit.y - LastFoot < 3.0f)
+                cubeMan->SetWorldPosY(hit.y + 10.0f);
+               
+            else
+            {
+                cubeMan->SetWorldPosX(cubeMan->GetLastPos().x);
+                cubeMan->SetWorldPosZ(cubeMan->GetLastPos().z);
+            }
+            cubeMan->WorldUpdate();
+        }
         
-        if (hit.y + 10.0f - cubeMan->GetLastPos().y > 3.0f)
-            cubeMan->SetWorldPos(cubeMan->GetLastPos());
-        cubeMan->SetSurface(hit.y + 10.0f);
+    }
+    //맵 밖
+    else
+    {
+        cubeMan->SetWorldPos(cubeMan->GetLastPos());
+        cubeMan->WorldUpdate();
     }
 
-    //actor->g.o->collider
     if (Map->Find("Box05")->collider->Intersect(cubeMan->collider))
     {
-        cout << "충돌" << endl;
-
-        Vector3 position = Map->Find("Box04")->collider->GetWorldPos();
-        position.y += 10.0f;
-        cubeMan->SetWorldPos(position);
+        cubeMan->SetWorldPos(Map->Find("Box04")->collider->GetWorldPos() + Vector3(0, 10, 0));
     }
 }
 

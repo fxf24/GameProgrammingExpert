@@ -7,7 +7,7 @@
         <Rotation X="0" Y="0" Z="0"/>
     </Collider>
     <Transform>
-        <Position X="0" Y="0" Z="0"/>
+        <Position X="-2.6971877" Y="12.795545" Z="-20.7460928"/>
         <Scale X="1" Y="1" Z="1"/>
         <Rotation X="0" Y="3.1643345" Z="0"/>
     </Transform>
@@ -25,9 +25,9 @@
     <Child1 Name="Camera" Visible="true" ObType="2">
         <Shader File="1.Cube.hlsl"/>
         <Transform>
-            <Position X="1.6680225" Y="17.219751" Z="-26.843782"/>
+            <Position X="4.3112082" Y="13.005219" Z="-16.920719"/>
             <Scale X="1" Y="1" Z="1"/>
-            <Rotation X="0.40699553" Y="-0.040999472" Z="0"/>
+            <Rotation X="0.40499473" Y="-0.14499952" Z="0"/>
         </Transform>
         <Camera Ortho="false" Fov="1.047192" Width="1485" Height="1017" NearZ="0.001" FarZ="1000" viewportX="0" viewportY="0" viewportW="1485" viewportH="1017"/>
         <Children Size="0"/>
@@ -38,7 +38,7 @@
         <Transform>
             <Position X="0" Y="3" Z="0"/>
             <Scale X="1" Y="1" Z="1"/>
-            <Rotation X="0" Y="0.44138205" Z="0"/>
+            <Rotation X="0" Y="0.091980688" Z="0"/>
         </Transform>
         <Children Size="0"/>
     </Child2>

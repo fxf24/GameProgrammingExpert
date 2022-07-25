@@ -13,20 +13,19 @@ private:
 	float		shaketime;
 	float		mul;
 	float		gravity;
-	bool		jumping;
 	Vector3     lastPos;
-	float		surface;
 
 private:
 	void Idle();
 	void Walk();
 public:
+	bool		jumping;
 	CubeMan();
 	void Update();
 	void WorldUpdate();
 	bool GetJumpping() { return jumping;}
 	Vector3 GetLastPos() { return lastPos;}
 	void Falling();
-	void SetSurface(float y) { surface = y; }
+	void Landing();
 };
 
