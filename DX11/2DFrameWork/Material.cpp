@@ -50,7 +50,8 @@ void Material::Set()
     D3D->GetDC()->Map(materialBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     memcpy_s(mappedResource.pData, sizeof(MaterialBuffer), (MaterialBuffer*)this, sizeof(MaterialBuffer));
     D3D->GetDC()->Unmap(materialBuffer, 0);
-    
+
+  
     if (normalMap)normalMap->Set(0);
     if (diffuseMap)diffuseMap->Set(1);
     if (specularMap)specularMap->Set(2);

@@ -6,6 +6,7 @@ Scene* Window::main = nullptr;
 WPARAM Window::Run(Scene* main)
 {
 	Window::main = main;
+	Transform::CreateStaticMember();
 	GameObject::CreateStaticMember();
 	Camera::CreateStaticMember();
 	Material::CreateStaticMember();
@@ -37,6 +38,7 @@ WPARAM Window::Run(Scene* main)
 		}
 	}
 	WIN->Save();
+	Transform::DeleteStaticMember();
 	GameObject::DeleteStaticMember();
 	Camera::DeleteStaticMember();
 	Material::DeleteStaticMember();

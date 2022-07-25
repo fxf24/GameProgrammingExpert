@@ -6,18 +6,21 @@ CubeMan::CubeMan()
 	state = PlayerState::IDLE;
 	shaketime = 0.0f;
 	mul = 1.0f;
-	surface = 0.0f;
 	jumping = false;
 }
 
 void CubeMan::Update()
 {
+	//움직이기 전의 위치값
+	lastPos = position;
+
 	shaketime += DELTA;
-	if (shaketime > 0.25f)
+	if (shaketime > 0.5f)
 	{
 		mul *= -1.0f;
 		shaketime -= 0.5f;
 	}
+
 
 	switch (state)
 	{
@@ -25,13 +28,9 @@ void CubeMan::Update()
 		Idle();
 		break;
 	case PlayerState::WALK:
-		Walk(1);
-		break;
-	case PlayerState::BACKWALK:
-		Walk(-1);
+		Walk();
 		break;
 	}
-
 	if (INPUT->KeyPress(VK_LEFT))
 	{
 		rotation.y -= DELTA;
@@ -40,13 +39,12 @@ void CubeMan::Update()
 	{
 		rotation.y += DELTA;
 	}
-	if (INPUT->KeyDown(VK_SPACE) and not jumping)
+	if (INPUT->KeyDown(VK_SPACE)and not jumping)
 	{
 		jumping = true;
 		gravity = -60.0f;
 	}
 
-	
 	if (jumping)
 	{
 		MoveWorldPos(-UP * gravity * DELTA);
@@ -66,40 +64,47 @@ void CubeMan::Update()
 	GameObject::Update();
 }
 
+void CubeMan::WorldUpdate()
+{
+	Transform::Update();
+}
+
+void CubeMan::Falling()
+{
+	jumping = true;
+	gravity = 0.0f;
+}
+
 void CubeMan::Idle()
 {
 	//고개젓기,차렷자세유지
 	Find("Head")->rotation.y += mul * DELTA;
 
 	//idle to walk
-	if (INPUT->KeyDown(VK_UP))
+	if (INPUT->KeyPress(VK_UP) or INPUT->KeyPress(VK_DOWN))
 	{
 		state = PlayerState::WALK;
 		shaketime = 0.0f;
 	}
-	if (INPUT->KeyDown(VK_DOWN))
-	{
-		state = PlayerState::BACKWALK;
-		shaketime = 0.0f;
-	}
 }
 
-void CubeMan::Walk(float dir)
+void CubeMan::Walk()
 {
-	prePosition = position;
-	position += dir * GetForward() * 20.0f * DELTA;
+	if (INPUT->KeyPress(VK_UP))
+	{
+		position += GetForward() * 20.0f * DELTA;
+	}
+	if (INPUT->KeyPress(VK_DOWN))
+	{
+		position -= GetForward() * 20.0f * DELTA;
+	}
 	//팔다리휘젓기,고개고정
 	Find("Head")->rotation.y = 0.0f;
 
 	//walk to idle
-	if (INPUT->KeyUp(VK_UP))
+	if (INPUT->KeyPress(VK_UP) == false and INPUT->KeyPress(VK_DOWN) == false)
 	{
 		state = PlayerState::IDLE;
-		shaketime = 0.0f;
-	}
-	if (INPUT->KeyUp(VK_DOWN))
-	{
-		state = PlayerState::IDLE;
-		shaketime = 0.0f;
+		shaketime = 0.25f;
 	}
 }

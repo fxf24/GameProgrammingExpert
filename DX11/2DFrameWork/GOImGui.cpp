@@ -175,6 +175,36 @@ void GameObject::RenderDetail()
 			}
 			ImGui::EndTabItem();
 		}
+		if (ImGui::BeginTabItem("Collider"))
+		{
+			if (collider)
+			{
+				collider->RenderDetail();
+				if (ImGui::Button("Delete"))
+				{
+					SafeDelete(collider);
+				}
+			}
+			else
+			{
+				ImGui::Text("Create");
+				if (ImGui::Button("Box"))
+				{
+					collider = new Collider(ColliderType::BOX);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("OBox"))
+				{
+					collider = new Collider(ColliderType::OBOX);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Sphere"))
+				{
+					collider = new Collider(ColliderType::SPHERE);
+				}
+			}
+			ImGui::EndTabItem();
+		}
 		ImGui::EndTabBar();
 	}
 }

@@ -59,6 +59,9 @@
     <ClInclude Include="Material.h">
       <Filter>GameObject\Member</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>GameObject\Member</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -133,6 +136,9 @@
       <Filter>GameObject\Member</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
+      <Filter>GameObject\Member</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
       <Filter>GameObject\Member</Filter>
     </ClCompile>
   </ItemGroup>

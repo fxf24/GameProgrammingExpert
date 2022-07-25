@@ -60,12 +60,11 @@ string Util::ToString(wstring value)
 	return temp;
 }
 
-bool Util::RayIntersectTri(Ray WRay, GameObject* Target, OUT Vector3& HitPoint)
+bool Util::RayIntersectTri(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint)
 {
-	if (not Target->mesh) return false;
+	if (not Target->mesh)return false;
 
 	Matrix inverse = Target->W.Invert();
-
 	WRay.direction = Vector3::TransformNormal(WRay.direction, inverse);
 	WRay.direction.Normalize();
 
@@ -81,13 +80,14 @@ bool Util::RayIntersectTri(Ray WRay, GameObject* Target, OUT Vector3& HitPoint)
 		float Dis;
 		if (WRay.Intersects(v[0], v[1], v[2], Dis))
 		{
-			//스칼라 x방향
-			HitPoint = WRay.position + (WRay.direction * Dis);
-			// 다시 W로 변환
+			//                         스칼라 x 방향
+			HitPoint = WRay.position +  (WRay.direction * Dis);
+			//다시 W 로 변환
 			HitPoint = Vector3::Transform(HitPoint, Target->W);
 			return true;
 		}
 	}
-
 	return false;
+
+
 }

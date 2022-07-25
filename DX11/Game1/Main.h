@@ -9,7 +9,8 @@ private:
 	Actor*			MapSurface;
 	Actor*			Grid;
 	CubeMan*		cubeMan;
-	Ray cubeManTopRay;
+	Ray				cubeManTopRay;
+
 
 public:
 	Main();

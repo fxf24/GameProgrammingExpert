@@ -613,6 +613,7 @@ const Vector3& Mesh::GetVertexPosition(UINT idx)
         VertexPSV* Vertices = (VertexPSV*)vertices;
         return Vertices[indices[idx]].position;
     }
+
     VertexP* Vertices = (VertexP*)vertices;
     return Vertices[indices[idx]].position;
 }

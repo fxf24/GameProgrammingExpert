@@ -5,7 +5,6 @@ enum class ObType
 	GameObject,
 	Actor,
 	Camera
-
 };
 
 class GameObject : public Transform
@@ -13,7 +12,6 @@ class GameObject : public Transform
 	friend class Actor;
 	//static
 private:
-	static ID3D11Buffer*	WBuffer;
 	static GameObject*		axis;
 	static Material*		defalutMaterial;
 public:
@@ -31,6 +29,7 @@ public:
 	shared_ptr<Shader>			shader;
 	shared_ptr<Mesh>			mesh;
 	shared_ptr<Material>		material;
+	Collider*					collider;
 	//Method
 protected:
 	GameObject();

@@ -35,13 +35,13 @@ SamplerState SamplerS : register(s2);
 Texture2D TextureE : register(t3);
 SamplerState SamplerE : register(s3);
 
-float3 DirLighting(float3 Normal, float3 wPosition)
+float3 DirLighting(float3 Normal, float3 wPostion)
 {
     float3 DirectionLight = normalize(float3(1, -1, 0));
     float Diffuse = saturate(dot(-DirectionLight, Normal));
     
     float3 RecflectLight = reflect(DirectionLight, Normal);
-    float3 ViewDir = normalize(ViewPos.xyz - wPosition);
+    float3 ViewDir = normalize(ViewPos.xyz - wPostion);
     float Specular = saturate(dot(ViewDir, RecflectLight));
     Specular = pow(Specular, Shininess);
     

@@ -12,6 +12,7 @@ GameObject::GameObject()
 	mesh = nullptr;
 	shader = nullptr;
 	material = nullptr;
+	collider = nullptr;
 }
 Actor::Actor()
 {
@@ -24,6 +25,8 @@ GameObject::~GameObject()
 {
 	SafeReset(mesh);
 	SafeReset(shader);
+	SafeReset(material);
+	SafeDelete(collider);
 }
 
 
@@ -61,6 +64,8 @@ void Actor::ReleaseMember()
 	}
 	SafeReset(mesh);
 	SafeReset(shader);
+	SafeReset(material);
+	SafeDelete(collider);
 	obList.clear();
 	children.clear();
 }
@@ -76,22 +81,21 @@ Actor* Actor::Create(string name)
 void GameObject::Update()
 {
 	Transform::Update();
+
+	if (collider)
+		collider->Update(this);
+
 	for (auto it = children.begin(); it != children.end(); it++)
 		it->second->Update();
 }
 
 void GameObject::Render()
 {
-	Matrix TW = W.Transpose();
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	D3D->GetDC()->Map(WBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	memcpy_s(mappedResource.pData, sizeof(Matrix), &TW, sizeof(Matrix));
-	D3D->GetDC()->Unmap(WBuffer, 0);
-	
 	if (visible)
 	{
 		if (mesh and shader)
 		{
+			Transform::Set();
 			shader->Set();
 			mesh->Set();
 
@@ -108,6 +112,10 @@ void GameObject::Render()
 			it->second->Render();
 		}
 	}
+
+	if (collider)
+		collider->Render();
+
 	if (GUI->target == this)
 	{
 		if (!parent)
@@ -123,23 +131,10 @@ void GameObject::Render()
 }
 
 
-ID3D11Buffer* GameObject::WBuffer = nullptr;
 GameObject* GameObject::axis = nullptr;
 Material* GameObject::defalutMaterial = nullptr;
 void GameObject::CreateStaticMember()
 {
-	D3D11_BUFFER_DESC desc = { 0 };
-	desc.ByteWidth = sizeof(Matrix);
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.MiscFlags = 0;
-	desc.StructureByteStride = 0;
-	HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &WBuffer);
-	assert(SUCCEEDED(hr));
-
-	D3D->GetDC()->VSSetConstantBuffers(0, 1, &WBuffer);
-
 	axis = new GameObject();
 	axis->mesh = RESOURCE->meshes.Load("1.Transform.mesh");
 	axis->shader  = RESOURCE->shaders.Load("1.Cube.hlsl");
@@ -149,7 +144,6 @@ void GameObject::CreateStaticMember()
 
 void GameObject::DeleteStaticMember()
 {
-	SafeRelease(WBuffer);
 	SafeDelete(axis);
 	SafeDelete(defalutMaterial);
 }

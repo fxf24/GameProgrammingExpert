@@ -50,15 +50,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjLoader", "ObjLoader\ObjL
 		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{A7F64025-28D3-4E35-ADD6-361CA5AADBC3}"
-	ProjectSection(SolutionItems) = preProject
-		Shaders\0.Exam.hlsl = Shaders\0.Exam.hlsl
-		Shaders\1.Cube.hlsl = Shaders\1.Cube.hlsl
-		Shaders\2.Cube.hlsl = Shaders\2.Cube.hlsl
-		Shaders\3.Cube.hlsl = Shaders\3.Cube.hlsl
-		Shaders\Common.hlsl = Shaders\Common.hlsl
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
@@ -69,6 +60,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", 
 		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498BC6D-79F3-44EF-806D-3CB449E9F69E}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\0.Exam.hlsl = Shaders\0.Exam.hlsl
+		Shaders\1.Collider.hlsl = Shaders\1.Collider.hlsl
+		Shaders\1.Cube.hlsl = Shaders\1.Cube.hlsl
+		Shaders\2.Cube.hlsl = Shaders\2.Cube.hlsl
+		Shaders\3.Cube.hlsl = Shaders\3.Cube.hlsl
+		Shaders\Common.hlsl = Shaders\Common.hlsl
 	EndProjectSection
 EndProject
 Global

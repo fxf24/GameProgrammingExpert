@@ -42,8 +42,13 @@
         <Mesh File="Map/3.Box04.mesh"/>
         <Shader File="3.cube.hlsl"/>
         <Material File="Map/02_-_Default.mtl"/>
+        <Collider ColliderType="1" Visible="true">
+            <Position X="-353.74985" Y="202.50014" Z="188.75003"/>
+            <Scale X="100" Y="100" Z="100"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Collider>
         <Transform>
-            <Position X="0" Y="0" Z="0"/>
+            <Position X="2.5" Y="0" Z="0"/>
             <Scale X="1" Y="1" Z="1"/>
             <Rotation X="0" Y="0" Z="0"/>
         </Transform>
@@ -53,8 +58,13 @@
         <Mesh File="Map/3.Box05.mesh"/>
         <Shader File="3.cube.hlsl"/>
         <Material File="Map/Material__2.mtl"/>
+        <Collider ColliderType="1" Visible="true">
+            <Position X="-605.00079" Y="4905.0015" Z="621.24908"/>
+            <Scale X="100" Y="100" Z="100"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Collider>
         <Transform>
-            <Position X="0" Y="0" Z="0"/>
+            <Position X="7.4669238e-08" Y="-1.2500004" Z="2.9824744e-07"/>
             <Scale X="1" Y="1" Z="1"/>
             <Rotation X="0" Y="0" Z="0"/>
         </Transform>

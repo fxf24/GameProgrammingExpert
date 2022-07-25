@@ -3,7 +3,10 @@ class Transform
 {
 protected:
     static bool         worldPos;
-
+    static ID3D11Buffer* WBuffer;
+public:
+    static void CreateStaticMember();
+    static void DeleteStaticMember();
 protected:
     Vector3				position;
 public:
@@ -19,7 +22,9 @@ public:
 	Transform();
 	virtual ~Transform() {};
     virtual void	Update();
-	void	        RenderDetail();
+    virtual void	RenderDetail();
+    virtual void    Set();
+  
 public:
 	Vector3 GetRight() { return Vector3(RT._11, RT._12, RT._13); }
 	Vector3 GetUp() { return Vector3(RT._21, RT._22, RT._23); }
@@ -43,5 +48,7 @@ public:
     void        SetLocalPosY(float WPosY);
     void        SetLocalPosZ(float WPosZ);
     void        MoveLocalPos(const Vector3& WScaleVec);
+
+    Vector3     GetPosition() { return position; }
 };
 

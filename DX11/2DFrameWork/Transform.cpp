@@ -1,5 +1,33 @@
 #include "framework.h"
 bool Transform::worldPos = false;
+ID3D11Buffer* Transform::WBuffer = nullptr;
+void Transform::CreateStaticMember()
+{
+	D3D11_BUFFER_DESC desc = { 0 };
+	desc.ByteWidth = sizeof(Matrix);
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.MiscFlags = 0;
+	desc.StructureByteStride = 0;
+	HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &WBuffer);
+	assert(SUCCEEDED(hr));
+
+	D3D->GetDC()->VSSetConstantBuffers(0, 1, &WBuffer);
+}
+void Transform::DeleteStaticMember()
+{
+	SafeRelease(WBuffer);
+}
+
+void Transform::Set()
+{
+	Matrix TW = W.Transpose();
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	D3D->GetDC()->Map(WBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	memcpy_s(mappedResource.pData, sizeof(Matrix), &TW, sizeof(Matrix));
+	D3D->GetDC()->Unmap(WBuffer, 0);
+}
 
 Transform::Transform()
 {

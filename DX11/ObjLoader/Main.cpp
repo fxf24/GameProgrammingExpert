@@ -84,11 +84,14 @@ void Main::Update()
             }
             else if (Input[0] == 'g')
             {
+                
                 static string name;
                 gCount++;
                 if (gCount == 1)
                 {
                     fin >> name;
+                    
+
                 }
                 if (gCount == 2)
                 {

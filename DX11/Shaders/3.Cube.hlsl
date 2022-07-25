@@ -34,7 +34,7 @@ float4 PS(PixelInput input) : SV_TARGET
     //BaseColor.rgb = Kd.rgb;
     float3 DirectionLight = DirLighting(normalize(input.Normal.xyz), input.wPostion);
     
-    //                      (r*r, g*g, b*b)
+    //                        ( r*0.6 ,g*0.3, b*0.1)
     BaseColor.rgb = saturate(BaseColor.rgb * DirectionLight);
     
     return BaseColor;

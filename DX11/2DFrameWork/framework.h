@@ -87,6 +87,7 @@ extern Application App;//Extern Global
 #include "Transform.h"
 #include "Texture.h"
 #include "Material.h"
+#include "Collider.h"
 #include "ResourceManager.h"
 
 #include "GameObject.h"

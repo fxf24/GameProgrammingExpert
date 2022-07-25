@@ -56,6 +56,34 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		This->LinkEndChild(Material);
 		Material->SetAttribute("File", material->file.c_str());
 	}
+	if (collider)
+	{
+		//Collider
+		Xml::XMLElement* Collider = doc->NewElement("Collider");
+		This->LinkEndChild(Collider);
+		Collider->SetAttribute("ColliderType", (int)collider->type);
+		Collider->SetAttribute("Visible", collider->visible);
+
+		Xml::XMLElement* Position = doc->NewElement("Position");
+		Collider->LinkEndChild(Position);
+		Position->SetAttribute("X", collider->position.x);
+		Position->SetAttribute("Y", collider->position.y);
+		Position->SetAttribute("Z", collider->position.z);
+
+		Xml::XMLElement* Scale = doc->NewElement("Scale");
+		Collider->LinkEndChild(Scale);
+		Scale->SetAttribute("X", collider->scale.x);
+		Scale->SetAttribute("Y", collider->scale.y);
+		Scale->SetAttribute("Z", collider->scale.z);
+
+		Xml::XMLElement* Rotation = doc->NewElement("Rotation");
+		Collider->LinkEndChild(Rotation);
+		Rotation->SetAttribute("X", collider->rotation.x);
+		Rotation->SetAttribute("Y", collider->rotation.y);
+		Rotation->SetAttribute("Z", collider->rotation.z);
+	}
+
+
 	Transform::SaveTransform(This, doc);
 
 	if (type == ObType::Camera)
@@ -113,7 +141,29 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		SafeReset(material);
 		material = RESOURCE->materials.Load(file);
 	}
+	if (component = This->FirstChildElement("Collider"))
+	{
+		int coltype;
+		Xml::XMLElement* transform;
+		coltype = component->IntAttribute("ColliderType");
+		SafeDelete(collider);
+		collider = new Collider((ColliderType)coltype);
+		collider->visible = component->BoolAttribute("Visible");
+		transform = component->FirstChildElement("Position");
+		collider->position.x = transform->FloatAttribute("X");
+		collider->position.y = transform->FloatAttribute("Y");
+		collider->position.z = transform->FloatAttribute("Z");
 
+		transform = component->FirstChildElement("Scale");
+		collider->scale.x = transform->FloatAttribute("X");
+		collider->scale.y = transform->FloatAttribute("Y");
+		collider->scale.z = transform->FloatAttribute("Z");
+
+		transform = component->FirstChildElement("Rotation");
+		collider->rotation.x = transform->FloatAttribute("X");
+		collider->rotation.y = transform->FloatAttribute("Y");
+		collider->rotation.z = transform->FloatAttribute("Z");
+	}
 	if (type == ObType::Camera)
 	{
 		Camera* CamOb = dynamic_cast<Camera*>(this);
