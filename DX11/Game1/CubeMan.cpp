@@ -12,7 +12,7 @@ CubeMan::CubeMan()
 void CubeMan::Update()
 {
 	//움직이기 전의 위치값
-	lastPos = position;
+	lastPos = GetWorldPos();
 
 	shaketime += DELTA;
 	if (shaketime > 0.5f)
@@ -42,23 +42,17 @@ void CubeMan::Update()
 	if (INPUT->KeyDown(VK_SPACE)and not jumping)
 	{
 		jumping = true;
-		gravity = -60.0f;
+		gravity = -30.0f;
 	}
 
 	if (jumping)
 	{
 		MoveWorldPos(-UP * gravity * DELTA);
-		gravity += 120.0f * DELTA;
-		if (surface > GetWorldPos().y)
+		gravity += 30.0f * DELTA;
+		/*if (gravity > 30.0f)
 		{
 			jumping = false;
-			SetWorldPosY(surface + 0.2f);
-		}
-	}
-	else if (GetWorldPos().y - surface > 0.4f)
-	{
-		gravity = 30.0f;
-		MoveWorldPos(-UP * gravity * DELTA);
+		}*/
 	}
 
 	GameObject::Update();
@@ -71,7 +65,15 @@ void CubeMan::WorldUpdate()
 
 void CubeMan::Falling()
 {
+	if (jumping) return;
 	jumping = true;
+	gravity = 0.0f;
+}
+
+void CubeMan::Landing()
+{
+	if (not jumping) return;
+	jumping = false;
 	gravity = 0.0f;
 }
 
@@ -92,11 +94,11 @@ void CubeMan::Walk()
 {
 	if (INPUT->KeyPress(VK_UP))
 	{
-		position += GetForward() * 20.0f * DELTA;
+		position += GetForward() * 10.0f * DELTA;
 	}
 	if (INPUT->KeyPress(VK_DOWN))
 	{
-		position -= GetForward() * 20.0f * DELTA;
+		position -= GetForward() * 10.0f * DELTA;
 	}
 	//팔다리휘젓기,고개고정
 	Find("Head")->rotation.y = 0.0f;

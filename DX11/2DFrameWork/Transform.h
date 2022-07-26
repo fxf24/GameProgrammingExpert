@@ -48,7 +48,5 @@ public:
     void        SetLocalPosY(float WPosY);
     void        SetLocalPosZ(float WPosZ);
     void        MoveLocalPos(const Vector3& WScaleVec);
-
-    Vector3     GetPosition() { return position; }
 };
 
