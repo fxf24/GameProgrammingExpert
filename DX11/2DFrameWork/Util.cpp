@@ -60,6 +60,60 @@ string Util::ToString(wstring value)
 	return temp;
 }
 
+float Util::NormalizeAngle(float angle)
+{
+	while (angle > PI_2)
+		angle -= PI_2;
+	while (angle < 0)
+		angle += PI_2;
+	return angle;
+}
+
+Vector3 Util::NormalizeAngles(Vector3 angles)
+{
+	angles.x = NormalizeAngle(angles.x);
+	angles.y = NormalizeAngle(angles.y);
+	angles.z = NormalizeAngle(angles.z);
+	return angles;
+}
+
+Vector3 Util::QuaternionToYawPtichRoll(Quaternion q1)
+{
+	float sqw = q1.w * q1.w;
+	float sqx = q1.x * q1.x;
+	float sqy = q1.y * q1.y;
+	float sqz = q1.z * q1.z;
+	float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+
+	float test = q1.x * q1.w - q1.y * q1.z;
+	Vector3 v;
+	if (test > 0.4995f * unit) { // singularity at north pole
+
+		v.y = 2.0f * atan2f(q1.y, q1.x);
+		v.x = PI / 2.0f;
+		v.z = 0;
+		return NormalizeAngles(v);
+	}
+
+	if (test < -0.4995f * unit) { // singularity at south pole
+
+		v.y = -2.0f * atan2f(q1.y, q1.x);
+		v.x = -PI / 2.0f;
+		v.z = 0;
+		return NormalizeAngles(v);
+	}
+
+	Quaternion q = Quaternion(q1.w, q1.z, q1.x, q1.y);
+	// Yaw
+	v.y = atan2f(2.0f * q.x * q.w + 2.0f * q.y * q.z, 1.0f - 2.0f * (q.z * q.z + q.w * q.w));
+	// Pitch
+	v.x = asinf(2.0f * (q.x * q.z - q.w * q.y));
+	// Roll
+	v.z = atan2f(2.0f * q.x * q.y + 2.0f * q.z * q.w, 1.0f - 2.0f * (q.y * q.y + q.z * q.z));
+
+	return NormalizeAngles(v);
+}
+
 bool Util::RayIntersectTri(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint)
 {
 	if (not Target->mesh)return false;

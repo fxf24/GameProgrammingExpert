@@ -8,6 +8,11 @@ namespace Util
 	wstring ToWString(string value);
 	string ToString(wstring value);
 
+	float NormalizeAngle(float angle);
+	Vector3 NormalizeAngles(Vector3 angles);
+	Vector3 QuaternionToYawPtichRoll(Quaternion q1);
+
+
 	bool RayIntersectTri(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint);
 
 }

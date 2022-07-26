@@ -48,6 +48,7 @@ Transform::Transform()
 void Transform::Update()
 {
 	S = Matrix::CreateScale(scale.x, scale.y, scale.z);
+	// Ry*Rx*Rz
 	R = Matrix::CreateFromYawPitchRoll(rotation.y, rotation.x, rotation.z);
 	T = Matrix::CreateTranslation(position.x, position.y, position.z);
 	RT = R * T;

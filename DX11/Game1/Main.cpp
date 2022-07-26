@@ -96,9 +96,9 @@ void Main::LateUpdate()
         cubeMan->WorldUpdate();
     }
 
-    if (Map->Find("Box05")->collider->Intersect(cubeMan->collider))
+    if (Map->Find("Box04")->collider->Intersect(cubeMan->collider))
     {
-        cubeMan->SetWorldPos(Map->Find("Box04")->collider->GetWorldPos() + Vector3(0, 10, 0));
+        cout << "Ãæµ¹" << endl;
     }
 }
 

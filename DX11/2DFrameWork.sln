@@ -45,11 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{5606A415-2
 		Contents\Mesh\2.Sphere.mesh = Contents\Mesh\2.Sphere.mesh
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjLoader", "ObjLoader\ObjLoader.vcxproj", "{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
@@ -70,6 +65,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498
 		Shaders\2.Cube.hlsl = Shaders\2.Cube.hlsl
 		Shaders\3.Cube.hlsl = Shaders\3.Cube.hlsl
 		Shaders\Common.hlsl = Shaders\Common.hlsl
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssimpConverter", "AssimpConverter\AssimpConverter.vcxproj", "{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
 	EndProjectSection
 EndProject
 Global
@@ -104,14 +104,14 @@ Global
 		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x64.Build.0 = Release|x64
 		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x86.ActiveCfg = Release|Win32
 		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x86.Build.0 = Release|Win32
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Debug|x64.ActiveCfg = Debug|x64
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Debug|x64.Build.0 = Debug|x64
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Debug|x86.ActiveCfg = Debug|Win32
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Debug|x86.Build.0 = Debug|Win32
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Release|x64.ActiveCfg = Release|x64
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Release|x64.Build.0 = Release|x64
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Release|x86.ActiveCfg = Release|Win32
-		{6E015EDA-72F6-4AB6-B9C6-172CB140F46B}.Release|x86.Build.0 = Release|Win32
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Debug|x64.ActiveCfg = Debug|x64
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Debug|x64.Build.0 = Debug|x64
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Debug|x86.ActiveCfg = Debug|Win32
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Debug|x86.Build.0 = Debug|Win32
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x64.ActiveCfg = Release|x64
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x64.Build.0 = Release|x64
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x86.ActiveCfg = Release|Win32
+		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
