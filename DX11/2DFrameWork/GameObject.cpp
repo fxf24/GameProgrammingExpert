@@ -18,6 +18,8 @@ Actor::Actor()
 {
 	type = ObType::Actor;
 	root = this;
+	skeleton = nullptr;
+	//boneIndex = 0;
 }
 
 
@@ -81,6 +83,13 @@ Actor* Actor::Create(string name)
 void GameObject::Update()
 {
 	Transform::Update();
+	if (boneIndex != -1)
+	{
+		//
+		Matrix temp = root->skeleton->bonesOffset[boneIndex]*W;
+		//행우선->열우선
+		root->skeleton->bones[boneIndex] = temp.Transpose();
+	}
 
 	if (collider)
 		collider->Update(this);
@@ -152,6 +161,16 @@ void GameObject::AddChild(GameObject* child)
 {
 	if (root->Find(child->name))
 		return;
+	root->obList[child->name] = child;
+	children[child->name] = child;
+	child->parent = this;
+	child->root = root;
+}
+void GameObject::AddBone(GameObject* child)
+{
+	if (root->Find(child->name))
+		return;
+	child->boneIndex = ++root->boneIndexCount;
 	root->obList[child->name] = child;
 	children[child->name] = child;
 	child->parent = this;

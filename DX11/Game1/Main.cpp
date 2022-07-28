@@ -13,8 +13,8 @@ Main::~Main()
 
 void Main::Init()
 {
-    //Cam = Camera::Create();
-    //Cam->LoadFile("Cam.xml");
+    Cam = Camera::Create();
+    Cam->LoadFile("Cam.xml");
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
     Map = Actor::Create();
@@ -23,7 +23,7 @@ void Main::Init()
     MapSurface->LoadFile("MapSurface.xml");
 
     cubeMan = new CubeMan();
-    Cam = (Camera*)cubeMan->Find("Camera");
+    //Cam = (Camera*)cubeMan->Find("Camera");
     Camera::main = Cam;
     cubeManTopRay.direction = Vector3(0, -1, 0);
 }
@@ -96,10 +96,10 @@ void Main::LateUpdate()
         cubeMan->WorldUpdate();
     }
 
-    if (Map->Find("Box04")->collider->Intersect(cubeMan->collider))
+    /*if (Map->Find("Box04")->collider->Intersect(cubeMan->collider))
     {
         cout << "Ãæµ¹" << endl;
-    }
+    }*/
 }
 
 void Main::Render()

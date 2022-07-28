@@ -156,6 +156,22 @@ Mesh::Mesh(void* vertices, UINT vertexCount, UINT* indices, UINT indexCount, Ver
     case VertexType::PTN:
         byteWidth = sizeof(VertexPTN);
         break;
+    case VertexType::MODEL:
+        byteWidth = sizeof(VertexModel);
+        break;
+
+    case VertexType::TERRAIN:
+        byteWidth = sizeof(VertexTerrain);
+        break;
+    case VertexType::PT:
+        byteWidth = sizeof(VertexPT);
+        break;
+    case VertexType::PS:
+        byteWidth = sizeof(VertexPS);
+        break;
+    case VertexType::PSV:
+        byteWidth = sizeof(VertexPSV);
+        break;
     }
     ////////////////////////////////////////////////////
 

@@ -2,7 +2,7 @@
 
 CubeMan::CubeMan()
 {
-	LoadFile("Character2.xml");
+	LoadFile("Model.xml");
 	state = PlayerState::IDLE;
 	shaketime = 0.0f;
 	mul = 1.0f;
@@ -80,7 +80,7 @@ void CubeMan::Landing()
 void CubeMan::Idle()
 {
 	//°í°³Á£±â,Â÷·ÇÀÚ¼¼À¯Áö
-	Find("Head")->rotation.y += mul * DELTA;
+	//Find("Head")->rotation.y += mul * DELTA;
 
 	//idle to walk
 	if (INPUT->KeyPress(VK_UP) or INPUT->KeyPress(VK_DOWN))
@@ -101,7 +101,7 @@ void CubeMan::Walk()
 		position -= GetForward() * 10.0f * DELTA;
 	}
 	//ÆÈ´Ù¸®ÈÖÁ£±â,°í°³°íÁ¤
-	Find("Head")->rotation.y = 0.0f;
+	//Find("Head")->rotation.y = 0.0f;
 
 	//walk to idle
 	if (INPUT->KeyPress(VK_UP) == false and INPUT->KeyPress(VK_DOWN) == false)

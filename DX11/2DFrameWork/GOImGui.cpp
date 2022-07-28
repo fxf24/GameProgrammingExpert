@@ -230,8 +230,45 @@ void Actor::RenderDetail()
 			}
 			ImGui::EndTabItem();
 		}
+
+		if (ImGui::BeginTabItem("Skeleton"))
+		{
+			if (skeleton)
+			{
+				ImGui::Text(skeleton->file.c_str());
+			}
+			if (GUI->FileImGui("Load", "Load Skeleton",
+				".skel", "../Contents/Skeleton/"))
+			{
+				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				Util::Replace(&path, "\\", "/");
+				size_t tok = path.find("/Skeleton/") + 10;
+				path = path.substr(tok, path.length());
+				SafeDelete(skeleton);
+				skeleton = new Skeleton();
+				skeleton->LoadFile(path);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete"))
+			{
+				SafeDelete(skeleton);
+			}
+			ImGui::EndTabItem();
+		}
+
+
 		ImGui::EndTabBar();
 	}
+}
+
+void Actor::Render()
+{
+	if (skeleton)
+	{
+		//if (anim)anim->Update();
+		skeleton->Set();
+	}
+	GameObject::Render();
 }
 
 
