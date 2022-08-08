@@ -65,6 +65,9 @@
     <ClInclude Include="Skeleton.h">
       <Filter>GameObject\Member</Filter>
     </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>GameObject\Member</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -145,6 +148,9 @@
       <Filter>GameObject\Member</Filter>
     </ClCompile>
     <ClCompile Include="Skeleton.cpp">
+      <Filter>GameObject\Member</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
       <Filter>GameObject\Member</Filter>
     </ClCompile>
   </ItemGroup>

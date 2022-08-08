@@ -90,6 +90,7 @@ extern Application App;//Extern Global
 #include "Material.h"
 #include "Collider.h"
 #include "Skeleton.h"
+#include "Animation.h"
 #include "ResourceManager.h"
 
 #include "GameObject.h"

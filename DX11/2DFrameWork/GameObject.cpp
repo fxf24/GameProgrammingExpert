@@ -5,10 +5,6 @@ GameObject::GameObject()
 	type = ObType::GameObject;
 	root = nullptr;
 	visible = true;
-	//shader = RESOURCE->shaders.Load("1.Cube.hlsl");
-		// = RESOURCE->LoadShader("1.Cube.hlsl");
-	//mesh = RESOURCE->LoadMesh("1.Sphere.mesh");
-	//mesh = make_shared<Mesh>();
 	mesh = nullptr;
 	shader = nullptr;
 	material = nullptr;
@@ -19,10 +15,8 @@ Actor::Actor()
 	type = ObType::Actor;
 	root = this;
 	skeleton = nullptr;
-	//boneIndex = 0;
+	anim = nullptr;
 }
-
-
 GameObject::~GameObject()
 {
 	SafeReset(mesh);
@@ -30,6 +24,14 @@ GameObject::~GameObject()
 	SafeReset(material);
 	SafeDelete(collider);
 }
+Actor::~Actor()
+{
+	SafeDelete(skeleton);
+	SafeDelete(anim);
+}
+
+
+
 
 
 GameObject* GameObject::Create(string name)
@@ -68,6 +70,8 @@ void Actor::ReleaseMember()
 	SafeReset(shader);
 	SafeReset(material);
 	SafeDelete(collider);
+	SafeDelete(skeleton);
+	SafeDelete(anim);
 	obList.clear();
 	children.clear();
 }
@@ -82,15 +86,25 @@ Actor* Actor::Create(string name)
 
 void GameObject::Update()
 {
-	Transform::Update();
+	
 	if (boneIndex != -1)
 	{
-		//
+		if (root->anim)
+		{
+			Transform::UpdateAnim(root->anim->GetFrameBone(boneIndex));
+		}
+		else
+		{
+			Transform::Update();
+		}
 		Matrix temp = root->skeleton->bonesOffset[boneIndex]*W;
 		//행우선->열우선
 		root->skeleton->bones[boneIndex] = temp.Transpose();
 	}
-
+	else
+	{
+		Transform::Update();
+	}
 	if (collider)
 		collider->Update(this);
 

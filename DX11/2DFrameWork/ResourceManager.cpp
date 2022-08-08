@@ -6,6 +6,7 @@ void ResourceManager::ReleaseAll()
 	shaders.ReleaseList();
 	textures.ReleaseList(); 
 	materials.ReleaseList();
+	animations.ReleaseList();
 }
 //template<typename T>
 // const shared_ptr<T>& Resource<T>::Load(string file)

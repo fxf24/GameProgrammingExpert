@@ -55,12 +55,14 @@ class Actor : public GameObject
 	friend GameObject;
 private:
 	unordered_map<string, GameObject*> obList;
-	int             boneIndexCount = 0;
 public:
+	int             boneIndexCount = 0;
 	string			file;
 	Skeleton*		skeleton;
+	Animations*		anim;
 protected:
 	Actor();
+	virtual	~Actor();
 public:
 	void			Release();
 	void			ReleaseMember();
@@ -70,6 +72,7 @@ public:
 	void			SaveFile(string file);
 	void			LoadFile(string file);
 	virtual void	RenderDetail();
+	virtual void	Update();
 	virtual void    Render();
 };
 

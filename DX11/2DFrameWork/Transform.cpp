@@ -61,6 +61,22 @@ void Transform::Update()
 	}
 }
 
+void Transform::UpdateAnim(Matrix&& bone)
+{
+	S = Matrix::CreateScale(scale);
+	R = Matrix::CreateFromYawPitchRoll(rotation.y, rotation.x, rotation.z);
+	T = Matrix::CreateTranslation(position);
+
+	RT = R * T * bone;
+	W = S * RT;
+	if (parent)
+	{
+		S = S * parent->S;
+		RT = RT * parent->RT;
+		W = W * parent->W;
+	}
+}
+
 
 Vector3 Transform::GetWorldPos()
 {
@@ -160,4 +176,13 @@ void Transform::MoveLocalPos(const Vector3& WScaleVec)
 	}
 	else
 		position += WScaleVec;
+}
+
+Matrix Transform::GetLocalInverse()
+{
+	Matrix s = Matrix::CreateScale(scale);
+	Matrix r = Matrix::CreateFromYawPitchRoll(rotation.y, rotation.x, rotation.z);
+	Matrix t = Matrix::CreateTranslation(position);
+	Matrix w = s * r * t;
+	return w.Invert();
 }

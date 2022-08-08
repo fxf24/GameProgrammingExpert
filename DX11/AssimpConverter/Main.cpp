@@ -48,7 +48,7 @@ void Main::Update()
 
     ImGui::Begin("AssimpImporter");
 
-    if (GUI->FileImGui("AssimpImporter", "Importer",
+    if (GUI->FileImGui("ModelImporter", "ModelImporter",
         ".fbx,.obj,.x", "../Assets"))
     {
 		file = ImGuiFileDialog::Instance()->GetCurrentFileName();
@@ -99,6 +99,128 @@ void Main::Update()
 
 		importer.FreeScene();
     }
+	if (GUI->FileImGui("AnimationImporter", "AnimationImporter",
+		".fbx,.obj,.x", "../Assets"))
+	{
+		file = ImGuiFileDialog::Instance()->GetCurrentFileName();
+		string path = "../Assets/" + file;
+
+		Assimp::Importer importer; //지역변수로 선언된 객체
+
+		scene = importer.ReadFile
+		(
+			path,
+			aiProcess_ConvertToLeftHanded
+			| aiProcess_Triangulate
+			| aiProcess_GenUVCoords
+			| aiProcess_GenNormals
+			| aiProcess_CalcTangentSpace
+		);
+		assert(scene != NULL and "Import Error");
+
+		
+		if (!actor->anim)actor->anim = new Animations();
+
+		//애니메이션 갯수
+		for (UINT i = 0; i < scene->mNumAnimations; i++)
+		{
+			shared_ptr<Animation> Anim = make_shared<Animation>();
+			aiAnimation* srcAnim = scene->mAnimations[i];
+			size_t tok2 = file.find_last_of(".");
+			Anim->file = file.substr(0, tok2) + to_string(i);
+			Anim->frameMax = (int)srcAnim->mDuration + 1;
+			Anim->tickPerSecond = srcAnim->mTicksPerSecond != 0.0 ? (float)srcAnim->mTicksPerSecond : 25.0f;
+			Anim->boneMax = actor->boneIndexCount + 1;
+			Anim->arrFrameBone = new Matrix * [Anim->frameMax];
+			for (UINT j = 0; j < Anim->frameMax; j++)
+			{
+				Anim->arrFrameBone[j] = new Matrix[actor->boneIndexCount + 1];
+			}
+
+			//채널갯수 -> 본에 대응
+			for (UINT j = 0; j < srcAnim->mNumChannels; j++)
+			{
+				AnimNode* animNode = new AnimNode();
+				aiNodeAnim* srcAnimNode = srcAnim->mChannels[j];
+
+				animNode->name = srcAnimNode->mNodeName.C_Str();
+				//Scale
+				for (UINT k = 0; k < srcAnimNode->mNumScalingKeys; k++)
+				{
+					AnimScale srcScale;
+					srcScale.time = (float)srcAnimNode->mScalingKeys[k].mTime;
+					srcScale.scale.x = (float)srcAnimNode->mScalingKeys[k].mValue.x;
+					srcScale.scale.y = (float)srcAnimNode->mScalingKeys[k].mValue.y;
+					srcScale.scale.z = (float)srcAnimNode->mScalingKeys[k].mValue.z;
+					animNode->scale.push_back(srcScale);
+				}
+				//Position
+				for (UINT k = 0; k < srcAnimNode->mNumPositionKeys; k++)
+				{
+					AnimPosition srcPosition;
+					srcPosition.time = (float)srcAnimNode->mPositionKeys[k].mTime;
+					srcPosition.pos.x = (float)srcAnimNode->mPositionKeys[k].mValue.x;
+					srcPosition.pos.y = (float)srcAnimNode->mPositionKeys[k].mValue.y;
+					srcPosition.pos.z = (float)srcAnimNode->mPositionKeys[k].mValue.z;
+					animNode->position.push_back(srcPosition);
+				}
+				//Rotation
+				for (UINT k = 0; k < srcAnimNode->mNumRotationKeys; k++)
+				{
+					AnimRotation srcRotation;
+					srcRotation.time = (float)srcAnimNode->mRotationKeys[k].mTime;
+					srcRotation.quater.x = (float)srcAnimNode->mRotationKeys[k].mValue.x;
+					srcRotation.quater.y = (float)srcAnimNode->mRotationKeys[k].mValue.y;
+					srcRotation.quater.z = (float)srcAnimNode->mRotationKeys[k].mValue.z;
+					srcRotation.quater.w = (float)srcAnimNode->mRotationKeys[k].mValue.w;
+					animNode->rotation.push_back(srcRotation);
+				}
+
+				GameObject* chanel = actor->Find(animNode->name);
+				if (chanel)
+				{
+					Matrix S, R, T;
+					Quaternion quter;
+					Vector3 pos, scale;
+					for (UINT k = 0; k < Anim->frameMax; k++)
+					{
+						pos = Interpolated::CalcInterpolatedPosition(animNode, (float)k, Anim->frameMax);
+						scale = Interpolated::CalcInterpolatedScaling(animNode, (float)k, Anim->frameMax);
+						quter = Interpolated::CalcInterpolatedRotation(animNode, (float)k, Anim->frameMax);
+
+						S = Matrix::CreateScale(scale);
+						R = Matrix::CreateFromQuaternion(quter);
+						T = Matrix::CreateTranslation(pos);
+
+						Anim->arrFrameBone[k][chanel->boneIndex] =
+							chanel->GetLocalInverse() * S * R * T;
+					}
+				}
+				//여기서 채널끝(본)
+
+			}
+			//여기서 애님끝
+			actor->anim->playList.push_back(Anim);
+
+			{
+				size_t tok = file.find_last_of(".");
+				string checkPath = "../Contents/Animation/" + file.substr(0, tok);
+				if (!PathFileExistsA(checkPath.c_str()))
+				{
+					CreateDirectoryA(checkPath.c_str(), NULL);
+				}
+
+				string filePath = file.substr(0, tok) + "/";
+				Anim->file = filePath + Anim->file + ".anim";
+				Anim->SaveFile(Anim->file);
+			}
+
+		}
+
+		importer.FreeScene();
+	}
+
+
     ImGui::End();
 
     Cam->Update();
@@ -483,3 +605,169 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, in
 
     return wParam;
 }
+
+
+Vector3 Interpolated::CalcInterpolatedScaling(AnimNode* iter, float time, int Duration)
+{
+	//비어있으면 1,1,1반환
+	if (iter->scale.empty())
+		return Vector3(1.0f, 1.0f, 1.0f);
+	//한개만 있는놈은 첫번째 값 반환
+	if (iter->scale.size() == 1)
+		return iter->scale.front().scale;
+	//마지막 놈은 마지막값 반환
+	if (time == Duration - 1)
+	{
+		return iter->scale.back().scale;
+	}
+	//보간 시작
+	int scaling_index = FindScale(iter, time);
+	//-1 인덱스가 없으므로 마지막 값으로 반환
+	if (scaling_index == -1)
+	{
+		return iter->scale.back().scale;
+	}
+	//보간 끝
+	UINT next_scaling_index = scaling_index + 1;
+	assert(next_scaling_index < iter->scale.size());
+
+	//차이 나는 시간값
+	float delta_time = (float)(iter->scale[next_scaling_index].time
+		- iter->scale[scaling_index].time);
+	//보간값
+	float factor = (time - (float)(iter->scale[scaling_index].time)) / delta_time;
+	//얘도 하나만 있는애
+	if (factor < 0.0f)
+	{
+		return iter->scale.front().scale;
+	}
+
+	auto start = iter->scale[scaling_index].scale;
+	auto end = iter->scale[next_scaling_index].scale;
+
+	start = Vector3::Lerp(start, end, factor);
+	return start;
+}
+Quaternion Interpolated::CalcInterpolatedRotation(AnimNode* iter, float time, int Duration)
+{
+	//auto rot_frames = iter->second->rotation;
+
+	if (iter->rotation.empty())
+		return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+
+	if (iter->rotation.size() == 1)
+		return iter->rotation.front().quater;
+
+	if (time == Duration - 1)
+	{
+		return iter->rotation.back().quater;
+	}
+
+	int quter_index = FindRot(iter, time);
+	if (quter_index == -1)
+	{
+		return iter->rotation.back().quater;
+	}
+	UINT next_quter_index = quter_index + 1;
+	assert(next_quter_index < iter->rotation.size());
+
+	float delta_time = static_cast<float>(iter->rotation[next_quter_index].time - iter->rotation[quter_index].time);
+	float factor = (time - static_cast<float>(iter->rotation[quter_index].time)) / delta_time;
+	if (factor < 0.0f)
+	{
+		return iter->rotation.front().quater;
+	}
+
+	auto start = iter->rotation[quter_index].quater;
+	auto end = iter->rotation[next_quter_index].quater;
+
+	start = Quaternion::Slerp(start, end, factor);
+	return start;
+}
+Vector3 Interpolated::CalcInterpolatedPosition(AnimNode* iter, float time, int Duration)
+{
+	//auto pos_frames = iter->second->position;
+
+	if (iter->position.empty())
+		return Vector3(0.0f, 0.0f, 0.0f);
+
+	if (iter->position.size() == 1)
+		return iter->position.front().pos;
+
+	if (time == Duration - 1)
+	{
+		return iter->position.back().pos;
+	}
+
+	int position_index = FindPos(iter, time);
+
+	if (position_index == -1)
+	{
+		return iter->position.back().pos;
+	}
+
+	UINT next_position_index = position_index + 1;
+	assert(next_position_index < iter->position.size());
+
+	float delta_time = static_cast<float>(iter->position[next_position_index].time - iter->position[position_index].time);
+	float factor = (time - static_cast<float>(iter->position[position_index].time)) / delta_time;
+
+	if (factor < 0.0f)
+	{
+		return iter->position.front().pos;
+	}
+
+	auto start = iter->position[position_index].pos;
+	auto end = iter->position[next_position_index].pos;
+
+	start = Vector3::Lerp(start, end, factor);
+	return start;
+}
+
+
+int Interpolated::FindScale(AnimNode* iter, float time)
+{
+	//vector<AnimScale> scale_frames = iter->second->scale;
+
+	if (iter->scale.empty())
+		return -1;//-1 을 반환하면 오류로 터지게 됨
+
+	for (UINT i = 0; i < iter->scale.size() - 1; i++)
+	{
+		if (time < (float)(iter->scale[i + 1].time))
+			return i;
+	}
+
+	return -1;//-1 을 반환하면 오류로 터지게 됨
+}
+int Interpolated::FindRot(AnimNode* iter, float time)
+{
+	//auto pos_frames = iter->second->rotation;
+
+	if (iter->rotation.empty())
+		return -1;
+
+	for (UINT i = 0; i < iter->rotation.size() - 1; i++)
+	{
+		if (time < static_cast<float>(iter->rotation[i + 1].time))
+			return i;
+	}
+
+	return -1;
+}
+int Interpolated::FindPos(AnimNode* iter, float time)
+{
+	//auto pos_frames = iter->second->position;
+
+	if (iter->position.empty())
+		return -1;
+
+	for (UINT i = 0; i < iter->position.size() - 1; i++)
+	{
+		if (time < static_cast<float>(iter->position[i + 1].time))
+			return i;
+	}
+
+	return -1;
+}
+

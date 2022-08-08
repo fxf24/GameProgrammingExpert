@@ -78,3 +78,43 @@ struct VertexWeights
 		}
 	}
 };
+
+
+struct AnimPosition
+{
+	float time;
+	Vector3 pos;
+};
+
+struct AnimScale
+{
+	float time;
+	Vector3 scale;
+};
+
+struct AnimRotation
+{
+	float time;
+	Quaternion quater;
+};
+
+struct AnimNode
+{
+	string					name;
+	//각 벡터 사이즈가 다를수있다.
+	vector<AnimPosition>	position;
+	vector<AnimScale>		scale;
+	vector<AnimRotation>	rotation;
+};
+
+namespace Interpolated
+{
+	//typedef map<string, AnimNode*>::iterator AnimIter;
+
+	Vector3 CalcInterpolatedScaling(AnimNode* iter, float time, int Duration);
+	Quaternion CalcInterpolatedRotation(AnimNode* iter, float time, int Duration);
+	Vector3 CalcInterpolatedPosition(AnimNode* iter, float time, int Duration);
+	int FindScale(AnimNode* iter, float time);
+	int FindRot(AnimNode* iter, float time);
+	int FindPos(AnimNode* iter, float time);
+}

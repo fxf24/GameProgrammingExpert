@@ -255,10 +255,25 @@ void Actor::RenderDetail()
 			}
 			ImGui::EndTabItem();
 		}
-
+		if (ImGui::BeginTabItem("Animations"))
+		{
+			if (anim)
+			{
+				anim->RenderDetail();
+			}
+			
+			ImGui::EndTabItem();
+		}
 
 		ImGui::EndTabBar();
 	}
+}
+
+void Actor::Update()
+{
+	if (anim)anim->Update();
+
+	GameObject::Update();
 }
 
 void Actor::Render()

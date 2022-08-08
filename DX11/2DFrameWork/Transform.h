@@ -22,6 +22,7 @@ public:
 	Transform();
 	virtual ~Transform() {};
     virtual void	Update();
+    void            UpdateAnim(Matrix&& bone);
     virtual void	RenderDetail();
     virtual void    Set();
   
@@ -48,5 +49,6 @@ public:
     void        SetLocalPosY(float WPosY);
     void        SetLocalPosZ(float WPosZ);
     void        MoveLocalPos(const Vector3& WScaleVec);
+    Matrix      GetLocalInverse();
 };
 
