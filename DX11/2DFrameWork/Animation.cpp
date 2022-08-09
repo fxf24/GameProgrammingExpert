@@ -102,23 +102,69 @@ void Animations::AnimatorUpdate(Animator& Animator)
 	}
 }
 
+Animations::Animations()
+{
+	isChanging = false;
+}
+
+Animations::~Animations()
+{
+	for (int i = 0; i < playList.size(); i++)
+	{
+		SafeReset(playList[i]);
+	}
+}
+
 void Animations::Update()
 {
+	if (isChanging)
+	{
+		AnimatorUpdate(nextAnimator);
+		Changedtime += DELTA;
+		if (Changedtime > blendtime)
+		{
+			Changedtime = 0.0f;
+			//다음애니메이션을 현재애니메이션으로 바꾼다.
+			currentAnimator = nextAnimator;
+			isChanging = false;
+		}
+	}
+
 	AnimatorUpdate(currentAnimator);
 }
 
 Matrix Animations::GetFrameBone(int boneIndex)
 {
+	if (isChanging)
+	{
+		return
+			playList[currentAnimator.animIdx]->arrFrameBone[currentAnimator.nextFrame][boneIndex]
+			* (1.0f - Changedtime / blendtime)
+			+
+			(playList[nextAnimator.animIdx]->arrFrameBone[nextAnimator.nextFrame][boneIndex]
+				* nextAnimator.frameWeight +
+				playList[nextAnimator.animIdx]->arrFrameBone[nextAnimator.currentFrame][boneIndex]
+				* (1.0f - nextAnimator.frameWeight)) * (Changedtime / blendtime);
+	}
+
 	return playList[currentAnimator.animIdx]->arrFrameBone[currentAnimator.nextFrame][boneIndex]
 		* currentAnimator.frameWeight +
 		playList[currentAnimator.animIdx]->arrFrameBone[currentAnimator.currentFrame][boneIndex]
 		* (1.0f - currentAnimator.frameWeight);
 }
 
-void Animations::PlayAnimation(AnimationState state, UINT idx)
+void Animations::PlayAnimation(AnimationState state, UINT idx, float blendtime)
 {
-	currentAnimator.animState = state;
-	currentAnimator.animIdx = idx;
+	Changedtime = 0.0f;
+
+	isChanging = true;
+
+	currentAnimator.animState = AnimationState::STOP;
+	nextAnimator.animState = state;
+	this->blendtime = blendtime;
+	nextAnimator.animIdx = idx;
+	nextAnimator.currentFrame = 0;
+	nextAnimator.nextFrame = 1;
 }
 
 void Animations::RenderDetail()
@@ -129,19 +175,19 @@ void Animations::RenderDetail()
 		string button = name + "Stop";
 		if (ImGui::Button(button.c_str()))
 		{
-			PlayAnimation(AnimationState::STOP, i);
+			PlayAnimation(AnimationState::STOP, i,0.3f);
 		}
 		ImGui::SameLine();
 		button = name + "Once";
 		if (ImGui::Button(button.c_str()))
 		{
-			PlayAnimation(AnimationState::ONCE, i);
+			PlayAnimation(AnimationState::ONCE, i, 0.3f);
 		}
 		ImGui::SameLine();
 		button = name + "Loop";
 		if (ImGui::Button(button.c_str()))
 		{
-			PlayAnimation(AnimationState::LOOP, i);
+			PlayAnimation(AnimationState::LOOP, i, 0.3f);
 		}
 	}
 }

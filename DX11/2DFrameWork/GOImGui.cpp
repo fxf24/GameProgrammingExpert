@@ -95,20 +95,36 @@ void GameObject::RenderDetail()
 			if (GUI->FileImGui("Save", "Save Mesh",
 				".mesh", "../Contents/Mesh"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
 				Util::Replace(&path, "\\", "/");
-				size_t tok = path.find("/Mesh/") + 6;
-				path = path.substr(tok, path.length());
+				if (path.find("/Mesh/") != -1)
+				{
+					size_t tok = path.find("/Mesh/") + 6;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				mesh->SaveFile(path);
 			}
 			ImGui::SameLine();
 			if (GUI->FileImGui("Load", "Load Mesh",
 				".mesh", "../Contents/Mesh"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
 				Util::Replace(&path, "\\", "/");
-				size_t tok = path.find("/Mesh/") + 6;
-				path = path.substr(tok, path.length());
+				if (path.find("/Mesh/") != -1)
+				{
+					size_t tok = path.find("/Mesh/") + 6;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				SafeReset(mesh);
 				mesh = RESOURCE->meshes.Load(path);
 			}
@@ -128,7 +144,18 @@ void GameObject::RenderDetail()
 			if (GUI->FileImGui("Load", "Load Shader",
 				".hlsl", "../Shaders"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
+				Util::Replace(&path, "\\", "/");
+				if (path.find("/Shaders/") != -1)
+				{
+					size_t tok = path.find("/Shaders/") + 9;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				SafeReset(shader);
 				shader = RESOURCE->shaders.Load(path);
 			}
@@ -149,10 +176,18 @@ void GameObject::RenderDetail()
 			if (GUI->FileImGui("Save", "Save Material",
 				".mtl", "../Contents/Material"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
 				Util::Replace(&path, "\\", "/");
-				size_t tok = path.find("/Material/") + 10;
-				path = path.substr(tok, path.length());
+				if (path.find("/Material/") != -1)
+				{
+					size_t tok = path.find("/Material/") + 10;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				material->SaveFile(path);
 			}
 			ImGui::SameLine();
@@ -160,10 +195,18 @@ void GameObject::RenderDetail()
 				".mtl", "../Contents/Material"))
 			{
 				
-				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
 				Util::Replace(&path, "\\", "/");
-				size_t tok = path.find("/Material/") + 10;
-				path = path.substr(tok, path.length());
+				if (path.find("/Material/") != -1)
+				{
+					size_t tok = path.find("/Material/") + 10;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				SafeReset(material);
 				material = RESOURCE->materials.Load(path);
 			}
@@ -218,14 +261,36 @@ void Actor::RenderDetail()
 			if (GUI->FileImGui("Save", "Save Actor",
 				".xml", "../Contents/GameObject"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
+				Util::Replace(&path, "\\", "/");
+				if (path.find("/GameObject/") != -1)
+				{
+					size_t tok = path.find("/GameObject/") + 12;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				SaveFile(path);
 			}
 			ImGui::SameLine();
 			if (GUI->FileImGui("Load", "Load Actor",
 				".xml", "../Contents/GameObject"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
+				Util::Replace(&path, "\\", "/");
+				if (path.find("/GameObject/") != -1)
+				{
+					size_t tok = path.find("/GameObject/") + 12;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				LoadFile(path);
 			}
 			ImGui::EndTabItem();
@@ -240,19 +305,27 @@ void Actor::RenderDetail()
 			if (GUI->FileImGui("Load", "Load Skeleton",
 				".skel", "../Contents/Skeleton/"))
 			{
-				string path = ImGuiFileDialog::Instance()->GetFilePathName();
+				string path = ImGuiFileDialog::Instance()->GetCurrentPath();
 				Util::Replace(&path, "\\", "/");
-				size_t tok = path.find("/Skeleton/") + 10;
-				path = path.substr(tok, path.length());
+				if (path.find("/Skeleton/") != -1)
+				{
+					size_t tok = path.find("/Skeleton/") + 10;
+					path = path.substr(tok, path.length())
+						+ "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
+				else
+				{
+					path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				}
 				SafeDelete(skeleton);
 				skeleton = new Skeleton();
 				skeleton->LoadFile(path);
 			}
-			ImGui::SameLine();
+			/*ImGui::SameLine();
 			if (ImGui::Button("Delete"))
 			{
 				SafeDelete(skeleton);
-			}
+			}*/
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Animations"))
@@ -271,7 +344,10 @@ void Actor::RenderDetail()
 
 void Actor::Update()
 {
-	if (anim)anim->Update();
+	if (anim)
+	{
+		anim->Update();
+	}
 
 	GameObject::Update();
 }

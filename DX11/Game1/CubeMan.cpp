@@ -55,7 +55,7 @@ void CubeMan::Update()
 		}*/
 	}
 
-	GameObject::Update();
+	Actor::Update();
 }
 
 void CubeMan::WorldUpdate()
@@ -94,11 +94,11 @@ void CubeMan::Walk()
 {
 	if (INPUT->KeyPress(VK_UP))
 	{
-		position += GetForward() * 10.0f * DELTA;
+		position -= GetForward() * 10.0f * DELTA;
 	}
 	if (INPUT->KeyPress(VK_DOWN))
 	{
-		position -= GetForward() * 10.0f * DELTA;
+		position += GetForward() * 10.0f * DELTA;
 	}
 	//ÆÈ´Ù¸®ÈÖÁ£±â,°í°³°íÁ¤
 	//Find("Head")->rotation.y = 0.0f;

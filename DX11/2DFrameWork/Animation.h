@@ -33,11 +33,17 @@ class Animations
 	};
 	void AnimatorUpdate(Animator& Animator);
 public:
+	Animations();
+	~Animations();
 	void Update();
 	Animator							currentAnimator;
-	//Animator							nextAnimator;
+	Animator							nextAnimator;
+	bool								isChanging;
+	bool								isPlaying;
+	float								blendtime;
+	float								Changedtime;
 	vector<shared_ptr<Animation>>		playList;
 	Matrix	GetFrameBone(int boneIndex);
-	void	PlayAnimation(AnimationState state, UINT idx);
+	void	PlayAnimation(AnimationState state, UINT idx, float blendtime);
 	void	RenderDetail();
 };

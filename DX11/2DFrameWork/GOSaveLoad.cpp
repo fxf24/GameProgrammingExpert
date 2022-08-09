@@ -13,7 +13,17 @@ void Actor::SaveFile(string file)
 		Skeleton->SetAttribute("File", skeleton->file.c_str());
 		Skeleton->SetAttribute("BoneIndexCount", boneIndexCount);
 	}
-
+	if (anim)
+	{
+		Xml::XMLElement* Anim = doc->NewElement("Animations");
+		ob->LinkEndChild(Anim);
+		Anim->SetAttribute("AnimSize", (int)anim->playList.size());
+		for (int i = 0; i < anim->playList.size(); i++)
+		{
+			string number = "File" + to_string(i);
+			Anim->SetAttribute(number.c_str(), anim->playList[i]->file.c_str());
+		}
+	}
 	SaveObject(ob, doc);
 	string path = "../Contents/GameObject/" + file;
 	doc->SaveFile(path.c_str());
@@ -41,6 +51,18 @@ void Actor::LoadFile(string file)
 		skeleton = new Skeleton();
 		skeleton->LoadFile(file);
 		boneIndexCount = component->IntAttribute("BoneIndexCount");
+	}
+	if (component = ob->FirstChildElement("Animations"))
+	{
+		SafeDelete(anim);
+		anim = new Animations();
+		int vecSize = component->IntAttribute("AnimSize");
+		for (int i = 0; i < vecSize; i++)
+		{
+			string number = "File" + to_string(i);
+			string aniFile = component->Attribute(number.c_str());
+			anim->playList.push_back(RESOURCE->animations.Load(aniFile));
+		}
 	}
 	name = ob->Attribute("Name");
 	type = (ObType)ob->IntAttribute("ObType");

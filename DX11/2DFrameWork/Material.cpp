@@ -74,10 +74,18 @@ void Material::RenderDetail()
     if (GUI->FileImGui("Load NormalMap", "Load NormalMap",
         ".dds,.jpg,.tga,.png,.bmp", "../Contents/Texture"))
     {
-        string path = ImGuiFileDialog::Instance()->GetFilePathName();
+        string path = ImGuiFileDialog::Instance()->GetCurrentPath();
         Util::Replace(&path, "\\", "/");
-        size_t tok = path.find("/Texture/") + 9;
-        path = path.substr(tok, path.length());
+        if (path.find("/Texture/") != -1)
+        {
+            size_t tok = path.find("/Texture/") + 9;
+            path = path.substr(tok, path.length())
+                + "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
+        else
+        {
+            path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
         SafeReset(normalMap);
         normalMap = RESOURCE->textures.Load(path);
         ambient.w = 1.0f;
@@ -89,10 +97,18 @@ void Material::RenderDetail()
     if (GUI->FileImGui("Load DiffuseMap", "Load DiffuseMap",
         ".dds,.jpg,.tga,.png,.bmp", "../Contents/Texture"))
     {
-        string path = ImGuiFileDialog::Instance()->GetFilePathName();
+        string path = ImGuiFileDialog::Instance()->GetCurrentPath();
         Util::Replace(&path, "\\", "/");
-        size_t tok = path.find("/Texture/") + 9;
-        path = path.substr(tok, path.length());
+        if (path.find("/Texture/") != -1)
+        {
+            size_t tok = path.find("/Texture/") + 9;
+            path = path.substr(tok, path.length())
+                + "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
+        else
+        {
+            path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
         SafeReset(diffuseMap);
         diffuseMap = RESOURCE->textures.Load(path);
         diffuse.w = 1.0f;
@@ -106,10 +122,18 @@ void Material::RenderDetail()
     if (GUI->FileImGui("Load SpecularMap", "Load SpecularMap",
         ".dds,.jpg,.tga,.png,.bmp", "../Contents/Texture"))
     {
-        string path = ImGuiFileDialog::Instance()->GetFilePathName();
+        string path = ImGuiFileDialog::Instance()->GetCurrentPath();
         Util::Replace(&path, "\\", "/");
-        size_t tok = path.find("/Texture/") + 9;
-        path = path.substr(tok, path.length());
+        if (path.find("/Texture/") != -1)
+        {
+            size_t tok = path.find("/Texture/") + 9;
+            path = path.substr(tok, path.length())
+                + "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
+        else
+        {
+            path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
         SafeReset(specularMap);
         specularMap = RESOURCE->textures.Load(path);
         specular.w = 1.0f;
@@ -121,10 +145,18 @@ void Material::RenderDetail()
     if (GUI->FileImGui("Load emissiveMap", "Load emissiveMap",
         ".dds,.jpg,.tga,.png,.bmp", "../Contents/Texture"))
     {
-        string path = ImGuiFileDialog::Instance()->GetFilePathName();
+        string path = ImGuiFileDialog::Instance()->GetCurrentPath();
         Util::Replace(&path, "\\", "/");
-        size_t tok = path.find("/Texture/") + 9;
-        path = path.substr(tok, path.length());
+        if (path.find("/Texture/") != -1)
+        {
+            size_t tok = path.find("/Texture/") + 9;
+            path = path.substr(tok, path.length())
+                + "/" + ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
+        else
+        {
+            path = ImGuiFileDialog::Instance()->GetCurrentFileName();
+        }
         SafeReset(emissiveMap);
         emissiveMap = RESOURCE->textures.Load(path);
         emissive.w = 1.0f;
