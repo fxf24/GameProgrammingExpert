@@ -22,6 +22,7 @@ public:
 protected:
 	ObType						type;
 public:
+	int                         boneIndex = -1;
 	string						name;	//key
 	bool						visible;
 	class Actor*				root;
@@ -41,6 +42,7 @@ public:
 	virtual void	Update();
 	virtual void	Render();
 	void			AddChild(GameObject* child);
+	void			AddBone(GameObject* child);
 	bool			RenderHierarchy();
 	virtual void	RenderDetail();
 
@@ -53,8 +55,10 @@ class Actor : public GameObject
 	friend GameObject;
 private:
 	unordered_map<string, GameObject*> obList;
+	int             boneIndexCount = 0;
 public:
 	string			file;
+	Skeleton*		skeleton;
 protected:
 	Actor();
 public:
@@ -66,5 +70,6 @@ public:
 	void			SaveFile(string file);
 	void			LoadFile(string file);
 	virtual void	RenderDetail();
+	virtual void    Render();
 };
 

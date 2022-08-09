@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", 
 		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
 		Contents\GameObject\Map.xml = Contents\GameObject\Map.xml
 		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
+		Contents\GameObject\Model.xml = Contents\GameObject\Model.xml
+		Contents\GameObject\Racer.xml = Contents\GameObject\Racer.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
 	EndProjectSection
@@ -64,6 +66,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498
 		Shaders\1.Cube.hlsl = Shaders\1.Cube.hlsl
 		Shaders\2.Cube.hlsl = Shaders\2.Cube.hlsl
 		Shaders\3.Cube.hlsl = Shaders\3.Cube.hlsl
+		Shaders\4.Cube.hlsl = Shaders\4.Cube.hlsl
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 	EndProjectSection
 EndProject

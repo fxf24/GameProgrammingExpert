@@ -6,6 +6,12 @@ cbuffer VS_VP : register(b1)
 {
     matrix ViewProj;
 }
+//½ºÄÌ·¹Åæ
+#define MAX_BONE 256
+cbuffer VS_Bones : register(b2)
+{
+    matrix Bones[MAX_BONE];
+}
 
 cbuffer PS_ViewPos : register(b0)
 {
@@ -34,6 +40,18 @@ SamplerState SamplerS : register(s2);
 
 Texture2D TextureE : register(t3);
 SamplerState SamplerE : register(s3);
+
+matrix SkinWorld(float4 indices, float4 weights)
+{
+    matrix transform = 0; //¿µÇà·Ä
+    transform += mul(weights.x, Bones[(uint) indices.x]);
+    transform += mul(weights.y, Bones[(uint) indices.y]);
+    transform += mul(weights.z, Bones[(uint) indices.z]);
+    transform += mul(weights.w, Bones[(uint) indices.w]);
+    return transform;
+}
+
+
 
 float3 DirLighting(float3 Normal, float3 wPostion)
 {

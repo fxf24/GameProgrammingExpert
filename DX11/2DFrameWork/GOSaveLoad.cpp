@@ -6,6 +6,14 @@ void Actor::SaveFile(string file)
 	Xml::XMLElement* ob = doc->NewElement("Root");
 	doc->LinkEndChild(ob);
 
+	if (skeleton)
+	{
+		Xml::XMLElement* Skeleton = doc->NewElement("Skeleton");
+		ob->LinkEndChild(Skeleton);
+		Skeleton->SetAttribute("File", skeleton->file.c_str());
+		Skeleton->SetAttribute("BoneIndexCount", boneIndexCount);
+	}
+
 	SaveObject(ob, doc);
 	string path = "../Contents/GameObject/" + file;
 	doc->SaveFile(path.c_str());
@@ -25,6 +33,15 @@ void Actor::LoadFile(string file)
 
 	Xml::XMLElement* ob;
 	ob = doc->FirstChildElement();
+	Xml::XMLElement* component;
+	if (component = ob->FirstChildElement("Skeleton"))
+	{
+		file = component->Attribute("File");
+		SafeDelete(skeleton);
+		skeleton = new Skeleton();
+		skeleton->LoadFile(file);
+		boneIndexCount = component->IntAttribute("BoneIndexCount");
+	}
 	name = ob->Attribute("Name");
 	type = (ObType)ob->IntAttribute("ObType");
 	obList[name] = this;
@@ -38,6 +55,15 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 	This->SetAttribute("Name", name.c_str());
 	This->SetAttribute("Visible", visible);
 	This->SetAttribute("ObType", (int)type);
+
+	if (root)
+	{
+		if (root->skeleton)
+		{
+			This->SetAttribute("BoneIndex", boneIndex);
+		}
+	}
+
 	if (mesh)
 	{
 		Xml::XMLElement* Mesh = doc->NewElement("Mesh");
@@ -122,7 +148,13 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 	string file;
 	visible = This->BoolAttribute("Visible");
 
-
+	if (root)
+	{
+		if (root->skeleton)
+		{
+			boneIndex = This->IntAttribute("BoneIndex");
+		}
+	}
 	if (component = This->FirstChildElement("Mesh"))
 	{
 		file = component->Attribute("File");
