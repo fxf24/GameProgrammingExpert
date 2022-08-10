@@ -89,11 +89,11 @@ void Main::LateUpdate()
         
     }
     //¸Ê ¹Û
-   /* else
+    else
     {
         cubeMan->SetWorldPos(cubeMan->GetLastPos());
         cubeMan->WorldUpdate();
-    }*/
+    }
 }
 
 void Main::Render()
