@@ -10,8 +10,6 @@ class CubeMan: public Actor
 {
 private:
 	PlayerState state;
-	float		shaketime;
-	float		mul;
 	float		gravity;
 	Vector3     lastPos;
 

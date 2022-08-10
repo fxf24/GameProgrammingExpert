@@ -4,8 +4,6 @@ CubeMan::CubeMan()
 {
 	LoadFile("Model.xml");
 	state = PlayerState::IDLE;
-	shaketime = 0.0f;
-	mul = 1.0f;
 	jumping = false;
 }
 
@@ -13,14 +11,6 @@ void CubeMan::Update()
 {
 	//움직이기 전의 위치값
 	lastPos = GetWorldPos();
-
-	shaketime += DELTA;
-	if (shaketime > 0.5f)
-	{
-		mul *= -1.0f;
-		shaketime -= 0.5f;
-	}
-
 
 	switch (state)
 	{
@@ -85,7 +75,6 @@ void CubeMan::Idle()
 	{
 		anim->PlayAnimation(AnimationState::LOOP, 1, 0.3f);
 		state = PlayerState::WALK;
-		shaketime = 0.0f;
 	}
 }
 
@@ -107,6 +96,5 @@ void CubeMan::Walk()
 	{
 		anim->PlayAnimation(AnimationState::LOOP, 0, 0.3f);
 		state = PlayerState::IDLE;
-		shaketime = 0.25f;
 	}
 }
