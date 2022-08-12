@@ -129,7 +129,6 @@ void Animations::Update()
 			isChanging = false;
 		}
 	}
-
 	AnimatorUpdate(currentAnimator);
 }
 
@@ -175,19 +174,19 @@ void Animations::RenderDetail()
 		string button = name + "Stop";
 		if (ImGui::Button(button.c_str()))
 		{
-			PlayAnimation(AnimationState::STOP, i,0.3f);
+			PlayAnimation(AnimationState::STOP, i);
 		}
 		ImGui::SameLine();
 		button = name + "Once";
 		if (ImGui::Button(button.c_str()))
 		{
-			PlayAnimation(AnimationState::ONCE, i, 0.3f);
+			PlayAnimation(AnimationState::ONCE, i);
 		}
 		ImGui::SameLine();
 		button = name + "Loop";
 		if (ImGui::Button(button.c_str()))
 		{
-			PlayAnimation(AnimationState::LOOP, i, 0.3f);
+			PlayAnimation(AnimationState::LOOP, i);
 		}
 	}
 }

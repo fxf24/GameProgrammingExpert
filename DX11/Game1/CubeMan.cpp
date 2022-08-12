@@ -12,6 +12,7 @@ void CubeMan::Update()
 	//움직이기 전의 위치값
 	lastPos = GetWorldPos();
 
+
 	switch (state)
 	{
 	case PlayerState::IDLE:
@@ -33,13 +34,16 @@ void CubeMan::Update()
 	{
 		jumping = true;
 		gravity = -30.0f;
-		anim->PlayAnimation(AnimationState::LOOP, 2, 0.3f);
 	}
 
 	if (jumping)
 	{
 		MoveWorldPos(-UP * gravity * DELTA);
 		gravity += 30.0f * DELTA;
+		/*if (gravity > 30.0f)
+		{
+			jumping = false;
+		}*/
 	}
 
 	Actor::Update();
@@ -68,13 +72,12 @@ void CubeMan::Idle()
 {
 	//고개젓기,차렷자세유지
 	//Find("Head")->rotation.y += mul * DELTA;
-	//anim->PlayAnimation(AnimationState::LOOP, 0, 0.3f);
 
 	//idle to walk
-	if (INPUT->KeyDown(VK_UP) or INPUT->KeyDown(VK_DOWN))
+	if (INPUT->KeyPress(VK_UP) or INPUT->KeyPress(VK_DOWN))
 	{
-		anim->PlayAnimation(AnimationState::LOOP, 1, 0.3f);
 		state = PlayerState::WALK;
+		anim->PlayAnimation(AnimationState::LOOP, 1);
 	}
 }
 
@@ -82,11 +85,11 @@ void CubeMan::Walk()
 {
 	if (INPUT->KeyPress(VK_UP))
 	{
-		position -= GetForward() * 10.0f * DELTA;
+		position += GetForward() * 10.0f * DELTA;
 	}
 	if (INPUT->KeyPress(VK_DOWN))
 	{
-		position += GetForward() * 10.0f * DELTA;
+		position -= GetForward() * 10.0f * DELTA;
 	}
 	//팔다리휘젓기,고개고정
 	//Find("Head")->rotation.y = 0.0f;
@@ -94,7 +97,7 @@ void CubeMan::Walk()
 	//walk to idle
 	if (INPUT->KeyPress(VK_UP) == false and INPUT->KeyPress(VK_DOWN) == false)
 	{
-		anim->PlayAnimation(AnimationState::LOOP, 0, 0.3f);
 		state = PlayerState::IDLE;
+		anim->PlayAnimation(AnimationState::LOOP, 0);
 	}
 }

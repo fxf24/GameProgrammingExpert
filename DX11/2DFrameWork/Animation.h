@@ -39,7 +39,6 @@ public:
 	Animator							currentAnimator;
 	Animator							nextAnimator;
 	bool								isChanging;
-	bool								isPlaying;
 	float								blendtime;
 	float								Changedtime;
 	vector<shared_ptr<Animation>>		playList;

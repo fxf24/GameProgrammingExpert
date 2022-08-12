@@ -74,6 +74,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssimpConverter", "AssimpCo
 		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerrainEditor", "TerrainEditor\TerrainEditor.vcxproj", "{24E46C3D-7264-43BF-8D42-43E35B2DB17A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -114,6 +119,14 @@ Global
 		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x64.Build.0 = Release|x64
 		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x86.ActiveCfg = Release|Win32
 		{D6FD016D-C3C0-47F4-8BDB-90B92EFABBEF}.Release|x86.Build.0 = Release|Win32
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Debug|x64.ActiveCfg = Debug|x64
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Debug|x64.Build.0 = Debug|x64
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Debug|x86.ActiveCfg = Debug|Win32
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Debug|x86.Build.0 = Debug|Win32
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x64.ActiveCfg = Release|x64
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x64.Build.0 = Release|x64
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x86.ActiveCfg = Release|Win32
+		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

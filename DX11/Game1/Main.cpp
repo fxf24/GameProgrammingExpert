@@ -65,7 +65,7 @@ void Main::LateUpdate()
     Vector3 hit;
     if (Util::RayIntersectTri(cubeManTopRay, MapSurface->Find("Rectangle19"), hit))
     {
-        float LastFoot = cubeMan->GetLastPos().y;
+        float LastFoot = cubeMan->GetLastPos().y ;
 
         //내려가야함
         if (LastFoot > hit.y)
@@ -79,6 +79,7 @@ void Main::LateUpdate()
 
             if(hit.y - LastFoot < 3.0f)
                 cubeMan->SetWorldPosY(hit.y);
+               
             else
             {
                 cubeMan->SetWorldPosX(cubeMan->GetLastPos().x);
@@ -86,7 +87,6 @@ void Main::LateUpdate()
             }
             cubeMan->WorldUpdate();
         }
-        
     }
     //맵 밖
     else
@@ -94,6 +94,11 @@ void Main::LateUpdate()
         cubeMan->SetWorldPos(cubeMan->GetLastPos());
         cubeMan->WorldUpdate();
     }
+
+    /*if (Map->Find("Box04")->collider->Intersect(cubeMan->collider))
+    {
+        cout << "충돌" << endl;
+    }*/
 }
 
 void Main::Render()
