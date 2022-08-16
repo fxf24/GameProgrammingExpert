@@ -30,7 +30,10 @@ PixelInput VS(VertexInput input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
-    float4 BaseColor = TextureD.Sample(SamplerD, input.Uv);
+    float4 BaseColor = float4(1, 1, 1, 1);
+    if (Kd.w == 1.0f)
+        BaseColor= TextureD.Sample(SamplerD, input.Uv);
+    
     //BaseColor.rgb = Kd.rgb;
     float3 DirectionLight = DirLighting(normalize(input.Normal.xyz), input.wPostion);
     

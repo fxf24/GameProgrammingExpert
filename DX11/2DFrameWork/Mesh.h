@@ -17,11 +17,12 @@ private:
     VertexType              vertexType;
     UINT                    byteWidth;
 
-    UINT                    vertexCount;
-    UINT                    indexCount;
-    void*                   vertices;
-    UINT*                   indices;
+    
 public:
+    void* vertices;
+    UINT                    vertexCount;
+    UINT*                   indices;
+    UINT                    indexCount;
     string                  file;
 public:
     Mesh();
@@ -34,5 +35,6 @@ public:
     void SaveFile(string file);
     UINT GetIndexCount() { return indexCount; }
     const Vector3& GetVertexPosition(UINT idx);
+    void UpdateMesh();
 };
 
