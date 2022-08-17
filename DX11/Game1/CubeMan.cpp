@@ -5,6 +5,7 @@ CubeMan::CubeMan()
 	LoadFile("Model.xml");
 	state = PlayerState::IDLE;
 	jumping = false;
+	movingPosition = position;
 }
 
 void CubeMan::Update()
@@ -46,6 +47,11 @@ void CubeMan::Update()
 		}*/
 	}
 
+	if (position != movingPosition)
+	{
+		position += Vector3::Lerp(position, movingPosition, DELTA);
+	}
+
 	Actor::Update();
 }
 
@@ -68,6 +74,11 @@ void CubeMan::Landing()
 	gravity = 0.0f;
 }
 
+void CubeMan::SetMovingPosition(Vector3 position)
+{
+	movingPosition = position;
+}
+
 void CubeMan::Idle()
 {
 	//°í°³Á£±â,Â÷·ÇÀÚ¼¼À¯Áö
@@ -85,11 +96,11 @@ void CubeMan::Walk()
 {
 	if (INPUT->KeyPress(VK_UP))
 	{
-		position += GetForward() * 10.0f * DELTA;
+		position -= GetForward() * 10.0f * DELTA;
 	}
 	if (INPUT->KeyPress(VK_DOWN))
 	{
-		position -= GetForward() * 10.0f * DELTA;
+		position += GetForward() * 10.0f * DELTA;
 	}
 	//ÆÈ´Ù¸®ÈÖÁ£±â,°í°³°íÁ¤
 	//Find("Head")->rotation.y = 0.0f;

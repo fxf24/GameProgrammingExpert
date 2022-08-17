@@ -54,6 +54,7 @@ void Main::Update()
     Map->Update();
     //MapSurface->Update();
     cubeMan->Update();
+
 }
 
 void Main::LateUpdate()
@@ -63,44 +64,46 @@ void Main::LateUpdate()
     Vector3 hit;
     if (INPUT->KeyDown(VK_LBUTTON))
     {
+        float LastFoot = cubeMan->GetLastPos().y;
         Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
         Vector3 hit;
         if (Util::RayIntersectTriNear(Mouse, Map, hit))
         {
-            cubeMan->SetWorldPos(hit);
+            //cubeMan->SetWorldPos(hit);
+            cubeMan->SetMovingPosition(hit);
         }
     }
-    //if (Util::RayIntersectTri(cubeManTopRay, MapSurface->Find("Rectangle19"), hit))
-    //{
-    //    float LastFoot = cubeMan->GetLastPos().y ;
+    if (Util::RayIntersectTri(cubeManTopRay, Map, hit))
+    {
+        float LastFoot = cubeMan->GetLastPos().y;
 
-    //    //내려가야함
-    //    if (LastFoot > hit.y)
-    //    {
-    //        cubeMan->Falling();
-    //        cubeMan->WorldUpdate();
-    //    }
-    //    else if (LastFoot < hit.y)
-    //    {
-    //        cubeMan->Landing();
+        //내려가야함
+        if (LastFoot > hit.y)
+        {
+            cubeMan->Falling();
+            cubeMan->WorldUpdate();
+        }
+        else if (LastFoot < hit.y)
+        {
+            cubeMan->Landing();
 
-    //        if(hit.y - LastFoot < 3.0f)
-    //            cubeMan->SetWorldPosY(hit.y);
-    //           
-    //        else
-    //        {
-    //            cubeMan->SetWorldPosX(cubeMan->GetLastPos().x);
-    //            cubeMan->SetWorldPosZ(cubeMan->GetLastPos().z);
-    //        }
-    //        cubeMan->WorldUpdate();
-    //    }
-    //}
-    ////맵 밖
-    //else
-    //{
-    //    cubeMan->SetWorldPos(cubeMan->GetLastPos());
-    //    cubeMan->WorldUpdate();
-    //}
+            if(hit.y - LastFoot < 3.0f)
+                cubeMan->SetWorldPosY(hit.y);
+               
+            else
+            {
+                cubeMan->SetWorldPosX(cubeMan->GetLastPos().x);
+                cubeMan->SetWorldPosZ(cubeMan->GetLastPos().z);
+            }
+            cubeMan->WorldUpdate();
+        }
+    }
+    //맵 밖
+    else
+    {
+        cubeMan->SetWorldPos(cubeMan->GetLastPos());
+        cubeMan->WorldUpdate();
+    }
 
     /*if (Map->Find("Box04")->collider->Intersect(cubeMan->collider))
     {
