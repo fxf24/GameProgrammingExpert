@@ -12,8 +12,8 @@ public:
 	static void ControlMainCam(float scalar = 10.0f);
 	static Camera* Create(string name = "Camera");
 private:
-	Matrix		view,proj;
 public:
+	Matrix		view,proj;
 	bool		ortho;
 	Viewport	viewport;
 	float		fov,nearZ,farZ, width, height;

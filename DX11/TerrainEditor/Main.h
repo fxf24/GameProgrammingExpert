@@ -8,6 +8,7 @@ private:
 	Actor* Grid;
 
 	Actor* Map;
+	Actor* Sphere;
 
 public:
 	Main();

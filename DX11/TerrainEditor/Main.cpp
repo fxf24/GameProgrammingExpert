@@ -22,6 +22,9 @@ void Main::Init()
     Map = Actor::Create();
     Map->shader = RESOURCE->shaders.Load("3.Cube.hlsl");
     Map->material = make_shared<Material>();
+
+    Sphere = Actor::Create();
+    Sphere->LoadFile("Sphere.xml");
 }
 
 void Main::Release()
@@ -135,10 +138,21 @@ void Main::Update()
     Cam->Update();
     Grid->Update();
     Map->Update();
+    Sphere->Update();
+
 }
 
 void Main::LateUpdate()
 {
+    if (INPUT->KeyDown(VK_LBUTTON))
+    {
+        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+        Vector3 hit;
+        if (Util::RayIntersectTriNear(Mouse, Map, hit))
+        {
+            Sphere->SetWorldPos(hit);
+        }
+    }
 }
 
 void Main::Render()
@@ -146,6 +160,7 @@ void Main::Render()
     Cam->Set();
     Grid->Render();
     Map->Render();
+    Sphere->Render();
 }
 
 void Main::ResizeScreen()

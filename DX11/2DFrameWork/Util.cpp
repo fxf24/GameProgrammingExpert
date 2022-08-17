@@ -145,3 +145,62 @@ bool Util::RayIntersectTri(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitP
 
 
 }
+
+bool Util::RayIntersectTriNear(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint)
+{
+	if (not Target->mesh)return false;
+
+	Matrix inverse = Target->W.Invert();
+	WRay.direction = Vector3::TransformNormal(WRay.direction, inverse);
+	WRay.direction.Normalize();
+
+	WRay.position = Vector3::Transform(WRay.position, inverse);
+	float Dis = FLT_MAX;
+	for (UINT i = 0; i < Target->mesh->GetIndexCount(); i += 3)
+	{
+		Vector3 v[3];
+		v[0] = Target->mesh->GetVertexPosition(i);
+		v[1] = Target->mesh->GetVertexPosition(i + 1);
+		v[2] = Target->mesh->GetVertexPosition(i + 2);
+
+		float temp;
+		if (WRay.Intersects(v[0], v[1], v[2], temp))
+		{
+			if (Dis > temp)
+			{
+				Dis = temp;
+				HitPoint = WRay.position + (WRay.direction * temp);
+				//다시 W 로 변환
+				HitPoint = Vector3::Transform(HitPoint, Target->W);
+			}
+		}
+	}
+	if (Dis == FLT_MAX)
+		return false;
+	else
+		return true;
+}
+
+Ray Util::MouseToRay(Vector3 Mouse, Camera* Cam)
+{
+	Mouse.x -= Cam->viewport.x;
+	Mouse.y -= Cam->viewport.y;
+
+	Vector2 MousePos;
+	
+	// ndc로의 변환
+	MousePos.x = ((2.0f * Mouse.x) / Cam->viewport.width - 1.0f);
+	MousePos.y = ((-2.0f * Mouse.y) / Cam->viewport.height + 1.0f);
+
+	// view로의 변환
+	MousePos.x /= Cam->proj._11;
+	MousePos.y /= Cam->proj._22;
+
+	Ray CamToMouse;
+	CamToMouse.position = Cam->GetWorldPos();
+	CamToMouse.direction = Vector3(MousePos.x, MousePos.y, 1.0f);
+	Matrix inverse = Cam->view.Invert();
+	CamToMouse.direction = Vector3::TransformNormal(CamToMouse.direction, inverse);
+	CamToMouse.direction.Normalize();
+	return CamToMouse;
+}

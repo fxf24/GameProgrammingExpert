@@ -14,5 +14,6 @@ namespace Util
 
 
 	bool RayIntersectTri(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint);
-
+	bool RayIntersectTriNear(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint);
+	Ray MouseToRay(Vector3 Mouse, Camera* Cam);
 }
