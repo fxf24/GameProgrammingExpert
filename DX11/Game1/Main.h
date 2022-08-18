@@ -10,6 +10,8 @@ private:
 	CubeMan*		cubeMan;
 	Ray				cubeManTopRay;
 
+	Vector3			from, to;
+	float			lerpValue;
 
 public:
 	Main();

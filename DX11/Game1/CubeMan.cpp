@@ -5,8 +5,6 @@ CubeMan::CubeMan()
 	LoadFile("Model.xml");
 	state = PlayerState::IDLE;
 	jumping = false;
-	movingPosition = position;
-	isLerping = false;
 }
 
 void CubeMan::Update()
@@ -32,33 +30,16 @@ void CubeMan::Update()
 	{
 		rotation.y += DELTA;
 	}
-	if (INPUT->KeyDown(VK_SPACE)and not jumping)
+	/*if (INPUT->KeyDown(VK_SPACE)and not jumping)
 	{
 		jumping = true;
 		gravity = -30.0f;
-	}
+	}*/
 
 	if (jumping)
 	{
 		MoveWorldPos(-UP * gravity * DELTA);
 		gravity += 30.0f * DELTA;
-		/*if (gravity > 30.0f)
-		{
-			jumping = false;
-		}*/
-	}
-
-	cout << rotation.y << endl;
-	if (isLerping)
-	{
-		position += dir * 10 * DELTA;
-
-		float dis = Vector3::Distance(position, movingPosition);
-		cout << dir.x << " : " << dir.z << endl;
-		if (dis <= 1.0f)
-		{
-			isLerping = false;
-		}
 	}
 
 	Actor::Update();
@@ -81,14 +62,6 @@ void CubeMan::Landing()
 	if (not jumping) return;
 	jumping = false;
 	gravity = 0.0f;
-}
-
-void CubeMan::SetMovingPosition(Vector3 pos)
-{
-	movingPosition = pos;
-	dir = movingPosition - position;
-	dir.Normalize();
-	rotation.y = acos(position.Dot(movingPosition) / position.Length() / movingPosition.Length()) * PI;
 }
 
 void CubeMan::Idle()
