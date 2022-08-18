@@ -227,7 +227,7 @@ bool Util::RayIntersectMap(IN Ray WRay, IN GameObject* Terrain, OUT Vector3& Hit
 			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 Ray Util::MouseToRay(Vector3 Mouse, Camera* Cam)
