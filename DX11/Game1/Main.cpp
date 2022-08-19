@@ -21,6 +21,7 @@ void Main::Init()
     Map->LoadFile("Terrain.xml");
 
     cubeMan = new CubeMan();
+    cubeMan->anim->PlayAnimation(AnimationState::LOOP, 0);
     //Cam = (Camera*)cubeMan->Find("Camera");
     Camera::main = Cam;
     cubeManTopRay.direction = Vector3(0, -1, 0);

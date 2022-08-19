@@ -48,16 +48,16 @@ void CubeMan::Update()
 		}*/
 	}
 
-	cout << rotation.y << endl;
 	if (isLerping)
 	{
 		position += dir * 10 * DELTA;
 
 		float dis = Vector3::Distance(position, movingPosition);
-		cout << dir.x << " : " << dir.z << endl;
+
 		if (dis <= 1.0f)
 		{
 			isLerping = false;
+			anim->PlayAnimation(AnimationState::LOOP, 0);
 		}
 	}
 
@@ -87,8 +87,20 @@ void CubeMan::SetMovingPosition(Vector3 pos)
 {
 	movingPosition = pos;
 	dir = movingPosition - position;
+
+	Vector2 mp = Vector2(dir.x, dir.z);
+	Vector2 p = Vector2(GetForward().x, GetForward().z);
+
+	float r = acos(p.Dot(mp) / p.Length() / mp.Length()) * PI;
+	if (r > PI)
+	{
+		r -= PI;
+		r = -r;
+	}
+
+	rotation.y += r;
+	anim->PlayAnimation(AnimationState::LOOP, 1);
 	dir.Normalize();
-	rotation.y = acos(position.Dot(movingPosition) / position.Length() / movingPosition.Length()) * PI;
 }
 
 void CubeMan::Idle()
