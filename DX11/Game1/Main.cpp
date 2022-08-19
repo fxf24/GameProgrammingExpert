@@ -74,9 +74,13 @@ void Main::LateUpdate()
             from = cubeMan->GetWorldPos();
             to = hit;
             lerpValue = 0.0f;
-        }
-        
 
+            Vector3 Dir = hit - cubeMan->GetWorldPos();
+            Dir.y = 0;
+            Dir.Normalize();
+            float Yaw = atan2f(Dir.x, Dir.z);
+            cubeMan->rotation.y = Yaw;
+        }
     }
 
     if (lerpValue < 1.0f)
