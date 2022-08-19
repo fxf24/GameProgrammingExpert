@@ -25,6 +25,8 @@ void Main::Init()
     //Cam = (Camera*)cubeMan->Find("Camera");
     Camera::main = Cam;
     cubeManTopRay.direction = Vector3(0, -1, 0);
+
+    lerpValue = 1.0f;
 }
 
 void Main::Release()
@@ -44,7 +46,7 @@ void Main::Update()
     ImGui::Text("FPS: %d",TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
     Map->RenderHierarchy();
-   
+    Cam->RenderHierarchy();
     Grid->RenderHierarchy();
     cubeMan->RenderHierarchy();
     ImGui::End();
@@ -63,54 +65,43 @@ void Main::LateUpdate()
     cubeManTopRay.position = cubeMan->GetWorldPos();
     cubeManTopRay.position.y += 1000.0f;
     Vector3 hit;
-    if (INPUT->KeyDown(VK_LBUTTON))
+    if (INPUT->KeyDown(VK_MBUTTON))
     {
-        float LastFoot = cubeMan->GetLastPos().y;
         Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
         Vector3 hit;
         if (Util::RayIntersectTriNear(Mouse, Map, hit))
         {
-            //cubeMan->SetWorldPos(hit);
-            cubeMan->isLerping = true;
-            cubeMan->SetMovingPosition(hit);
+            from = cubeMan->GetWorldPos();
+            to = hit;
+            lerpValue = 0.0f;
         }
-    }
-    if (Util::RayIntersectTri(cubeManTopRay, Map, hit))
-    {
-        float LastFoot = cubeMan->GetLastPos().y;
+        
 
-        //내려가야함
-        if (LastFoot > hit.y)
+    }
+
+    if (lerpValue < 1.0f)
+    {
+        Vector3 coord = Vector3::Lerp(from, to, lerpValue);
+        cubeMan->SetWorldPos(coord);
+        Vector3 Dis = from - to;
+        lerpValue += DELTA / Dis.Length() * 10.0f;
+
+        Vector3 Hit2;
+        if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
         {
-            cubeMan->Falling();
-            cubeMan->WorldUpdate();
+            cubeMan->SetWorldPosY(Hit2.y);
+            cout << "맵위에 있다" << endl;
         }
-        else if (LastFoot < hit.y)
+        else
         {
-            cubeMan->Landing();
-
-            if(hit.y - LastFoot < 3.0f)
-                cubeMan->SetWorldPosY(hit.y);
-               
-            else
-            {
-                cubeMan->SetWorldPosX(cubeMan->GetLastPos().x);
-                cubeMan->SetWorldPosZ(cubeMan->GetLastPos().z);
-            }
-            cubeMan->WorldUpdate();
+            cout << "맵밖에 있다" << endl;
+        }
+        if (lerpValue > 1.0f)
+        {
+            //lerpValue = 0.0f;
+            cubeMan->SetWorldPos(to);
         }
     }
-    //맵 밖
-    else
-    {
-        cubeMan->SetWorldPos(cubeMan->GetLastPos());
-        cubeMan->WorldUpdate();
-    }
-
-    /*if (Map->Find("Box04")->collider->Intersect(cubeMan->collider))
-    {
-        cout << "충돌" << endl;
-    }*/
 }
 
 void Main::Render()

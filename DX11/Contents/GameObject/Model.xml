@@ -3,7 +3,7 @@
     <Animations AnimSize="3" File0="Unarmed Idle 01/Unarmed Idle 010.anim" File1="Catwalk Walk Forward/Catwalk Walk Forward0.anim" File2="Jump/Jump0.anim"/>
     <Shader File="4.cube.hlsl"/>
     <Transform>
-        <Position X="0" Y="0" Z="0"/>
+        <Position X="4.4329586" Y="13.491748" Z="-3.8386528"/>
         <Scale X="0.1" Y="0.1" Z="0.1"/>
         <Rotation X="0" Y="3.1241393" Z="0"/>
     </Transform>
