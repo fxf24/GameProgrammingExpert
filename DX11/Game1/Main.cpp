@@ -19,6 +19,8 @@ void Main::Init()
     Grid->LoadFile("Grid.xml");
     Map = Actor::Create();
     Map->LoadFile("Terrain.xml");
+    Sphere = Actor::Create();
+    Sphere->LoadFile("Sphere.xml");
 
     cubeMan = new CubeMan();
     cubeMan->anim->PlayAnimation(AnimationState::LOOP, 0);
@@ -49,6 +51,7 @@ void Main::Update()
     Cam->RenderHierarchy();
     Grid->RenderHierarchy();
     cubeMan->RenderHierarchy();
+    Sphere->RenderHierarchy();
     ImGui::End();
 
 
@@ -57,6 +60,7 @@ void Main::Update()
     Map->Update();
     //MapSurface->Update();
     cubeMan->Update();
+    Sphere->Update();
 
 }
 
@@ -75,17 +79,19 @@ void Main::LateUpdate()
             to = hit;
             lerpValue = 0.0f;
 
-            Vector3 Dir = hit - cubeMan->GetWorldPos();
-            Dir.y = 0;
-            Dir.Normalize();
-            float Yaw = atan2f(Dir.x, Dir.z);
-            cubeMan->rotation.y = Yaw;
+            cubeMan->anim->PlayAnimation(AnimationState::LOOP, 1);
         }
     }
 
     if (lerpValue < 1.0f)
     {
         Vector3 coord = Vector3::Lerp(from, to, lerpValue);
+        Vector3 Dir = coord;
+        Dir.y = 0;
+        Dir.Normalize();
+        float Yaw = atan2f(Dir.x, Dir.z);
+        cubeMan->rotation.y = Yaw;
+
         cubeMan->SetWorldPos(coord);
         Vector3 Dis = from - to;
         lerpValue += DELTA / Dis.Length() * 10.0f;
@@ -104,8 +110,28 @@ void Main::LateUpdate()
         {
             //lerpValue = 0.0f;
             cubeMan->SetWorldPos(to);
+            cubeMan->anim->PlayAnimation(AnimationState::LOOP, 0);
         }
     }
+
+    Vector3 P0 = {-50, 0, -50};
+    Vector3 P1 = {-50, 0, 50};
+    Vector3 P2 = {50, 0, 50};
+    Vector3 P3 = {50, 0, -50};
+
+    if (time < 1.0f)
+    {
+        Vector3 loc = P0 * pow(1 - time, 3) + 3 * P1 * time * pow(1-time, 2) + 3 * P2 * pow(time, 2) * (1-time) + P3 * pow(time, 3);
+        Sphere->SetWorldPos(loc);
+
+        time += DELTA;
+    }
+    else 
+    {
+        time = 0.0f;
+    }
+
+    cout << time << endl;
 }
 
 void Main::Render()
@@ -115,6 +141,7 @@ void Main::Render()
     Map->Render();
     //MapSurface->Render();
     cubeMan->Render();
+    Sphere->Render();
 }
 
 void Main::ResizeScreen()

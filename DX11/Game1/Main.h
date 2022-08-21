@@ -9,10 +9,11 @@ private:
 	Actor*			Grid;
 	CubeMan*		cubeMan;
 	Ray				cubeManTopRay;
+	Actor*			Sphere;
 
 	Vector3			from, to;
 	float			lerpValue;
-
+	float			time = 0.0f;
 public:
 	Main();
 	~Main();
