@@ -29,6 +29,7 @@ void Main::Init()
     cubeManTopRay.direction = Vector3(0, -1, 0);
 
     lerpValue = 1.0f;
+    RlerpValue = 1.0f;
 }
 
 void Main::Release()
@@ -78,20 +79,56 @@ void Main::LateUpdate()
             from = cubeMan->GetWorldPos();
             to = hit;
             lerpValue = 0.0f;
+            RlerpValue = 0.0f;
+
+            Vector3 Dir = to - from;
+            Dir.y = 0;
+            Dir.Normalize();
+            //-PI ~ PI
+            float Yaw = atan2f(Dir.x, Dir.z);
+            //-PI ~ PI
+            cubeMan->rotation.y = Util::NormalizeAngle(cubeMan->rotation.y);
+
+            //from cubeMan->rotation.y
+            //to Yaw;
+            if (fabs(Yaw - cubeMan->rotation.y) > PI)
+            {
+                if (Yaw > 0)
+                {
+                    Rfrom = cubeMan->rotation.y + PI_2;
+                    Rto = Yaw;
+                }
+                else
+                {
+                    Rfrom = cubeMan->rotation.y - PI_2;
+                    Rto = Yaw;
+                }
+            }
+            else
+            {
+                Rfrom = cubeMan->rotation.y;
+                Rto = Yaw;
+            }
+
 
             cubeMan->anim->PlayAnimation(AnimationState::LOOP, 1);
+        }
+    }
+
+    if (RlerpValue < 1.0f)
+    {
+        float minus = fabs(Rto - Rfrom);
+        RlerpValue += DELTA / minus * PI_2;
+        cubeMan->rotation.y = Util::Lerp(Rfrom, Rto, RlerpValue);
+        if (RlerpValue > 1.0f)
+        {
+            cubeMan->rotation.y = Rto;
         }
     }
 
     if (lerpValue < 1.0f)
     {
         Vector3 coord = Vector3::Lerp(from, to, lerpValue);
-        Vector3 Dir = coord;
-        Dir.y = 0;
-        Dir.Normalize();
-        float Yaw = atan2f(Dir.x, Dir.z);
-        cubeMan->rotation.y = Yaw;
-
         cubeMan->SetWorldPos(coord);
         Vector3 Dis = from - to;
         lerpValue += DELTA / Dis.Length() * 10.0f;
@@ -130,8 +167,6 @@ void Main::LateUpdate()
     {
         time = 0.0f;
     }
-
-    cout << time << endl;
 }
 
 void Main::Render()
