@@ -3,3 +3,6 @@
 #pragma comment (lib,"../Build/2DFrameWork/2DFrameWork.lib")
 
 #include "CubeMan.h"
+#include "Scene1.h"
+#include "LoadingScene.h"
+extern int LoadingCount;

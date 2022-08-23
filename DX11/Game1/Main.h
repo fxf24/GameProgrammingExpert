@@ -4,19 +4,8 @@
 class Main : public Scene
 {
 private:
-	Camera*			Cam;
-	Actor*			Map;
-	Actor*			Grid;
-	CubeMan*		cubeMan;
-	Ray				cubeManTopRay;
-	Actor*			Sphere;
-
-	Vector3			from, to;
-	float			lerpValue;
-	float			time = 0.0f;
-
-	float			Rfrom, Rto;
-	float			RlerpValue;
+	class Scene* sc1;
+	thread*		  t1;
 
 public:
 	Main();
