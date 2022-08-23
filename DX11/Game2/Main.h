@@ -2,6 +2,13 @@
 class Main : public Scene
 {
 private:
+	Camera* Cam;
+	Actor* Grid;
+
+	Actor* sp1;
+	Actor* sp2;
+	float lerpValue;
+	Vector3 Point[4];
 
 public:
 	Main();

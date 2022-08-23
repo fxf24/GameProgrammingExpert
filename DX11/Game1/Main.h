@@ -14,6 +14,10 @@ private:
 	Vector3			from, to;
 	float			lerpValue;
 	float			time = 0.0f;
+
+	float			Rfrom, Rto;
+	float			RlerpValue;
+
 public:
 	Main();
 	~Main();

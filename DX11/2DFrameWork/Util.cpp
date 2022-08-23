@@ -62,9 +62,9 @@ string Util::ToString(wstring value)
 
 float Util::NormalizeAngle(float angle)
 {
-	while (angle > PI_2)
+	while (angle > PI)
 		angle -= PI_2;
-	while (angle < 0)
+	while (angle < -PI)
 		angle += PI_2;
 	return angle;
 }
