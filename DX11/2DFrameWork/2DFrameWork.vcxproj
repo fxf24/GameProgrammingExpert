@@ -171,6 +171,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Texture.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="GOSaveLoad.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Texture.cpp" />

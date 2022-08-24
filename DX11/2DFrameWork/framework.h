@@ -94,6 +94,7 @@ extern Application App;//Extern Global
 #include "Skeleton.h"
 #include "Animation.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
 
 #include "GameObject.h"
 //#include "ObRect.h"
@@ -110,3 +111,4 @@ extern Application App;//Extern Global
 #define DELTA		Timer::GetInstance()->GetDeltaScaleTime()
 #define RANDOM		Random::GetInstance()
 #define RESOURCE	ResourceManager::GetInstance()
+#define SCENE		SceneManager::GetInstance()

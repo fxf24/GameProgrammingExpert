@@ -7,10 +7,10 @@
       <Filter>Actors</Filter>
     </ClInclude>
     <ClInclude Include="Scene1.h">
-      <Filter>Scene</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="LoadingScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -19,17 +19,17 @@
       <Filter>Actors</Filter>
     </ClCompile>
     <ClCompile Include="Scene1.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="LoadingScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Actors">
       <UniqueIdentifier>{067ecc00-24cc-423e-a2e4-5b190061ca40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
+    <Filter Include="Scenes">
       <UniqueIdentifier>{10bd9e5c-27fd-4982-bc07-28136c4cf6c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

@@ -3,6 +3,7 @@
 
 Scene1::Scene1()
 {
+    
 }
 
 Scene1::~Scene1()
@@ -67,6 +68,10 @@ void Scene1::Update()
     cubeMan->Update();
     Sphere->Update();
 
+    if (ImGui::Button("Sc2"))
+    {
+        SCENE->ChangeScene("LOADING");
+    }
 }
 
 void Scene1::LateUpdate()

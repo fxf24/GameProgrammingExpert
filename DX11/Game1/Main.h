@@ -1,5 +1,6 @@
 #pragma once
 
+// 메인에는 씬만 구성
 
 class Main : public Scene
 {

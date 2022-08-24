@@ -3,12 +3,10 @@ class LoadingScene : public Scene
 {
 private:
 	Camera* Cam;
+	Actor* Sphere;
 	Actor* Grid;
-
-	Actor* sp1;
-	Actor* sp2;
-	float lerpValue;
-	Vector3 Point[4];
+	thread* t1;
+	bool change;
 
 public:
 	LoadingScene();

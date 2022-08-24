@@ -11,54 +11,38 @@ Main::~Main()
 
 }
 
-Scene* scene1;
 int LoadingCount = 0;
-
-void LoadingScene1()
-{
-    scene1 = new Scene1();
-    scene1->Init();
-}
 
 void Main::Init()
 {
-    //sc1 = new Scene1();
-    sc1 = new LoadingScene();
-    sc1->Init();
-    t1 = new thread(LoadingScene1);
+    SCENE->AddScene("LOADING", new LoadingScene());
+    SCENE->ChangeScene("LOADING");
 }
 
 void Main::Release()
 {
-    t1->join();
-    delete t1;
-    sc1->Release();
+    SCENE->Release();
 }
 
 
 void Main::Update()
 {
-    sc1->Update();
+    SCENE->Update();
 }
 
 void Main::LateUpdate()
 {
-    sc1->LateUpdate();
+    SCENE->LateUpdate();
 }
 
 void Main::Render()
 {
-    sc1->Render();
-
-    if (LoadingCount == 4)
-    {
-        sc1 = scene1;
-    }
+    SCENE->Render();
 }
 
 void Main::ResizeScreen()
 {
-    sc1->ResizeScreen();
+    SCENE->ResizeScreen();
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)
