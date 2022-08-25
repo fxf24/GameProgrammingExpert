@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Main.h"
 
 
 Scene1::Scene1()
@@ -65,9 +64,13 @@ void Scene1::Update()
 
     if (ImGui::Button("Sc2"))
     {
-        LoadingCount = 0;
         SCENE->ChangeScene("LOADING");
-        SCENE->DeleteScene("SC1");
+        reinterpret_cast<LoadingScene*>(SCENE->GetScene("LOADING"))->LoadingTarget("SC2", 4,
+            []()
+            {
+                SCENE->GetScene("SC2")->Init();
+            }
+            );
     }
 }
 

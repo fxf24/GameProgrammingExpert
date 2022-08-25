@@ -8,6 +8,8 @@ private:
 	thread* t1;
 	bool    Change;
 
+	int LoadingMaxCount;
+	string targetName;
 public:
 	LoadingScene();
 	~LoadingScene();
@@ -17,6 +19,7 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
+	void LoadingTarget(string name, int LoadingMaxCount, void(*FcnPTr)());
 };
 
 

@@ -19,7 +19,6 @@ bool SceneManager::AddScene(string key, Scene* value)
         return false;
     }
     scenes[key] = value;
-    value->Init();
     return true;
 }
 
@@ -47,8 +46,9 @@ Scene* SceneManager::ChangeScene(string key, float changingTime)
         if (changingTime <= 0.0f)
         {
             isChanging = true;
-            SafeRelease(currentScene);
-            nextScene->Init();
+            if (currentScene)
+                currentScene->Release();
+            //nextScene->Init();
         }
     }
     return temp;
@@ -82,7 +82,8 @@ void SceneManager::Update()
         if (changingTime < 0.0f)
         {
             isChanging = true;
-            SafeRelease(currentScene);
+            if (currentScene)
+                currentScene->Release();
             //nextScene->Init();
         }
     }
@@ -91,6 +92,7 @@ void SceneManager::Update()
     {
         currentScene = nextScene;
         isChanging = false;
+        changingTime = 0.0f;
     }
     currentScene->Update();
 }
