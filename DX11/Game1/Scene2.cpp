@@ -12,12 +12,6 @@ Scene2::~Scene2()
 
 void Scene2::Init()
 {
-    Camera::main = Cam;
-    cubeManTopRay.direction = Vector3(0, -1, 0);
-
-    lerpValue = 1.0f;
-    RlerpValue = 1.0f;
-
     Cam = Camera::Create();
     Cam->LoadFile("Cam.xml");
     LoadingCount++;
@@ -32,6 +26,11 @@ void Scene2::Init()
 
     cubeMan = new CubeMan();
     LoadingCount++;
+    Camera::main = Cam;
+    cubeManTopRay.direction = Vector3(0, -1, 0);
+
+    lerpValue = 1.0f;
+    RlerpValue = 1.0f;
 }
 
 void Scene2::Release()

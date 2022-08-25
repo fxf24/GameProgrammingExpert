@@ -79,7 +79,7 @@ void SceneManager::Update()
     if (changingTime > 0.0f)
     {
         changingTime -= DELTA;
-        if (changingTime < 0.0f)
+        if (changingTime <= 0.0f)
         {
             isChanging = true;
             if (currentScene)
@@ -92,7 +92,6 @@ void SceneManager::Update()
     {
         currentScene = nextScene;
         isChanging = false;
-        changingTime = 0.0f;
     }
     currentScene->Update();
 }

@@ -4,16 +4,6 @@ int     LoadingCount = 0;
 
 LoadingScene::LoadingScene()
 {
-    
-}
-
-LoadingScene::~LoadingScene()
-{
-    
-}
-
-void LoadingScene::Init()
-{
     Cam = Camera::Create();
     Cam->LoadFile("Cam.xml");
     Camera::main = Cam;
@@ -24,12 +14,22 @@ void LoadingScene::Init()
     Sphere->LoadFile("Sphere.xml");
 }
 
-void LoadingScene::Release()
+LoadingScene::~LoadingScene()
 {
     Sphere->Release();
     Grid->Release();
     Cam->Release();
     RESOURCE->ReleaseAll();
+}
+
+void LoadingScene::Init()
+{
+    
+}
+
+void LoadingScene::Release()
+{
+    
 }
 
 
@@ -53,8 +53,7 @@ void LoadingScene::Update()
     {
         t1->join();
         SafeDelete(t1);
-        SCENE->ChangeScene(targetName);
-        return;
+        SCENE->ChangeScene(targetName.c_str());
     }
 }
 
