@@ -6,7 +6,7 @@ private:
 	Actor* Sphere;
 	Actor* Grid;
 	thread* t1;
-	bool change;
+	bool    Change;
 
 public:
 	LoadingScene();
@@ -18,4 +18,5 @@ public:
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
 };
+
 

@@ -31,18 +31,19 @@ void Main::Release()
 {
     RESOURCE->ReleaseAll();
     Grid->Release();
+    Map->Release();
+    Sphere->Release();
 }
 
 
 void Main::Update()
 {
-    Camera::ControlMainCam(100.0f);
+    Camera::ControlMainCam();
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
     Grid->RenderHierarchy();
     Map->RenderHierarchy();
-
     ImGui::End();
 
     ImGui::Begin("LoadRawFile");
@@ -79,15 +80,12 @@ void Main::Update()
             //cout << (int)Height[i] << endl;
         }
 
-        //파일 닫기
-        fclose(fp);
-
-        //가로 x 세로 값으로 높이값 메쉬를 만들기
         int terrainSize = (int)sqrt(Size);
         int triSize = (terrainSize - 1) * (terrainSize - 1) * 2;
         float half = terrainSize * 0.5f;
-        
-        VertexPTN* Vertices = new VertexPTN[Size];
+
+        VertexPTN* vertices = new VertexPTN[Size];
+       
         for (int z = 0; z < terrainSize; z++)
         {
             for (int x = 0; x < terrainSize; x++)
@@ -100,20 +98,19 @@ void Main::Update()
                 float _u = float(x) / float(terrainSize - 1);
                 float _v = float(z) / float(terrainSize - 1);
 
-                Vertices[Index].uv = Vector2(_u, _v);
-                Vertices[Index].position = Vector3(_x, _y, _z);
-                Vertices[Index].normal = Vector3(0, 1, 0);
-
+                vertices[Index].uv = Vector2(_u, _v);
+                vertices[Index].position = Vector3(_x, _y, _z);
+                vertices[Index].normal = Vector3(0, 1, 0);
             }
         }
-        
+
         UINT* indices = new UINT[triSize * 3];
         int Idx = 0;
         for (int z = 0; z < terrainSize - 1; z++)
         {
             for (int x = 0; x < terrainSize - 1; x++)
             {
-                int Index = (z * terrainSize) + x;
+                UINT Index = z * terrainSize + x;
                 indices[Idx] = Index;
                 Idx++;
                 indices[Idx] = Index + 1;
@@ -126,10 +123,26 @@ void Main::Update()
                 Idx++;
                 indices[Idx] = Index + terrainSize;
                 Idx++;
+
             }
         }
-        Map->mesh = make_shared<Mesh>(Vertices, Size, indices, Idx, VertexType::PTN);
+        Map->mesh = make_shared<Mesh>(vertices, Size, indices, Idx,
+            VertexType::PTN);
         UpdateTerrainNormal();
+
+        
+            //UINT* indices, UINT indexCount,
+            //VertexType type
+
+
+
+
+
+        //파일 닫기
+        fclose(fp);
+
+        //가로 x 세로 값으로 높이값 메쉬를 만들기
+
     }
 
 
@@ -139,20 +152,12 @@ void Main::Update()
     Grid->Update();
     Map->Update();
     Sphere->Update();
-
 }
 
 void Main::LateUpdate()
 {
-    if (INPUT->KeyDown(VK_LBUTTON))
-    {
-        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
-        Vector3 hit;
-        if (Util::RayIntersectTriNear(Mouse, Map, hit))
-        {
-            Sphere->SetWorldPos(hit);
-        }
-    }
+    
+    
 }
 
 void Main::Render()
@@ -176,9 +181,9 @@ void Main::UpdateTerrainNormal()
     VertexPTN* vertices = (VertexPTN*)Map->mesh->vertices;
     vector<Vector3> Normals;
     Normals.resize(Map->mesh->vertexCount);
-
     for (UINT i = 0; i < Map->mesh->indexCount / 3; i++)
     {
+        //하나의 삼각형
         UINT index0 = Map->mesh->indices[i * 3 + 0];
         UINT index1 = Map->mesh->indices[i * 3 + 1];
         UINT index2 = Map->mesh->indices[i * 3 + 2];
@@ -191,15 +196,16 @@ void Main::UpdateTerrainNormal()
         Vector3 B = v2 - v0;
 
         Vector3 normal = A.Cross(B);
+        //중첩시킬 벡터를 정규화해야 평균값
         normal.Normalize();
 
         Normals[index0] += normal;
         Normals[index1] += normal;
         Normals[index2] += normal;
     }
-
     for (UINT i = 0; i < Map->mesh->vertexCount; i++)
     {
+        //중첩된 노멀을 다시 정규화
         Normals[i].Normalize();
         vertices[i].normal = Normals[i];
     }

@@ -17,12 +17,12 @@ private:
     VertexType              vertexType;
     UINT                    byteWidth;
 
-    
+  
 public:
-    void* vertices;
     UINT                    vertexCount;
     UINT*                   indices;
     UINT                    indexCount;
+    void*                   vertices;
     string                  file;
 public:
     Mesh();

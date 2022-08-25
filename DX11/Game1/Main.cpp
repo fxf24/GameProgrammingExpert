@@ -11,17 +11,19 @@ Main::~Main()
 
 }
 
-int LoadingCount = 0;
+
 
 void Main::Init()
 {
     SCENE->AddScene("LOADING", new LoadingScene());
+    //SCENE->AddScene("LOADING", new Scene1());
     SCENE->ChangeScene("LOADING");
 }
 
 void Main::Release()
 {
     SCENE->Release();
+    RESOURCE->ReleaseAll();
 }
 
 

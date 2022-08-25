@@ -12,7 +12,7 @@ private:
 	PlayerState state;
 	float		gravity;
 	Vector3     lastPos;
-	Vector3		dir;
+
 private:
 	void Idle();
 	void Walk();

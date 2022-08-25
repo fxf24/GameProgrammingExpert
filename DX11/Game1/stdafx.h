@@ -5,4 +5,4 @@
 #include "CubeMan.h"
 #include "Scene1.h"
 #include "LoadingScene.h"
-extern int LoadingCount;
+extern int  LoadingCount;

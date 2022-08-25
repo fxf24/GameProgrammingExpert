@@ -88,16 +88,19 @@ void Texture::LoadFile(string file)
     size_t index = file.find_last_of('.');
     //확장자 문자열 자르기
     string format = file.substr(index + 1, file.length());
-
     wstring path = L"../Contents/Texture/" + Util::ToWString(file);
+    //wstring path = L"D:/Song/DX/Contents/Texture/" + Util::ToWString(file);
+
 
     ScratchImage image;
+    HRESULT hr;
     if (format == "tga")
-        LoadFromTGAFile(path.c_str(), nullptr, image);
+        hr = LoadFromTGAFile(path.c_str(), nullptr, image);
     else if (format == "dds")
-        LoadFromDDSFile(path.c_str(), DDS_FLAGS_NONE, nullptr, image);
+        hr = LoadFromDDSFile(path.c_str(), DDS_FLAGS_NONE, nullptr, image);
     else
-        LoadFromWICFile(path.c_str(), WIC_FLAGS_NONE, nullptr, image);
+        hr = LoadFromWICFile(path.c_str(), WIC_FLAGS_NONE, nullptr, image);
+    Check(hr);
 
     CreateShaderResourceView(D3D->GetDevice(), image.GetImages(), image.GetImageCount(),
         image.GetMetadata(), &srv);

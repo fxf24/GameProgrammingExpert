@@ -10,18 +10,16 @@ void Main::Init()
 {
 	Cam = Camera::Create();
 	Cam->LoadFile("Cam.xml");
+	Camera::main = Cam;
 	Grid = Actor::Create();
 	Grid->LoadFile("Grid.xml");
 
-	sp1 = Actor::Create();
-	sp1->LoadFile("Sphere.xml");
-	
-	sp2 = Actor::Create();
-	sp2->LoadFile("Sphere.xml");
-	sp2->scale = Vector3(5, 5, 5);
+	Sp1 = Actor::Create();
+	Sp1->LoadFile("Sphere.xml");
 
-	Camera::main = Cam;
-
+	Sp2 = Actor::Create();
+	Sp2->LoadFile("Sphere.xml");
+	Sp2->scale = Vector3(5, 5, 5);
 	lerpValue = 0.0f;
 }
 
@@ -34,27 +32,24 @@ void Main::Release()
 void Main::Update()
 {
 	Camera::ControlMainCam();
-
-	ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
-	ImGui::Begin("Hierarchy");
-	Cam->RenderHierarchy();
-	Grid->RenderHierarchy();
-	ImGui::End();
-
 	for (int i = 0; i < 4; i++)
 	{
 		string str = "Point" + to_string(i);
 		ImGui::SliderFloat3(str.c_str(), (float*)&Point[i], -100.0f, 100.0);
 	}
+	
+
+
+
 	lerpValue += DELTA;
 
 	if (lerpValue > 1.0f)
 		lerpValue = 0.0f;
 
-	sp1->SetWorldPos(Util::Cubic(Point[0], Point[1], Point[2], Point[3], lerpValue));
 
-	sp1->Update();
+	Sp1->SetWorldPos(Util::Cubic(Point[0], Point[1], Point[2], Point[3], lerpValue));
 
+	Sp1->Update();
 	Cam->Update();
 	Grid->Update();
 }
@@ -65,21 +60,23 @@ void Main::LateUpdate()
 void Main::Render()
 {
 	Cam->Set();
-	Grid->Render();
-
 	for (int i = 0; i < 4; i++)
 	{
-		sp2->SetWorldPos(Point[i]);
-		sp2->Update();
-		sp2->Render();
+		Sp2->SetWorldPos(Point[i]);
+		Sp2->Update();
+		Sp2->Render();
 	}
 
-	sp1->Render();
+	Grid->Render();
+	Sp1->Render();
 }
 
 void Main::ResizeScreen()
 {
-
+	Cam->width = App.GetWidth();
+	Cam->height = App.GetHeight();
+	Cam->viewport.width = App.GetWidth();
+	Cam->viewport.height = App.GetHeight();
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)

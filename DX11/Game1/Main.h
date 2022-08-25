@@ -1,12 +1,10 @@
 #pragma once
 
-// 메인에는 씬만 구성
+//메인에는 씬만 구성
 
 class Main : public Scene
 {
 private:
-	class Scene* sc1;
-	thread*		  t1;
 
 public:
 	Main();

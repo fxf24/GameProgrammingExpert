@@ -636,6 +636,8 @@ const Vector3& Mesh::GetVertexPosition(UINT idx)
 
 void Mesh::UpdateMesh()
 {
-    D3D->GetDC()->UpdateSubresource(vertexBuffer, 0, NULL, vertices, 0, 0);
+    D3D->GetDC()->UpdateSubresource
+    (vertexBuffer, 0, NULL, vertices, 0, 0);
 }
+
 

@@ -14,6 +14,9 @@ Main::~Main()
 
 void Main::Init()
 {
+
+
+
     Cam = Camera::Create();
     Cam->LoadFile("Cam.xml");
     Camera::main = Cam;

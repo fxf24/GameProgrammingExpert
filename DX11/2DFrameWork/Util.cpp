@@ -153,8 +153,8 @@ bool Util::RayIntersectTriNear(IN Ray WRay, IN GameObject* Target, OUT Vector3& 
 	Matrix inverse = Target->W.Invert();
 	WRay.direction = Vector3::TransformNormal(WRay.direction, inverse);
 	WRay.direction.Normalize();
-
 	WRay.position = Vector3::Transform(WRay.position, inverse);
+
 	float Dis = FLT_MAX;
 	for (UINT i = 0; i < Target->mesh->GetIndexCount(); i += 3)
 	{
@@ -169,6 +169,7 @@ bool Util::RayIntersectTriNear(IN Ray WRay, IN GameObject* Target, OUT Vector3& 
 			if (Dis > temp)
 			{
 				Dis = temp;
+				//                         스칼라 x 방향
 				HitPoint = WRay.position + (WRay.direction * temp);
 				//다시 W 로 변환
 				HitPoint = Vector3::Transform(HitPoint, Target->W);
@@ -183,27 +184,28 @@ bool Util::RayIntersectTriNear(IN Ray WRay, IN GameObject* Target, OUT Vector3& 
 
 bool Util::RayIntersectMap(IN Ray WRay, IN GameObject* Terrain, OUT Vector3& HitPoint)
 {
-	if (not Terrain->mesh) return false;
-
-	// 역행렬 구하기
+	if (not Terrain->mesh)return false;
+	//역행렬 구하기
 	Matrix inverse = Terrain->W.Invert();
 
-	// w = 0
+	//w=0
 	WRay.direction = Vector3::TransformNormal(WRay.direction, inverse);
 	WRay.direction.Normalize();
-
-	// w = 1
+	//w=1
 	WRay.position = Vector3::Transform(WRay.position, inverse);
 
-	// Terrain 중심점 0,0,0이 가운데가 아닌 왼쪽상단이 0,0,0이 되게끔 이동
+	//Terrain 중심점 0,0,0이 가운데가 아닌 왼쪽상단이 0,0,0이 되게끔 이동
+
 	int terrainSize = (int)sqrt(Terrain->mesh->vertexCount);
 	float half = terrainSize * 0.5f;
-	int TerrainIdxX, TerrainIdxZ;
+	int TerrainIdxX , TerrainIdxZ;
 	TerrainIdxX = WRay.position.x + half;
 	TerrainIdxZ = -(WRay.position.z - half);
 
-	if (TerrainIdxX < 0 or TerrainIdxZ < 0 or TerrainIdxX >= terrainSize - 1 or TerrainIdxZ >= terrainSize - 1)
+	if (TerrainIdxX < 0 or TerrainIdxZ < 0 or
+		TerrainIdxX >= terrainSize - 1 or TerrainIdxZ >= terrainSize - 1)
 	{
+		//cout << "OutofRange" << endl;
 		return false;
 	}
 	//사각형 인덱스
@@ -211,17 +213,18 @@ bool Util::RayIntersectMap(IN Ray WRay, IN GameObject* Terrain, OUT Vector3& Hit
 	//사각형의 첫번째 정점 인덱스
 	index *= 6;
 
-	for (UINT i = 0; i < 6; i += 3)
+	for (int i = 0; i < 6; i += 3)
 	{
 		Vector3 v[3];
 		v[0] = Terrain->mesh->GetVertexPosition(index + i);
 		v[1] = Terrain->mesh->GetVertexPosition(index + i + 1);
 		v[2] = Terrain->mesh->GetVertexPosition(index + i + 2);
 
-		float temp;
-		if (WRay.Intersects(v[0], v[1], v[2], temp))
+		float Dis;
+		if (WRay.Intersects(v[0], v[1], v[2], Dis))
 		{
-			HitPoint = WRay.position + (WRay.direction * temp);
+			//                         스칼라 x 방향
+			HitPoint = WRay.position + Dis * WRay.direction;
 			//다시 W 로 변환
 			HitPoint = Vector3::Transform(HitPoint, Terrain->W);
 			return true;
@@ -234,10 +237,9 @@ Ray Util::MouseToRay(Vector3 Mouse, Camera* Cam)
 {
 	Mouse.x -= Cam->viewport.x;
 	Mouse.y -= Cam->viewport.y;
-
 	Vector2 MousePos;
-	
-	// ndc로의 변환
+
+	//ndc로의 변환
 	MousePos.x = ((2.0f * Mouse.x) / Cam->viewport.width - 1.0f);
 	MousePos.y = ((-2.0f * Mouse.y) / Cam->viewport.height + 1.0f);
 

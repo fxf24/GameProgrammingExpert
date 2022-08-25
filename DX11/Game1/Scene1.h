@@ -7,15 +7,12 @@ private:
 	Actor* Grid;
 	CubeMan* cubeMan;
 	Ray				cubeManTopRay;
-	Actor* Sphere;
 
 	Vector3			from, to;
 	float			lerpValue;
-	float			time = 0.0f;
 
 	float			Rfrom, Rto;
 	float			RlerpValue;
-
 public:
 	Scene1();
 	~Scene1();
@@ -25,5 +22,6 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
+
 };
 

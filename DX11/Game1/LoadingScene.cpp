@@ -1,44 +1,50 @@
 #include "stdafx.h"
-#include "LoadingScene.h"
-
+#include "Main.h"
 void LoadingScene1()
 {
     SCENE->AddScene("SC1", new Scene1());
 }
 
+int     LoadingCount = 0;
+
 LoadingScene::LoadingScene()
 {
-    change = false;
+    
 }
 
 LoadingScene::~LoadingScene()
 {
+    
 }
+
+
+
+
 
 void LoadingScene::Init()
 {
     Cam = Camera::Create();
     Cam->LoadFile("Cam.xml");
+    Camera::main = Cam;
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
 
     Sphere = Actor::Create();
     Sphere->LoadFile("Sphere.xml");
 
-    Camera::main = Cam;
-
     t1 = new thread(LoadingScene1);
 }
 
 void LoadingScene::Release()
 {
-    RESOURCE->ReleaseAll();
     Sphere->Release();
     Grid->Release();
     Cam->Release();
     t1->join();
     SafeDelete(t1);
+    RESOURCE->ReleaseAll();
 }
+
 
 void LoadingScene::Update()
 {
@@ -56,11 +62,10 @@ void LoadingScene::Update()
     Grid->Update();
     Sphere->Update();
 
-    if (LoadingCount >= 4 and not change)
+    if (LoadingCount >= 4)
     {
-        change = 1;
-        SCENE->ChangeScene("SC1", 1.0f);
-        Sphere->scale.x = RANDOM->Float(1.0f, 30.0f);
+        LoadingCount = 0;
+        SCENE->ChangeScene("SC1");
     }
 }
 

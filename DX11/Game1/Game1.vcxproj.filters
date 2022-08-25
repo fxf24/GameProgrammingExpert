@@ -30,7 +30,11 @@
       <UniqueIdentifier>{067ecc00-24cc-423e-a2e4-5b190061ca40}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes">
-      <UniqueIdentifier>{10bd9e5c-27fd-4982-bc07-28136c4cf6c8}</UniqueIdentifier>
+      <UniqueIdentifier>{1d9db8ce-74a3-472c-b6db-ce9a5227d383}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imgui.ini" />
+    <None Include="window.ini" />
   </ItemGroup>
 </Project>
