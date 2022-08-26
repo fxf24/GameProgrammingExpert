@@ -102,7 +102,7 @@ struct VertexTerrain
 {
     VertexTerrain()
     {
-
+        weights = 0.0f;
     };
     VertexTerrain(Vector3 pos, Vector2 uv, Vector3 normal, float weight)
     {

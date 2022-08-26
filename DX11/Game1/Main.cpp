@@ -12,7 +12,6 @@ Main::~Main()
 }
 
 
-
 void Main::Init()
 {
     LoadingScene* temp = new LoadingScene();
@@ -22,10 +21,16 @@ void Main::Init()
     //SCENE->AddScene("LOADING", new Scene1());
     SCENE->ChangeScene("LOADING");
     temp->LoadingTarget("SC1", 4, 
-        []() 
-        {
-            SCENE->GetScene("SC1")->Init();
-        });
+        []()
+        { SCENE->GetScene("SC1")->Init(); }
+        );
+
+    "avc";
+
+    "avc";
+
+    "avc";
+    "avc";
 }
 
 void Main::Release()

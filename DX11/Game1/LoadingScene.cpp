@@ -16,11 +16,16 @@ LoadingScene::LoadingScene()
 
 LoadingScene::~LoadingScene()
 {
+    RESOURCE->ReleaseAll();
     Sphere->Release();
     Grid->Release();
     Cam->Release();
-    RESOURCE->ReleaseAll();
+  
 }
+
+
+
+
 
 void LoadingScene::Init()
 {
@@ -29,7 +34,7 @@ void LoadingScene::Init()
 
 void LoadingScene::Release()
 {
-    
+   
 }
 
 
@@ -81,7 +86,7 @@ void LoadingScene::ResizeScreen()
     Cam->viewport.height = App.GetHeight();
 }
 
-void LoadingScene::LoadingTarget(string name, int loadingMaxCount, void(*FcnPtr)())
+void LoadingScene::LoadingTarget(string name, int loadingMaxCount,  void(*FcnPtr)())
 {
     t1 = new thread(FcnPtr);
     LoadingCount = 0;

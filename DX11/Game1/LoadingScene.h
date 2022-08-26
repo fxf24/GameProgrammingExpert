@@ -5,11 +5,12 @@ private:
 	Camera* Cam;
 	Actor* Sphere;
 	Actor* Grid;
+	
 	thread* t1;
-	bool    Change;
+	int		LoadingMaxCount;
+	string  targetName;
 
-	int LoadingMaxCount;
-	string targetName;
+
 public:
 	LoadingScene();
 	~LoadingScene();
@@ -19,7 +20,7 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
-	void LoadingTarget(string name, int LoadingMaxCount, void(*FcnPTr)());
+	void LoadingTarget(string name,int loadingMaxCount, void(*FcnPtr)());
 };
 
 

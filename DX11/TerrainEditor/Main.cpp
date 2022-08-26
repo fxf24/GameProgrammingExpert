@@ -19,9 +19,8 @@ void Main::Init()
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
 
-    Map = Actor::Create();
-    Map->shader = RESOURCE->shaders.Load("3.Cube.hlsl");
-    Map->material = make_shared<Material>();
+    Map = Terrain::Create();
+    Map->CreateStructuredBuffer();
 
     Sphere = Actor::Create();
     Sphere->LoadFile("Sphere.xml");
@@ -41,6 +40,14 @@ void Main::Update()
     Camera::ControlMainCam();
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
+    ImGui::SliderInt("BrushTexture", &brushTexture, 0, 1);
+    ImGui::SliderFloat("BrushRange", &brushRange
+        , 0.0f, 2000.0f);
+    ImGui::InputFloat("BrushHeight", &brushMaxHeight);
+    ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
+
+
+
     ImGui::Begin("Hierarchy");
     Grid->RenderHierarchy();
     Map->RenderHierarchy();
@@ -84,7 +91,7 @@ void Main::Update()
         int triSize = (terrainSize - 1) * (terrainSize - 1) * 2;
         float half = terrainSize * 0.5f;
 
-        VertexPTN* vertices = new VertexPTN[Size];
+        VertexTerrain* vertices = new VertexTerrain[Size];
        
         for (int z = 0; z < terrainSize; z++)
         {
@@ -127,8 +134,8 @@ void Main::Update()
             }
         }
         Map->mesh = make_shared<Mesh>(vertices, Size, indices, Idx,
-            VertexType::PTN);
-        UpdateTerrainNormal();
+            VertexType::TERRAIN);
+        Map->UpdateMeshNormal();
 
         
             //UINT* indices, UINT indexCount,
@@ -156,14 +163,26 @@ void Main::Update()
 
 void Main::LateUpdate()
 {
-    
-    
+    Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+    Vector3 Hit;
+    if (Map->ComPutePicking(Mouse, Hit))
+    {
+        Sphere->SetWorldPos(Hit);
+
+        if (INPUT->KeyPress(VK_MBUTTON))
+        {
+            EditTerrain(Hit);
+            Map->DeleteStructuredBuffer();
+            Map->CreateStructuredBuffer();
+            Map->UpdateMeshNormal();
+        }
+    }
 }
 
 void Main::Render()
 {
     Cam->Set();
-    Grid->Render();
+    //Grid->Render();
     Map->Render();
     Sphere->Render();
 }
@@ -176,41 +195,53 @@ void Main::ResizeScreen()
     Cam->viewport.height = App.GetHeight();
 }
 
-void Main::UpdateTerrainNormal()
+void Main::EditTerrain(Vector3 Pos)
 {
-    VertexPTN* vertices = (VertexPTN*)Map->mesh->vertices;
-    vector<Vector3> Normals;
-    Normals.resize(Map->mesh->vertexCount);
-    for (UINT i = 0; i < Map->mesh->indexCount / 3; i++)
-    {
-        //하나의 삼각형
-        UINT index0 = Map->mesh->indices[i * 3 + 0];
-        UINT index1 = Map->mesh->indices[i * 3 + 1];
-        UINT index2 = Map->mesh->indices[i * 3 + 2];
 
-        Vector3 v0 = vertices[index0].position;
-        Vector3 v1 = vertices[index1].position;
-        Vector3 v2 = vertices[index2].position;
+    Matrix Inverse = Map->W.Invert();
+    Pos = Vector3::Transform(Pos, Inverse);
 
-        Vector3 A = v1 - v0;
-        Vector3 B = v2 - v0;
-
-        Vector3 normal = A.Cross(B);
-        //중첩시킬 벡터를 정규화해야 평균값
-        normal.Normalize();
-
-        Normals[index0] += normal;
-        Normals[index1] += normal;
-        Normals[index2] += normal;
-    }
+    //정점 갯수만큼
     for (UINT i = 0; i < Map->mesh->vertexCount; i++)
     {
-        //중첩된 노멀을 다시 정규화
-        Normals[i].Normalize();
-        vertices[i].normal = Normals[i];
+        VertexTerrain* vertices = (VertexTerrain*)Map->mesh->vertices;
+        Vector3 v1 = Vector3(Pos.x, 0.0f, Pos.z);
+        Vector3 v2 = Vector3(vertices[i].position.x,
+            0.0f, vertices[i].position.z);
+        v2 = v2 - v1;
+        //두포지션간의 xz 차이의 길이값
+        float Dis = v2.Length();
+        float w = Dis / brushRange;
+        Util::Saturate(w); // 0~ 1
+        w = 1.0f - w; // 1~ 0
+        // 90 ~ 0
+        w *= PI * 0.5f;
+        // sin(90)~0
+        w = sinf(w);
+
+
+        vertices[i].position.y
+            += w * brushAddHeightScalr * DELTA;
+
+        vertices[i].weights
+            += w * ((brushTexture) ? 1 : -1) * DELTA;
+
+        Util::Saturate(vertices[i].weights);
+
+        if (vertices[i].position.y >
+            brushMaxHeight)
+        {
+            vertices[i].position.y
+                = brushMaxHeight;
+        }
+        else if (vertices[i].position.y < 0.0f)
+        {
+            vertices[i].position.y = 0.0f;
+        }
     }
     Map->mesh->UpdateMesh();
 }
+
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)
 {

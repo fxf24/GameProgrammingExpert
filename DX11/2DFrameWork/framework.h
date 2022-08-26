@@ -99,6 +99,7 @@ extern Application App;//Extern Global
 #include "GameObject.h"
 //#include "ObRect.h"
 #include "Camera.h"
+#include "Terrain.h"
 
 #include "Util.h"
 

@@ -2,12 +2,12 @@
 
 Scene2::Scene2()
 {
-
+   
 }
 
 Scene2::~Scene2()
 {
-
+ 
 }
 
 void Scene2::Init()
@@ -35,10 +35,10 @@ void Scene2::Init()
 
 void Scene2::Release()
 {
+    RESOURCE->ReleaseAll();
     Map->Release();
     Grid->Release();
     cubeMan->Release();
-    RESOURCE->ReleaseAll();
 }
 
 
@@ -63,12 +63,12 @@ void Scene2::Update()
     if (ImGui::Button("Sc1"))
     {
         SCENE->ChangeScene("LOADING");
-        reinterpret_cast<LoadingScene*>(SCENE->GetScene("LOADING"))->LoadingTarget("SC1", 4,
-            []()
-            {
-                SCENE->GetScene("SC1")->Init();
-            }
-            );
+        reinterpret_cast<LoadingScene*>(SCENE->GetScene("LOADING"))
+            ->LoadingTarget("SC1", 4,
+                []()
+        { SCENE->GetScene("SC1")->Init(); }
+        );
+        return;
     }
 }
 

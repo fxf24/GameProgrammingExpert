@@ -387,3 +387,36 @@ void Camera::RenderDetail()
 		ImGui::EndTabBar();
 	}
 }
+void Terrain::RenderDetail()
+{
+	Actor::RenderDetail();
+	if (ImGui::BeginTabBar("MyTabBar3"))
+	{
+		if (ImGui::BeginTabItem("Terrain"))
+		{
+			if (ImGui::DragFloat("UvScale", &uvScale, 0.05f))
+			{
+				UpdateMeshUv();
+			}
+			static int terrainSize = 257;
+			ImGui::DragInt("TerrainSize(Need to CreateMesh)", &terrainSize, 0.05f);
+
+			if (ImGui::Button("CreateMeshes"))
+			{
+				CreateMesh(terrainSize);
+			}
+
+			if (ImGui::Button("UpdateNormal"))
+			{
+				UpdateMeshNormal();
+			}
+			if (ImGui::Button("ResetBuffer"))
+			{
+				DeleteStructuredBuffer();
+				CreateStructuredBuffer();
+			}
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
+}

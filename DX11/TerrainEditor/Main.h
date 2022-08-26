@@ -7,9 +7,13 @@ private:
 	Camera* Cam;
 	Actor* Grid;
 
-	Actor* Map;
+	Terrain* Map;
 	Actor* Sphere;
-
+	//에디터에서만 존재하는 변수
+	float brushMaxHeight = 1000.0f;
+	float brushAddHeightScalr = 100.0f;
+	float brushRange = 10.0f;
+	int   brushTexture = 0;
 public:
 	Main();
 	~Main();
@@ -20,6 +24,5 @@ public:
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
 
-	void UpdateTerrainNormal();
-
+	void EditTerrain(Vector3 Pos);
 };

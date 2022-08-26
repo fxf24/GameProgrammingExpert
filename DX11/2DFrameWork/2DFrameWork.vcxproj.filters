@@ -71,6 +71,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -158,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -39,4 +39,19 @@ namespace Util
 		return Quadratic(Lerp(p1, p2, value), Lerp(p2, p3, value), 
 			Lerp(p3, p4, value), value);
 	}
+	template <typename T>
+	static T Saturate(T& in, T min = 0, T max = 1)
+	{
+		if (in < min)
+		{
+			in = min;
+			return min;
+		}
+		else if (in > max)
+		{
+			in = max;
+			return max;
+		}
+		return in;
+	}
 }

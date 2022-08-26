@@ -12,13 +12,16 @@ SceneManager::~SceneManager()
 
 bool SceneManager::AddScene(string key, Scene* value)
 {
+
     auto iter = scenes.find(key);
 
     if (iter != scenes.end())
     {
+        delete value;
         return false;
     }
     scenes[key] = value;
+
     return true;
 }
 
@@ -46,8 +49,8 @@ Scene* SceneManager::ChangeScene(string key, float changingTime)
         if (changingTime <= 0.0f)
         {
             isChanging = true;
-            if (currentScene)
-                currentScene->Release();
+            if(currentScene)
+            currentScene->Release();
             //nextScene->Init();
         }
     }
@@ -83,7 +86,7 @@ void SceneManager::Update()
         {
             isChanging = true;
             if (currentScene)
-                currentScene->Release();
+            currentScene->Release();
             //nextScene->Init();
         }
     }

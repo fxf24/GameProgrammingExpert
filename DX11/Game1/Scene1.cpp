@@ -1,9 +1,8 @@
 #include "stdafx.h"
 
-
 Scene1::Scene1()
 {
-    
+   
 }
 
 Scene1::~Scene1()
@@ -36,10 +35,10 @@ void Scene1::Init()
 
 void Scene1::Release()
 {
+    RESOURCE->ReleaseAll();
     Map->Release();
     Grid->Release();
     cubeMan->Release();
-    RESOURCE->ReleaseAll();
 }
 
 
@@ -64,12 +63,12 @@ void Scene1::Update()
     if (ImGui::Button("Sc2"))
     {
         SCENE->ChangeScene("LOADING");
-        reinterpret_cast<LoadingScene*>(SCENE->GetScene("LOADING"))->LoadingTarget("SC2", 4,
-            []()
-            {
-                SCENE->GetScene("SC2")->Init();
-            }
-            );
+        reinterpret_cast<LoadingScene*>(SCENE->GetScene("LOADING"))
+            ->LoadingTarget("SC2", 4,
+                []()
+        { SCENE->GetScene("SC2")->Init(); }
+        );
+        return;
     }
 }
 

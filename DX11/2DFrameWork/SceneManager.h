@@ -25,5 +25,6 @@ public:
     void    LateUpdate();
     void    Render();
     void    ResizeScreen();
+
 };
 

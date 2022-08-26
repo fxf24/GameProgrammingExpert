@@ -33,10 +33,6 @@
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="imgui.ini" />
-    <None Include="window.ini" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

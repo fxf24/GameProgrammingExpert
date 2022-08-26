@@ -7,9 +7,9 @@ Texture::Texture()
     //기본 샘플러 값
     //SamplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
     SamplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-    SamplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-    SamplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-    SamplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    SamplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    SamplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    SamplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     SamplerDesc.MipLODBias = 0.0f;
     SamplerDesc.MaxAnisotropy = 1;
     SamplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;

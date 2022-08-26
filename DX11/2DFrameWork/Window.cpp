@@ -11,6 +11,7 @@ WPARAM Window::Run(Scene* main)
 	Camera::CreateStaticMember();
 	Material::CreateStaticMember();
 	Skeleton::CreateStaticMember();
+	Terrain::CreateStaticMember();
 	MSG msg = { 0 };
 	while (true)
 	{
@@ -44,7 +45,7 @@ WPARAM Window::Run(Scene* main)
 	Camera::DeleteStaticMember();
 	Material::DeleteStaticMember();
 	Skeleton::DeleteStaticMember();
-
+	Terrain::DeleteStaticMember();
 	TIMER->DeleteSingleton();
 	INPUT->DeleteSingleton();
 	GUI->DeleteSingleton();
