@@ -55,8 +55,9 @@ class Actor : public GameObject
 {
 	friend GameObject;
 private:
-	unordered_map<string, GameObject*> obList;
+	
 public:
+	unordered_map<string, GameObject*> obList;
 	int             boneIndexCount = 0;
 	string			file;
 	Skeleton*		skeleton;

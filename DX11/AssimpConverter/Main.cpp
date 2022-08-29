@@ -138,7 +138,15 @@ void Main::Update()
 			for (UINT j = 0; j < Anim->frameMax; j++)
 			{
 				Anim->arrFrameBone[j] = new Matrix[actor->boneIndexCount + 1];
+				for (auto it = actor->obList.begin(); it != actor->obList.end(); it++)
+				{
+					GameObject* temp = it->second;
+					Anim->arrFrameBone[j][temp->boneIndex] = temp->GetLocalInverse();
+				}
 			}
+			
+			
+
 
 			//채널갯수 -> 본에 대응
 			for (UINT j = 0; j < srcAnim->mNumChannels; j++)
@@ -194,9 +202,8 @@ void Main::Update()
 						S = Matrix::CreateScale(scale);
 						R = Matrix::CreateFromQuaternion(quter);
 						T = Matrix::CreateTranslation(pos);
-
-						Anim->arrFrameBone[k][chanel->boneIndex] =
-							chanel->GetLocalInverse() * S * R * T;
+						Matrix W = S * R * T;
+						Anim->arrFrameBone[k][chanel->boneIndex] *= W;
 					}
 				}
 				//여기서 채널끝(본)

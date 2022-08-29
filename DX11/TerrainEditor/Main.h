@@ -14,6 +14,10 @@ private:
 	float brushAddHeightScalr = 100.0f;
 	float brushRange = 10.0f;
 	int   brushTexture = 0;
+
+	bool rect = true;
+	float number = 1.0f;
+
 public:
 	Main();
 	~Main();

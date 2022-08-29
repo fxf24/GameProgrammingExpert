@@ -45,8 +45,31 @@ void Main::Update()
         , 0.0f, 2000.0f);
     ImGui::InputFloat("BrushHeight", &brushMaxHeight);
     ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
+    if (ImGui::Button("Rect"))
+    {
+        rect = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Circle"))
+    {
+        rect = false;
+       
+    }
 
-
+    if (ImGui::Button("1"))
+    {
+        number = 1.0f;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("2"))
+    {
+        number = 2.0f;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("3"))
+    {
+        number = 3.0f;
+    }
 
     ImGui::Begin("Hierarchy");
     Grid->RenderHierarchy();
@@ -167,14 +190,14 @@ void Main::LateUpdate()
     Vector3 Hit;
     if (Map->ComPutePicking(Mouse, Hit))
     {
-        Sphere->SetWorldPos(Hit);
+        //Sphere->SetWorldPos(Hit);
 
         if (INPUT->KeyPress(VK_MBUTTON))
         {
             EditTerrain(Hit);
             Map->DeleteStructuredBuffer();
             Map->CreateStructuredBuffer();
-            Map->UpdateMeshNormal();
+            //Map->UpdateMeshNormal();
         }
     }
 }
@@ -211,14 +234,34 @@ void Main::EditTerrain(Vector3 Pos)
         v2 = v2 - v1;
         //두포지션간의 xz 차이의 길이값
         float Dis = v2.Length();
-        float w = Dis / brushRange;
+        float w;
+        if (rect)
+        {
+
+        }
+        else
+        {
+            w = Dis / brushRange;
+        }
+        
+        
         Util::Saturate(w); // 0~ 1
         w = 1.0f - w; // 1~ 0
-        // 90 ~ 0
-        w *= PI * 0.5f;
-        // sin(90)~0
-        w = sinf(w);
 
+
+
+        if (number == 1)
+        {
+            if (w > 0.0f) w = 1.0f;
+        }
+        else if (number == 3.0f)
+        {
+            // 90 ~ 0
+            w *= PI * 0.5f;
+            // sin(90)~0
+            w = sinf(w);
+        }
+        
 
         vertices[i].position.y
             += w * brushAddHeightScalr * DELTA;
@@ -228,16 +271,7 @@ void Main::EditTerrain(Vector3 Pos)
 
         Util::Saturate(vertices[i].weights);
 
-        if (vertices[i].position.y >
-            brushMaxHeight)
-        {
-            vertices[i].position.y
-                = brushMaxHeight;
-        }
-        else if (vertices[i].position.y < 0.0f)
-        {
-            vertices[i].position.y = 0.0f;
-        }
+        Util::Saturate(vertices[i].position.y, 0.0f, brushMaxHeight);
     }
     Map->mesh->UpdateMesh();
 }
