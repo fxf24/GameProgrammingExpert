@@ -237,18 +237,25 @@ void Main::EditTerrain(Vector3 Pos)
         float w;
         if (rect)
         {
-
+            if (vertices[i].position.x >= Pos.x - brushRange
+                && vertices[i].position.x <= Pos.x + brushRange
+                && vertices[i].position.z >= Pos.z - brushRange
+                && vertices[i].position.z <= Pos.z + brushRange)
+            {
+                w = 0.0f;
+            }
+            else
+            {
+                w = 1.0f;
+            }
         }
         else
         {
             w = Dis / brushRange;
         }
         
-        
         Util::Saturate(w); // 0~ 1
         w = 1.0f - w; // 1~ 0
-
-
 
         if (number == 1)
         {

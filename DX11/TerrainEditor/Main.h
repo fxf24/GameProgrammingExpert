@@ -15,7 +15,7 @@ private:
 	float brushRange = 10.0f;
 	int   brushTexture = 0;
 
-	bool rect = true;
+	bool rect = false;
 	float number = 1.0f;
 
 public:
