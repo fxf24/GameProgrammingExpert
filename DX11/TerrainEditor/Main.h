@@ -15,9 +15,17 @@ private:
 	float brushRange = 10.0f;
 	int   brushTexture = 0;
 
-	bool rect = false;
-	float number = 1.0f;
+	//상수버퍼에 갱신
+	struct Brush
+	{
+		Vector3 point;
+		float range = 10.0f;	
 
+		float shape;
+		float type;
+		Vector2 padding;
+	} brush;
+	ID3D11Buffer* brushBuffer;
 public:
 	Main();
 	~Main();

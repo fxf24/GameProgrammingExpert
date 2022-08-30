@@ -3,7 +3,16 @@
 
 Main::Main()
 {
-
+    D3D11_BUFFER_DESC desc = { 0 };
+    desc.ByteWidth = sizeof(Brush);
+    desc.Usage = D3D11_USAGE_DYNAMIC;
+    desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
+    desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    desc.MiscFlags = 0;
+    desc.StructureByteStride = 0;
+    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &brushBuffer);
+    assert(SUCCEEDED(hr));
+    D3D->GetDC()->PSSetConstantBuffers(1, 1, &brushBuffer);
 }
 
 Main::~Main()
@@ -21,6 +30,7 @@ void Main::Init()
 
     Map = Terrain::Create();
     Map->CreateStructuredBuffer();
+    Map->shader = RESOURCE->shaders.Load("5.TerrainEditor.hlsl");
 
     Sphere = Actor::Create();
     Sphere->LoadFile("Sphere.xml");
@@ -47,28 +57,27 @@ void Main::Update()
     ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
     if (ImGui::Button("Rect"))
     {
-        rect = true;
+        brush.shape = 0;
     }
     ImGui::SameLine();
     if (ImGui::Button("Circle"))
     {
-        rect = false;
-       
+        brush.shape = 1;
     }
 
     if (ImGui::Button("1"))
     {
-        number = 1.0f;
+        brush.type = 0.0f;
     }
     ImGui::SameLine();
     if (ImGui::Button("2"))
     {
-        number = 2.0f;
+        brush.type = 1.0f;
     }
     ImGui::SameLine();
     if (ImGui::Button("3"))
     {
-        number = 3.0f;
+        brush.type = 2.0f;
     }
 
     ImGui::Begin("Hierarchy");
@@ -191,9 +200,10 @@ void Main::LateUpdate()
     if (Map->ComPutePicking(Mouse, Hit))
     {
         //Sphere->SetWorldPos(Hit);
-
+        
         if (INPUT->KeyPress(VK_MBUTTON))
         {
+            brush.point = Hit;
             EditTerrain(Hit);
             Map->DeleteStructuredBuffer();
             Map->CreateStructuredBuffer();
@@ -204,6 +214,10 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    D3D->GetDC()->Map(brushBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    memcpy_s(mappedResource.pData, sizeof(Brush), brushBuffer, sizeof(Brush));
+    D3D->GetDC()->Unmap(brushBuffer, 0);
     Cam->Set();
     //Grid->Render();
     Map->Render();
@@ -223,6 +237,7 @@ void Main::EditTerrain(Vector3 Pos)
 
     Matrix Inverse = Map->W.Invert();
     Pos = Vector3::Transform(Pos, Inverse);
+    float brushRange = brush.range / Map->S._11;
 
     //정점 갯수만큼
     for (UINT i = 0; i < Map->mesh->vertexCount; i++)
@@ -231,43 +246,71 @@ void Main::EditTerrain(Vector3 Pos)
         Vector3 v1 = Vector3(Pos.x, 0.0f, Pos.z);
         Vector3 v2 = Vector3(vertices[i].position.x,
             0.0f, vertices[i].position.z);
-        v2 = v2 - v1;
+        Vector3 temp = v2 - v1;
         //두포지션간의 xz 차이의 길이값
-        float Dis = v2.Length();
+        float Dis = temp.Length();
+
+
         float w;
-        if (rect)
+
+        // 네모
+        if (brush.shape == 0)
         {
-            if (vertices[i].position.x >= Pos.x - brushRange
-                && vertices[i].position.x <= Pos.x + brushRange
-                && vertices[i].position.z >= Pos.z - brushRange
-                && vertices[i].position.z <= Pos.z + brushRange)
+            if (fabs(v1.x - v2.x) < brushRange and
+                fabs(v1.z - v2.z) < brushRange)
             {
-                w = 0.0f;
+                if (brush.type == 0)
+                {
+                    w = 1.0f;
+                }
+                else if (brush.type == 1)
+                {
+                    // 0 ~ 1
+                    w = Dis / brushRange / 1.414f;
+                    Util::Saturate(w); // 0~ 1
+
+                    w = 1.0f - w; // 1~ 0
+
+                }
+                else if (brush.type == 2)
+                {
+                    // 0 ~ 1
+                    w = Dis / brushRange / 1.414f;
+                    Util::Saturate(w); // 0~ 1
+                    w = 1.0f - w; // 1~ 0
+                    w *= PI * 0.5f;
+                    // sin(90)~0
+                    w = sinf(w);
+
+                }
             }
             else
             {
-                w = 1.0f;
+                w = 0.0f;
             }
         }
-        else
+        // 원
+        else if (brush.shape == 1)
         {
             w = Dis / brushRange;
+
+            Util::Saturate(w); // 0~ 1
+            w = 1.0f - w; // 1~ 0
+
+            if (brush.type == 0)
+            {
+                if (w > 0.0f) w = 1.0f;
+            }
+            else if (brush.type == 2.0f)
+            {
+                // 90 ~ 0
+                w *= PI * 0.5f;
+                // sin(90)~0
+                w = sinf(w);
+            }
         }
         
-        Util::Saturate(w); // 0~ 1
-        w = 1.0f - w; // 1~ 0
-
-        if (number == 1)
-        {
-            if (w > 0.0f) w = 1.0f;
-        }
-        else if (number == 3.0f)
-        {
-            // 90 ~ 0
-            w *= PI * 0.5f;
-            // sin(90)~0
-            w = sinf(w);
-        }
+        
         
 
         vertices[i].position.y
