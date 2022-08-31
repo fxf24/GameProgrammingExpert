@@ -12,7 +12,7 @@ Main::Main()
     desc.StructureByteStride = 0;
     HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &brushBuffer);
     assert(SUCCEEDED(hr));
-    D3D->GetDC()->PSSetConstantBuffers(1, 1, &brushBuffer);
+    D3D->GetDC()->PSSetConstantBuffers(10, 1, &brushBuffer);
 }
 
 Main::~Main()
@@ -51,7 +51,7 @@ void Main::Update()
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::SliderInt("BrushTexture", &brushTexture, 0, 1);
-    ImGui::SliderFloat("BrushRange", &brushRange
+    ImGui::SliderFloat("BrushRange", &brush.range
         , 0.0f, 2000.0f);
     ImGui::InputFloat("BrushHeight", &brushMaxHeight);
     ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
@@ -67,18 +67,20 @@ void Main::Update()
 
     if (ImGui::Button("1"))
     {
-        brush.type = 0.0f;
+        brush.type = 0;
     }
     ImGui::SameLine();
     if (ImGui::Button("2"))
     {
-        brush.type = 1.0f;
+        brush.type = 1;
     }
     ImGui::SameLine();
     if (ImGui::Button("3"))
     {
-        brush.type = 2.0f;
+        brush.type = 2;
     }
+
+
 
     ImGui::Begin("Hierarchy");
     Grid->RenderHierarchy();
@@ -197,29 +199,29 @@ void Main::LateUpdate()
 {
     Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
     Vector3 Hit;
-    if (Map->ComPutePicking(Mouse, Hit))
+    if (Map->ComPutePicking(Mouse, brush.point))
     {
-        //Sphere->SetWorldPos(Hit);
-        
+
         if (INPUT->KeyPress(VK_MBUTTON))
         {
-            brush.point = Hit;
-            EditTerrain(Hit);
+            EditTerrain(brush.point);
             Map->DeleteStructuredBuffer();
             Map->CreateStructuredBuffer();
-            //Map->UpdateMeshNormal();
         }
     }
 }
 
 void Main::Render()
 {
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    D3D->GetDC()->Map(brushBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    memcpy_s(mappedResource.pData, sizeof(Brush), brushBuffer, sizeof(Brush));
-    D3D->GetDC()->Unmap(brushBuffer, 0);
     Cam->Set();
     //Grid->Render();
+
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    D3D->GetDC()->Map(brushBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    memcpy_s(mappedResource.pData, sizeof(Brush), &brush, sizeof(Brush));
+    D3D->GetDC()->Unmap(brushBuffer, 0);
+    
+
     Map->Render();
     Sphere->Render();
 }
@@ -249,70 +251,57 @@ void Main::EditTerrain(Vector3 Pos)
         Vector3 temp = v2 - v1;
         //두포지션간의 xz 차이의 길이값
         float Dis = temp.Length();
-
-
         float w;
-
-        // 네모
+        //네모
         if (brush.shape == 0)
         {
             if (fabs(v1.x - v2.x) < brushRange and
                 fabs(v1.z - v2.z) < brushRange)
-            {
+            {                    
+                // 0 ~ 1
+                w = Dis / brushRange / 1.414f;
+                Util::Saturate(w);
+                w = 1.0f - w;
                 if (brush.type == 0)
                 {
                     w = 1.0f;
                 }
                 else if (brush.type == 1)
                 {
-                    // 0 ~ 1
-                    w = Dis / brushRange / 1.414f;
-                    Util::Saturate(w); // 0~ 1
-
-                    w = 1.0f - w; // 1~ 0
 
                 }
                 else if (brush.type == 2)
                 {
-                    // 0 ~ 1
-                    w = Dis / brushRange / 1.414f;
-                    Util::Saturate(w); // 0~ 1
-                    w = 1.0f - w; // 1~ 0
                     w *= PI * 0.5f;
-                    // sin(90)~0
                     w = sinf(w);
-
                 }
             }
             else
             {
-                w = 0.0f;
+                w = 0;
             }
         }
-        // 원
+        //원
         else if (brush.shape == 1)
         {
             w = Dis / brushRange;
-
-            Util::Saturate(w); // 0~ 1
-            w = 1.0f - w; // 1~ 0
-
+            Util::Saturate(w);
+            w = 1.0f - w;
             if (brush.type == 0)
             {
-                if (w > 0.0f) w = 1.0f;
+                if(w > 0.0f)
+                w = 1.0f;
             }
-            else if (brush.type == 2.0f)
+            else if (brush.type == 1)
             {
-                // 90 ~ 0
+
+            }
+            else if (brush.type == 2)
+            {
                 w *= PI * 0.5f;
-                // sin(90)~0
                 w = sinf(w);
             }
         }
-        
-        
-        
-
         vertices[i].position.y
             += w * brushAddHeightScalr * DELTA;
 
@@ -321,7 +310,8 @@ void Main::EditTerrain(Vector3 Pos)
 
         Util::Saturate(vertices[i].weights);
 
-        Util::Saturate(vertices[i].position.y, 0.0f, brushMaxHeight);
+        Util::Saturate(vertices[i].position.y,0.0f ,brushMaxHeight);
+
     }
     Map->mesh->UpdateMesh();
 }

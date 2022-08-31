@@ -18,12 +18,13 @@ struct PixelInput
 
 cbuffer PS_Brush : register(b10)
 {
-    float3 BrushPoint;
-    float  BrushRange;
-    float  BrushShape;
-    float  BrushType;
-    float2 BrushPadding;
+   float3   BrushPoint;
+   float    BrushRange;
+   float    BrushShape;
+   float    BrushType;
+   float2   BrushPadding;
 }
+
 
 PixelInput VS(VertexInput input)
 {
@@ -55,16 +56,16 @@ float4 PS(PixelInput input) : SV_TARGET
     BaseColor.rgb = saturate(BaseColor.rgb * DirectionLight);
     
     float3 v1 = float3(BrushPoint.x, 0.0f, BrushPoint.z);
-    float3 v2 = float3(input.wPostion.x, 0.0f, input.wPostion.z);
-  
+    float3 v2 = float3(input.wPostion.x,0.0f, input.wPostion.z);
+    //float3 temp = v2 - v1;
     float Dis = distance(v2, v1);
     float w;
     //네모
     if (BrushShape == 0.0f)
     {
-       if (abs(v1.x - v2.x) < BrushRange
+        if (abs(v1.x - v2.x) < BrushRange
             && abs(v1.z - v2.z) < BrushRange)
-       {    
+        {
             if (BrushType == 0)
             {
                 BaseColor.rgb += float3(1, 0, 0);
@@ -77,9 +78,9 @@ float4 PS(PixelInput input) : SV_TARGET
             {
                 BaseColor.rgb += float3(0, 0, 1);
             }
-        }    
+        }
     }
-    // 원
+    //원
     else
     {
         w = saturate(Dis / BrushRange);
@@ -97,7 +98,8 @@ float4 PS(PixelInput input) : SV_TARGET
             BaseColor.rgb += float3(0, 0, w);
         }
     }
-
+    
+   
     
     return BaseColor;
 }

@@ -86,7 +86,7 @@ Actor* Actor::Create(string name)
 
 void GameObject::Update()
 {
-	
+	//스켈레톤 구조인가?
 	if (boneIndex != -1)
 	{
 		if (root->anim)
@@ -97,7 +97,7 @@ void GameObject::Update()
 		{
 			Transform::Update();
 		}
-		Matrix temp = root->skeleton->bonesOffset[boneIndex]*W;
+		Matrix temp = root->skeleton->bonesOffset[boneIndex] * W;
 		//행우선->열우선
 		root->skeleton->bones[boneIndex] = temp.Transpose();
 	}

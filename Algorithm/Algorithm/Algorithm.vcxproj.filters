@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Town.cpp" />
     <ClCompile Include="Snail.cpp" />
+    <ClCompile Include="Nevigation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="마을1.txt" />
