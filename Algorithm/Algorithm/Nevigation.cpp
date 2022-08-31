@@ -39,7 +39,7 @@ int cost[7] =
 };
 
 int visited[7] = { 0, };
-
+vector<int> answer;
 void FindRoad(int s, int d)
 {
 	cost[s] = 0;
@@ -69,20 +69,26 @@ void FindRoad(int s, int d)
 		{
 			if (r[rd.next][i] != INT_MAX && !visited[i])
 			{
-				pq.push(Road(rd.next, i, r[rd.next][i], rt));
+				pq.push(Road(rd.next, i, rd.cost + r[rd.next][i], rt));
 				
-				if (cost[i] > cost[rd.before] + r[rd.next][i])
-					cost[i] = cost[rd.before] + r[rd.next][i];
+				if (cost[i] > rd.cost + r[rd.next][i])
+				{
+					cost[i] = rd.cost + r[rd.next][i];
+					if (i == d)
+					{
+						rt.push_back(d);
+						answer = rt;
+					}
+				}
 			}
-		}
-
-		if (cost[d] != INT_MAX)
-		{
-
 		}
 	}
 
-
+	for (auto a : answer)
+	{
+		cout << a << " ";
+	}
+	cout << endl;
 }
 
 
@@ -92,6 +98,7 @@ int main()
 	cin >> s >> d;
 
 	FindRoad(s, d);
-
+	
+	while (true);
 	return 0;
 }
