@@ -38,7 +38,7 @@ int cost[7] =
 	INT_MAX
 };
 
-int visited[7] = { 0, };
+
 vector<int> answer;
 void FindRoad(int s, int d)
 {
@@ -46,7 +46,6 @@ void FindRoad(int s, int d)
 
 	priority_queue<Road> pq;
 	
-	visited[s] = 1;
 	vector<int> route;
 	route.push_back(s);
 	for (int i = 0; i < 7; i++)
@@ -61,24 +60,20 @@ void FindRoad(int s, int d)
 	while (!pq.empty())
 	{
 		Road rd = pq.top(); pq.pop();
-		visited[rd.next] = 1;
 		vector<int> rt = rd.route;
 		rt.push_back(rd.next);
 
 		for (int i = 0; i < 7; i++)
 		{
-			if (r[rd.next][i] != INT_MAX && !visited[i])
+			if (r[rd.next][i] != INT_MAX && cost[i] > rd.cost + r[rd.next][i])
 			{
 				pq.push(Road(rd.next, i, rd.cost + r[rd.next][i], rt));
-				
-				if (cost[i] > rd.cost + r[rd.next][i])
+				cost[i] = rd.cost + r[rd.next][i];
+				if (i == d)
 				{
-					cost[i] = rd.cost + r[rd.next][i];
-					if (i == d)
-					{
-						rt.push_back(d);
-						answer = rt;
-					}
+					rt.push_back(d);
+					answer = rt;
+					rt.pop_back();
 				}
 			}
 		}
