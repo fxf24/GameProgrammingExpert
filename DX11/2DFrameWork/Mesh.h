@@ -35,6 +35,7 @@ public:
     void SaveFile(string file);
     UINT GetIndexCount() { return indexCount; }
     const Vector3& GetVertexPosition(UINT idx);
+    Vector3& SetVertexPosition(UINT idx);
     void UpdateMesh();
 };
 

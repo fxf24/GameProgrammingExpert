@@ -162,6 +162,7 @@
     <ClInclude Include="BinaryFile.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Dijkstra.h" />
     <ClInclude Include="Direct3D11.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="BinaryFile.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Dijkstra.cpp" />
     <ClCompile Include="Direct3D11.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GOImGui.cpp" />

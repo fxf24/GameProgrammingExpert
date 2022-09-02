@@ -634,6 +634,53 @@ const Vector3& Mesh::GetVertexPosition(UINT idx)
     return Vertices[indices[idx]].position;
 }
 
+Vector3& Mesh::SetVertexPosition(UINT idx)
+{
+    if (vertexType == VertexType::PC)
+    {
+        VertexPC* Vertices = (VertexPC*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::PCN)
+    {
+        VertexPCN* Vertices = (VertexPCN*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::PTN)
+    {
+        VertexPTN* Vertices = (VertexPTN*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::MODEL)
+    {
+        VertexModel* Vertices = (VertexModel*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::TERRAIN)
+    {
+        VertexTerrain* Vertices = (VertexTerrain*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::PT)
+    {
+        VertexPT* Vertices = (VertexPT*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::PS)
+    {
+        VertexPS* Vertices = (VertexPS*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+    else if (vertexType == VertexType::PSV)
+    {
+        VertexPSV* Vertices = (VertexPSV*)vertices;
+        return Vertices[indices[idx]].position;
+    }
+
+    VertexP* Vertices = (VertexP*)vertices;
+    return Vertices[indices[idx]].position;
+}
+
 void Mesh::UpdateMesh()
 {
     D3D->GetDC()->UpdateSubresource

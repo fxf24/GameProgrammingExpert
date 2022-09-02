@@ -394,6 +394,7 @@ void Terrain::RenderDetail()
 	{
 		if (ImGui::BeginTabItem("Terrain"))
 		{
+			ImGui::Checkbox("ShowNode", &showNode);
 			if (ImGui::DragFloat("UvScale", &uvScale, 0.05f))
 			{
 				UpdateMeshUv();

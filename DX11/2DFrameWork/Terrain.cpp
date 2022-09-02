@@ -1,7 +1,14 @@
 #include "framework.h"
 ID3D11ComputeShader* Terrain::computeShader = nullptr;
+Actor* Terrain::Node = nullptr;
+Actor* Terrain::Line = nullptr;
 void Terrain::CreateStaticMember()
 {
+    Node = Actor::Create();
+    Node->LoadFile("Sphere.xml");
+    Line = Actor::Create();
+    Line->LoadFile("Line.xml");
+
     ID3D10Blob* CsBlob;
 
     wstring path = L"../Shaders/ComputeShader.hlsl";
@@ -19,6 +26,8 @@ void Terrain::CreateStaticMember()
 void Terrain::ReleaseStaticMember()
 {
     SafeRelease(computeShader);
+    SafeRelease(Node);
+    SafeRelease(Line);
 }
 
 Terrain* Terrain::Create(string Name, int terrainSize,  float uvScale)
@@ -361,4 +370,64 @@ bool Terrain::ComPutePicking(Ray WRay, OUT Vector3& HitPoint)
     }
 
     return false;
+}
+
+void Terrain::AddNode(Vector3 pos)
+{
+    Matrix Inverse = W.Invert();
+    dijkstra.AddNode(Vector3::Transform(pos, Inverse));
+}
+
+void Terrain::PopNode(int id)
+{
+    dijkstra.PopNode(id);
+}
+
+void Terrain::LinkNode(int id1, int id2)
+{  
+    dijkstra.LinkNode(id1, id2);
+}
+
+int Terrain::PickNode(Vector3 pos)
+{
+    return dijkstra.PickNode(pos);;
+}
+
+bool Terrain::PathFinding(vector<Vector3>& Way, int Start, int End)
+{
+    bool temp = dijkstra.PathFinding(Way, Start, End);
+
+    for (int i = 0; i < Way.size(); i++)
+    {
+        Way[i] = Vector3::Transform(Way[i], W);
+    }
+
+    return temp;
+}
+
+void Terrain::Render()
+{
+    Actor::Render();
+    Vector3 Up = Vector3(0, 2, 0);
+    if (showNode)
+    {
+        for (auto it = dijkstra.NodeList.begin(); it != dijkstra.NodeList.end(); it++)
+        {
+            Node->SetLocalPos(it->second.pos + Up);
+            Node->Update();
+            Node->W *= W;
+            Node->Render();
+        
+            for (auto it2 = it->second.linkedWay.begin(); it2 != it->second.linkedWay.end(); it2++)
+            {
+                Line->mesh->SetVertexPosition(0) = it->second.pos + Up;
+                Line->mesh->SetVertexPosition(1) = dijkstra.NodeList[it2->first].pos + Up;
+                Line->Update();
+                Line->W *= W;
+                Line->Render();
+            }
+        }
+
+
+    }
 }

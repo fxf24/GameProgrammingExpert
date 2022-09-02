@@ -26,6 +26,9 @@ private:
 	float	brushMaxHeight = 1000.0f;
 	float	brushAddHeightScalr = 100.0f;
 	int		brushTexture = 0;
+	int		nodeEdit = 0;
+	int		prevPick = -1;
+
 public:
 	Main();
 	~Main();

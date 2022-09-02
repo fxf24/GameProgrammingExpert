@@ -80,6 +80,21 @@ void Main::Update()
         brush.type = 2;
     }
 
+    if (ImGui::Button("AddNode"))
+    {
+        nodeEdit = 0;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("DeleteNode"))
+    {
+        nodeEdit = 1;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("LinkNode"))
+    {
+        nodeEdit = 2;
+    }
+
 
 
     ImGui::Begin("Hierarchy");
@@ -208,7 +223,34 @@ void Main::LateUpdate()
             Map->DeleteStructuredBuffer();
             Map->CreateStructuredBuffer();
         }
+
+        if (INPUT->KeyDown(VK_SPACE))
+        {
+            if (nodeEdit == 0)
+            {
+                Map->AddNode(brush.point);
+            }
+            else if (nodeEdit == 1)
+            {
+                Map->PopNode( Map->PickNode(brush.point));
+
+            }
+            else if (nodeEdit == 2)
+            {
+                if (prevPick = -1)
+                {
+                    prevPick = Map->PickNode(brush.point);
+                }
+                else
+                {
+                    Map->LinkNode(Map->PickNode(brush.point), prevPick);
+                    prevPick = -1;
+                }
+            }
+        }
     }
+
+    
 }
 
 void Main::Render()
