@@ -107,6 +107,7 @@ void Main::Update()
     Grid->RenderHierarchy();
     Map->RenderHierarchy();
     cubeMan->RenderHierarchy();
+    Cam->RenderHierarchy();
     ImGui::End();
 
     ImGui::Begin("LoadRawFile");
@@ -275,51 +276,68 @@ void Main::LateUpdate()
     cubeManTopRay.position.y += 1000.0f;
     Vector3 hit;
 
-    if (INPUT->KeyDown(VK_LBUTTON))
+    if (INPUT->KeyDown(VK_RBUTTON))
     {
         Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
         Vector3 Hit;
+        
         if (Util::RayIntersectTriNear(Mouse, Map, Hit))
         {
-            //cubeMan->SetWorldPos(Hit);
-            from = cubeMan->GetWorldPos();
-            //from.y = 0.0f;
-            to = Hit;
-            //to.y = 0.0f;
-            lerpValue = 0.0f;
+            path.clear();
+            path.push_back(cubeMan->GetWorldPos());
+            vector<Vector3> way;
+            Map->PathFinding(way, Map->PickNode(cubeMan->GetWorldPos()), Map->PickNode(Hit));
+            reverse(way.begin(), way.end());
+            path.insert(path.end(), way.begin(), way.end());
+            path.push_back(Hit);
 
-            Vector3 Dir = Hit - cubeMan->GetWorldPos();
-            Dir.y = 0;
-            Dir.Normalize();
-            // -PI ~ PI
-            float Yaw = atan2f(Dir.x, Dir.z);
-            // -PI ~ PI
-            cubeMan->rotation.y = Util::NormalizeAngle(cubeMan->rotation.y);
-
-            //to Yaw;
-            if (fabs(Yaw - cubeMan->rotation.y) > PI)
-            {
-                if (Yaw > 0)
-                {
-                    Rfrom = cubeMan->rotation.y + PI * 2.0f;
-                    Rto = Yaw;
-                }
-                else
-                {
-                    Rfrom = cubeMan->rotation.y - PI * 2.0f;
-                    Rto = Yaw;
-                }
-            }
-            else
-            {
-                Rfrom = cubeMan->rotation.y;
-                Rto = Yaw;
-            }
-            RlerpValue = 0.0f;
-            //cubeMan->rotation.y = Yaw;
+            findPath = true;
+            route = 0;
         }
 
     }
+
+    if (findPath)
+    {
+        from = path[route];
+        //from.y = 0.0f;
+        to = path[route+1];
+        //to.y = 0.0f;
+        lerpValue = 0.0f;
+
+        Vector3 Dir = path[route + 1] - path[route];
+        Dir.y = 0;
+        Dir.Normalize();
+        // -PI ~ PI
+        float Yaw = atan2f(Dir.x, Dir.z);
+        // -PI ~ PI
+        cubeMan->rotation.y = Util::NormalizeAngle(cubeMan->rotation.y);
+
+        //to Yaw;
+        if (fabs(Yaw - cubeMan->rotation.y) > PI)
+        {
+            if (Yaw > 0)
+            {
+                Rfrom = cubeMan->rotation.y + PI * 2.0f;
+                Rto = Yaw;
+            }
+            else
+            {
+                Rfrom = cubeMan->rotation.y - PI * 2.0f;
+                Rto = Yaw;
+            }
+        }
+        else
+        {
+            Rfrom = cubeMan->rotation.y;
+            Rto = Yaw;
+        }
+        RlerpValue = 0.0f;
+
+        findPath = false;
+    }
+
+
     if (RlerpValue < 1.0f)
     {
         float minus = fabs(Rto - Rfrom);
@@ -355,6 +373,11 @@ void Main::LateUpdate()
         {
             //lerpValue = 0.0f;
             cubeMan->SetWorldPos(to);
+            if (route < path.size() - 2)
+            {
+                route++;
+                findPath = true;
+            }
         }
     }
 
