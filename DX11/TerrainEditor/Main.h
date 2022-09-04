@@ -27,8 +27,16 @@ private:
 	float	brushAddHeightScalr = 100.0f;
 	int		brushTexture = 0;
 	int		nodeEdit = 0;
-	int		prevPick = -1;
+	int     prevPick = -1;
 
+	CubeMan* cubeMan;
+	Ray				cubeManTopRay;
+
+	Vector3			from, to;
+	float			lerpValue;
+
+	float			Rfrom, Rto;
+	float			RlerpValue;
 public:
 	Main();
 	~Main();

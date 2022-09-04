@@ -32,8 +32,11 @@ void Main::Init()
     Map->CreateStructuredBuffer();
     Map->shader = RESOURCE->shaders.Load("5.TerrainEditor.hlsl");
 
-    Sphere = Actor::Create();
-    Sphere->LoadFile("Sphere.xml");
+    /*Sphere = Actor::Create();
+    Sphere->LoadFile("Sphere.xml");*/
+
+    cubeMan = new CubeMan();
+    cubeManTopRay.direction = Vector3(0, -1, 0);
 }
 
 void Main::Release()
@@ -41,7 +44,8 @@ void Main::Release()
     RESOURCE->ReleaseAll();
     Grid->Release();
     Map->Release();
-    Sphere->Release();
+    //Sphere->Release();
+    cubeMan->Release();
 }
 
 
@@ -93,13 +97,16 @@ void Main::Update()
     if (ImGui::Button("LinkNode"))
     {
         nodeEdit = 2;
+        prevPick = -1;
     }
+
 
 
 
     ImGui::Begin("Hierarchy");
     Grid->RenderHierarchy();
     Map->RenderHierarchy();
+    cubeMan->RenderHierarchy();
     ImGui::End();
 
     ImGui::Begin("LoadRawFile");
@@ -207,13 +214,14 @@ void Main::Update()
     Cam->Update();
     Grid->Update();
     Map->Update();
-    Sphere->Update();
+    //Sphere->Update();
+    cubeMan->Update();
 }
 
 void Main::LateUpdate()
 {
     Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
-    Vector3 Hit;
+    
     if (Map->ComPutePicking(Mouse, brush.point))
     {
 
@@ -232,12 +240,11 @@ void Main::LateUpdate()
             }
             else if (nodeEdit == 1)
             {
-                Map->PopNode( Map->PickNode(brush.point));
-
+                Map->PopNode(Map->PickNode(brush.point));
             }
             else if (nodeEdit == 2)
             {
-                if (prevPick = -1)
+                if (prevPick == -1)
                 {
                     prevPick = Map->PickNode(brush.point);
                 }
@@ -249,8 +256,108 @@ void Main::LateUpdate()
             }
         }
     }
-
+    if (ImGui::Button("finding"))
+    {
+        vector<Vector3> way;
+        if (Map->PathFinding(way, 0, 3))
+        {
+            for (int i = 0; i < way.size(); i++)
+            {
+                cout << way[i].x << ",";
+                cout << way[i].y << ",";
+                cout << way[i].z << "," << endl;
+            }
+        }
+    }
     
+
+    cubeManTopRay.position = cubeMan->GetWorldPos();
+    cubeManTopRay.position.y += 1000.0f;
+    Vector3 hit;
+
+    if (INPUT->KeyDown(VK_LBUTTON))
+    {
+        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+        Vector3 Hit;
+        if (Util::RayIntersectTriNear(Mouse, Map, Hit))
+        {
+            //cubeMan->SetWorldPos(Hit);
+            from = cubeMan->GetWorldPos();
+            //from.y = 0.0f;
+            to = Hit;
+            //to.y = 0.0f;
+            lerpValue = 0.0f;
+
+            Vector3 Dir = Hit - cubeMan->GetWorldPos();
+            Dir.y = 0;
+            Dir.Normalize();
+            // -PI ~ PI
+            float Yaw = atan2f(Dir.x, Dir.z);
+            // -PI ~ PI
+            cubeMan->rotation.y = Util::NormalizeAngle(cubeMan->rotation.y);
+
+            //to Yaw;
+            if (fabs(Yaw - cubeMan->rotation.y) > PI)
+            {
+                if (Yaw > 0)
+                {
+                    Rfrom = cubeMan->rotation.y + PI * 2.0f;
+                    Rto = Yaw;
+                }
+                else
+                {
+                    Rfrom = cubeMan->rotation.y - PI * 2.0f;
+                    Rto = Yaw;
+                }
+            }
+            else
+            {
+                Rfrom = cubeMan->rotation.y;
+                Rto = Yaw;
+            }
+            RlerpValue = 0.0f;
+            //cubeMan->rotation.y = Yaw;
+        }
+
+    }
+    if (RlerpValue < 1.0f)
+    {
+        float minus = fabs(Rto - Rfrom);
+
+        RlerpValue += DELTA / minus * PI * 2.0f;
+        cubeMan->rotation.y = Util::Lerp(Rfrom, Rto, RlerpValue);
+        if (RlerpValue > 1.0f)
+        {
+            cubeMan->rotation.y = Rto;
+        }
+    }
+
+
+    if (lerpValue < 1.0f)
+    {
+        Vector3 coord = Util::Lerp(from, to, lerpValue);
+        cubeMan->SetWorldPos(coord);
+        Vector3 Dis = from - to;
+        lerpValue += DELTA / Dis.Length() * 10.0f;
+
+        Vector3 Hit2;
+        if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
+        {
+            cubeMan->SetWorldPosY(Hit2.y);
+            cout << "¸ÊÀ§¿¡ÀÖ´Ù" << endl;
+        }
+        else
+        {
+            cout << "¸Ê¹Û¿¡ÀÖ´Ù" << endl;
+        }
+
+        if (lerpValue > 1.0f)
+        {
+            //lerpValue = 0.0f;
+            cubeMan->SetWorldPos(to);
+        }
+    }
+
 }
 
 void Main::Render()
@@ -265,7 +372,8 @@ void Main::Render()
     
 
     Map->Render();
-    Sphere->Render();
+    cubeMan->Render();
+    //Sphere->Render();
 }
 
 void Main::ResizeScreen()
@@ -299,21 +407,24 @@ void Main::EditTerrain(Vector3 Pos)
         {
             if (fabs(v1.x - v2.x) < brushRange and
                 fabs(v1.z - v2.z) < brushRange)
-            {                    
-                // 0 ~ 1
-                w = Dis / brushRange / 1.414f;
-                Util::Saturate(w);
-                w = 1.0f - w;
+            {
                 if (brush.type == 0)
                 {
                     w = 1.0f;
                 }
                 else if (brush.type == 1)
                 {
-
+                    // 0 ~ 1
+                   w = Dis / brushRange / 1.414f;
+                   Util::Saturate(w);
+                   w = 1.0f - w;
                 }
                 else if (brush.type == 2)
                 {
+                    // 0 ~ 1
+                    w = Dis / brushRange / 1.414f;
+                    Util::Saturate(w);
+                    w = 1.0f - w;
                     w *= PI * 0.5f;
                     w = sinf(w);
                 }
@@ -327,19 +438,25 @@ void Main::EditTerrain(Vector3 Pos)
         else if (brush.shape == 1)
         {
             w = Dis / brushRange;
-            Util::Saturate(w);
-            w = 1.0f - w;
+
             if (brush.type == 0)
             {
+                Util::Saturate(w);
+                w = 1.0f - w;
                 if(w > 0.0f)
                 w = 1.0f;
             }
             else if (brush.type == 1)
             {
-
+                Util::Saturate(w);
+                w = 1.0f - w;
             }
             else if (brush.type == 2)
             {
+                // 0 ~ 1
+                w = Dis / brushRange;
+                Util::Saturate(w);
+                w = 1.0f - w;
                 w *= PI * 0.5f;
                 w = sinf(w);
             }

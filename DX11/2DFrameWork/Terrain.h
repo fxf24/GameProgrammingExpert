@@ -1,5 +1,5 @@
 #pragma once
-class Terrain : public Actor
+class Terrain : public Actor 
 {
     friend GameObject;
 
@@ -23,8 +23,8 @@ class Terrain : public Actor
         float padding;
     };
 	static ID3D11ComputeShader* computeShader;
-    static class Actor* Node;
-    static class Actor* Line;
+    static class Actor* Node; //구 모양
+    static class Actor* Line; //선 모양
 public:
     static void		CreateStaticMember();
     static void		ReleaseStaticMember();
@@ -64,11 +64,12 @@ public:
     //void          
     bool            ComPutePicking(Ray WRay, OUT Vector3& HitPoint);
 
+
     void            AddNode(Vector3 pos);
     void            PopNode(int id);
     void            LinkNode(int id1, int id2);
-    // 가장 가까운노드 반환
-    int PickNode(Vector3 pos);
+    //가장 가까운노드 반환
+    int             PickNode(Vector3 pos);
     bool            PathFinding(vector<Vector3>& Way, int Start, int End);
     void            Render() override;
 };

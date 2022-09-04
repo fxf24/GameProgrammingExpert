@@ -3,8 +3,10 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="CubeMan.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="CubeMan.cpp" />
   </ItemGroup>
 </Project>

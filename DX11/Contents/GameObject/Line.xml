@@ -1,4 +1,4 @@
-<Root Name="Line" Visible="true" ObType="1">
+<Root Name="Root" Visible="true" ObType="1">
     <Mesh File="1.Line.mesh"/>
     <Shader File="1.Collider.hlsl"/>
     <Transform>

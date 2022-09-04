@@ -384,24 +384,24 @@ void Terrain::PopNode(int id)
 }
 
 void Terrain::LinkNode(int id1, int id2)
-{  
+{
     dijkstra.LinkNode(id1, id2);
 }
 
 int Terrain::PickNode(Vector3 pos)
 {
-    return dijkstra.PickNode(pos);;
+    Matrix Inverse = W.Invert();
+    pos = Vector3::Transform(pos, Inverse);
+    return dijkstra.PickNode(pos);
 }
 
 bool Terrain::PathFinding(vector<Vector3>& Way, int Start, int End)
 {
     bool temp = dijkstra.PathFinding(Way, Start, End);
-
     for (int i = 0; i < Way.size(); i++)
     {
         Way[i] = Vector3::Transform(Way[i], W);
     }
-
     return temp;
 }
 
@@ -415,19 +415,20 @@ void Terrain::Render()
         {
             Node->SetLocalPos(it->second.pos + Up);
             Node->Update();
+            //L    *   W
             Node->W *= W;
             Node->Render();
-        
-            for (auto it2 = it->second.linkedWay.begin(); it2 != it->second.linkedWay.end(); it2++)
+            for (auto it2 = it->second.linkedWay.begin();
+                it2 != it->second.linkedWay.end(); it2++)
             {
                 Line->mesh->SetVertexPosition(0) = it->second.pos + Up;
                 Line->mesh->SetVertexPosition(1) = dijkstra.NodeList[it2->first].pos + Up;
-                Line->Update();
-                Line->W *= W;
+                Line->mesh->UpdateMesh();
+                Line->W = W;
                 Line->Render();
             }
         }
-
-
+        
     }
+
 }
