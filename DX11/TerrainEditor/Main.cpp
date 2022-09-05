@@ -362,7 +362,7 @@ void Main::LateUpdate()
         if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
         {
             cubeMan->SetWorldPosY(Hit2.y);
-            cout << "¸ÊÀ§¿¡ÀÖ´Ù" << endl;
+            //cout << "¸ÊÀ§¿¡ÀÖ´Ù" << endl;
         }
         else
         {

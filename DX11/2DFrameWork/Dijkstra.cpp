@@ -117,6 +117,9 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
     {
         //cout << iter->id << "->";
         Way.push_back(iter->pos);
+
+        if (iter->prev == -1) return false;
+
         iter = &NodeList[iter->prev];
         if (iter == &NodeList[Start])
         {
