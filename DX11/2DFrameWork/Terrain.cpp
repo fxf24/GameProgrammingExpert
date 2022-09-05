@@ -395,7 +395,7 @@ int Terrain::PickNode(Vector3 pos)
     return dijkstra.PickNode(pos);
 }
 
-bool Terrain::PathFinding(vector<Vector3>& Way, int Start, int End)
+bool Terrain::PathFinding(deque<Vector3>& Way, int Start, int End)
 {
     bool temp = dijkstra.PathFinding(Way, Start, End);
     for (int i = 0; i < Way.size(); i++)

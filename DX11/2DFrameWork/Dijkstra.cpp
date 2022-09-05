@@ -68,7 +68,7 @@ int Dijkstra::PickNode(Vector3 pos)
     return id;
 }
 
-bool Dijkstra::PathFinding(vector<Vector3>& Way, int Start, int End)
+bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
 {
     if (NodeList.find(Start) == NodeList.end() ||
         NodeList.find(End) == NodeList.end())

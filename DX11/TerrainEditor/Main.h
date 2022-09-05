@@ -39,7 +39,7 @@ private:
 	float			RlerpValue;
 	bool findPath = false;
 	int route = -1;
-	vector<Vector3> path;
+	deque<Vector3> path;
 public:
 	Main();
 	~Main();

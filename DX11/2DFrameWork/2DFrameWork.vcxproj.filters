@@ -74,7 +74,9 @@
     <ClInclude Include="Terrain.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Dijkstra.h" />
+    <ClInclude Include="Dijkstra.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -166,6 +168,8 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Dijkstra.cpp" />
+    <ClCompile Include="Dijkstra.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

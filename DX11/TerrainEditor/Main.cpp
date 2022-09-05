@@ -259,7 +259,7 @@ void Main::LateUpdate()
     }
     if (ImGui::Button("finding"))
     {
-        vector<Vector3> way;
+        deque<Vector3> way;
         if (Map->PathFinding(way, 0, 3))
         {
             for (int i = 0; i < way.size(); i++)
@@ -285,7 +285,7 @@ void Main::LateUpdate()
         {
             path.clear();
             path.push_back(cubeMan->GetWorldPos());
-            vector<Vector3> way;
+            deque<Vector3> way;
             Map->PathFinding(way, Map->PickNode(cubeMan->GetWorldPos()), Map->PickNode(Hit));
             reverse(way.begin(), way.end());
             path.insert(path.end(), way.begin(), way.end());
@@ -356,7 +356,7 @@ void Main::LateUpdate()
         Vector3 coord = Util::Lerp(from, to, lerpValue);
         cubeMan->SetWorldPos(coord);
         Vector3 Dis = from - to;
-        lerpValue += DELTA / Dis.Length() * 10.0f;
+        lerpValue += DELTA / Dis.Length() * 100.0f;
 
         Vector3 Hit2;
         if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
