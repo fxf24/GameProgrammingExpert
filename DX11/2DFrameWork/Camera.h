@@ -9,7 +9,7 @@ public:
 public:
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
-	static void ControlMainCam(float scalar = 10.0f);
+	static void ControlMainCam(float scalar = 100.0f);
 	static Camera* Create(string name = "Camera");
 private:
 	
