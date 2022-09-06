@@ -432,3 +432,17 @@ void Terrain::Render()
     }
 
 }
+
+bool Terrain::RayCastingCollider(Ray WRay, OUT Vector3& HitPoint)
+{
+    for (auto it = obList.begin(); it != obList.end(); it++)
+    {
+        if (not it->second->collider) continue;
+
+        if (it->second->collider->Intersect(WRay, HitPoint))
+        {
+            return true;
+        }
+    }
+    return false;
+}

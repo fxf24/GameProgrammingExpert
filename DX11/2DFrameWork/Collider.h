@@ -21,5 +21,6 @@ public:
     void                Render();
     void                RenderDetail();
     bool                Intersect(Collider* target);
+    bool                Intersect(Ray Ray,Vector3& Hit);
 };
 

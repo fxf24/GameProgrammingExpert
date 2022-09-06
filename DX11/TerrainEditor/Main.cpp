@@ -32,11 +32,8 @@ void Main::Init()
     Map->CreateStructuredBuffer();
     Map->shader = RESOURCE->shaders.Load("5.TerrainEditor.hlsl");
 
-    /*Sphere = Actor::Create();
-    Sphere->LoadFile("Sphere.xml");*/
-
-    cubeMan = new CubeMan();
-    cubeManTopRay.direction = Vector3(0, -1, 0);
+    Sphere = Actor::Create();
+    Sphere->LoadFile("Sphere.xml");
 }
 
 void Main::Release()
@@ -44,8 +41,7 @@ void Main::Release()
     RESOURCE->ReleaseAll();
     Grid->Release();
     Map->Release();
-    //Sphere->Release();
-    cubeMan->Release();
+    Sphere->Release();
 }
 
 
@@ -106,8 +102,6 @@ void Main::Update()
     ImGui::Begin("Hierarchy");
     Grid->RenderHierarchy();
     Map->RenderHierarchy();
-    cubeMan->RenderHierarchy();
-    Cam->RenderHierarchy();
     ImGui::End();
 
     ImGui::Begin("LoadRawFile");
@@ -215,8 +209,7 @@ void Main::Update()
     Cam->Update();
     Grid->Update();
     Map->Update();
-    //Sphere->Update();
-    cubeMan->Update();
+    Sphere->Update();
 }
 
 void Main::LateUpdate()
@@ -257,130 +250,42 @@ void Main::LateUpdate()
             }
         }
     }
-    if (ImGui::Button("finding"))
+    if (INPUT->KeyDown(VK_F1))
     {
-        deque<Vector3> way;
-        if (Map->PathFinding(way, 0, 3))
+        
+
+        int Start = Map->PickNode(Sphere->GetWorldPos());
+        int End = Map->PickNode(brush.point);
+
+        if (Map->PathFinding(Way, Start, End))
         {
-            for (int i = 0; i < way.size(); i++)
-            {
-                cout << way[i].x << ",";
-                cout << way[i].y << ",";
-                cout << way[i].z << "," << endl;
-            }
+            Way.push_front( brush.point);
+            Way.push_front( Vector3(0,0,0));
+            P1 = Sphere->GetWorldPos();
+            P2 = Way.back();
+            Way.pop_back();
+            MoveValue = 0.0f;
+            Vector3 temp = P1 - P2;
+            Dis = temp.Length();
         }
     }
     
-
-    cubeManTopRay.position = cubeMan->GetWorldPos();
-    cubeManTopRay.position.y += 1000.0f;
-    Vector3 hit;
-
-    if (INPUT->KeyDown(VK_RBUTTON))
+    if (not Way.empty())
     {
-        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
-        Vector3 Hit;
+        Sphere->SetWorldPos(Util::Lerp(P1, P2, MoveValue));
         
-        if (Util::RayIntersectTriNear(Mouse, Map, Hit))
+        MoveValue += DELTA / Dis * 100.0f;
+
+        if (MoveValue > 1.0f)
         {
-            path.clear();
-            path.push_back(cubeMan->GetWorldPos());
-            deque<Vector3> way;
-            Map->PathFinding(way, Map->PickNode(cubeMan->GetWorldPos()), Map->PickNode(Hit));
-            reverse(way.begin(), way.end());
-            path.insert(path.end(), way.begin(), way.end());
-            path.push_back(Hit);
-
-            findPath = true;
-            route = 0;
-        }
-
-    }
-
-    if (findPath)
-    {
-        from = path[route];
-        //from.y = 0.0f;
-        to = path[route+1];
-        //to.y = 0.0f;
-        lerpValue = 0.0f;
-
-        Vector3 Dir = path[route + 1] - path[route];
-        Dir.y = 0;
-        Dir.Normalize();
-        // -PI ~ PI
-        float Yaw = atan2f(Dir.x, Dir.z);
-        // -PI ~ PI
-        cubeMan->rotation.y = Util::NormalizeAngle(cubeMan->rotation.y);
-
-        //to Yaw;
-        if (fabs(Yaw - cubeMan->rotation.y) > PI)
-        {
-            if (Yaw > 0)
-            {
-                Rfrom = cubeMan->rotation.y + PI * 2.0f;
-                Rto = Yaw;
-            }
-            else
-            {
-                Rfrom = cubeMan->rotation.y - PI * 2.0f;
-                Rto = Yaw;
-            }
-        }
-        else
-        {
-            Rfrom = cubeMan->rotation.y;
-            Rto = Yaw;
-        }
-        RlerpValue = 0.0f;
-
-        findPath = false;
-    }
-
-
-    if (RlerpValue < 1.0f)
-    {
-        float minus = fabs(Rto - Rfrom);
-
-        RlerpValue += DELTA / minus * PI * 2.0f;
-        cubeMan->rotation.y = Util::Lerp(Rfrom, Rto, RlerpValue);
-        if (RlerpValue > 1.0f)
-        {
-            cubeMan->rotation.y = Rto;
+            MoveValue = 0.0f;
+            P1 = P2;
+            P2 = Way.back();
+            Way.pop_back();
+            Vector3 temp = P1 - P2;
+            Dis = temp.Length();
         }
     }
-
-
-    if (lerpValue < 1.0f)
-    {
-        Vector3 coord = Util::Lerp(from, to, lerpValue);
-        cubeMan->SetWorldPos(coord);
-        Vector3 Dis = from - to;
-        lerpValue += DELTA / Dis.Length() * 100.0f;
-
-        Vector3 Hit2;
-        if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
-        {
-            cubeMan->SetWorldPosY(Hit2.y);
-            //cout << "¸ÊÀ§¿¡ÀÖ´Ù" << endl;
-        }
-        else
-        {
-            cout << "¸Ê¹Û¿¡ÀÖ´Ù" << endl;
-        }
-
-        if (lerpValue > 1.0f)
-        {
-            //lerpValue = 0.0f;
-            cubeMan->SetWorldPos(to);
-            if (route < path.size() - 2)
-            {
-                route++;
-                findPath = true;
-            }
-        }
-    }
-
 }
 
 void Main::Render()
@@ -395,8 +300,7 @@ void Main::Render()
     
 
     Map->Render();
-    cubeMan->Render();
-    //Sphere->Render();
+    Sphere->Render();
 }
 
 void Main::ResizeScreen()

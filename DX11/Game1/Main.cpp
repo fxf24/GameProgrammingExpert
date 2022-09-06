@@ -25,12 +25,6 @@ void Main::Init()
         { SCENE->GetScene("SC1")->Init(); }
         );
 
-    "avc";
-
-    "avc";
-
-    "avc";
-    "avc";
 }
 
 void Main::Release()

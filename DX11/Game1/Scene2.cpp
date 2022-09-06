@@ -20,7 +20,7 @@ void Scene2::Init()
     Grid->LoadFile("Grid.xml");
     LoadingCount++;
 
-    Map = Actor::Create();
+    Map = Terrain::Create();
     Map->LoadFile("Terrain.xml");
     LoadingCount++;
 

@@ -9,6 +9,11 @@ private:
 
 	Terrain* Map;
 	Actor* Sphere;
+	deque<Vector3> Way;
+
+	float MoveValue;
+	Vector3 P1, P2;
+	float Dis;
 
 	//상수버퍼에 갱신
 	struct Brush
@@ -28,18 +33,6 @@ private:
 	int		brushTexture = 0;
 	int		nodeEdit = 0;
 	int     prevPick = -1;
-
-	CubeMan* cubeMan;
-	Ray				cubeManTopRay;
-
-	Vector3			from, to;
-	float			lerpValue;
-
-	float			Rfrom, Rto;
-	float			RlerpValue;
-	bool findPath = false;
-	int route = -1;
-	deque<Vector3> path;
 public:
 	Main();
 	~Main();

@@ -3,7 +3,7 @@ class Scene1 : public Scene
 {
 private:
 	Camera* Cam;
-	Actor* Map;
+	Terrain* Map;
 	Actor* Grid;
 	CubeMan* cubeMan;
 	Ray				cubeManTopRay;

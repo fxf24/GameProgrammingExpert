@@ -150,6 +150,11 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		Cam->SetAttribute("viewportW", CamOb->viewport.width);
 		Cam->SetAttribute("viewportH", CamOb->viewport.height);
 	}
+	else if (type == ObType::Terrain)
+	{
+		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
+		TerrainOb->dijkstra.SaveFile(TerrainOb->file);
+	}
 
 	Xml::XMLElement* Chidren = doc->NewElement("Children");
 	This->LinkEndChild(Chidren);
@@ -236,6 +241,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 
 	}
 
+	else if (type == ObType::Terrain)
+	{
+		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
+		TerrainOb->dijkstra.LoadFile(TerrainOb->file);
+	}
+
 	Transform::LoadTransform(This);
 
 	component = This->FirstChildElement("Children");
@@ -262,6 +273,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		else if (Type == ObType::Camera)
 		{
 			Camera* temp = Camera::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
+		else if (Type == ObType::Terrain)
+		{
+			Terrain* temp = Terrain::Create(childName);
 			AddChild(temp);
 			temp->LoadObject(ob);
 		}

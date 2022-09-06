@@ -20,8 +20,9 @@ void Scene1::Init()
     Grid->LoadFile("Grid.xml");
     LoadingCount++;
 
-    Map = Actor::Create();
+    Map = Terrain::Create();
     Map->LoadFile("Terrain.xml");
+    Map->CreateStructuredBuffer();
     LoadingCount++;
 
     cubeMan = new CubeMan();
@@ -78,11 +79,21 @@ void Scene1::LateUpdate()
     cubeManTopRay.position.y += 1000.0f;
     Vector3 hit;
 
+    if (INPUT->KeyDown(VK_F1))
+    {
+        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+        Vector3 Hit;
+        if (Map->RayCastingCollider(Mouse, Hit))
+        {
+            cout << "콜라이더에 막힘" << endl;
+        }
+    }
+
     if (INPUT->KeyDown(VK_MBUTTON))
     {
         Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
         Vector3 Hit;
-        if (Util::RayIntersectTriNear(Mouse, Map, Hit))
+        if (Map->ComPutePicking(Mouse, Hit))
         {
             //cubeMan->SetWorldPos(Hit);
             from = cubeMan->GetWorldPos();

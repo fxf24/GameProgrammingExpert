@@ -118,7 +118,7 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
         //cout << iter->id << "->";
         Way.push_back(iter->pos);
 
-        if (iter->prev == -1) return false;
+        if (iter->prev == -1)return false;
 
         iter = &NodeList[iter->prev];
         if (iter == &NodeList[Start])
@@ -129,4 +129,51 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
         }
     }
 	return true;
+}
+
+void Dijkstra::SaveFile(string file)
+{
+    this->file = file;
+    BinaryWriter out;
+    wstring path = L"../Contents/Dijkstra/" + Util::ToWString(file);
+    out.Open(path);
+    out.UInt(NodeList.size());
+    for (auto it = NodeList.begin(); it != NodeList.end(); it++)
+    {
+        out.UInt(it->second.id);
+        out.vector3(it->second.pos);
+        out.UInt(it->second.linkedWay.size());
+        for (auto it2 = it->second.linkedWay.begin();
+            it2 != it->second.linkedWay.end(); it2++)
+        {
+            out.Int(it2->first); // id
+            out.Float(it2->second); // cost
+        }
+    }
+    out.Close();
+}
+
+void Dijkstra::LoadFile(string file)
+{
+    this->file = file;
+    BinaryReader in;
+    wstring path = L"../Contents/Dijkstra/" + Util::ToWString(file);
+    in.Open(path);
+    NodeList.clear();
+    UINT Listsize = in.UInt();
+    for (UINT i = 0; i < Listsize; i++)
+    {
+        DiNode temp;
+        temp.id = in.UInt();
+        temp.pos = in.vector3();
+        NodeList[temp.id] = temp;
+        UINT NodeListsize = in.UInt();
+        for (UINT j = 0; j < NodeListsize; j++)
+        {
+            int id = in.Int();
+            float cost = in.Float();
+            NodeList[temp.id].linkedWay[id] = cost;
+        }
+    }
+    in.Close();
 }

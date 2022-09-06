@@ -72,5 +72,6 @@ public:
     int             PickNode(Vector3 pos);
     bool            PathFinding(deque<Vector3>& Way, int Start, int End);
     void            Render() override;
+    bool            RayCastingCollider(Ray WRay, OUT Vector3& HitPoint);
 };
 

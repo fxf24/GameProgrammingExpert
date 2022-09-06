@@ -140,8 +140,8 @@ bool Collider::Intersect(Collider* target)
 	else
 	{
 		BoundingSphere box1;
-		box1.Center = target->GetWorldPos();
-		box1.Radius = target->S._11;
+		box1.Center = GetWorldPos();
+		box1.Radius = S._11;
 		if (target->type == ColliderType::BOX)
 		{
 			BoundingBox box2;
@@ -166,4 +166,44 @@ bool Collider::Intersect(Collider* target)
 		}
 	}
 	return false;
+}
+
+bool Collider::Intersect(Ray Ray, Vector3& Hit)
+{
+	Ray.direction.Normalize();
+	float Dis;
+	bool result = false;
+	if (type == ColliderType::BOX)
+	{
+		BoundingBox box1;
+		box1.Center = GetWorldPos();
+		box1.Extents = Vector3(S._11, S._22, S._33);
+		result =Ray.Intersects(box1, Dis);
+		Hit = Ray.position + Ray.direction * Dis;
+	}
+	if (type == ColliderType::OBOX)
+	{
+		BoundingBox box1;
+		box1.Center = Vector3(0,0,0);
+		box1.Extents = Vector3(S._11, S._22, S._33);
+		Matrix inverse = RT.Invert();
+		Ray.position = Vector3::Transform(Ray.position, inverse);
+		Ray.direction = Vector3::TransformNormal(Ray.direction, inverse);
+		Ray.direction.Normalize();
+
+
+		result = Ray.Intersects(box1, Dis);
+		Hit = Ray.position + Ray.direction * Dis;
+		Hit = Vector3::Transform(Hit, RT);
+	}
+	else
+	{
+		BoundingSphere box1;
+		box1.Center = GetWorldPos();
+		box1.Radius = S._11;
+		result = Ray.Intersects(box1, Dis);
+		Hit = Ray.position + Ray.direction * Dis;
+	}
+
+	return result;
 }
