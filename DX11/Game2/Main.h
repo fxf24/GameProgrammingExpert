@@ -5,11 +5,8 @@ private:
 
 	Camera* Cam;
 	Actor* Grid;
-	Actor* Sp1;
 
-	Actor* Sp2;
-	Vector3 Point[4];
-	float	lerpValue;
+	Actor* UI;
 
 public:
 	Main();

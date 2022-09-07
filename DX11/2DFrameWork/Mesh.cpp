@@ -6,103 +6,38 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    vertexType = VertexType::PCN;
-    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+    vertexType = VertexType::PT;
+    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 
 
-    VertexPCN* Vertex;
-    byteWidth = sizeof(VertexPCN);
-    vertexCount = 360;
-    indexCount = 360*2;
-    file = "2.Sphere.mesh";
+    VertexPT* Vertex;
+    byteWidth = sizeof(VertexPT);
+    vertexCount = 4;
+    indexCount = 4;
+    file = "6.UI.mesh";
 
     //xyz -1 ~ 1
     //-> + 1 -> /2 ->
     // 0 ~ 1
+    Vertex = new VertexPT[vertexCount];
+    indices = new UINT[indexCount];
 
-    vector<VertexPCN> v;
-    v.push_back(VertexPCN(Vector3(0, 1, 0), Color(0.5f, 1.0f, 0.5f),
-        Vector3(0, 1, 0)));
+    Vertex[0].position = Vector3(-0.5f, -0.5f, 0.1f);
+    Vertex[0].uv = Vector2(0.0f, 1.0f);
+    indices[0] = 0;
 
-    UINT stackCount = 36;
-    UINT sliceCount = 72;
-    float phiStep = PI / stackCount;
-    float thetaStep = 2.0f * PI / sliceCount;
-
-    for (UINT i = 1; i <= stackCount - 1; i++)
-    {
-        float phi = i * phiStep;
-
-        for (UINT j = 0; j <= sliceCount; j++)
-        {
-            float theta = j * thetaStep;
-
-            Vector3 p = Vector3
-            (
-                (sinf(phi) * cosf(theta)),
-                (cosf(phi)),
-                (sinf(phi) * sinf(theta))
-            );
-            Color c;
-            c.x = (p.x + 1.0f) / 2.0f;
-            c.y = (p.y + 1.0f) / 2.0f;
-            c.z = (p.z + 1.0f) / 2.0f;
-            v.push_back(VertexPCN(p, c, p));
-        }
-
-    }
-    v.push_back(VertexPCN(Vector3(0, -1, 0), Color(0.5f, 0.0f, 0.5f),
-        Vector3(0, -1, 0)));
-
-    Vertex = new VertexPCN[v.size()];
-    vertexCount = (UINT)v.size();
-    copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexPCN*>(Vertex, vertexCount));
-
-    vector<UINT> vecindices;
-
-    for (UINT i = 1; i <= (UINT)sliceCount; i++)
-    {
-        vecindices.push_back(0);
-        vecindices.push_back(i + 1);
-        vecindices.push_back(i);
-    }
-
-    UINT baseIndex = 1;
-    UINT ringVertexCount = sliceCount + 1;
-    for (UINT i = 0; i < stackCount - 2; i++)
-    {
-        for (UINT j = 0; j < sliceCount; j++)
-        {
-            vecindices.push_back(baseIndex + i * ringVertexCount + j);
-            vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
-            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
-
-            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
-            vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
-            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j + 1);
-        }
-    }
-
-    UINT southPoleIndex =(UINT) v.size() - 1;
-    baseIndex = southPoleIndex - ringVertexCount;
-
-    for (UINT i = 0; i < sliceCount; i++)
-    {
-        vecindices.push_back(southPoleIndex);
-        vecindices.push_back(baseIndex + i);
-        vecindices.push_back(baseIndex + i + 1);
-    }
-
-    this->indices = new UINT[vecindices.size()];
-    indexCount = (UINT)vecindices.size();
-    copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(this->indices, indexCount));
-
-
-
-
+    Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
+    Vertex[1].uv = Vector2(0.0f, 0.0f);
+    indices[1] = 1;
   
+    Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
+    Vertex[2].uv = Vector2(1.0f, 1.0f);
+    indices[2] = 2;
 
 
+    Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
+    Vertex[3].uv = Vector2(1.0f, 0.0f);
+    indices[3] = 3;
     /////////////////////////////////////////////////////
     vertices = (void*)Vertex;
     //CreateVertexBuffer
