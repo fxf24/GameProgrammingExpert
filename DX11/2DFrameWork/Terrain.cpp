@@ -411,6 +411,7 @@ void Terrain::Render()
     Vector3 Up = Vector3(0, 2, 0);
     if (showNode)
     {
+        DEPTH->Set(false);
         for (auto it = dijkstra.NodeList.begin(); it != dijkstra.NodeList.end(); it++)
         {
             Node->SetLocalPos(it->second.pos + Up);
@@ -428,7 +429,7 @@ void Terrain::Render()
                 Line->Render();
             }
         }
-        
+        DEPTH->Set(true);
     }
 
 }

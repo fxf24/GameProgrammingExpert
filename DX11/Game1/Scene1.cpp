@@ -277,9 +277,9 @@ void Scene1::Render()
 {
     Cam->Set();
     Grid->Render();
-    Map->Render();
 
     cubeMan->Render();
+    Map->Render();
 }
 
 void Scene1::ResizeScreen()

@@ -7,6 +7,7 @@ private:
 	Actor* Grid;
 
 	Actor* UI;
+	Vector3 PrevMouse;
 
 	bool max = false;
 public:

@@ -51,6 +51,7 @@ WPARAM Window::Run(Scene* main)
 	GUI->DeleteSingleton();
 	RANDOM->DeleteSingleton();
 	RESOURCE->DeleteSingleton();
+	DEPTH->DeleteSingleton();
 	Destroy();
 
 	return msg.wParam;

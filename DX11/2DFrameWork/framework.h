@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include <thread>
 #include <mutex>
+#include <functional>
 using namespace std;
 
 //DirectX d3d 11
@@ -101,6 +102,8 @@ extern Application App;//Extern Global
 #include "Camera.h"
 #include "Dijkstra.h"
 #include "Terrain.h"
+#include "UI.h"
+#include "DepthState.h"
 
 #include "Util.h"
 
@@ -114,3 +117,4 @@ extern Application App;//Extern Global
 #define RANDOM		Random::GetInstance()
 #define RESOURCE	ResourceManager::GetInstance()
 #define SCENE		SceneManager::GetInstance()
+#define DEPTH		DepthState::GetInstance()

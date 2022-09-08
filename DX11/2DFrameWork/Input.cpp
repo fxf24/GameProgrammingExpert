@@ -9,6 +9,7 @@ Input::Input()
 
 
     position = Vector3(0, 0, 0);
+    NDCPosition = Vector3(0, 0, 0);
     wheelStatus = Vector3(0.0f, 0.0f, 0.0f);
     wheelOldStatus = Vector3(0.0f, 0.0f, 0.0f);
     wheelMoveValue = Vector3(0.0f, 0.0f, 0.0f);
@@ -111,4 +112,11 @@ void Input::Update()
     movePosition = currentPostion - oldPostion;
 
     oldPostion = currentPostion;
+
+    // 0~800 -> 0 ~ 2 -> -1 ~ 1
+    NDCPosition.x = position.x / App.GetHalfWidth() - 1.0f;
+
+    // 0~600 -> 0 ~ -2 -> 1 ~ -1
+    NDCPosition.y = position.y / -App.GetHalfHeight() + 1.0f;
+
 }

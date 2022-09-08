@@ -41,27 +41,32 @@ void Main::Update()
 	Grid->Update();
 	if (UI != nullptr)
 		UI->Update();
+
+	ImGui::Text("Mouse X: %f Y: %f", INPUT->NDCPosition.x, INPUT->NDCPosition.y);
 }
 
 void Main::LateUpdate()
 {
-	Vector3 Mouse = INPUT->position;
+	
+	float left = UI->GetWorldPos().x - UI->S._11 * 0.5;
+	float right = UI->GetWorldPos().x + UI->S._11 * 0.5;
+	float top = UI->GetWorldPos().y + UI->S._22 * 0.5;
+	float bottom = UI->GetWorldPos().y - UI->S._22 * 0.5;
 
-	Mouse.x -= Cam->viewport.x;
-	Mouse.y -= Cam->viewport.y;
-	Vector2 MousePos;
-
-	//ndc로의 변환
-	MousePos.x = ((2.0f * Mouse.x) / Cam->viewport.width - 1.0f);
-	MousePos.y = ((-2.0f * Mouse.y) / Cam->viewport.height + 1.0f);
-
+	if (left < INPUT->NDCPosition.x and right > INPUT->NDCPosition.x and bottom < INPUT->NDCPosition.y and top > INPUT->NDCPosition.y)
+	{
+		if (INPUT->KeyPress(VK_LBUTTON))
+		{
+			if (UI == nullptr) return;
+			Vector3 move = INPUT->NDCPosition - PrevMouse;
+			UI->MoveWorldPos(move);
+		}
+	}
+	
+	
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
 		if (UI == nullptr) return;
-		cout << MousePos.x << " : " << MousePos.y << endl;
-		cout << UI->Find("max")->GetWorldPos().x << " : " << UI->Find("max")->GetWorldPos().y << endl;
-		cout << UI->scale.x << " : " << UI->scale.y << endl;
-		cout << UI->Find("max")->scale.x << " : " << UI->Find("max")->scale.y << endl;
 
 		Vector2 maxLeftTop = Vector2(UI->Find("max")->GetWorldPos().x - (UI->scale.x * UI->Find("max")->scale.x) / 2,
 			UI->Find("max")->GetWorldPos().y + (UI->scale.y * UI->Find("max")->scale.y) / 2);
@@ -75,7 +80,7 @@ void Main::LateUpdate()
 		Vector2 xRightBottom = Vector2(UI->Find("x")->GetWorldPos().x + (UI->scale.x * UI->Find("x")->scale.x) / 2,
 			UI->Find("x")->GetWorldPos().y - (UI->scale.y * UI->Find("x")->scale.y) / 2);
 
-		if (MousePos.x >= maxLeftTop.x && MousePos.x <= maxRightBottom.x && MousePos.y <= maxLeftTop.y && MousePos.y >= maxRightBottom.y)
+		if (INPUT->NDCPosition.x >= maxLeftTop.x && INPUT->NDCPosition.x <= maxRightBottom.x && INPUT->NDCPosition.y <= maxLeftTop.y && INPUT->NDCPosition.y >= maxRightBottom.y)
 		{
 			cout << "in" << endl;
 
@@ -96,31 +101,14 @@ void Main::LateUpdate()
 			}
 		}
 
-		if (MousePos.x >= xLeftTop.x && MousePos.x <= xRightBottom.x && MousePos.y <= xLeftTop.y && MousePos.y >= xRightBottom.y)
+		if (INPUT->NDCPosition.x >= xLeftTop.x && INPUT->NDCPosition.x <= xRightBottom.x && INPUT->NDCPosition.y <= xLeftTop.y && INPUT->NDCPosition.y >= xRightBottom.y)
 		{
 			UI = nullptr;
 		}
 	}
 
-	if (INPUT->KeyPress(VK_LBUTTON))
-	{
-		if (UI == nullptr) return;
-		Vector2 LeftTop = Vector2(UI->GetWorldPos().x - (UI->scale.x) / 2,
-			UI->GetWorldPos().y + (UI->scale.y) / 2);
-
-		Vector2 RightBottom = Vector2(UI->GetWorldPos().x + (UI->scale.x) / 2,
-			UI->GetWorldPos().y - (UI->scale.y) / 2);
-
-		if (MousePos.x >= LeftTop.x && MousePos.x <= RightBottom.x && MousePos.y <= LeftTop.y && MousePos.y >= RightBottom.y)
-		{
-			
-			Vector3 move;
-			move.x = INPUT->movePosition.x * 0.002f;
-			move.y = -INPUT->movePosition.y * 0.002f;
-			UI->MoveWorldPos(move);
-		}
-	}
 	
+	PrevMouse = INPUT->NDCPosition;
 }
 
 void Main::Render()
@@ -129,8 +117,11 @@ void Main::Render()
 
 	Grid->Render();
 
+	// 깊이 렌더링 끄고 그리는 순서에따라 렌더링
+	DEPTH->Set(false);
 	if (UI != nullptr)
 		UI->Render();
+	DEPTH->Set(true);
 }
 
 void Main::ResizeScreen()
