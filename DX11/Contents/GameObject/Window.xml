@@ -17,8 +17,19 @@
             <Scale X="1" Y="1" Z="1"/>
             <Rotation X="0" Y="0" Z="0"/>
         </Transform>
-        <Children Size="1"/>
-        <Child0 Name="x" Visible="true" ObType="0">
+        <Children Size="2"/>
+        <Child0 Name="max" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="max.mtl"/>
+            <Transform>
+                <Position X="0.27500001" Y="0.44999999" Z="-0.050000001"/>
+                <Scale X="0.1" Y="0.1" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child0>
+        <Child1 Name="x" Visible="true" ObType="0">
             <Mesh File="6.UI.mesh"/>
             <Shader File="6.Cube.hlsl"/>
             <Material File="x.mtl"/>
@@ -28,6 +39,6 @@
                 <Rotation X="0" Y="0" Z="0"/>
             </Transform>
             <Children Size="0"/>
-        </Child0>
+        </Child1>
     </Child0>
 </Root>

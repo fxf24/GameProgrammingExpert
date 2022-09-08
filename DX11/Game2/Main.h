@@ -8,6 +8,7 @@ private:
 
 	Actor* UI;
 
+	bool max = false;
 public:
 	Main();
 	~Main();
