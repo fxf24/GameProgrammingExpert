@@ -47,46 +47,66 @@ void Main::Update()
 
 void Main::LateUpdate()
 {
-	
-	float left = UI->GetWorldPos().x - UI->S._11 * 0.5;
-	float right = UI->GetWorldPos().x + UI->S._11 * 0.5;
-	float top = UI->GetWorldPos().y + UI->S._22 * 0.5;
-	float bottom = UI->GetWorldPos().y - UI->S._22 * 0.5;
-
-	if (left < INPUT->NDCPosition.x and right > INPUT->NDCPosition.x and bottom < INPUT->NDCPosition.y and top > INPUT->NDCPosition.y)
+	float left, right, top, bottom;
+	if (UI != nullptr)
 	{
-		if (INPUT->KeyPress(VK_LBUTTON))
+		left = UI->GetWorldPos().x - UI->S._11 * 0.5;
+		right = UI->GetWorldPos().x + UI->S._11 * 0.5;
+		top = UI->GetWorldPos().y + UI->S._22 * 0.5;
+		bottom = UI->GetWorldPos().y - UI->S._22 * 0.5;
+
+		if (left <= INPUT->NDCPosition.x and right >= INPUT->NDCPosition.x and bottom <= INPUT->NDCPosition.y and top >= INPUT->NDCPosition.y)
 		{
-			if (UI == nullptr) return;
-			Vector3 move = INPUT->NDCPosition - PrevMouse;
-			UI->MoveWorldPos(move);
+			if (INPUT->KeyPress(VK_LBUTTON))
+			{
+				Vector3 move = INPUT->NDCPosition - PrevMouse;
+
+				if (left + 0.02 >= INPUT->NDCPosition.x)
+				{
+					UI->scale.x -= move.x * 2;
+				}
+				else if (right - 0.02 <= INPUT->NDCPosition.x)
+				{
+					UI->scale.x += move.x * 2;
+				}
+				else if (bottom + 0.02 >= INPUT->NDCPosition.y)
+				{
+					UI->scale.y -= move.y * 2;
+				}
+				else if (top - 0.02 <= INPUT->NDCPosition.y)
+				{
+					UI->scale.y += move.y * 2;
+
+				}
+				else 
+				{
+					UI->MoveWorldPos(move);	
+				}
+			}
 		}
 	}
-	
 	
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
 		if (UI == nullptr) return;
 
-		Vector2 maxLeftTop = Vector2(UI->Find("max")->GetWorldPos().x - (UI->scale.x * UI->Find("max")->scale.x) / 2,
-			UI->Find("max")->GetWorldPos().y + (UI->scale.y * UI->Find("max")->scale.y) / 2);
+		Vector2 maxLeftTop = Vector2(UI->Find("max")->GetWorldPos().x - UI->Find("max")->S._11 / 2,
+			UI->Find("max")->GetWorldPos().y + UI->Find("max")->S._22 / 2);
 
-		Vector2 maxRightBottom = Vector2(UI->Find("max")->GetWorldPos().x + (UI->scale.x * UI->Find("max")->scale.x) / 2,
-			UI->Find("max")->GetWorldPos().y - (UI->scale.y * UI->Find("max")->scale.y) / 2);
+		Vector2 maxRightBottom = Vector2(UI->Find("max")->GetWorldPos().x + UI->Find("max")->S._11 / 2,
+			UI->Find("max")->GetWorldPos().y - UI->Find("max")->S._22 / 2);
 
-		Vector2 xLeftTop = Vector2(UI->Find("x")->GetWorldPos().x - (UI->scale.x * UI->Find("x")->scale.x) / 2,
-			UI->Find("x")->GetWorldPos().y + (UI->scale.y * UI->Find("x")->scale.y) / 2);
+		Vector2 xLeftTop = Vector2(UI->Find("x")->GetWorldPos().x - UI->Find("max")->S._11 / 2,
+			UI->Find("x")->GetWorldPos().y + UI->Find("max")->S._22 / 2);
 
-		Vector2 xRightBottom = Vector2(UI->Find("x")->GetWorldPos().x + (UI->scale.x * UI->Find("x")->scale.x) / 2,
-			UI->Find("x")->GetWorldPos().y - (UI->scale.y * UI->Find("x")->scale.y) / 2);
+		Vector2 xRightBottom = Vector2(UI->Find("x")->GetWorldPos().x + UI->Find("max")->S._11 / 2,
+			UI->Find("x")->GetWorldPos().y - UI->Find("max")->S._22 / 2);
 
 		if (INPUT->NDCPosition.x >= maxLeftTop.x && INPUT->NDCPosition.x <= maxRightBottom.x && INPUT->NDCPosition.y <= maxLeftTop.y && INPUT->NDCPosition.y >= maxRightBottom.y)
 		{
-			cout << "in" << endl;
-
 			if (!max)
 			{
-				UI->Find("max")->material->LoadFile("min.mtl");
+				UI->Find("min")->visible = true;
 				UI->scale.x = 2.0f;
 				UI->scale.y = 2.0f;
 				UI->SetWorldPos(Vector3(0, 0, 0));
@@ -94,7 +114,7 @@ void Main::LateUpdate()
 			}
 			else
 			{
-				UI->Find("max")->material->LoadFile("max.mtl");
+				UI->Find("min")->visible = false;
 				UI->scale.x = 1.0f;
 				UI->scale.y = 1.0f;
 				max = false;
@@ -103,7 +123,7 @@ void Main::LateUpdate()
 
 		if (INPUT->NDCPosition.x >= xLeftTop.x && INPUT->NDCPosition.x <= xRightBottom.x && INPUT->NDCPosition.y <= xLeftTop.y && INPUT->NDCPosition.y >= xRightBottom.y)
 		{
-			UI = nullptr;
+			UI->visible = false;
 		}
 	}
 
