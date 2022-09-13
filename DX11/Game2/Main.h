@@ -6,7 +6,7 @@ private:
 	Camera* Cam;
 	Actor* Grid;
 
-	Actor* UI;
+	UI* UI;
 	Vector3 PrevMouse;
 
 	bool max = false;
@@ -19,4 +19,6 @@ public:
 	virtual void LateUpdate() override;//°»½Å
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
+
+	void Resize();
 };

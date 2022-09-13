@@ -6,6 +6,17 @@ Main::Main()
 Main::~Main()
 {
 }
+
+struct A
+{
+	string name = "name";
+	void Print()
+	{
+		cout << name << endl;
+	}
+};
+
+A a;
 void Main::Init()
 {
 	Cam = Camera::Create();
@@ -14,9 +25,61 @@ void Main::Init()
 	Grid = Actor::Create();
 	Grid->LoadFile("Grid.xml");
 
-	UI = Actor::Create();
+	UI = UI::Create();
 	UI->LoadFile("Window.xml");
+
+	/*UI->mouseOver = []() {cout << "MouseOver" << endl; };
+	UI->mouseDown = []() {cout << "MouseDown" << endl; };
+	UI->mousePress = bind(&A::Print, &a);
+	UI->mouseUp = []() {cout << "MouseUp" << endl; };*/
+
 	ResizeScreen();
+
+	UI->mouseDown = [&]() {PrevMouse = INPUT->NDCPosition; };
+	UI->mousePress = bind(&Main::Resize, this);
+}
+
+
+void Main::Resize()
+{
+	float left, right, top, bottom;
+
+	left = UI->GetWorldPos().x - UI->S._11 * 0.5;
+	right = UI->GetWorldPos().x + UI->S._11 * 0.5;
+	top = UI->GetWorldPos().y + UI->S._22 * 0.5;
+	bottom = UI->GetWorldPos().y - UI->S._22 * 0.5;
+	Vector3 move = INPUT->NDCPosition - PrevMouse;
+
+
+	/*UI->MoveWorldPos(move * 0.5f);
+	UI->scale.x += move.x;*/
+	
+	if (left + 0.02 >= INPUT->NDCPosition.x)
+	{   
+		UI->MoveWorldPos(move * 0.5f);
+		UI->scale.x -= move.x;
+	}
+	if (right - 0.02 <= INPUT->NDCPosition.x)
+	{
+		UI->MoveWorldPos(move * 0.5f);
+		UI->scale.x += move.x;
+	}
+	if (bottom + 0.02 >= INPUT->NDCPosition.y)
+	{
+		UI->MoveWorldPos(move * 0.5f);
+		UI->scale.y -= move.y;
+	}
+	if (top - 0.02 <= INPUT->NDCPosition.y)
+	{
+		UI->MoveWorldPos(move * 0.5f);
+		UI->scale.y += move.y;
+	}
+	
+	
+	PrevMouse = INPUT->NDCPosition;
+
+
+
 }
 
 void Main::Release()
@@ -45,90 +108,11 @@ void Main::Update()
 	ImGui::Text("Mouse X: %f Y: %f", INPUT->NDCPosition.x, INPUT->NDCPosition.y);
 }
 
+
+
 void Main::LateUpdate()
 {
-	float left, right, top, bottom;
-	if (UI != nullptr)
-	{
-		left = UI->GetWorldPos().x - UI->S._11 * 0.5;
-		right = UI->GetWorldPos().x + UI->S._11 * 0.5;
-		top = UI->GetWorldPos().y + UI->S._22 * 0.5;
-		bottom = UI->GetWorldPos().y - UI->S._22 * 0.5;
-
-		if (left <= INPUT->NDCPosition.x and right >= INPUT->NDCPosition.x and bottom <= INPUT->NDCPosition.y and top >= INPUT->NDCPosition.y)
-		{
-			if (INPUT->KeyPress(VK_LBUTTON))
-			{
-				Vector3 move = INPUT->NDCPosition - PrevMouse;
-
-				if (left + 0.02 >= INPUT->NDCPosition.x)
-				{
-					UI->scale.x -= move.x * 2;
-				}
-				else if (right - 0.02 <= INPUT->NDCPosition.x)
-				{
-					UI->scale.x += move.x * 2;
-				}
-				else if (bottom + 0.02 >= INPUT->NDCPosition.y)
-				{
-					UI->scale.y -= move.y * 2;
-				}
-				else if (top - 0.02 <= INPUT->NDCPosition.y)
-				{
-					UI->scale.y += move.y * 2;
-
-				}
-				else 
-				{
-					UI->MoveWorldPos(move);	
-				}
-			}
-		}
-	}
 	
-	if (INPUT->KeyDown(VK_LBUTTON))
-	{
-		if (UI == nullptr) return;
-
-		Vector2 maxLeftTop = Vector2(UI->Find("max")->GetWorldPos().x - UI->Find("max")->S._11 / 2,
-			UI->Find("max")->GetWorldPos().y + UI->Find("max")->S._22 / 2);
-
-		Vector2 maxRightBottom = Vector2(UI->Find("max")->GetWorldPos().x + UI->Find("max")->S._11 / 2,
-			UI->Find("max")->GetWorldPos().y - UI->Find("max")->S._22 / 2);
-
-		Vector2 xLeftTop = Vector2(UI->Find("x")->GetWorldPos().x - UI->Find("max")->S._11 / 2,
-			UI->Find("x")->GetWorldPos().y + UI->Find("max")->S._22 / 2);
-
-		Vector2 xRightBottom = Vector2(UI->Find("x")->GetWorldPos().x + UI->Find("max")->S._11 / 2,
-			UI->Find("x")->GetWorldPos().y - UI->Find("max")->S._22 / 2);
-
-		if (INPUT->NDCPosition.x >= maxLeftTop.x && INPUT->NDCPosition.x <= maxRightBottom.x && INPUT->NDCPosition.y <= maxLeftTop.y && INPUT->NDCPosition.y >= maxRightBottom.y)
-		{
-			if (!max)
-			{
-				UI->Find("min")->visible = true;
-				UI->scale.x = 2.0f;
-				UI->scale.y = 2.0f;
-				UI->SetWorldPos(Vector3(0, 0, 0));
-				max = true;
-			}
-			else
-			{
-				UI->Find("min")->visible = false;
-				UI->scale.x = 1.0f;
-				UI->scale.y = 1.0f;
-				max = false;
-			}
-		}
-
-		if (INPUT->NDCPosition.x >= xLeftTop.x && INPUT->NDCPosition.x <= xRightBottom.x && INPUT->NDCPosition.y <= xLeftTop.y && INPUT->NDCPosition.y >= xRightBottom.y)
-		{
-			UI->visible = false;
-		}
-	}
-
-	
-	PrevMouse = INPUT->NDCPosition;
 }
 
 void Main::Render()
@@ -151,6 +135,7 @@ void Main::ResizeScreen()
 	Cam->viewport.width = App.GetWidth();
 	Cam->viewport.height = App.GetHeight();
 }
+
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, int command)
 {
