@@ -183,6 +183,15 @@ void GameObject::AddChild(GameObject* child)
 	child->parent = this;
 	child->root = root;
 }
+
+void GameObject::MoveChild(GameObject* parent, GameObject* child)
+{
+	if (parent == nullptr || child == nullptr) return;
+	child->parent->children.erase(child->name);
+	parent->children[child->name] = child;
+	child->parent = parent;
+}
+
 void GameObject::AddBone(GameObject* child)
 {
 	if (root->Find(child->name))

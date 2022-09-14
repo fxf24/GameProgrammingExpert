@@ -3,8 +3,8 @@
     <Shader File="6.Cube.hlsl"/>
     <Material File="Win.mtl"/>
     <Transform>
-        <Position X="0" Y="0" Z="0"/>
-        <Scale X="1" Y="1" Z="1"/>
+        <Position X="0.016522259" Y="0.004968822" Z="0"/>
+        <Scale X="1.1353266" Y="1.3354033" Z="1"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Transform>
     <Children Size="1"/>
@@ -27,7 +27,18 @@
                 <Scale X="0.25" Y="0.2" Z="1"/>
                 <Rotation X="0" Y="0" Z="0"/>
             </Transform>
-            <Children Size="0"/>
+            <Children Size="1"/>
+            <Child0 Name="item1" Visible="true" ObType="0">
+                <Mesh File="6.UI.mesh"/>
+                <Shader File="6.Cube.hlsl"/>
+                <Material File="water.mtl"/>
+                <Transform>
+                    <Position X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                </Transform>
+                <Children Size="0"/>
+            </Child0>
         </Child0>
         <Child1 Name="inven2" Visible="true" ObType="0">
             <Mesh File="6.UI.mesh"/>
@@ -38,7 +49,18 @@
                 <Scale X="0.25" Y="0.2" Z="1"/>
                 <Rotation X="0" Y="0" Z="0"/>
             </Transform>
-            <Children Size="0"/>
+            <Children Size="1"/>
+            <Child0 Name="item2" Visible="true" ObType="0">
+                <Mesh File="6.UI.mesh"/>
+                <Shader File="6.Cube.hlsl"/>
+                <Material File="seafloor.mtl"/>
+                <Transform>
+                    <Position X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                </Transform>
+                <Children Size="0"/>
+            </Child0>
         </Child1>
         <Child2 Name="inven3" Visible="true" ObType="0">
             <Mesh File="6.UI.mesh"/>
@@ -49,74 +71,96 @@
                 <Scale X="0.25" Y="0.2" Z="1"/>
                 <Rotation X="0" Y="0" Z="0"/>
             </Transform>
-            <Children Size="0"/>
+            <Children Size="1"/>
+            <Child0 Name="item3" Visible="true" ObType="0">
+                <Mesh File="6.UI.mesh"/>
+                <Shader File="6.Cube.hlsl"/>
+                <Material File="terrain.mtl"/>
+                <Transform>
+                    <Position X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                </Transform>
+                <Children Size="0"/>
+            </Child0>
         </Child2>
-      <Child3 Name="inven4" Visible="true" ObType="0">
-        <Mesh File="6.UI.mesh"/>
-        <Shader File="6.Cube.hlsl"/>
-        <Material File="whiteSpace.mtl"/>
-        <Transform>
-          <Position X="-0.30000001" Y="0" Z="0"/>
-          <Scale X="0.25" Y="0.2" Z="1"/>
-          <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-      </Child3>
-      <Child4 Name="inven5" Visible="true" ObType="0">
-        <Mesh File="6.UI.mesh"/>
-        <Shader File="6.Cube.hlsl"/>
-        <Material File="whiteSpace.mtl"/>
-        <Transform>
-          <Position X="0" Y="0" Z="0"/>
-          <Scale X="0.25" Y="0.2" Z="1"/>
-          <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-      </Child4>
-      <Child5 Name="inven6" Visible="true" ObType="0">
-        <Mesh File="6.UI.mesh"/>
-        <Shader File="6.Cube.hlsl"/>
-        <Material File="whiteSpace.mtl"/>
-        <Transform>
-          <Position X="0.30000001" Y="0" Z="0"/>
-          <Scale X="0.25" Y="0.2" Z="1"/>
-          <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-      </Child5>
-      <Child6 Name="inven7" Visible="true" ObType="0">
-        <Mesh File="6.UI.mesh"/>
-        <Shader File="6.Cube.hlsl"/>
-        <Material File="whiteSpace.mtl"/>
-        <Transform>
-          <Position X="-0.30000001" Y="-0.25" Z="0"/>
-          <Scale X="0.25" Y="0.2" Z="1"/>
-          <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-      </Child6>
-      <Child7 Name="inven8" Visible="true" ObType="0">
-        <Mesh File="6.UI.mesh"/>
-        <Shader File="6.Cube.hlsl"/>
-        <Material File="whiteSpace.mtl"/>
-        <Transform>
-          <Position X="0" Y="-0.25" Z="0"/>
-          <Scale X="0.25" Y="0.2" Z="1"/>
-          <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-      </Child7>
-      <Child8 Name="inven9" Visible="true" ObType="0">
-        <Mesh File="6.UI.mesh"/>
-        <Shader File="6.Cube.hlsl"/>
-        <Material File="whiteSpace.mtl"/>
-        <Transform>
-          <Position X="0.30000001" Y="-0.25" Z="0"/>
-          <Scale X="0.25" Y="0.2" Z="1"/>
-          <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-      </Child8>
+        <Child3 Name="inven4" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="whiteSpace.mtl"/>
+            <Transform>
+                <Position X="-0.30000001" Y="0" Z="0"/>
+                <Scale X="0.25" Y="0.2" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="1"/>
+            <Child0 Name="item4" Visible="true" ObType="0">
+                <Mesh File="6.UI.mesh"/>
+                <Shader File="6.Cube.hlsl"/>
+                <Material File="grass.mtl"/>
+                <Transform>
+                    <Position X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                </Transform>
+                <Children Size="0"/>
+            </Child0>
+        </Child3>
+        <Child4 Name="inven5" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="whiteSpace.mtl"/>
+            <Transform>
+                <Position X="0" Y="0" Z="0"/>
+                <Scale X="0.25" Y="0.2" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child4>
+        <Child5 Name="inven6" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="whiteSpace.mtl"/>
+            <Transform>
+                <Position X="0.30000001" Y="0" Z="0"/>
+                <Scale X="0.25" Y="0.2" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child5>
+        <Child6 Name="inven7" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="whiteSpace.mtl"/>
+            <Transform>
+                <Position X="-0.30000001" Y="-0.25" Z="0"/>
+                <Scale X="0.25" Y="0.2" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child6>
+        <Child7 Name="inven8" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="whiteSpace.mtl"/>
+            <Transform>
+                <Position X="0" Y="-0.25" Z="0"/>
+                <Scale X="0.25" Y="0.2" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child7>
+        <Child8 Name="inven9" Visible="true" ObType="0">
+            <Mesh File="6.UI.mesh"/>
+            <Shader File="6.Cube.hlsl"/>
+            <Material File="whiteSpace.mtl"/>
+            <Transform>
+                <Position X="0.30000001" Y="-0.25" Z="0"/>
+                <Scale X="0.25" Y="0.2" Z="1"/>
+                <Rotation X="0" Y="0" Z="0"/>
+            </Transform>
+            <Children Size="0"/>
+        </Child8>
         <Child9 Name="max" Visible="true" ObType="0">
             <Mesh File="6.UI.mesh"/>
             <Shader File="6.Cube.hlsl"/>

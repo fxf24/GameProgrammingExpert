@@ -33,8 +33,6 @@ void UI::Update()
 			Press = true;
 			if (mousePress) mousePress();
 		}
-
-		
 	}
 
 	if (Press)

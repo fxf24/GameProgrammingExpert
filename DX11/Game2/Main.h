@@ -10,6 +10,8 @@ private:
 	Vector3 PrevMouse;
 
 	bool max = false;
+	string from = "";
+	string to = "";
 public:
 	Main();
 	~Main();
@@ -21,4 +23,6 @@ public:
 	virtual void ResizeScreen() override;
 
 	void Resize();
+	void ClickEvent();
+	void UpEvent();
 };

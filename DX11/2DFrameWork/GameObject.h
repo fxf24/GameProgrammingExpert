@@ -44,6 +44,7 @@ public:
 	virtual void	Update();
 	virtual void	Render();
 	void			AddChild(GameObject* child);
+	void			MoveChild(GameObject* parent, GameObject* child);
 	void			AddBone(GameObject* child);
 	bool			RenderHierarchy();
 	virtual void	RenderDetail();
