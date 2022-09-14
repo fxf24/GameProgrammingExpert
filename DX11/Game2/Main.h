@@ -12,6 +12,8 @@ private:
 	bool max = false;
 	string from = "";
 	string to = "";
+
+	Inven inv;
 public:
 	Main();
 	~Main();

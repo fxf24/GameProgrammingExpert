@@ -282,6 +282,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 			AddChild(temp);
 			temp->LoadObject(ob);
 		}
+		else if (Type == ObType::UI)
+		{
+			UI* temp = UI::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
 	}
 }
 void Transform::SaveTransform(Xml::XMLElement* This, Xml::XMLDocument* doc)

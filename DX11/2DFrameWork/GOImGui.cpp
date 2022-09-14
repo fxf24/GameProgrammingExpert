@@ -42,10 +42,31 @@ bool GameObject::RenderHierarchy()
 		{
 			static char childName[32] = "None";
 			ImGui::InputText("childName", childName, 32);
-			if (ImGui::Button("Create"))
+			if (ImGui::Button("G.O"))
 			{
 				AddChild(GameObject::Create(childName));
 			}
+			ImGui::SameLine();
+			if (ImGui::Button("Actor"))
+			{
+				AddChild(Actor::Create(childName));
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Camera"))
+			{
+				AddChild(Camera::Create(childName));
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Terrain"))
+			{
+				AddChild(Terrain::Create(childName));
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("UI"))
+			{
+				AddChild(UI::Create(childName));
+			}
+
 			ImGui::EndPopup();
 		}
 

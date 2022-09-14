@@ -4,6 +4,7 @@ UI* UI::Create(string name)
 {
 	UI* temp = new UI();
 	temp->name = name;
+	temp->type = ObType::UI;
 	return temp;
 }
 
