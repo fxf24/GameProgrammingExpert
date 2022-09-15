@@ -83,6 +83,9 @@
     <ClInclude Include="DepthState.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="Dwrite.h">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="DepthState.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Dwrite.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

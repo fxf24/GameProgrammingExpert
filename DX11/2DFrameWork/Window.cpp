@@ -31,11 +31,13 @@ WPARAM Window::Run(Scene* main)
 			main->Update();
 			main->LateUpdate();
 			D3D->SetRenderTarget();
+			DWRITE->GetDC()->BeginDraw();
 			D3D->Clear(App.background);
 			{
 				main->Render();
 				GUI->Render();
 			}
+			DWRITE->GetDC()->EndDraw();
 			D3D->Present();
 		}
 	}
@@ -52,6 +54,7 @@ WPARAM Window::Run(Scene* main)
 	RANDOM->DeleteSingleton();
 	RESOURCE->DeleteSingleton();
 	DEPTH->DeleteSingleton();
+	DWRITE->DeleteSingleton();
 	Destroy();
 
 	return msg.wParam;

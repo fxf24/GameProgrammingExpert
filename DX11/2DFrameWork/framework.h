@@ -30,6 +30,13 @@ using namespace std;
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dxgi.lib")
 
+//D2D
+#include <d2d1_1.h>
+#pragma comment(lib, "d2d1.lib")
+
+//Direct Write
+#include <dwrite.h>
+#pragma comment(lib, "dwrite.lib")
 
 //DirectXTk 
 #include "../Libs/DirectXTK/SimpleMath.h"
@@ -96,6 +103,7 @@ extern Application App;//Extern Global
 #include "Animation.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
+#include "Dwrite.h"
 
 #include "GameObject.h"
 //#include "ObRect.h"
@@ -116,5 +124,6 @@ extern Application App;//Extern Global
 #define DELTA		Timer::GetInstance()->GetDeltaScaleTime()
 #define RANDOM		Random::GetInstance()
 #define RESOURCE	ResourceManager::GetInstance()
+#define DWRITE		Dwrite::GetInstance()
 #define SCENE		SceneManager::GetInstance()
 #define DEPTH		DepthState::GetInstance()
