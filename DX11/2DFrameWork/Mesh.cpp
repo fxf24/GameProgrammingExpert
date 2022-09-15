@@ -16,9 +16,6 @@ Mesh::Mesh()
     indexCount = 4;
     file = "6.UI.mesh";
 
-    //xyz -1 ~ 1
-    //-> + 1 -> /2 ->
-    // 0 ~ 1
     Vertex = new VertexPT[vertexCount];
     indices = new UINT[indexCount];
 
@@ -29,15 +26,15 @@ Mesh::Mesh()
     Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
     Vertex[1].uv = Vector2(0.0f, 0.0f);
     indices[1] = 1;
-  
+
     Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
     Vertex[2].uv = Vector2(1.0f, 1.0f);
     indices[2] = 2;
 
-
     Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
     Vertex[3].uv = Vector2(1.0f, 0.0f);
     indices[3] = 3;
+
     /////////////////////////////////////////////////////
     vertices = (void*)Vertex;
     //CreateVertexBuffer

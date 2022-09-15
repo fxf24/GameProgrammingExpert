@@ -6,14 +6,11 @@ private:
 	Camera* Cam;
 	Actor* Grid;
 
-	UI* UI;
+	//UI* Ui;
 	Vector3 PrevMouse;
+	Inven   inv;
 
-	bool max = false;
-	string from = "";
-	string to = "";
 
-	Inven inv;
 public:
 	Main();
 	~Main();
@@ -24,7 +21,6 @@ public:
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
 
-	void Resize();
-	void ClickEvent();
-	void UpEvent();
+	//void Resize();
+
 };

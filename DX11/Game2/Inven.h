@@ -8,14 +8,20 @@ struct Item
 	//int		price;
 };
 
+
 class Inven
 {
-public:
+	//그려줄객체
 	UI* Ui;
-	map<string, Item*> inven;
+	//수량 가격
+	map<string,Item*> inven;
 
+	//stirng DownName;
 	string OverName;
+
 	UI* Mouse;
+
+
 private:
 	void invenUpdate();
 

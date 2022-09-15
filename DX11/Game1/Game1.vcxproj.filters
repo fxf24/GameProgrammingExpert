@@ -39,7 +39,4 @@
       <UniqueIdentifier>{1d9db8ce-74a3-472c-b6db-ce9a5227d383}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="window.ini" />
-  </ItemGroup>
 </Project>

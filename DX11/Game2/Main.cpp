@@ -7,6 +7,17 @@ Main::~Main()
 {
 }
 
+//struct A
+//{
+//	string name = "name";
+//	void Print()
+//	{
+//		cout << name << endl;
+//	}
+//};
+//
+//A a;
+
 void Main::Init()
 {
 	Cam = Camera::Create();
@@ -18,223 +29,31 @@ void Main::Init()
 
 	inv.Init();
 
-	/*UI->mouseOver = []() {cout << "MouseOver" << endl; };
-	UI->mouseDown = []() {cout << "MouseDown" << endl; };
-	UI->mousePress = bind(&A::Print, &a);
-	UI->mouseUp = []() {cout << "MouseUp" << endl; };*/
 
-	ResizeScreen();
 
-	/*UI->mouseDown = bind(&Main::ClickEvent, this);
-	UI->mousePress = bind(&Main::Resize, this);
-	UI->mouseUp = bind(&Main::UpEvent, this);*/
+	/*Ui->mouseOver = [](){ cout << "MouseOver"<<endl; };
+	Ui->mouseDown = [](){ };
+	Ui->mousePress = bind(&A::Print, &a );
+	Ui->mouseUp = []() { cout << "mouseUp" << endl; };*/
+
+	//Ui->scale.x = 2;
+	//Ui->scale.y = 2;
+
+	Cam->width = App.GetWidth();
+	Cam->height = App.GetHeight();
+	Cam->viewport.width = App.GetWidth();
+	Cam->viewport.height = App.GetHeight();
+
+	/*Ui->mouseDown = [&]() {PrevMouse = INPUT->NDCPosition; };
+	Ui->mousePress = bind(&Main::Resize, this);*/
 }
-
-
 //void Main::Resize()
 //{
-//	float left, right, top, bottom;
-//
-//	left = UI->GetWorldPos().x - UI->S._11 * 0.5;
-//	right = UI->GetWorldPos().x + UI->S._11 * 0.5;
-//	top = UI->GetWorldPos().y + UI->S._22 * 0.5;
-//	bottom = UI->GetWorldPos().y - UI->S._22 * 0.5;
-//	Vector3 move = INPUT->NDCPosition - PrevMouse;
-//
-//
-//	/*UI->MoveWorldPos(move * 0.5f);
-//	UI->scale.x += move.x;*/
-//	
-//	if (top - 0.05 <= INPUT->NDCPosition.y and right - 0.05 <= INPUT->NDCPosition.x)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.x += move.x;
-//		UI->scale.y += move.y;
-//	}
-//	else if (top - 0.05 <= INPUT->NDCPosition.y and left + 0.05 >= INPUT->NDCPosition.x)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.x -= move.x;
-//		UI->scale.y += move.y;
-//	}
-//	else if (bottom + 0.05 >= INPUT->NDCPosition.y and right - 0.05 <= INPUT->NDCPosition.x)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.x += move.x;
-//		UI->scale.y -= move.y;
-//	}
-//	else if (bottom + 0.05 >= INPUT->NDCPosition.y and left + 0.05 >= INPUT->NDCPosition.x)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.x -= move.x;
-//		UI->scale.y -= move.y;
-//	}
-//	else if (left + 0.05 >= INPUT->NDCPosition.x)
-//	{   
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.x -= move.x;
-//	}
-//	else if (right - 0.05 <= INPUT->NDCPosition.x)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.x += move.x;
-//	}
-//	else if (bottom + 0.05 >= INPUT->NDCPosition.y)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.y -= move.y;
-//	}
-//	else if (top - 0.05 <= INPUT->NDCPosition.y)
-//	{
-//		UI->MoveWorldPos(move * 0.5f);
-//		UI->scale.y += move.y;
-//	}
-//	else
-//	{
-//		if (from != "")
-//		{
-//			if (!UI->Find(from)->children.empty())
-//			{
-//				for (auto a : UI->Find(from)->children)
-//				{
-//					a.second->MoveWorldPos(move);
-//				}
-//			}
-//		}
-//		else
-//		{
-//			UI->MoveWorldPos(move);
-//		}
-//	}
+//	Vector3 mov = INPUT->NDCPosition - PrevMouse;
+//	Ui->MoveWorldPos(mov * 0.5f);
+//	Ui->scale.x += mov.x;
 //
 //	PrevMouse = INPUT->NDCPosition;
-//}
-
-//void Main::ClickEvent()
-//{
-//	for (int i = 0; i < 9; i++)
-//	{
-//		string temp = "inven" + to_string(i + 1);
-//		Vector2 LeftTop = Vector2(UI->Find(temp)->GetWorldPos().x - UI->Find(temp)->S._11 / 2,
-//			UI->Find(temp)->GetWorldPos().y + UI->Find(temp)->S._22 / 2);
-//
-//		Vector2 RightBottom = Vector2(UI->Find(temp)->GetWorldPos().x + UI->Find(temp)->S._11 / 2,
-//			UI->Find(temp)->GetWorldPos().y - UI->Find(temp)->S._22 / 2);
-//
-//		if (INPUT->NDCPosition.x >= LeftTop.x && INPUT->NDCPosition.x <= RightBottom.x && INPUT->NDCPosition.y <= LeftTop.y && INPUT->NDCPosition.y >= RightBottom.y)
-//		{
-//			cout << temp << endl;
-//			from = temp;
-//		}
-//	}
-//
-//
-//	Vector2 maxLeftTop = Vector2(UI->Find("max")->GetWorldPos().x - UI->Find("max")->S._11 / 2,
-//		UI->Find("max")->GetWorldPos().y + UI->Find("max")->S._22 / 2);
-//
-//	Vector2 maxRightBottom = Vector2(UI->Find("max")->GetWorldPos().x + UI->Find("max")->S._11 / 2,
-//		UI->Find("max")->GetWorldPos().y - UI->Find("max")->S._22 / 2);
-//
-//	Vector2 xLeftTop = Vector2(UI->Find("x")->GetWorldPos().x - UI->Find("max")->S._11 / 2,
-//		UI->Find("x")->GetWorldPos().y + UI->Find("max")->S._22 / 2);
-//
-//	Vector2 xRightBottom = Vector2(UI->Find("x")->GetWorldPos().x + UI->Find("max")->S._11 / 2,
-//		UI->Find("x")->GetWorldPos().y - UI->Find("max")->S._22 / 2);
-//
-//	if (INPUT->NDCPosition.x >= maxLeftTop.x && INPUT->NDCPosition.x <= maxRightBottom.x && INPUT->NDCPosition.y <= maxLeftTop.y && INPUT->NDCPosition.y >= maxRightBottom.y)
-//	{
-//		if (!max)
-//		{
-//			UI->Find("min")->visible = true;
-//			UI->scale.x = 2.0f;
-//			UI->scale.y = 2.0f;
-//			UI->SetWorldPos(Vector3(0, 0, 0));
-//			max = true;
-//		}
-//		else
-//		{
-//			UI->Find("min")->visible = false;
-//			UI->scale.x = 1.0f;
-//			UI->scale.y = 1.0f;
-//			max = false;
-//		}
-//	}
-//
-//	if (INPUT->NDCPosition.x >= xLeftTop.x && INPUT->NDCPosition.x <= xRightBottom.x && INPUT->NDCPosition.y <= xLeftTop.y && INPUT->NDCPosition.y >= xRightBottom.y)
-//	{
-//		UI->visible = false;
-//	}
-//
-//	PrevMouse = INPUT->NDCPosition;
-//}
-//
-//void Main::UpEvent()
-//{
-//	for (int i = 0; i < 9; i++)
-//	{
-//		string temp = "inven" + to_string(i + 1);
-//		Vector2 LeftTop = Vector2(UI->Find(temp)->GetWorldPos().x - UI->Find(temp)->S._11 / 2,
-//			UI->Find(temp)->GetWorldPos().y + UI->Find(temp)->S._22 / 2);
-//
-//		Vector2 RightBottom = Vector2(UI->Find(temp)->GetWorldPos().x + UI->Find(temp)->S._11 / 2,
-//			UI->Find(temp)->GetWorldPos().y - UI->Find(temp)->S._22 / 2);
-//		
-//		if (INPUT->NDCPosition.x >= LeftTop.x && INPUT->NDCPosition.x <= RightBottom.x && INPUT->NDCPosition.y <= LeftTop.y && INPUT->NDCPosition.y >= RightBottom.y)
-//		{
-//			to = temp;
-//		}
-//	}
-//
-//	if (to == "")
-//	{
-//		if (from != "")
-//		{
-//			if (!UI->Find(from)->children.empty())
-//			{
-//				for (auto a : UI->Find(from)->children)
-//				{
-//					a.second->SetWorldPos(UI->Find(from)->GetWorldPos());
-//				}
-//			}
-//		}		
-//	}
-//	else
-//	{
-//		if (!UI->Find(to)->children.empty())
-//		{
-//			GameObject* temp1 = nullptr;
-//			GameObject* temp2 = nullptr;
-//			for (auto a : UI->Find(from)->children)
-//			{
-//				temp1 = a.second;
-//			}
-//			for (auto b : UI->Find(to)->children)
-//			{
-//				temp2 = b.second;
-//			}
-//
-//			UI->MoveChild(UI->Find(from), temp2);
-//			UI->MoveChild(UI->Find(to), temp1);
-//			temp1->SetWorldPos(UI->Find(to)->GetWorldPos());
-//			temp2->SetWorldPos(UI->Find(from)->GetWorldPos());
-//
-//		}
-//		else
-//		{
-//			GameObject* temp = nullptr;
-//			if (!UI->Find(from)->children.empty())
-//			{
-//				for (auto a : UI->Find(from)->children)
-//				{
-//					temp = a.second;
-//				}
-//				UI->MoveChild(UI->Find(to), temp);
-//				temp->SetWorldPos(UI->Find(to)->GetWorldPos());
-//			}	
-//		}
-//	}
-//	from = "";
-//	to = "";
 //}
 
 void Main::Release()
@@ -246,36 +65,54 @@ void Main::Release()
 void Main::Update()
 {
 	Camera::ControlMainCam();
+	
+	//ImGui::Begin("Hierarchy");
+	////Ui->RenderHierarchy();
+	//ImGui::End();
 
-	ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
-	ImGui::Begin("Hierarchy");
-	Grid->RenderHierarchy();
-	Cam->RenderHierarchy();
-	inv.Ui->RenderHierarchy();
-	ImGui::End();
 
 	Cam->Update();
 	Grid->Update();
 	inv.Update();
 
-	ImGui::Text("Mouse X: %f Y: %f", INPUT->NDCPosition.x, INPUT->NDCPosition.y);
+	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
+		INPUT->NDCPosition.y);
+
 }
-
-
 
 void Main::LateUpdate()
 {
-	
-}
 
+	/*float left = Ui->GetWorldPos().x - Ui->S._11 * 0.5f;
+	float right = Ui->GetWorldPos().x + Ui->S._11 * 0.5f;
+	float top = Ui->GetWorldPos().y + Ui->S._22 * 0.5f;
+	float bottom = Ui->GetWorldPos().y - Ui->S._22 * 0.5f;
+
+	if (left < INPUT->NDCPosition.x and INPUT->NDCPosition.x < right
+		and bottom < INPUT->NDCPosition.y and
+		INPUT->NDCPosition.y < top)
+	{
+		if (INPUT->KeyPress(VK_LBUTTON))
+		{
+			Vector3 mov = INPUT->NDCPosition - PrevMouse;
+			Ui->MoveWorldPos(mov * 0.5f);
+			Ui->scale.x += mov.x;
+		}
+	}*/
+
+	
+
+	//PrevMouse = INPUT->NDCPosition;
+}
 void Main::Render()
 {
 	Cam->Set();
-
+	
 	Grid->Render();
-
-	// ±íÀÌ ·»´õ¸µ ²ô°í ±×¸®´Â ¼ø¼­¿¡µû¶ó ·»´õ¸µ
+	//±íÀÌ ·»´õ¸µ ²ô°í ±×¸®´Â ¼ø¼­¿¡µû¶ó ·»´õ¸µ
+	
 	inv.Render();
+	
 }
 
 void Main::ResizeScreen()

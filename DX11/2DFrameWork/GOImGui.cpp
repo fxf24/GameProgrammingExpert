@@ -66,7 +66,6 @@ bool GameObject::RenderHierarchy()
 			{
 				AddChild(UI::Create(childName));
 			}
-
 			ImGui::EndPopup();
 		}
 

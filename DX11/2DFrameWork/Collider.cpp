@@ -84,19 +84,19 @@ bool Collider::Intersect(Collider* target)
 	{
 		BoundingBox box1;
 		box1.Center = GetWorldPos();
-		box1.Extents = Vector3(S._11, S._22, S._33);
+		box1.Extents = Vector3(S._11, S._22, S._33) *2.0f;
 		if (target->type == ColliderType::BOX)
 		{
 			BoundingBox box2;
 			box2.Center = target->GetWorldPos();
-			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33);
+			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33) * 2.0f;
 			return box1.Intersects(box2);
 		}
 		else if (target->type == ColliderType::OBOX)
 		{
 			BoundingOrientedBox box2;
 			box2.Center = target->GetWorldPos();
-			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33);
+			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33) * 2.0f;
 			box2.Orientation = Quaternion::CreateFromRotationMatrix(target->RT);
 			return box1.Intersects(box2);
 		}
@@ -104,7 +104,7 @@ bool Collider::Intersect(Collider* target)
 		{
 			BoundingSphere box2;
 			box2.Center = target->GetWorldPos();
-			box2.Radius = target->S._11;
+			box2.Radius = target->S._11 * 2.0f;
 			return box1.Intersects(box2);
 		}
 	}
@@ -112,20 +112,20 @@ bool Collider::Intersect(Collider* target)
 	{
 		BoundingOrientedBox box1;
 		box1.Center = GetWorldPos();
-		box1.Extents = Vector3(S._11, S._22, S._33);
+		box1.Extents = Vector3(S._11, S._22, S._33) * 2.0f;
 		box1.Orientation = Quaternion::CreateFromRotationMatrix(RT);
 		if (target->type == ColliderType::BOX)
 		{
 			BoundingBox box2;
 			box2.Center = target->GetWorldPos();
-			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33);
+			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33) * 2.0f;
 			return box1.Intersects(box2);
 		}
 		else if (target->type == ColliderType::OBOX)
 		{
 			BoundingOrientedBox box2;
 			box2.Center = target->GetWorldPos();
-			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33);
+			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33) * 2.0f;
 			box2.Orientation = Quaternion::CreateFromRotationMatrix(target->RT);
 			return box1.Intersects(box2);
 		}
@@ -133,7 +133,7 @@ bool Collider::Intersect(Collider* target)
 		{
 			BoundingSphere box2;
 			box2.Center = target->GetWorldPos();
-			box2.Radius = target->S._11;
+			box2.Radius = target->S._11 * 2.0f;
 			return box1.Intersects(box2);
 		}
 	}
@@ -141,19 +141,19 @@ bool Collider::Intersect(Collider* target)
 	{
 		BoundingSphere box1;
 		box1.Center = GetWorldPos();
-		box1.Radius = S._11;
+		box1.Radius = S._11 * 2.0f;
 		if (target->type == ColliderType::BOX)
 		{
 			BoundingBox box2;
 			box2.Center = target->GetWorldPos();
-			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33);
+			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33) * 2.0f;
 			return box1.Intersects(box2);
 		}
 		else if (target->type == ColliderType::OBOX)
 		{
 			BoundingOrientedBox box2;
 			box2.Center = target->GetWorldPos();
-			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33);
+			box2.Extents = Vector3(target->S._11, target->S._22, target->S._33 * 2.0f);
 			box2.Orientation = Quaternion::CreateFromRotationMatrix(target->RT);
 			return box1.Intersects(box2);
 		}
@@ -161,7 +161,7 @@ bool Collider::Intersect(Collider* target)
 		{
 			BoundingSphere box2;
 			box2.Center = target->GetWorldPos();
-			box2.Radius = target->S._11;
+			box2.Radius = target->S._11 * 2.0f;
 			return box1.Intersects(box2);
 		}
 	}
@@ -177,7 +177,7 @@ bool Collider::Intersect(Ray Ray, Vector3& Hit)
 	{
 		BoundingBox box1;
 		box1.Center = GetWorldPos();
-		box1.Extents = Vector3(S._11, S._22, S._33);
+		box1.Extents = Vector3(S._11, S._22, S._33) * 2.0f;
 		result =Ray.Intersects(box1, Dis);
 		Hit = Ray.position + Ray.direction * Dis;
 	}
@@ -185,7 +185,7 @@ bool Collider::Intersect(Ray Ray, Vector3& Hit)
 	{
 		BoundingBox box1;
 		box1.Center = Vector3(0,0,0);
-		box1.Extents = Vector3(S._11, S._22, S._33);
+		box1.Extents = Vector3(S._11, S._22, S._33) * 2.0f;
 		Matrix inverse = RT.Invert();
 		Ray.position = Vector3::Transform(Ray.position, inverse);
 		Ray.direction = Vector3::TransformNormal(Ray.direction, inverse);
@@ -200,7 +200,7 @@ bool Collider::Intersect(Ray Ray, Vector3& Hit)
 	{
 		BoundingSphere box1;
 		box1.Center = GetWorldPos();
-		box1.Radius = S._11;
+		box1.Radius = S._11 * 2.0f;
 		result = Ray.Intersects(box1, Dis);
 		Hit = Ray.position + Ray.direction * Dis;
 	}
