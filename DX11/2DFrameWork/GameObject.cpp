@@ -10,8 +10,8 @@ GameObject::GameObject()
 	material = nullptr;
 	collider = nullptr;
 
-	mesh = make_shared<Mesh>();
-	material = make_shared<Material>();
+	//mesh = make_shared<Mesh>();
+	//material = make_shared<Material>();
 }
 Actor::Actor()
 {

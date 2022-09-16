@@ -15,6 +15,9 @@ void Main::Init()
 	Grid = Actor::Create();
 	Grid->LoadFile("Grid.xml");
 
+	Shop = Actor::Create();
+	Shop->LoadFile("Sphere.xml");
+
 
 	inv.Init();
 
@@ -31,10 +34,14 @@ void Main::Update()
 {
 	Camera::ControlMainCam();
 	
+	ImGui::Begin("Hierarchy");
+	Shop->RenderHierarchy();
+	ImGui::End();
 
 	Cam->Update();
 	Grid->Update();
 	inv.Update();
+	Shop->Update();
 
 	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
 		INPUT->NDCPosition.y);
@@ -49,10 +56,12 @@ void Main::Render()
 {
 	Cam->Set();
 	
+	Shop->Render();
 	Grid->Render();
 	//깊이 렌더링 끄고 그리는 순서에따라 렌더링
 	
 	inv.Render();
+
 }
 
 void Main::ResizeScreen()

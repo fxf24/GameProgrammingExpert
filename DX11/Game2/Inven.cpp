@@ -77,12 +77,10 @@ void Inven::Init()
 			if (inven[it->first]->num > 1)
 			{
 				Move(Mouse->material, Ui->Find(it->first)->material);
-				inven[it->first]->num--;
 			}
 			else if (inven[it->first]->num == 1)
 			{
 				Swap(Mouse->material, Ui->Find(it->first)->material);
-				inven[it->first]->num--;
 			}
 			else
 			{
@@ -97,16 +95,9 @@ void Inven::Init()
 			Swap(Mouse->material, Ui->Find(it->first)->material);
 			if (OverName != "None")
 			{
-				//  second <- > second
-				
-				if (inven[OverName]->name == " " && inven[OverName]->imgFile == " ")
+				if (inven[OverName]->name == " " || inven[OverName]->name == it->second->name)
 				{
-					inven[OverName]->name = it->second->name;
-					inven[OverName]->imgFile = it->second->imgFile;
-					inven[OverName]->num++;
-				}
-				else if (inven[OverName]->name == it->second->name && inven[OverName]->imgFile == it->second->imgFile)
-				{
+					inven[it->first]->num--;
 					inven[OverName]->name = it->second->name;
 					inven[OverName]->imgFile = it->second->imgFile;
 					inven[OverName]->num++;
@@ -114,7 +105,6 @@ void Inven::Init()
 				else
 				{
 					Swap(it->second, inven[OverName]);
-					inven[OverName]->num++;
 				}
 			}
 
@@ -154,22 +144,22 @@ void Inven::Render()
 
 	for (auto it = inven.begin(); it != inven.end(); it++)
 	{
-		string number = "num" + it->first;
-		float scalex = Ui->Find(number)->scale.x;
-		float scaley = Ui->Find(number)->scale.y;
-		Vector2 pos = Vector2(Ui->Find(number)->GetWorldPos().x + 1.0f, 1.0f - Ui->Find(number)->GetWorldPos().y);
-		pos.x *= App.GetWidth() / 2.0f;
-		pos.y *= App.GetHeight() / 2.0f;
+		if (it->second->num > 0)
+		{
+			string number = "num" + it->first;
+			Vector2 pos = Vector2(Ui->Find(number)->GetWorldPos().x + 1.0f, 1.0f - Ui->Find(number)->GetWorldPos().y);
+			pos.x *= App.GetHalfWidth();
+			pos.y *= App.GetHalfHeight();
 
-		//깊이 렌더링  off
-	//         l  t  r   b
-		RECT rc{ pos.x, pos.y, pos.x + 30, pos.y + 30 };
-		//                    출력할 문자열,텍스트박스 크기위치
-		string prt = to_string(inven[it->first]->num);
-		wstring wt;
-		wt.assign(prt.begin(), prt.end());
-		DWRITE->RenderText(wt, rc, 30, L"Verdana", Color(1, 0, 0, 1),
-			DWRITE_FONT_WEIGHT_BOLD);
+			//깊이 렌더링  off
+		//         l  t  r   b
+			RECT rc{ pos.x, pos.y, pos.x + 30, pos.y + 30 };
+			//                    출력할 문자열,텍스트박스 크기위치
+
+			DWRITE->RenderText(to_wstring(inven[it->first]->num), rc, 30, L"Verdana", Color(1, 0, 0, 1),
+				DWRITE_FONT_WEIGHT_BOLD);
+
+		}
 	}
 	
 }
