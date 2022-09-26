@@ -11,6 +11,8 @@ struct Item
 
 class Inven
 {
+public:
+	bool show = false;
 	//±×·ÁÁÙ°´Ã¼
 	UI* Ui;
 	UI* Store;
@@ -30,6 +32,6 @@ public:
 	void Init();
 	void Update();
 	void Render();
-	void SetVisible() { Ui->visible = true; Store->visible = true; }
+	void SetVisible() { show = true; }
 };
 

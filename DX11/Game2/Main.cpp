@@ -56,10 +56,10 @@ void Main::LateUpdate()
 	{
 		Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
 		Vector3 Hit;
-		if (Util::RayIntersectTriNear(Mouse, Shop, Hit))
+
+		if (Shop->collider->Intersect(Mouse, Hit))
 		{
-			cout << "Shop 선택" << endl;
-			inv.SetVisible();
+			inv.show = not inv.show;
 		}
 	}
 }
@@ -74,13 +74,30 @@ void Main::Render()
 	
 	inv.Render();
 	
-	Matrix temp = Shop->W * Cam->view * Cam->proj;
-	Vector4 pos = Vector4(temp._41, temp._42, temp._43, temp._44);
-	pos.Normalize();
-	pos.x *= App.GetWidth();
-	pos.y *= App.GetHeight();
+	// World
+	Vector4 Top;
+	Top.x = Shop->GetWorldPos().x;
+	Top.y = Shop->GetWorldPos().y;
+	Top.z = Shop->GetWorldPos().z;
+	Top.w = 1.0f;
 
-	RECT rc{ pos.x, pos.y, pos.x + 100, pos.y + 100 };
+	// View
+	Top = Vector4::Transform(Top, Cam->view);
+
+	Top = Vector4::Transform(Top, Cam->proj);
+
+	//NDC
+	Top.x /= Top.w;
+	Top.y /= Top.w;
+
+	Top.x -= 0.05f;
+	Top.y += 0.2f;
+
+	//Screen
+	Top.x = (Top.x + 1.0f) * App.GetHalfWidth();
+	Top.y = (-Top.y + 1.0f) * App.GetHalfHeight();
+
+	RECT rc{ Top.x, Top.y, Top.x + 1000, Top.y + 1000};
 	//                    출력할 문자열,텍스트박스 크기위치
 
 	DWRITE->RenderText(L"상점", rc, 30, L"Verdana", Color(1, 0, 0, 1),

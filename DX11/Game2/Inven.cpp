@@ -44,10 +44,6 @@ void Inven::Init()
 	Store = UI::Create();
 	Store->LoadFile("Store.xml");
 
-
-	Ui->visible = false;
-	Store->visible = false;
-
 	Item* temp = new Item();
 	temp->num = 0;
 	temp->name = " ";
@@ -176,24 +172,27 @@ void Inven::Init()
 
 void Inven::Update()
 {
-	if (not Ui->visible) return;
+	
+
+	ImGui::Begin("Hierarchy");
+	ImGui::Checkbox("show", &show);
+	Ui->RenderHierarchy();
+	Store->RenderHierarchy();
+	Mouse->RenderHierarchy();
+	ImGui::End();
+
+	if (not show) return;
 
 	Ui->Update();
 	Store->Update();
 
 	Mouse->SetWorldPos(INPUT->NDCPosition);
 	Mouse->Update();
-
-	ImGui::Begin("Hierarchy");
-	Ui->RenderHierarchy();
-	Store->RenderHierarchy();
-	Mouse->RenderHierarchy();
-	ImGui::End();
 }
 
 void Inven::Render()
 {
-	if (not Ui->visible) return;
+	if (not show) return;
 
 	DEPTH->Set(false);
 	Ui->Render();
