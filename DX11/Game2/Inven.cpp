@@ -40,19 +40,25 @@ void Inven::Init()
 {
 	OverName = " ";
 	Ui = UI::Create();
-	Ui->LoadFile("Window.xml");
+	Ui->LoadFile("Inven.xml");
+	Store = UI::Create();
+	Store->LoadFile("Store.xml");
+
+
+	Ui->visible = false;
+	Store->visible = false;
 
 	Item* temp = new Item();
-	temp->num = 5;
-	temp->name = "redPotion";
-	temp->imgFile = "2000000.png";
+	temp->num = 0;
+	temp->name = " ";
+	temp->imgFile = " ";
 	inven["00"] = temp;
 
 
 	temp = new Item();
-	temp->num = 5;
-	temp->name = "bluePotion";
-	temp->imgFile = "2000003.png";
+	temp->num = 0;
+	temp->name = " ";
+	temp->imgFile = " ";
 	inven["01"] = temp;
 
 	temp = new Item();
@@ -112,6 +118,53 @@ void Inven::Init()
 		};
 	}
 
+	((UI*)Store->Find("s00"))->mouseDown = [=]()
+	{
+		for (auto it = inven.begin(); it != inven.end(); it++)
+		{
+			if (it->second->num == 0)
+			{
+				it->second->num++;
+				it->second->name = "redpotion";
+				it->second->imgFile = "2000000.png";
+				money -= 100;
+				break;
+			}
+			else if(it->second->name == "redpotion")
+			{
+				it->second->num++;
+				money -= 100;
+				break;
+			}
+		}
+		invenUpdate();
+
+		cout << money << endl;
+	}; 
+	((UI*)Store->Find("s01"))->mouseDown = [=]()
+	{
+		for (auto it = inven.begin(); it != inven.end(); it++)
+		{
+			if (it->second->num == 0)
+			{
+				it->second->num++;
+				it->second->name = "bluepotion";
+				it->second->imgFile = "2000003.png";
+				money -= 100;
+				break;
+			}
+			else if (it->second->name == "bluepotion")
+			{
+				it->second->num++;
+				money -= 100;
+				break;
+			}
+		}
+		invenUpdate();
+
+		cout << money << endl;
+	};
+
 
 	invenUpdate();
 	Mouse = UI::Create("Mouse");
@@ -123,21 +176,28 @@ void Inven::Init()
 
 void Inven::Update()
 {
+	if (not Ui->visible) return;
+
 	Ui->Update();
+	Store->Update();
 
 	Mouse->SetWorldPos(INPUT->NDCPosition);
 	Mouse->Update();
 
 	ImGui::Begin("Hierarchy");
 	Ui->RenderHierarchy();
+	Store->RenderHierarchy();
 	Mouse->RenderHierarchy();
 	ImGui::End();
 }
 
 void Inven::Render()
 {
+	if (not Ui->visible) return;
+
 	DEPTH->Set(false);
 	Ui->Render();
+	Store->Render();
 	Mouse->Render();
 	DEPTH->Set(true);
 
@@ -158,8 +218,16 @@ void Inven::Render()
 
 			DWRITE->RenderText(to_wstring(inven[it->first]->num), rc, 30, L"Verdana", Color(1, 0, 0, 1),
 				DWRITE_FONT_WEIGHT_BOLD);
-
 		}
 	}
 	
+	string number = "num11";
+	Vector2 pos = Vector2(Ui->Find(number)->GetWorldPos().x + 1.0f, 1.0f - Ui->Find(number)->GetWorldPos().y);
+	pos.x *= App.GetHalfWidth();
+	pos.y *= App.GetHalfHeight();
+	RECT rc{ pos.x - 200, pos.y + 30, pos.x + 1000, pos.y + 1000};
+	
+	wstring temp = L"¼ÒÁö±Ý: " + to_wstring(money);
+	DWRITE->RenderText(temp, rc, 30, L"Verdana", Color(1, 0, 0, 1),
+		DWRITE_FONT_WEIGHT_BOLD);
 }

@@ -11,7 +11,6 @@ private:
 	Vector3 PrevMouse;
 	Inven   inv;
 
-
 public:
 	Main();
 	~Main();
