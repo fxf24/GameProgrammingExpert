@@ -30,6 +30,7 @@ WPARAM Window::Run(Scene* main)
 			GUI->Update();
 			main->Update();
 			main->LateUpdate();
+			SOUND->Update();
 			D3D->SetRenderTarget();
 			DWRITE->GetDC()->BeginDraw();
 			D3D->Clear(App.background);
@@ -55,6 +56,7 @@ WPARAM Window::Run(Scene* main)
 	RESOURCE->DeleteSingleton();
 	DEPTH->DeleteSingleton();
 	DWRITE->DeleteSingleton();
+	SOUND->DeleteSingleton();
 	Destroy();
 
 	return msg.wParam;

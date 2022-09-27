@@ -59,6 +59,10 @@ using namespace SimpleMath;
 #include "../Libs/ImGui/ImGuiFileDialog.h"
 #include "../Libs/ImGui/ImGuiFileDialogConfig.h"
 
+//Fmod
+#include "../Libs/Fmod/fmod.hpp"
+#pragma comment(lib, "../Libs/Fmod/fmodL_vc.lib")
+
 //File
 #include "BinaryFile.h"
 #include "Xml.h"
@@ -104,6 +108,7 @@ extern Application App;//Extern Global
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Dwrite.h"
+#include "Sound.h"
 
 #include "GameObject.h"
 //#include "ObRect.h"
@@ -127,3 +132,4 @@ extern Application App;//Extern Global
 #define DWRITE		Dwrite::GetInstance()
 #define SCENE		SceneManager::GetInstance()
 #define DEPTH		DepthState::GetInstance()
+#define SOUND		Sound::GetInstance()

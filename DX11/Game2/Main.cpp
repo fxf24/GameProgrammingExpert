@@ -9,6 +9,11 @@ Main::~Main()
 
 void Main::Init()
 {
+	SOUND->AddSound("bgm.wav", "BGM", true);
+	SOUND->AddSound("gun.wav", "GUN", false);
+
+	SOUND->Play("BGM");
+
 	Cam = Camera::Create();
 	Cam->LoadFile("Cam.xml");
 	Camera::main = Cam;
@@ -32,6 +37,31 @@ void Main::Release()
 
 void Main::Update()
 {
+	if (ImGui::Button("BGM Play"))
+	{
+		SOUND->Play("BGM");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("BGM Stop"))
+	{
+		SOUND->Stop("BGM");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("BGM Pause"))
+	{
+		SOUND->Pause("BGM");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("BGM Resume"))
+	{
+		SOUND->Resume("BGM");
+	}
+	if (ImGui::SliderFloat("BGM SetVolume", &bgmscale, 0.0f, 1.0f))
+	{
+		SOUND->SetVolume("BGM", bgmscale);
+	}
+
+
 	Camera::ControlMainCam();
 	
 	ImGui::Begin("Hierarchy");
@@ -72,20 +102,19 @@ void Main::Render()
 	Grid->Render();
 	//깊이 렌더링 끄고 그리는 순서에따라 렌더링
 	
-	inv.Render();
+
 	
 	// World
 	Vector4 Top;
 	Top.x = Shop->GetWorldPos().x;
-	Top.y = Shop->GetWorldPos().y;
+	Top.y = Shop->GetWorldPos().y + 2.0f;
 	Top.z = Shop->GetWorldPos().z;
 	Top.w = 1.0f;
 
 	// View
 	Top = Vector4::Transform(Top, Cam->view);
-	Top.x -= 1.65f;
-	Top.y += 3.0f;
 
+	float Depth = App.GetWidth() / Top.z;
 	Top = Vector4::Transform(Top, Cam->proj);
 
 	//NDC
@@ -96,12 +125,19 @@ void Main::Render()
 	Top.x = (Top.x + 1.0f) * App.GetHalfWidth();
 	Top.y = (-Top.y + 1.0f) * App.GetHalfHeight();
 
+	Top.x -= Depth * 0.5f * 2.0f;
+	Top.y -= Depth * 0.5f;
+
+
+
 	RECT rc{ Top.x, Top.y, Top.x + 1000, Top.y + 1000};
 	//                    출력할 문자열,텍스트박스 크기위치
 
 	if (Top.z != 0)
-		DWRITE->RenderText(L"상점", rc, 1280/Top.z, L"Verdana", Color(1, 0, 0, 1),
+		DWRITE->RenderText(L"상점", rc, Depth, L"돋움체", Color(1, 0, 0, 1),
 		DWRITE_FONT_WEIGHT_BOLD);
+
+	inv.Render();
 }
 
 void Main::ResizeScreen()

@@ -11,6 +11,8 @@ private:
 	Vector3 PrevMouse;
 	Inven   inv;
 
+	float bgmscale = 1.0f;
+
 public:
 	Main();
 	~Main();
