@@ -83,15 +83,14 @@ void Main::Render()
 
 	// View
 	Top = Vector4::Transform(Top, Cam->view);
+	Top.x -= 1.65f;
+	Top.y += 3.0f;
 
 	Top = Vector4::Transform(Top, Cam->proj);
 
 	//NDC
 	Top.x /= Top.w;
-	Top.y /= Top.w;
-
-	Top.x -= 0.05f;
-	Top.y += 0.2f;
+	Top.y /= Top.w;	
 
 	//Screen
 	Top.x = (Top.x + 1.0f) * App.GetHalfWidth();
@@ -100,7 +99,8 @@ void Main::Render()
 	RECT rc{ Top.x, Top.y, Top.x + 1000, Top.y + 1000};
 	//                    출력할 문자열,텍스트박스 크기위치
 
-	DWRITE->RenderText(L"상점", rc, 30, L"Verdana", Color(1, 0, 0, 1),
+	if (Top.z != 0)
+		DWRITE->RenderText(L"상점", rc, 1280/Top.z, L"Verdana", Color(1, 0, 0, 1),
 		DWRITE_FONT_WEIGHT_BOLD);
 }
 
