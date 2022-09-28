@@ -109,7 +109,7 @@ struct VertexTerrain
         this->position = pos;
         this->uv = uv;
         this->normal = normal;
-        this->weights = weights;
+        this->weights = weight;
     };
     Vector3 position;
     Vector2 uv;

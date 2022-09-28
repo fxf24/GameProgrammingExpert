@@ -20,12 +20,12 @@ void Main::Init()
 	Grid = Actor::Create();
 	Grid->LoadFile("Grid.xml");
 
-	Shop = Actor::Create();
-	Shop->LoadFile("Sphere.xml");
+	_Shop = Actor::Create();
+	_Shop->LoadFile("Sphere.xml");
 
 
 	inv.Init();
-
+	store.Init(&inv);
 	ResizeScreen();
 }
 
@@ -65,7 +65,7 @@ void Main::Update()
 	Camera::ControlMainCam();
 	
 	ImGui::Begin("Hierarchy");
-	Shop->RenderHierarchy();
+	_Shop->RenderHierarchy();
 	Cam->RenderHierarchy();
 	ImGui::End();
 
@@ -73,8 +73,9 @@ void Main::Update()
 	Grid->Update();
 	
 	inv.Update();
+	store.Update();
 
-	Shop->Update();
+	_Shop->Update();
 
 	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
 		INPUT->NDCPosition.y);
@@ -87,9 +88,10 @@ void Main::LateUpdate()
 		Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
 		Vector3 Hit;
 
-		if (Shop->collider->Intersect(Mouse, Hit))
+		if (_Shop->collider->Intersect(Mouse, Hit))
 		{
 			inv.show = not inv.show;
+			store.show = not store.show;
 		}
 	}
 }
@@ -98,7 +100,7 @@ void Main::Render()
 {
 	Cam->Set();
 	
-	Shop->Render();
+	_Shop->Render();
 	Grid->Render();
 	//±íÀÌ ·»´õ¸µ ²ô°í ±×¸®´Â ¼ø¼­¿¡µû¶ó ·»´õ¸µ
 	
@@ -106,9 +108,9 @@ void Main::Render()
 	
 	// World
 	Vector4 Top;
-	Top.x = Shop->GetWorldPos().x;
-	Top.y = Shop->GetWorldPos().y + 2.0f;
-	Top.z = Shop->GetWorldPos().z;
+	Top.x = _Shop->GetWorldPos().x;
+	Top.y = _Shop->GetWorldPos().y + 2.0f;
+	Top.z = _Shop->GetWorldPos().z;
 	Top.w = 1.0f;
 
 	// View
@@ -138,6 +140,7 @@ void Main::Render()
 		DWRITE_FONT_WEIGHT_BOLD);
 
 	inv.Render();
+	store.Render();
 }
 
 void Main::ResizeScreen()

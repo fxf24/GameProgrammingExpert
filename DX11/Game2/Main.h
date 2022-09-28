@@ -5,12 +5,12 @@ private:
 
 	Camera* Cam;
 	Actor* Grid;
-	Actor* Shop;
+	Actor* _Shop;
 
 	//UI* Ui;
 	Vector3 PrevMouse;
 	Inven   inv;
-
+	Shop	store;
 	float bgmscale = 1.0f;
 
 public:

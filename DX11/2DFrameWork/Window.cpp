@@ -28,9 +28,9 @@ WPARAM Window::Run(Scene* main)
 			TIMER->Chronometry(App.fixFrame);
 			INPUT->Update();
 			GUI->Update();
+			SOUND->Update();
 			main->Update();
 			main->LateUpdate();
-			SOUND->Update();
 			D3D->SetRenderTarget();
 			DWRITE->GetDC()->BeginDraw();
 			D3D->Clear(App.background);

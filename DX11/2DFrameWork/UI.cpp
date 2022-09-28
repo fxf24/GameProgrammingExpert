@@ -49,3 +49,19 @@ void UI::Update()
 	
 	
 }
+
+bool UI::MouseOver()
+{
+	float left = GetWorldPos().x - S._11 * 0.5f;
+	float right = GetWorldPos().x + S._11 * 0.5f;
+	float top = GetWorldPos().y + S._22 * 0.5f;
+	float bottom = GetWorldPos().y - S._22 * 0.5f;
+
+	if (left < INPUT->NDCPosition.x and INPUT->NDCPosition.x < right
+		and bottom < INPUT->NDCPosition.y and
+		INPUT->NDCPosition.y < top)
+	{
+		return true;
+	}
+	return false;
+}
