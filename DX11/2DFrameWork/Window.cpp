@@ -29,6 +29,7 @@ WPARAM Window::Run(Scene* main)
 			INPUT->Update();
 			SOUND->Update();
 			GUI->Update();
+			SOUND->Update();
 			main->Update();
 			main->LateUpdate();
 			D3D->SetRenderTarget();

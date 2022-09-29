@@ -8,7 +8,6 @@ struct Item
 	//int		price;
 };
 
-
 class Inven
 {
 public:
@@ -23,15 +22,14 @@ public:
 	string OverName;
 
 	UI* Mouse;
-	int money = 10000;
+	__int64 money = 10000;
 
 private:
-	void invenUpdate();
 
 public:
+	void invenUpdate();
 	void Init();
 	void Update();
 	void Render();
 	void SetVisible() { show = true; }
 };
-

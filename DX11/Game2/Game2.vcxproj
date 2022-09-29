@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="Inven.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Shop.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Inven.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Shop.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -1,18 +1,5 @@
 #include "stdafx.h"
 
-template<typename T>
-void Swap(T& a, T& b)
-{
-	T temp = a;
-	a = b;
-	b = temp;
-}
-
-template<typename T>
-void Move(T& a, T& b)
-{
-	a = b;
-}
 
 void Inven::invenUpdate()
 {
@@ -41,15 +28,14 @@ void Inven::Init()
 	OverName = " ";
 	Ui = UI::Create();
 	Ui->LoadFile("Inven.xml");
-	Store = UI::Create();
-	Store->LoadFile("Store.xml");
+	//Store = UI::Create();
+	//Store->LoadFile("Store.xml");
 
 	Item* temp = new Item();
 	temp->num = 0;
 	temp->name = " ";
 	temp->imgFile = " ";
 	inven["00"] = temp;
-
 
 	temp = new Item();
 	temp->num = 0;
@@ -77,30 +63,30 @@ void Inven::Init()
 		{
 			if (INPUT->KeyDown(VK_RBUTTON))
 			{
-
+				
 			}
 			else
 			{
-				Mouse->visible = true;
-
-
 				if (inven[it->first]->num > 1)
 				{
-					Move(Mouse->material, Ui->Find(it->first)->material);
+					Mouse->material = Ui->Find(it->first)->material;
 				}
 				else if (inven[it->first]->num == 1)
 				{
-					Swap(Mouse->material, Ui->Find(it->first)->material);
+					Util::Swap(Mouse->material, Ui->Find(it->first)->material);
 				}
 				else
 				{
-					Swap(Mouse->material, Ui->Find(it->first)->material);
+					Util::Swap(Mouse->material, Ui->Find(it->first)->material);
 				}
 			}
+			
 		};
 		((UI*)Ui->Find(it->first))->mouseUp = [=]()
 		{
-			if (INPUT->KeyUp(VK_RBUTTON))
+
+			Util::Swap(Mouse->material, Ui->Find(it->first)->material);
+			if (OverName != "None")
 			{
 				if (inven[OverName]->num >= 1)
 				{
@@ -114,76 +100,61 @@ void Inven::Init()
 			{
 				Mouse->visible = false;
 
-				Swap(Mouse->material, Ui->Find(it->first)->material);
 				if (OverName != "None")
 				{
-					if (inven[OverName]->name == " " || inven[OverName]->name == it->second->name)
-					{
-						inven[it->first]->num--;
-						inven[OverName]->name = it->second->name;
-						inven[OverName]->imgFile = it->second->imgFile;
-						inven[OverName]->num++;
-					}
-					else
-					{
-						Swap(it->second, inven[OverName]);
-					}
+					Util::Swap(it->second, inven[OverName]);
 				}
 			}
 			invenUpdate();
 		};
 	}
+	//((UI*)Store->Find("s00"))->mouseDown = [=]()
+	//{
+	//	for (auto it = inven.begin(); it != inven.end(); it++)
+	//	{
+	//		if (it->second->num == 0)
+	//		{
+	//			it->second->num++;
+	//			it->second->name = "redpotion";
+	//			it->second->imgFile = "2000000.png";
+	//			money -= 100;
+	//			break;
+	//		}
+	//		else if(it->second->name == "redpotion")
+	//		{
+	//			it->second->num++;
+	//			money -= 100;
+	//			break;
+	//		}
+	//	}
+	//	invenUpdate();
 
-	((UI*)Store->Find("s00"))->mouseDown = [=]()
-	{
-		SOUND->Stop("GOLD");
-		SOUND->Play("GOLD");
-		for (auto it = inven.begin(); it != inven.end(); it++)
-		{
-			if (it->second->num == 0)
-			{
-				it->second->num++;
-				it->second->name = "redpotion";
-				it->second->imgFile = "2000000.png";
-				money -= 100;
-				break;
-			}
-			else if(it->second->name == "redpotion")
-			{
-				it->second->num++;
-				money -= 100;
-				break;
-			}
-		}
-		invenUpdate();
+	//	cout << money << endl;
+	//}; 
+	//((UI*)Store->Find("s01"))->mouseDown = [=]()
+	//{
+	//	for (auto it = inven.begin(); it != inven.end(); it++)
+	//	{
+	//		if (it->second->num == 0)
+	//		{
+	//			it->second->num++;
+	//			it->second->name = "bluepotion";
+	//			it->second->imgFile = "2000003.png";
+	//			money -= 100;
+	//			break;
+	//		}
+	//		else if (it->second->name == "bluepotion")
+	//		{
+	//			it->second->num++;
+	//			money -= 100;
+	//			break;
+	//		}
+	//	}
+	//	invenUpdate();
 
-		cout << money << endl;
-	}; 
-	((UI*)Store->Find("s01"))->mouseDown = [=]()
-	{
-		SOUND->Stop("GOLD");
-		SOUND->Play("GOLD");
-		for (auto it = inven.begin(); it != inven.end(); it++)
-		{
-			if (it->second->num == 0)
-			{
-				it->second->num++;
-				it->second->name = "bluepotion";
-				it->second->imgFile = "2000003.png";
-				money -= 100;
-				break;
-			}
-			else if (it->second->name == "bluepotion")
-			{
-				it->second->num++;
-				money -= 100;
-				break;
-			}
-		}
-		invenUpdate();
+	//	cout << money << endl;
+	//};
 
-		cout << money << endl;
-	};
 
 
 	invenUpdate();
@@ -201,14 +172,14 @@ void Inven::Update()
 	ImGui::Begin("Hierarchy");
 	ImGui::Checkbox("show", &show);
 	Ui->RenderHierarchy();
-	Store->RenderHierarchy();
+	//Store->RenderHierarchy();
 	Mouse->RenderHierarchy();
 	ImGui::End();
 
 	if (not show) return;
 
 	Ui->Update();
-	Store->Update();
+	//Store->Update();
 
 	Mouse->SetWorldPos(INPUT->NDCPosition);
 	Mouse->Update();
@@ -220,7 +191,7 @@ void Inven::Render()
 
 	DEPTH->Set(false);
 	Ui->Render();
-	Store->Render();
+	//Store->Render();
 	Mouse->Render();
 	DEPTH->Set(true);
 

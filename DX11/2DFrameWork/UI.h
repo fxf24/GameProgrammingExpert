@@ -9,5 +9,7 @@ public:
 	function<void()> mouseDown = nullptr; // 위에서 눌렀을때 한번
 	function<void()> mousePress = nullptr; // 누르고 있을때
 	function<void()> mouseUp = nullptr; //누르고 떼었을때
+
+	bool MouseOver();
 };
 
