@@ -75,47 +75,69 @@ void Inven::Init()
 		((UI*)Ui->Find(it->first))->mouseOver = [it, this]() {this->OverName = it->first; };
 		((UI*)Ui->Find(it->first))->mouseDown = [=]()
 		{
-			Mouse->visible = true;
-			if (inven[it->first]->num > 1)
+			if (INPUT->KeyDown(VK_RBUTTON))
 			{
-				Move(Mouse->material, Ui->Find(it->first)->material);
-			}
-			else if (inven[it->first]->num == 1)
-			{
-				Swap(Mouse->material, Ui->Find(it->first)->material);
+
 			}
 			else
 			{
-				Swap(Mouse->material, Ui->Find(it->first)->material);
+				Mouse->visible = true;
+
+
+				if (inven[it->first]->num > 1)
+				{
+					Move(Mouse->material, Ui->Find(it->first)->material);
+				}
+				else if (inven[it->first]->num == 1)
+				{
+					Swap(Mouse->material, Ui->Find(it->first)->material);
+				}
+				else
+				{
+					Swap(Mouse->material, Ui->Find(it->first)->material);
+				}
 			}
 		};
 		((UI*)Ui->Find(it->first))->mouseUp = [=]()
 		{
-			Mouse->visible = false;
-
-
-			Swap(Mouse->material, Ui->Find(it->first)->material);
-			if (OverName != "None")
+			if (INPUT->KeyUp(VK_RBUTTON))
 			{
-				if (inven[OverName]->name == " " || inven[OverName]->name == it->second->name)
+				if (inven[OverName]->num >= 1)
 				{
-					inven[it->first]->num--;
-					inven[OverName]->name = it->second->name;
-					inven[OverName]->imgFile = it->second->imgFile;
-					inven[OverName]->num++;
-				}
-				else
-				{
-					Swap(it->second, inven[OverName]);
+					SOUND->Stop("GOLD");
+					SOUND->Play("GOLD");
+					inven[OverName]->num--;
+					money += 50;
 				}
 			}
+			else
+			{
+				Mouse->visible = false;
 
+				Swap(Mouse->material, Ui->Find(it->first)->material);
+				if (OverName != "None")
+				{
+					if (inven[OverName]->name == " " || inven[OverName]->name == it->second->name)
+					{
+						inven[it->first]->num--;
+						inven[OverName]->name = it->second->name;
+						inven[OverName]->imgFile = it->second->imgFile;
+						inven[OverName]->num++;
+					}
+					else
+					{
+						Swap(it->second, inven[OverName]);
+					}
+				}
+			}
 			invenUpdate();
 		};
 	}
 
 	((UI*)Store->Find("s00"))->mouseDown = [=]()
 	{
+		SOUND->Stop("GOLD");
+		SOUND->Play("GOLD");
 		for (auto it = inven.begin(); it != inven.end(); it++)
 		{
 			if (it->second->num == 0)
@@ -139,6 +161,8 @@ void Inven::Init()
 	}; 
 	((UI*)Store->Find("s01"))->mouseDown = [=]()
 	{
+		SOUND->Stop("GOLD");
+		SOUND->Play("GOLD");
 		for (auto it = inven.begin(); it != inven.end(); it++)
 		{
 			if (it->second->num == 0)

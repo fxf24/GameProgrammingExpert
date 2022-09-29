@@ -12,6 +12,7 @@ private:
 	Inven   inv;
 
 	float bgmscale = 1.0f;
+	float goldscale = 1.0f;
 
 public:
 	Main();

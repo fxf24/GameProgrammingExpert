@@ -5,6 +5,7 @@
     <ClCompile Include="Snail.cpp" />
     <ClCompile Include="Nevigation.cpp" />
     <ClCompile Include="PathFinder.cpp" />
+    <ClCompile Include="Building.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="마을1.txt" />

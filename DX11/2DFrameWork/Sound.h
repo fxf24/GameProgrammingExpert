@@ -22,6 +22,5 @@ public:
 	void SetVolume(string Key, float scale);
 	void SetMasterVolume();
 	void Update();
-
 };
 

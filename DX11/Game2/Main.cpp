@@ -9,8 +9,8 @@ Main::~Main()
 
 void Main::Init()
 {
-	SOUND->AddSound("bgm.wav", "BGM", true);
-	SOUND->AddSound("gun.wav", "GUN", false);
+	SOUND->AddSound("FloralLife.mp3", "BGM", true);
+	SOUND->AddSound("gold.wav", "GOLD", false);
 
 	SOUND->Play("BGM");
 
@@ -61,6 +61,30 @@ void Main::Update()
 		SOUND->SetVolume("BGM", bgmscale);
 	}
 
+	if (ImGui::Button("GOLD Play"))
+	{
+		SOUND->Stop("GOLD");
+		SOUND->Play("GOLD");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("GOLD Stop"))
+	{
+		SOUND->Stop("GOLD");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("GOLD Pause"))
+	{
+		SOUND->Pause("GOLD");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("GOLD Resume"))
+	{
+		SOUND->Resume("GOLD");
+	}
+	if (ImGui::SliderFloat("GOLD SetVolume", &goldscale, 0.0f, 1.0f))
+	{
+		SOUND->SetVolume("GOLD", goldscale);
+	}
 
 	Camera::ControlMainCam();
 	

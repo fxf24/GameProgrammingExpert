@@ -29,7 +29,11 @@ void UI::Update()
 			Press = true;
 			if (mouseDown) mouseDown();
 		}
-		
+		if (INPUT->KeyDown(VK_RBUTTON))
+		{
+			Press = true;
+			if (mouseDown) mouseDown();
+		}
 	}
 
 	if (Press)
@@ -39,6 +43,17 @@ void UI::Update()
 			if (mousePress) mousePress();
 		}
 		if (INPUT->KeyUp(VK_LBUTTON))
+		{
+			Press = false;
+
+			if (mouseUp) mouseUp();
+		}
+
+		if (INPUT->KeyPress(VK_RBUTTON))
+		{
+			if (mousePress) mousePress();
+		}
+		if (INPUT->KeyUp(VK_RBUTTON))
 		{
 			Press = false;
 
