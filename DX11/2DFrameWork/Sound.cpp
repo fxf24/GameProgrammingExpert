@@ -91,7 +91,7 @@ void Sound::Play(string Key)
         iter->second->channel->isPlaying(&isplay);
         if (!isplay)
         {
-
+       
             system->playSound(
                 iter->second->sound, nullptr,
                 false,
@@ -151,7 +151,7 @@ void Sound::SetMasterVolume()
 {
     for (auto iter = SoundList.begin(); iter != SoundList.end(); iter++)
     {
-        iter->second->channel->setVolume(iter->second->volume
+        iter->second->channel->setVolume(iter->second->volume 
             * App.soundScale);
     }
 }

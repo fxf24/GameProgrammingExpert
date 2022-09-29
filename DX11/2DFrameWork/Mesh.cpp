@@ -6,65 +6,65 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    vertexType = VertexType::PT;
-    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+    //vertexType = VertexType::PS;
+    //primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 
 
-    VertexPT* Vertex;
-    byteWidth = sizeof(VertexPT);
-    vertexCount = 4;
-    indexCount = 4;
-    file = "6.UI.mesh";
+    //VertexPT* Vertex;
+    //byteWidth = sizeof(VertexPT);
+    //vertexCount = 1;
+    //indexCount = 1;
+    //file = "6.UI.mesh";
 
-    Vertex = new VertexPT[vertexCount];
-    indices = new UINT[indexCount];
+    //Vertex = new VertexPT[vertexCount];
+    //indices = new UINT[indexCount];
 
-    Vertex[0].position = Vector3(-0.5f, -0.5f, 0.1f);
-    Vertex[0].uv = Vector2(0.0f, 1.0f);
-    indices[0] = 0;
+    //Vertex[0].position = Vector3(-0.5f, -0.5f, 0.1f);
+    //Vertex[0].uv = Vector2(0.0f, 1.0f);
+    //indices[0] = 0;
 
-    Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
-    Vertex[1].uv = Vector2(0.0f, 0.0f);
-    indices[1] = 1;
+    //Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
+    //Vertex[1].uv = Vector2(0.0f, 0.0f);
+    //indices[1] = 1;
 
-    Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
-    Vertex[2].uv = Vector2(1.0f, 1.0f);
-    indices[2] = 2;
+    //Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
+    //Vertex[2].uv = Vector2(1.0f, 1.0f);
+    //indices[2] = 2;
 
-    Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
-    Vertex[3].uv = Vector2(1.0f, 0.0f);
-    indices[3] = 3;
+    //Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
+    //Vertex[3].uv = Vector2(1.0f, 0.0f);
+    //indices[3] = 3;
 
-    /////////////////////////////////////////////////////
-    vertices = (void*)Vertex;
-    //CreateVertexBuffer
-    {
-        D3D11_BUFFER_DESC desc;
-        desc = { 0 };
-        desc.Usage = D3D11_USAGE_DEFAULT;
-        desc.ByteWidth = byteWidth * vertexCount;
-        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    ///////////////////////////////////////////////////////
+    //vertices = (void*)Vertex;
+    ////CreateVertexBuffer
+    //{
+    //    D3D11_BUFFER_DESC desc;
+    //    desc = { 0 };
+    //    desc.Usage = D3D11_USAGE_DEFAULT;
+    //    desc.ByteWidth = byteWidth * vertexCount;
+    //    desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
-        D3D11_SUBRESOURCE_DATA data = { 0 };
-        data.pSysMem = vertices;
+    //    D3D11_SUBRESOURCE_DATA data = { 0 };
+    //    data.pSysMem = vertices;
 
-        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
-        assert(SUCCEEDED(hr));
-    }
+    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
+    //    assert(SUCCEEDED(hr));
+    //}
 
-    //Create Index Buffer
-    {
-        D3D11_BUFFER_DESC desc;
-        ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-        desc.ByteWidth = sizeof(UINT) * indexCount;
-        desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    ////Create Index Buffer
+    //{
+    //    D3D11_BUFFER_DESC desc;
+    //    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+    //    desc.ByteWidth = sizeof(UINT) * indexCount;
+    //    desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-        D3D11_SUBRESOURCE_DATA data = { 0 };
-        data.pSysMem = indices;
+    //    D3D11_SUBRESOURCE_DATA data = { 0 };
+    //    data.pSysMem = indices;
 
-        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
-        assert(SUCCEEDED(hr));
-    }
+    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
+    //    assert(SUCCEEDED(hr));
+    //}
     //ÀúÀå¿ë
     //SaveFile(file);
 }

@@ -5,15 +5,16 @@ UI* UI::Create(string name)
 	UI* temp = new UI();
 	temp->name = name;
 	temp->type = ObType::UI;
+
+	temp->mesh = RESOURCE->meshes.Load("6.UI.mesh");
+	temp->shader = RESOURCE->shaders.Load("6.Cube.hlsl");
 	return temp;
 }
 
 void UI::Update()
 {
-	Actor::Update();
-
 	float left = GetWorldPos().x - S._11 * 0.5f;
-	float right = GetWorldPos().x +S._11 * 0.5f;
+	float right = GetWorldPos().x + S._11 * 0.5f;
 	float top = GetWorldPos().y + S._22 * 0.5f;
 	float bottom = GetWorldPos().y - S._22 * 0.5f;
 
@@ -29,11 +30,7 @@ void UI::Update()
 			Press = true;
 			if (mouseDown) mouseDown();
 		}
-		if (INPUT->KeyDown(VK_RBUTTON))
-		{
-			Press = true;
-			if (mouseDown) mouseDown();
-		}
+
 	}
 
 	if (Press)
@@ -48,18 +45,11 @@ void UI::Update()
 
 			if (mouseUp) mouseUp();
 		}
-
-		if (INPUT->KeyPress(VK_RBUTTON))
-		{
-			if (mousePress) mousePress();
-		}
-		if (INPUT->KeyUp(VK_RBUTTON))
-		{
-			Press = false;
-
-			if (mouseUp) mouseUp();
-		}
 	}
+
+	Actor::Update();
+
+	
 
 	
 	

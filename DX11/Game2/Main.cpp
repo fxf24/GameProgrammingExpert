@@ -7,12 +7,26 @@ Main::~Main()
 {
 }
 
+//struct A
+//{
+//	string name = "name";
+//	void Print()
+//	{
+//		cout << name << endl;
+//	}
+//};
+//
+//A a;
+
 void Main::Init()
 {
-	SOUND->AddSound("FloralLife.mp3", "BGM", true);
-	SOUND->AddSound("gold.wav", "GOLD", false);
 
-	SOUND->Play("BGM");
+	//SOUND->AddSound("bgm.wav", "BGM", true);
+	//SOUND->AddSound("gun.wav", "GUN", false);
+
+	//SOUND->Play("BGM");
+
+	Billboard* temp = Billboard::Create();
 
 	Cam = Camera::Create();
 	Cam->LoadFile("Cam.xml");
@@ -21,150 +35,119 @@ void Main::Init()
 	Grid->LoadFile("Grid.xml");
 
 	_Shop = Actor::Create();
+
 	_Shop->LoadFile("Sphere.xml");
 
-
 	inv.Init();
-	store.Init(&inv);
-	ResizeScreen();
+	shop.Init(&inv);
+
+
+
+	Cam->width = App.GetWidth();
+	Cam->height = App.GetHeight();
+	Cam->viewport.width = App.GetWidth();
+	Cam->viewport.height = App.GetHeight();
+
+	/*Ui->mouseDown = [&]() {PrevMouse = INPUT->NDCPosition; };
+	Ui->mousePress = bind(&Main::Resize, this);*/
 }
+//void Main::Resize()
+//{
+//	Vector3 mov = INPUT->NDCPosition - PrevMouse;
+//	Ui->MoveWorldPos(mov * 0.5f);
+//	Ui->scale.x += mov.x;
+//
+//	PrevMouse = INPUT->NDCPosition;
+//}
+
+
 
 void Main::Release()
 {
-	
-}
 
+}
 
 void Main::Update()
 {
-	if (ImGui::Button("BGM Play"))
-	{
-		SOUND->Play("BGM");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("BGM Stop"))
-	{
-		SOUND->Stop("BGM");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("BGM Pause"))
-	{
-		SOUND->Pause("BGM");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("BGM Resume"))
-	{
-		SOUND->Resume("BGM");
-	}
-	if (ImGui::SliderFloat("BGM SetVolume", &bgmscale, 0.0f, 1.0f))
-	{
-		SOUND->SetVolume("BGM", bgmscale);
-	}
-
-	if (ImGui::Button("GOLD Play"))
-	{
-		SOUND->Stop("GOLD");
-		SOUND->Play("GOLD");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("GOLD Stop"))
-	{
-		SOUND->Stop("GOLD");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("GOLD Pause"))
-	{
-		SOUND->Pause("GOLD");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("GOLD Resume"))
-	{
-		SOUND->Resume("GOLD");
-	}
-	if (ImGui::SliderFloat("GOLD SetVolume", &goldscale, 0.0f, 1.0f))
-	{
-		SOUND->SetVolume("GOLD", goldscale);
-	}
-
+	
 	Camera::ControlMainCam();
 	
-	ImGui::Begin("Hierarchy");
+	//ImGui::Begin("Hierarchy");
+	////Ui->RenderHierarchy();
+	//ImGui::End();
+
 	_Shop->RenderHierarchy();
 	Cam->RenderHierarchy();
-	ImGui::End();
 
 	Cam->Update();
 	Grid->Update();
-	
-	inv.Update();
-	store.Update();
-
 	_Shop->Update();
+	inv.Update();
+	shop.Update();
 
 	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
 		INPUT->NDCPosition.y);
+
 }
 
 void Main::LateUpdate()
 {
+	Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
-		Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
 		Vector3 Hit;
-
 		if (_Shop->collider->Intersect(Mouse, Hit))
 		{
 			inv.show = not inv.show;
-			store.show = not store.show;
 		}
 	}
 }
-
 void Main::Render()
 {
 	Cam->Set();
-	
-	_Shop->Render();
 	Grid->Render();
-	//깊이 렌더링 끄고 그리는 순서에따라 렌더링
-	
-
-	
 	// World
 	Vector4 Top;
 	Top.x = _Shop->GetWorldPos().x;
-	Top.y = _Shop->GetWorldPos().y + 2.0f;
+	Top.y = _Shop->GetWorldPos().y + 3.5f;
 	Top.z = _Shop->GetWorldPos().z;
 	Top.w = 1.0f;
-
 	// View
 	Top = Vector4::Transform(Top, Cam->view);
 
-	float Depth = App.GetWidth() / Top.z;
+	float Depth = 1280.0f / Top.z;
+
+	//Top.x = Top.x - 10;
+	//Top.y = Top.y + 10;
+
 	Top = Vector4::Transform(Top, Cam->proj);
 
 	//NDC
 	Top.x /= Top.w;
-	Top.y /= Top.w;	
+	Top.y /= Top.w;
+
+	//Top.x -= 0.1f;
+	//Top.y += 0.1f;
 
 	//Screen
-	Top.x = (Top.x + 1.0f) * App.GetHalfWidth();
-	Top.y = (-Top.y + 1.0f) * App.GetHalfHeight();
+	Top.x = (Top.x + 1.0f )* App.GetHalfWidth();
+	//       
+	Top.y = (-Top.y + 1.0f )* App.GetHalfHeight();
+	Top.x -= Depth * 0.66f * 2.0f;
+	Top.y -= Depth * 0.66f;
 
-	Top.x -= Depth * 0.5f * 2.0f;
-	Top.y -= Depth * 0.5f;
-
-
-
-	RECT rc{ Top.x, Top.y, Top.x + 1000, Top.y + 1000};
+	//깊이 렌더링  off
+	//         l  t  r   b
+	RECT rc{ Top.x,Top.y,Top.x + 10000,Top.y + 10000 };
 	//                    출력할 문자열,텍스트박스 크기위치
-
-	if (Top.z != 0)
-		DWRITE->RenderText(L"상점", rc, Depth, L"돋움체", Color(1, 0, 0, 1),
-		DWRITE_FONT_WEIGHT_BOLD);
+	DWRITE->RenderText(L"SHOP", rc, Depth,L"Verdana",Color(1,0,0,1));
+	_Shop->Render();
 
 	inv.Render();
-	store.Render();
+	shop.Render();
+
+
 }
 
 void Main::ResizeScreen()

@@ -55,6 +55,7 @@ namespace Util
 		return in;
 	}
 
+
 	template<typename T>
 	void Swap(T& a, T& b)
 	{
@@ -62,4 +63,5 @@ namespace Util
 		a = b;
 		b = temp;
 	}
+
 }

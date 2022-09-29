@@ -51,15 +51,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", 
 		Contents\GameObject\Character.xml = Contents\GameObject\Character.xml
 		Contents\GameObject\Character2.xml = Contents\GameObject\Character2.xml
 		Contents\GameObject\Grid.xml = Contents\GameObject\Grid.xml
-		Contents\GameObject\Inven.xml = Contents\GameObject\Inven.xml
 		Contents\GameObject\Map.xml = Contents\GameObject\Map.xml
 		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
 		Contents\GameObject\Model.xml = Contents\GameObject\Model.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
-		Contents\GameObject\Store.xml = Contents\GameObject\Store.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
 		Contents\GameObject\Terrain.xml = Contents\GameObject\Terrain.xml
 		Contents\GameObject\Window.xml = Contents\GameObject\Window.xml
+		Contents\GameObject\Window2.xml = Contents\GameObject\Window2.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498BC6D-79F3-44EF-806D-3CB449E9F69E}"

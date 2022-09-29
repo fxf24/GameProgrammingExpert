@@ -6,6 +6,26 @@ cbuffer VS_VP : register(b1)
 {
     matrix ViewProj;
 }
+
+cbuffer GS_VP : register(b0)
+{
+    matrix GSViewProj;
+}
+cbuffer GS_View : register(b1)
+{
+    float4 GSViewPos;
+}
+cbuffer GS_View : register(b2)
+{
+    float4 GSViewUp;
+}
+cbuffer GS_View : register(b3)
+{
+    float4 GSViewForward;
+}
+
+
+
 //½ºÄÌ·¹Åæ
 #define MAX_BONE 256
 cbuffer VS_Bones : register(b2)

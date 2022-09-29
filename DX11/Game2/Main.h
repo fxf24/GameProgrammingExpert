@@ -10,9 +10,9 @@ private:
 	//UI* Ui;
 	Vector3 PrevMouse;
 	Inven   inv;
-	Shop	store;
-	float bgmscale = 1.0f;
-	float goldscale = 1.0f;
+	Shop	shop;
+	float	bgmscale = 1.0f;
+	float	Gunscale = 1.0f;
 
 public:
 	Main();

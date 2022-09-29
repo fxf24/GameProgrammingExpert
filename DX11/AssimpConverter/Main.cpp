@@ -559,7 +559,7 @@ void Main::ReadMesh(GameObject* dest, aiNode* src)
 			dest->AddChild(temp);
 			temp->mesh = make_shared<Mesh>(VertexArray, VertexList.size(),
 				IndexArray, indexList.size(), VertexType::MODEL);
-			temp->shader = RESOURCE->shaders.Load("4.Model.hlsl");
+			temp->shader = RESOURCE->shaders.Load("4.Cube.hlsl");
 			temp->material = RESOURCE->materials.Load(mtlFile);
 
 			{

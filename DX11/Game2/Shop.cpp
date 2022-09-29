@@ -16,8 +16,6 @@ void Shop::invenUpdate()
 		{
 			SafeReset(Ui->Find(it->first)->material->diffuseMap);
 			Ui->Find(it->first)->material->diffuse.w = 0.0f;
-			inven[it->first]->name = " ";
-			inven[it->first]->imgFile = " ";
 		}
 	}
 }
@@ -25,67 +23,52 @@ void Shop::invenUpdate()
 void Shop::Init(Inven* pInven)
 {
 	Ui = UI::Create();
-	Ui->LoadFile("Store.xml");
-
+	Ui->LoadFile("Window2.xml");
 
 	Item* temp = new Item();
-	temp->num = 10;
-	temp->name = "redpotion";
+	temp->num = 3;
+	temp->name = "redPotion";
 	temp->imgFile = "2000000.png";
-	inven["s00"] = temp;
+	inven["00"] = temp;
 
 
 	temp = new Item();
-	temp->num = 10;
-	temp->name = "bluepotion";
+	temp->num = 1;
+	temp->name = "bluePotion";
 	temp->imgFile = "2000003.png";
-	inven["s01"] = temp;
+	inven["01"] = temp;
 
-
-
-	//Ui->mouseOver = [this]() {OverName = "None"; };
-	
 
 	this->pInven = pInven;
+
+
 	invenUpdate();
 }
 
 void Shop::Update()
 {
-	ImGui::Begin("Hierarchy");
-	ImGui::Checkbox("show", &show);
-	Ui->RenderHierarchy();
-	ImGui::End();
-
 	if (not show) return;
+
 	for (auto it = inven.begin(); it != inven.end(); it++)
 	{
-		UI* temp = (UI*)Ui->Find(it->first);
-		if (temp->MouseOver() and INPUT->KeyDown(VK_RBUTTON))
+		UI* temp =(UI *) Ui->Find(it->first);
+		if ((temp)->MouseOver() and INPUT->KeyDown(VK_RBUTTON))
 		{
+			//cout << it->first << endl;
 			for (auto it2 = pInven->inven.begin(); it2 != pInven->inven.end(); it2++)
 			{
-				if (it2->second->num == 0)
+				if (it->second->name == it2->second->name)
 				{
 					it2->second->num++;
-					it2->second->name = it->second->name;
-					it2->second->imgFile = it->second->imgFile;
-					pInven->money -= 100;
-					pInven->invenUpdate();
-					break;
-				}
-				else if (it->second->name == it2->second->name)
-				{
-					it2->second->num++;
-					pInven->money -= 100;
-					pInven->invenUpdate();
+					pInven->Gold -= 100;
 					break;
 				}
 			}
 		}
+		
+
 	}
-
-
+	
 	Ui->Update();
 }
 

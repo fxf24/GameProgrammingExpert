@@ -89,6 +89,9 @@
     <ClInclude Include="Sound.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

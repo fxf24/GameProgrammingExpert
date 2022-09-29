@@ -231,3 +231,23 @@ bool Actor::DeleteObject(string Name)
 	obList.erase(temp);
 	return true;
 }
+
+void Actor::Update()
+{
+	if (anim)
+	{
+		anim->Update();
+	}
+
+	GameObject::Update();
+}
+
+void Actor::Render()
+{
+	if (skeleton)
+	{
+		//if (anim)anim->Update();
+		skeleton->Set();
+	}
+	GameObject::Render();
+}

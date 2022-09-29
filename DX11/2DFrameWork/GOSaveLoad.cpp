@@ -288,6 +288,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 			AddChild(temp);
 			temp->LoadObject(ob);
 		}
+		else if (Type == ObType::Billboard)
+		{
+			Billboard* temp = Billboard::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
 	}
 }
 void Transform::SaveTransform(Xml::XMLElement* This, Xml::XMLDocument* doc)

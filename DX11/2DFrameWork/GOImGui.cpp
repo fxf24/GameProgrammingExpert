@@ -66,6 +66,11 @@ bool GameObject::RenderHierarchy()
 			{
 				AddChild(UI::Create(childName));
 			}
+			ImGui::SameLine();
+			if (ImGui::Button("Billboard"))
+			{
+				AddChild(Billboard::Create(childName));
+			}
 			ImGui::EndPopup();
 		}
 
@@ -360,26 +365,6 @@ void Actor::RenderDetail()
 
 		ImGui::EndTabBar();
 	}
-}
-
-void Actor::Update()
-{
-	if (anim)
-	{
-		anim->Update();
-	}
-
-	GameObject::Update();
-}
-
-void Actor::Render()
-{
-	if (skeleton)
-	{
-		//if (anim)anim->Update();
-		skeleton->Set();
-	}
-	GameObject::Render();
 }
 
 

@@ -5,31 +5,31 @@ struct Item
 	string	name;
 	string	imgFile;
 	int		num;
+	//GameObject* temp;
 	//int		price;
 };
+
 
 class Inven
 {
 public:
-	bool show = false;
+	bool show = true;
 	//그려줄객체
 	UI* Ui;
-	UI* Store;
 	//수량 가격
 	map<string,Item*> inven;
+	//map<string,Item*> shop;
 
-	//stirng DownName;
-	string OverName;
-
-	UI* Mouse;
-	__int64 money = 10000;
+	string	OverName;
+	UI*		Mouse;
+	__int64 Gold = 10000;
 
 private:
+	void invenUpdate();
 
 public:
-	void invenUpdate();
 	void Init();
 	void Update();
 	void Render();
-	void SetVisible() { show = true; }
 };
+

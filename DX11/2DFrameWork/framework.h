@@ -59,6 +59,7 @@ using namespace SimpleMath;
 #include "../Libs/ImGui/ImGuiFileDialog.h"
 #include "../Libs/ImGui/ImGuiFileDialogConfig.h"
 
+
 //Fmod
 #include "../Libs/Fmod/fmod.hpp"
 #pragma comment(lib, "../Libs/Fmod/fmodL_vc.lib")
@@ -116,6 +117,7 @@ extern Application App;//Extern Global
 #include "Dijkstra.h"
 #include "Terrain.h"
 #include "UI.h"
+#include "Billboard.h"
 #include "DepthState.h"
 
 #include "Util.h"

@@ -27,7 +27,6 @@ WPARAM Window::Run(Scene* main)
 		{
 			TIMER->Chronometry(App.fixFrame);
 			INPUT->Update();
-			SOUND->Update();
 			GUI->Update();
 			SOUND->Update();
 			main->Update();
@@ -36,6 +35,7 @@ WPARAM Window::Run(Scene* main)
 			DWRITE->GetDC()->BeginDraw();
 			D3D->Clear(App.background);
 			{
+				
 				main->Render();
 				GUI->Render();
 			}

@@ -2,7 +2,7 @@
 
 Shader::Shader():
  vertexLayout(nullptr), vertexShader(nullptr)
-, pixelShader(nullptr)//,geometryShader(nullptr)
+, pixelShader(nullptr),geometryShader(nullptr)
 {
     
 }
@@ -12,7 +12,7 @@ Shader::~Shader()
     SafeRelease(vertexLayout);
     SafeRelease(vertexShader);
     SafeRelease(pixelShader);
-    //SafeRelease(geometryShader);
+    SafeRelease(geometryShader);
 }
 
 void Shader::LoadFile(string file)
@@ -126,6 +126,8 @@ void Shader::LoadFile(string file)
             VsBlob->GetBufferSize(),
             &vertexLayout
         );
+
+        LoadGeometry();
         break;
     case VertexType::PSV:
 
@@ -150,30 +152,31 @@ void Shader::LoadFile(string file)
     SafeRelease(PsBlob);
 }
 
-//void Shader::LoadGeometryFile(string file)
-//{
-//    SafeRelease(geometryShader);
-//
-//    ID3D10Blob* GsBlob;
-//
-//    wstring path = L"../Shaders/" + Util::ToWString(file);
-//
-//    DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
-//
-//
-//    D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
-//        "GS", "gs_5_0", flags, 0, &GsBlob, nullptr);
-//
-//    D3D->GetDevice()->CreateGeometryShader(GsBlob->GetBufferPointer(), GsBlob->GetBufferSize(),
-//        nullptr, &geometryShader);
-//
-//    SafeRelease(GsBlob);
-//}
+
+void Shader::LoadGeometry()
+{
+    SafeRelease(geometryShader);
+
+    ID3D10Blob* GsBlob;
+
+    wstring path = L"../Shaders/" + Util::ToWString(file);
+
+    DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+
+
+    D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+        "GS", "gs_5_0", flags, 0, &GsBlob, nullptr);
+
+    D3D->GetDevice()->CreateGeometryShader(GsBlob->GetBufferPointer(), GsBlob->GetBufferSize(),
+        nullptr, &geometryShader);
+
+    SafeRelease(GsBlob);
+}
 
 void Shader::Set()
 {
     D3D->GetDC()->VSSetShader(vertexShader, 0, 0);
     D3D->GetDC()->PSSetShader(pixelShader, 0, 0);
-    //D3D->GetDC()->GSSetShader(geometryShader, 0, 0);
+    D3D->GetDC()->GSSetShader(geometryShader, 0, 0);
     D3D->GetDC()->IASetInputLayout(vertexLayout);
 }
