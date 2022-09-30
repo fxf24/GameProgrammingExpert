@@ -11,11 +11,11 @@
         <Scale X="3" Y="3" Z="3"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Transform>
-    <Children Size="1"/>
+    <Children Size="2"/>
     <Child0 Name="None" Visible="true" ObType="5">
         <Mesh File="7.Billboard.mesh"/>
         <Shader File="7.Cube.hlsl"/>
-        <Material File="x.mtl"/>
+        <Material File="green.mtl"/>
         <Transform>
             <Position X="0" Y="2.1666667" Z="0"/>
             <Scale X="1" Y="1" Z="1"/>
@@ -23,4 +23,15 @@
         </Transform>
         <Children Size="0"/>
     </Child0>
+    <Child1 Name="None2" Visible="true" ObType="5">
+        <Mesh File="7.Billboard.mesh"/>
+        <Shader File="7.Cube.hlsl"/>
+        <Material File="red.mtl"/>
+        <Transform>
+            <Position X="0" Y="2.1666667" Z="0"/>
+            <Scale X="1" Y="1" Z="1"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Transform>
+        <Children Size="0"/>
+    </Child1>
 </Root>

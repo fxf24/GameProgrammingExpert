@@ -40,19 +40,21 @@ void GS(point VertexInput input[1], inout TriangleStream<PixelInput> output)
     float3 right = normalize(cross(up, forward));
     
     float2 halfSize = input[0].Size * 0.5f;
+    float2 hhSize = input[0].Size * 0.2f;
+    
     
     float4 vertices[4];
     //input[0].Position.xyz (기준좌표,중점)
     
     //왼쪽 아래
    // vertices[0] = float4(input[0].Position.xyz - halfSize.x * right - halfSize.y * up, 1.0f);
-    vertices[0] = float4(input[0].Position.xyz - halfSize.x * right - halfSize.y * up, 1.0f);
+    vertices[0] = float4(input[0].Position.xyz - 1.5f * right - hhSize.y * up, 1.0f);
     // 왼 위
-    vertices[1] = float4(input[0].Position.xyz - halfSize.x * right + halfSize.y * up, 1.0f);
+    vertices[1] = float4(input[0].Position.xyz - 1.5f * right + hhSize.y * up, 1.0f);
     // 오 아래
-    vertices[2] = float4(input[0].Position.xyz + halfSize.x * right - halfSize.y * up, 1.0f);
+    vertices[2] = float4(input[0].Position.xyz + halfSize.x * right - hhSize.y * up, 1.0f);
     // 오 위
-    vertices[3] = float4(input[0].Position.xyz + halfSize.x * right + halfSize.y * up, 1.0f);
+    vertices[3] = float4(input[0].Position.xyz + halfSize.x * right + hhSize.y * up, 1.0f);
     
     PixelInput pixelInput;
     

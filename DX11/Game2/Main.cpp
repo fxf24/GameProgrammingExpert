@@ -7,17 +7,6 @@ Main::~Main()
 {
 }
 
-//struct A
-//{
-//	string name = "name";
-//	void Print()
-//	{
-//		cout << name << endl;
-//	}
-//};
-//
-//A a;
-
 void Main::Init()
 {
 
@@ -26,7 +15,8 @@ void Main::Init()
 
 	//SOUND->Play("BGM");
 
-	Billboard* temp = Billboard::Create();
+	//Billboard* temp = Billboard::Create();
+	//Billboard* temp2 = Billboard::Create();
 
 	Cam = Camera::Create();
 	Cam->LoadFile("Cam.xml");
@@ -47,20 +37,7 @@ void Main::Init()
 	Cam->height = App.GetHeight();
 	Cam->viewport.width = App.GetWidth();
 	Cam->viewport.height = App.GetHeight();
-
-	/*Ui->mouseDown = [&]() {PrevMouse = INPUT->NDCPosition; };
-	Ui->mousePress = bind(&Main::Resize, this);*/
 }
-//void Main::Resize()
-//{
-//	Vector3 mov = INPUT->NDCPosition - PrevMouse;
-//	Ui->MoveWorldPos(mov * 0.5f);
-//	Ui->scale.x += mov.x;
-//
-//	PrevMouse = INPUT->NDCPosition;
-//}
-
-
 
 void Main::Release()
 {
@@ -78,6 +55,8 @@ void Main::Update()
 
 	_Shop->RenderHierarchy();
 	Cam->RenderHierarchy();
+	ImGui::SliderFloat("hp bar", &_Shop->Find("None")->scale.x, -1.0f, 1.0f);
+
 
 	Cam->Update();
 	Grid->Update();
@@ -118,17 +97,12 @@ void Main::Render()
 
 	float Depth = 1280.0f / Top.z;
 
-	//Top.x = Top.x - 10;
-	//Top.y = Top.y + 10;
-
 	Top = Vector4::Transform(Top, Cam->proj);
 
 	//NDC
 	Top.x /= Top.w;
 	Top.y /= Top.w;
 
-	//Top.x -= 0.1f;
-	//Top.y += 0.1f;
 
 	//Screen
 	Top.x = (Top.x + 1.0f )* App.GetHalfWidth();
