@@ -47,6 +47,11 @@ void Shop::Init(Inven* pInven)
 
 void Shop::Update()
 {
+	ImGui::Begin("Hierarchy");
+	ImGui::Checkbox("showShop", &show);
+	Ui->RenderHierarchy();
+	ImGui::End();
+
 	if (not show) return;
 
 	for (auto it = inven.begin(); it != inven.end(); it++)

@@ -4,6 +4,7 @@ struct VertexInput
 {
     float4 Position : POSITION0;
     float2 Size : SIZE0;
+    float2 Pivot : PIVOT0;
 };
 struct PixelInput
 {

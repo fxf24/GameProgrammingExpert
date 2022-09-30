@@ -11,6 +11,7 @@ enum class VertexType
     PT,
     PS,
     PSV,
+    PSP,
 };
 
 struct VertexP
@@ -163,5 +164,22 @@ struct VertexPSV
     Vector3 position;
     Vector2 size;
     Vector3 velocity;
+    static D3D11_INPUT_ELEMENT_DESC LayoutDesc[];
+};
+
+struct VertexPSP
+{
+    VertexPSP()
+    {
+    };
+    VertexPSP(Vector3 pos, Vector2 size, Vector2 pivot)
+    {
+        this->position = pos;
+        this->size = size;
+        this->pivot = pivot;
+    };
+    Vector3 position;
+    Vector2 size;
+    Vector2 pivot;
     static D3D11_INPUT_ELEMENT_DESC LayoutDesc[];
 };

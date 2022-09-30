@@ -14,9 +14,10 @@ void Main::Init()
 	//SOUND->AddSound("gun.wav", "GUN", false);
 
 	//SOUND->Play("BGM");
+	//GameObject* temp = GameObject::Create();
+	Map = Actor::Create();
+	Map->LoadFile("Map.xml");
 
-	//Billboard* temp = Billboard::Create();
-	//Billboard* temp2 = Billboard::Create();
 
 	Cam = Camera::Create();
 	Cam->LoadFile("Cam.xml");
@@ -61,6 +62,7 @@ void Main::Update()
 	Cam->Update();
 	Grid->Update();
 	_Shop->Update();
+	Map->Update();
 	inv.Update();
 	shop.Update();
 
@@ -86,6 +88,7 @@ void Main::Render()
 {
 	Cam->Set();
 	Grid->Render();
+	Map->Render();
 	// World
 	Vector4 Top;
 	Top.x = _Shop->GetWorldPos().x;

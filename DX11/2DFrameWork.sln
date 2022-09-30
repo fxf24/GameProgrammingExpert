@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{5606A415-2
 		Contents\Mesh\2.Cube.mesh = Contents\Mesh\2.Cube.mesh
 		Contents\Mesh\2.Map.mesh = Contents\Mesh\2.Map.mesh
 		Contents\Mesh\2.Sphere.mesh = Contents\Mesh\2.Sphere.mesh
+		Contents\Mesh\9.Bar.mesh = Contents\Mesh\9.Bar.mesh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
@@ -73,6 +74,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498
 		Shaders\5.TerrainEditor.hlsl = Shaders\5.TerrainEditor.hlsl
 		Shaders\6.Cube.hlsl = Shaders\6.Cube.hlsl
 		Shaders\7.Cube.hlsl = Shaders\7.Cube.hlsl
+		Shaders\9.Cube.hlsl = Shaders\9.Cube.hlsl
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 		Shaders\ComputeShader.hlsl = Shaders\ComputeShader.hlsl
 		Contents\GameObject\Window.xml = Contents\GameObject\Window.xml

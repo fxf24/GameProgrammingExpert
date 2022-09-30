@@ -6,6 +6,7 @@ private:
 	Camera* Cam;
 	Actor* Grid;
 	Actor* _Shop;
+	Actor* Map;
 
 	//UI* Ui;
 	Vector3 PrevMouse;
