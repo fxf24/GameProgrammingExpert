@@ -12,6 +12,7 @@ WPARAM Window::Run(Scene* main)
 	Material::CreateStaticMember();
 	Skeleton::CreateStaticMember();
 	Terrain::CreateStaticMember();
+	BLEND->Set(false);
 	MSG msg = { 0 };
 	while (true)
 	{

@@ -17,11 +17,13 @@ void Billboard::Update()
 
 void Billboard::Render()
 {
+	BLEND->Set(true);
 	//DEPTH->Set(false);
 	VertexPSP* vertex = (VertexPSP*)mesh->vertices;
 	vertex[0].size = Vector2(S._11, S._22);
 	vertex[0].pivot = Vector2(parent->S._11, parent->S._22);
 	mesh->UpdateMesh();
 	Actor::Render();
+	BLEND->Set(false);
 	//DEPTH->Set(true);
 }

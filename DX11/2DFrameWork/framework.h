@@ -119,6 +119,7 @@ extern Application App;//Extern Global
 #include "UI.h"
 #include "Billboard.h"
 #include "DepthState.h"
+#include "BlendState.h"
 
 #include "Util.h"
 
@@ -134,4 +135,5 @@ extern Application App;//Extern Global
 #define DWRITE		Dwrite::GetInstance()
 #define SCENE		SceneManager::GetInstance()
 #define DEPTH		DepthState::GetInstance()
+#define BLEND		BlendState::GetInstance()
 #define SOUND		Sound::GetInstance()

@@ -92,6 +92,9 @@
     <ClInclude Include="Billboard.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Billboard.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendState.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -161,6 +161,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="BinaryFile.h" />
+    <ClInclude Include="BlendState.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DepthState.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="BinaryFile.cpp" />
+    <ClCompile Include="BlendState.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DepthState.cpp" />
