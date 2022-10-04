@@ -6,36 +6,37 @@ Mesh::Mesh()
 
 
     ////////////////////////////////////////////////////
-    //vertexType = VertexType::PS;
+    //vertexType = VertexType::PSP;
     //primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 
 
-    //VertexPT* Vertex;
-    //byteWidth = sizeof(VertexPT);
+    //VertexPSP* Vertex;
+    //byteWidth = sizeof(VertexPSP);
     //vertexCount = 1;
     //indexCount = 1;
-    //file = "6.UI.mesh";
+    //file = "9.Bar.mesh";
 
-    //Vertex = new VertexPT[vertexCount];
+    //Vertex = new VertexPSP[vertexCount];
     //indices = new UINT[indexCount];
 
-    //Vertex[0].position = Vector3(-0.5f, -0.5f, 0.1f);
-    //Vertex[0].uv = Vector2(0.0f, 1.0f);
+    //Vertex[0].position = Vector3(0.0f, 0.0f, 0.0f);
+    //Vertex[0].size = Vector2(1.0f, 1.0f);
+    //Vertex[0].pivot = Vector2(1.0f, 1.0f);
     //indices[0] = 0;
 
-    //Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
-    //Vertex[1].uv = Vector2(0.0f, 0.0f);
-    //indices[1] = 1;
+    ////Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
+    ////Vertex[1].uv = Vector2(0.0f, 0.0f);
+    ////indices[1] = 1;
 
-    //Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
-    //Vertex[2].uv = Vector2(1.0f, 1.0f);
-    //indices[2] = 2;
+    ////Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
+    ////Vertex[2].uv = Vector2(1.0f, 1.0f);
+    ////indices[2] = 2;
 
-    //Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
-    //Vertex[3].uv = Vector2(1.0f, 0.0f);
-    //indices[3] = 3;
+    ////Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
+    ////Vertex[3].uv = Vector2(1.0f, 0.0f);
+    ////indices[3] = 3;
 
-    ///////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
     //vertices = (void*)Vertex;
     ////CreateVertexBuffer
     //{
@@ -65,7 +66,7 @@ Mesh::Mesh()
     //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
     //    assert(SUCCEEDED(hr));
     //}
-    //저장용
+    ////저장용
     //SaveFile(file);
 }
 
@@ -103,6 +104,9 @@ Mesh::Mesh(void* vertices, UINT vertexCount, UINT* indices, UINT indexCount, Ver
         break;
     case VertexType::PSV:
         byteWidth = sizeof(VertexPSV);
+        break;
+    case VertexType::PSP:
+        byteWidth = sizeof(VertexPSP);
         break;
     }
     ////////////////////////////////////////////////////
@@ -175,6 +179,10 @@ Mesh::~Mesh()
     case VertexType::PSV:
         delete[](VertexPSV*)vertices;
         break;
+
+    case VertexType::PSP:
+        delete[](VertexPSP*)vertices;
+        break;
     }
     SafeRelease(vertexBuffer);
     SafeRelease(indexBuffer);
@@ -234,6 +242,9 @@ void Mesh::LoadFile(string file)
         break;
     case VertexType::PSV:
         if (vertices)delete[](VertexPSV*)vertices;
+        break;
+    case VertexType::PSP:
+        if (vertices)delete[](VertexPSP*)vertices;
         break;
     }
 
@@ -354,6 +365,18 @@ void Mesh::LoadFile(string file)
             vertex[i].position = in.vector3();
             vertex[i].size = in.vector2();
             vertex[i].velocity = in.vector3();
+        }
+        break;
+    }
+    case VertexType::PSP:
+    {
+        vertices = new VertexPSP[vertexCount];
+        VertexPSP* vertex = (VertexPSP*)vertices;
+        for (UINT i = 0; i < vertexCount; i++)
+        {
+            vertex[i].position = in.vector3();
+            vertex[i].size = in.vector2();
+            vertex[i].pivot = in.vector2();
         }
         break;
     }
@@ -511,6 +534,17 @@ void Mesh::SaveFile(string file)
         }
         break;
     }
+    case VertexType::PSP:
+    {
+        VertexPSP* vertex = (VertexPSP*)vertices;
+        for (UINT i = 0; i < vertexCount; i++)
+        {
+            out.vector3(vertex[i].position);
+            out.vector2(vertex[i].size);
+            out.vector2(vertex[i].pivot);
+        }
+        break;
+    }
     }
     for (UINT i = 0; i < indexCount; i++)
     {
@@ -561,7 +595,11 @@ const Vector3& Mesh::GetVertexPosition(UINT idx)
         VertexPSV* Vertices = (VertexPSV*)vertices;
         return Vertices[indices[idx]].position;
     }
-
+    else if (vertexType == VertexType::PSP)
+    {
+        VertexPSP* Vertices = (VertexPSP*)vertices;
+        return Vertices[indices[idx]].position;
+    }
     VertexP* Vertices = (VertexP*)vertices;
     return Vertices[indices[idx]].position;
 }
@@ -608,7 +646,11 @@ Vector3& Mesh::SetVertexPosition(UINT idx)
         VertexPSV* Vertices = (VertexPSV*)vertices;
         return Vertices[indices[idx]].position;
     }
-
+    else if (vertexType == VertexType::PSP)
+    {
+        VertexPSP* Vertices = (VertexPSP*)vertices;
+        return Vertices[indices[idx]].position;
+    }
     VertexP* Vertices = (VertexP*)vertices;
     return Vertices[indices[idx]].position;
 }

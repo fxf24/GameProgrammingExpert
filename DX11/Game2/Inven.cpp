@@ -101,7 +101,7 @@ void Inven::Update()
 	
 
 	ImGui::Begin("Hierarchy");
-	ImGui::Checkbox("show", &show);
+	ImGui::Checkbox("showInven", &show);
 	Ui->RenderHierarchy();
 	Mouse->RenderHierarchy();
 	ImGui::End();

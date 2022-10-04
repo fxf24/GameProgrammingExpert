@@ -13,7 +13,7 @@ struct Item
 class Inven
 {
 public:
-	bool show = true;
+	bool show = false;
 	//그려줄객체
 	UI* Ui;
 	//수량 가격

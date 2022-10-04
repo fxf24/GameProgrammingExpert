@@ -140,6 +140,20 @@ void Shader::LoadFile(string file)
             &vertexLayout
         );
         break;
+
+    case VertexType::PSP:
+
+        D3D->GetDevice()->CreateInputLayout
+        (
+            VertexPSP::LayoutDesc,
+            3,
+            VsBlob->GetBufferPointer(),
+            VsBlob->GetBufferSize(),
+            &vertexLayout
+        );
+
+        LoadGeometry();
+        break;
     }
 
     D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
