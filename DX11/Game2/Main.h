@@ -7,6 +7,7 @@ private:
 	Actor* Grid;
 	Actor* _Shop;
 	Actor* Map;
+	Sky* sky;
 
 	//UI* Ui;
 	Vector3 PrevMouse;

@@ -120,6 +120,8 @@ extern Application App;//Extern Global
 #include "Billboard.h"
 #include "DepthState.h"
 #include "BlendState.h"
+#include "RasterState.h"
+#include "Sky.h"
 
 #include "Util.h"
 
@@ -136,4 +138,5 @@ extern Application App;//Extern Global
 #define SCENE		SceneManager::GetInstance()
 #define DEPTH		DepthState::GetInstance()
 #define BLEND		BlendState::GetInstance()
+#define RASTER		RasterState::GetInstance()
 #define SOUND		Sound::GetInstance()

@@ -61,6 +61,9 @@ SamplerState SamplerS : register(s2);
 Texture2D TextureE : register(t3);
 SamplerState SamplerE : register(s3);
 
+TextureCube TextureSky : register(t4);
+SamplerState SamplerSky : register(s4);
+
 matrix SkinWorld(float4 indices, float4 weights)
 {
     matrix transform = 0; //¿µÇà·Ä

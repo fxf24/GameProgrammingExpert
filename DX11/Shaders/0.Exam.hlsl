@@ -7,12 +7,14 @@ struct VertexInput
 struct PixelInput
 {
     float4 Position : SV_POSITION;
+    float3 Uv : UV0;
 };
 
 PixelInput VS(VertexInput input)
 {
    
     PixelInput output;
+    output.Uv = normalize(input.Position.xyz);
     //  o           =  i X W
     output.Position = mul(input.Position, World);
     output.Position = mul(output.Position, ViewProj);
@@ -21,10 +23,8 @@ PixelInput VS(VertexInput input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
-    //if (input.Position.x <400)
-    //{
-    //    return float4(1, 0, 0, 1);
-    //}
+    float4 BaseColor = float4(1, 1, 1, 1);
+    BaseColor = TextureSky.Sample(SamplerSky, input.Uv);
 
-    return float4(0, 0, 0, 1);
+    return BaseColor;
 }

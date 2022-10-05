@@ -14,7 +14,8 @@ void Main::Init()
 	//SOUND->AddSound("gun.wav", "GUN", false);
 
 	//SOUND->Play("BGM");
-	//GameObject* temp = GameObject::Create();
+	sky = Sky::Create();
+	sky->LoadFile("Sky.xml");
 	Map = Actor::Create();
 	Map->LoadFile("Map.xml");
 
@@ -56,6 +57,7 @@ void Main::Update()
 
 	_Shop->RenderHierarchy();
 	Cam->RenderHierarchy();
+	sky->RenderHierarchy();
 	ImGui::SliderFloat("hp bar", &_Shop->Find("None")->scale.x, -1.0f, 1.0f);
 
 
@@ -65,6 +67,7 @@ void Main::Update()
 	Map->Update();
 	inv.Update();
 	shop.Update();
+	sky->Update();
 
 	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
 		INPUT->NDCPosition.y);
@@ -89,6 +92,8 @@ void Main::Render()
 	Cam->Set();
 	Grid->Render();
 	Map->Render();
+	sky->Render();
+
 	// World
 	Vector4 Top;
 	Top.x = _Shop->GetWorldPos().x;
@@ -118,7 +123,8 @@ void Main::Render()
 	//         l  t  r   b
 	RECT rc{ Top.x,Top.y,Top.x + 10000,Top.y + 10000 };
 	//                    출력할 문자열,텍스트박스 크기위치
-	DWRITE->RenderText(L"SHOP", rc, Depth,L"Verdana",Color(1,0,0,1));
+	if (Depth > 1)
+		DWRITE->RenderText(L"SHOP", rc, Depth,L"Verdana",Color(1,0,0,1));
 	_Shop->Render();
 
 	inv.Render();

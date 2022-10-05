@@ -175,10 +175,12 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RasterState.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Texture.h" />
@@ -209,11 +211,13 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RasterState.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="GOSaveLoad.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Texture.cpp" />

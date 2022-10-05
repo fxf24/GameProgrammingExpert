@@ -181,7 +181,7 @@ bool Collider::Intersect(Ray Ray, Vector3& Hit)
 		result =Ray.Intersects(box1, Dis);
 		Hit = Ray.position + Ray.direction * Dis;
 	}
-	if (type == ColliderType::OBOX)
+	else if (type == ColliderType::OBOX)
 	{
 		BoundingBox box1;
 		box1.Center = Vector3(0,0,0);
@@ -190,7 +190,6 @@ bool Collider::Intersect(Ray Ray, Vector3& Hit)
 		Ray.position = Vector3::Transform(Ray.position, inverse);
 		Ray.direction = Vector3::TransformNormal(Ray.direction, inverse);
 		Ray.direction.Normalize();
-
 
 		result = Ray.Intersects(box1, Dis);
 		Hit = Ray.position + Ray.direction * Dis;
