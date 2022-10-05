@@ -58,6 +58,13 @@ void Main::Update()
 	_Shop->RenderHierarchy();
 	Cam->RenderHierarchy();
 	sky->RenderHierarchy();
+	if (ImGui::Button("Change Sky"))
+	{
+		if (sky->texCube->file == "Sky.dds")
+			sky->texCube->LoadFile("Sky2.dds");
+		else
+			sky->texCube->LoadFile("Sky.dds");
+	}
 	ImGui::SliderFloat("hp bar", &_Shop->Find("None")->scale.x, -1.0f, 1.0f);
 
 
