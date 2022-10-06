@@ -1,4 +1,5 @@
 #include "stdafx.h"
+using namespace Util;
 
 void Inven::invenUpdate()
 {
@@ -63,7 +64,7 @@ void Inven::Init()
 		((UI*)Ui->Find(it->first))->mouseUp = [=]()
 		{
 			Mouse->visible = false;
-			Util::Swap(Mouse->material, Ui->Find(it->first)->material);
+			Swap(Mouse->material, Ui->Find(it->first)->material);
 
 			if(OverName != "None")
 			{
@@ -80,7 +81,7 @@ void Inven::Init()
 				}
 				else
 				{
-					Util::Swap(it->second, inven[OverName]);
+					Swap(it->second, inven[OverName]);
 				}
 			}
 			invenUpdate();
@@ -101,7 +102,7 @@ void Inven::Update()
 	
 
 	ImGui::Begin("Hierarchy");
-	ImGui::Checkbox("showInven", &show);
+	ImGui::Checkbox("show", &show);
 	Ui->RenderHierarchy();
 	Mouse->RenderHierarchy();
 	ImGui::End();
@@ -156,9 +157,10 @@ void Inven::Render()
 			L"µ¸¿òÃ¼", Color(1, 0, 0), DWRITE_FONT_WEIGHT_BOLD);
 	}
 
-
+	BLEND->Set(true);
 	DEPTH->Set(false);
 	Ui->Render();
 	Mouse->Render();
 	DEPTH->Set(true);
+	BLEND->Set(false);
 }

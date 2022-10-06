@@ -35,11 +35,6 @@ float4 PS(PixelInput input) : SV_TARGET
     if (Kd.w == 1.0f)
         BaseColor = TextureD.Sample(SamplerD, input.Uv);
     
-    //알파테스트
-    //if (!any(BaseColor.a))
-    //{
-    //    discard;
-    //}
     
     //BaseColor.rgb = Kd.rgb;
     float3 DirectionLight = DirLighting(normalize(input.Normal.xyz), input.wPostion);

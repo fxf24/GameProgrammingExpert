@@ -1,6 +1,6 @@
 <Root Name="Root" Visible="true" ObType="1">
-    <Mesh File="1.Sphere.mesh"/>
-    <Shader File="1.Cube.hlsl"/>
+    <Mesh File="2.Sphere.mesh"/>
+    <Shader File="2.Cube.hlsl"/>
     <Collider ColliderType="0" Visible="true">
         <Position X="0" Y="0" Z="0"/>
         <Scale X="1.05" Y="1.05" Z="1.05"/>
@@ -11,38 +11,5 @@
         <Scale X="3" Y="3" Z="3"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Transform>
-    <Children Size="3"/>
-    <Child0 Name="Cube" Visible="true" ObType="5">
-        <Mesh File="9.Bar.mesh"/>
-        <Shader File="9.Cube.hlsl"/>
-        <Material File="Cube.mtl"/>
-        <Transform>
-            <Position X="0" Y="3.3333335" Z="0"/>
-            <Scale X="1" Y="4" Z="1"/>
-            <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-    </Child0>
-    <Child1 Name="None" Visible="true" ObType="5">
-        <Mesh File="9.Bar.mesh"/>
-        <Shader File="9.Cube.hlsl"/>
-        <Material File="green.mtl"/>
-        <Transform>
-            <Position X="0" Y="2.1666667" Z="0"/>
-            <Scale X="1" Y="1" Z="1"/>
-            <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-    </Child1>
-    <Child2 Name="None2" Visible="true" ObType="5">
-        <Mesh File="9.Bar.mesh"/>
-        <Shader File="9.Cube.hlsl"/>
-        <Material File="red.mtl"/>
-        <Transform>
-            <Position X="0" Y="2.1666667" Z="0"/>
-            <Scale X="1" Y="1" Z="1"/>
-            <Rotation X="0" Y="0" Z="0"/>
-        </Transform>
-        <Children Size="0"/>
-    </Child2>
+    <Children Size="0"/>
 </Root>

@@ -43,7 +43,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{5606A415-2
 		Contents\Mesh\2.Cube.mesh = Contents\Mesh\2.Cube.mesh
 		Contents\Mesh\2.Map.mesh = Contents\Mesh\2.Map.mesh
 		Contents\Mesh\2.Sphere.mesh = Contents\Mesh\2.Sphere.mesh
-		Contents\Mesh\9.Bar.mesh = Contents\Mesh\9.Bar.mesh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
@@ -90,7 +89,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerrainEditor", "TerrainEdi
 		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Texture", "Texture", "{0CF3A0E5-F066-4C76-A039-BB84D3FC0761}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Texture", "Texture", "{EF86CA58-00FB-452E-B1F6-3660A2C02861}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\Texture\2000000.png = Contents\Texture\2000000.png
 		Contents\Texture\2000001.png = Contents\Texture\2000001.png
@@ -98,36 +97,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Texture", "Texture", "{0CF3
 		Contents\Texture\2000003.png = Contents\Texture\2000003.png
 		Contents\Texture\AIRFIELD256X256.jpg = Contents\Texture\AIRFIELD256X256.jpg
 		Contents\Texture\AVE256.jpg = Contents\Texture\AVE256.jpg
-		Contents\Texture\Cube.png = Contents\Texture\Cube.png
 		Contents\Texture\grass.jpg = Contents\Texture\grass.jpg
-		Contents\Texture\green.png = Contents\Texture\green.png
 		Contents\Texture\max.png = Contents\Texture\max.png
 		Contents\Texture\min.png = Contents\Texture\min.png
-		Contents\Texture\red.png = Contents\Texture\red.png
+		Contents\Texture\pop.png = Contents\Texture\pop.png
 		Contents\Texture\seafloor.dds = Contents\Texture\seafloor.dds
+		Contents\Texture\sky.dds = Contents\Texture\sky.dds
 		Contents\Texture\terrain.jpg = Contents\Texture\terrain.jpg
 		Contents\Texture\water.png = Contents\Texture\water.png
 		Contents\Texture\window.png = Contents\Texture\window.png
 		Contents\Texture\x.png = Contents\Texture\x.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "box", "box", "{0E8A70B1-3ADF-43DA-8E92-034EFF9F9B27}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "box", "box", "{9B735063-3B8A-4D0D-91D1-3988CB645409}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\Texture\box\box.jpg = Contents\Texture\box\box.jpg
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Map", "Map", "{B958F57E-AA86-400E-94DE-F0BB31D7F53A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Map", "Map", "{7657184A-5999-4C1B-881F-10406160BB53}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\Texture\Map\NMP_Ripples2_512.dds = Contents\Texture\Map\NMP_Ripples2_512.dds
 		Contents\Texture\Map\seafloor.dds = Contents\Texture\Map\seafloor.dds
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "map_surface", "map_surface", "{CDE851B1-A539-4C70-8FB3-FC57BBA3C6D7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "map_surface", "map_surface", "{999BD7A4-1DA0-4C77-9A45-FBDFD1B93A0C}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\Texture\map_surface\seafloor.dds = Contents\Texture\map_surface\seafloor.dds
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vampire A Lusth", "Vampire A Lusth", "{77BF6EFD-38E0-4206-B703-936B6DD3406D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vampire A Lusth", "Vampire A Lusth", "{9EEE311C-6DF8-4970-A910-A0BD3F63E1C4}"
 	ProjectSection(SolutionItems) = preProject
 		Contents\Texture\Vampire A Lusth\Vampire_diffuse.png = Contents\Texture\Vampire A Lusth\Vampire_diffuse.png
 		Contents\Texture\Vampire A Lusth\Vampire_diffuse_transparent.png = Contents\Texture\Vampire A Lusth\Vampire_diffuse_transparent.png
@@ -189,10 +187,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0E8A70B1-3ADF-43DA-8E92-034EFF9F9B27} = {0CF3A0E5-F066-4C76-A039-BB84D3FC0761}
-		{B958F57E-AA86-400E-94DE-F0BB31D7F53A} = {0CF3A0E5-F066-4C76-A039-BB84D3FC0761}
-		{CDE851B1-A539-4C70-8FB3-FC57BBA3C6D7} = {0CF3A0E5-F066-4C76-A039-BB84D3FC0761}
-		{77BF6EFD-38E0-4206-B703-936B6DD3406D} = {0CF3A0E5-F066-4C76-A039-BB84D3FC0761}
+		{9B735063-3B8A-4D0D-91D1-3988CB645409} = {EF86CA58-00FB-452E-B1F6-3660A2C02861}
+		{7657184A-5999-4C1B-881F-10406160BB53} = {EF86CA58-00FB-452E-B1F6-3660A2C02861}
+		{999BD7A4-1DA0-4C77-9A45-FBDFD1B93A0C} = {EF86CA58-00FB-452E-B1F6-3660A2C02861}
+		{9EEE311C-6DF8-4970-A910-A0BD3F63E1C4} = {EF86CA58-00FB-452E-B1F6-3660A2C02861}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E65A645-0ED0-45FC-8214-114C1DE27774}

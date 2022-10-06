@@ -15,6 +15,7 @@ PixelInput VS(VertexInput input)
    
     PixelInput output;
     output.Uv = normalize(input.Position.xyz);
+    
     //  o           =  i X W
     output.Position = mul(input.Position, World);
     output.Position = mul(output.Position, ViewProj);
@@ -24,7 +25,19 @@ PixelInput VS(VertexInput input)
 float4 PS(PixelInput input) : SV_TARGET
 {
     float4 BaseColor = float4(1, 1, 1, 1);
-    BaseColor = TextureSky.Sample(SamplerSky, input.Uv);
-
+    
+     //광원이 바라보는 방향
+    float3 Light = normalize(DirLight);
+    //물체에서 나오는 방향(구)
+    float3 Nor = normalize(input.Uv.xyz);
+    
+    float d = saturate(dot(-Light, Nor));
+    
+    d = pow(d, 20.0f);
+    //return float4(d, d, d, 1);
+    
+    
+    BaseColor = TextureSky.Sample(SamplerD, input.Uv);
+    BaseColor.rgb = BaseColor.rgb + d;
     return BaseColor;
 }

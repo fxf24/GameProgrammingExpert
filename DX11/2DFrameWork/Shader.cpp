@@ -139,6 +139,7 @@ void Shader::LoadFile(string file)
             VsBlob->GetBufferSize(),
             &vertexLayout
         );
+        LoadGeometry();
         break;
 
     case VertexType::PSP:
@@ -151,7 +152,6 @@ void Shader::LoadFile(string file)
             VsBlob->GetBufferSize(),
             &vertexLayout
         );
-
         LoadGeometry();
         break;
     }

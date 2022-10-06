@@ -3,7 +3,7 @@ class Shop
 {
 
 public:
-	bool show = false;
+	bool show = true;
 	//그려줄객체
 	UI* Ui;
 	map<string, Item*> inven;

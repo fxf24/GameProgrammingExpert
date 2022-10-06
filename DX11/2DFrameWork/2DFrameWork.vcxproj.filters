@@ -101,6 +101,9 @@
     <ClInclude Include="RasterState.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="RasterState.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

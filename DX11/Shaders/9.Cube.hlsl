@@ -42,22 +42,19 @@ void GS(point VertexInput input[1], inout TriangleStream<PixelInput> output)
     float3 right = normalize(cross(up, forward));
     
     float2 halfSize = input[0].Size * 0.5f;
-    float2 halfPivot = input[0].Pivot * 0.5f;
-    float2 hhSize = input[0].Size * 0.2f;
-    
     
     float4 vertices[4];
     //input[0].Position.xyz (기준좌표,중점)
     
     //왼쪽 아래
    // vertices[0] = float4(input[0].Position.xyz - halfSize.x * right - halfSize.y * up, 1.0f);
-    vertices[0] = float4(input[0].Position.xyz + right * (0.0f-input[0].Pivot.x) - hhSize.y * up, 1.0f);
+    vertices[0] = float4(input[0].Position.xyz + right * (0.0f - input[0].Pivot.x) - up * halfSize.y, 1.0f);
     // 왼 위
-    vertices[1] = float4(input[0].Position.xyz + right * (0.0f-input[0].Pivot.x) + hhSize.y * up, 1.0f);
+    vertices[1] = float4(input[0].Position.xyz + right * (0.0f - input[0].Pivot.x) + up * halfSize.y, 1.0f);
     // 오 아래
-    vertices[2] = float4(input[0].Position.xyz + input[0].Size.x * right - hhSize.y * up, 1.0f);
+    vertices[2] = float4(vertices[0].xyz + right * (input[0].Size.x * 2.0f), 1.0f);
     // 오 위
-    vertices[3] = float4(input[0].Position.xyz + input[0].Size.x * right + hhSize.y * up, 1.0f);
+    vertices[3] = float4(vertices[1].xyz + right * (input[0].Size.x * 2.0f), 1.0f);
     
     PixelInput pixelInput;
     
@@ -70,7 +67,6 @@ void GS(point VertexInput input[1], inout TriangleStream<PixelInput> output)
         
         output.Append(pixelInput);
     }
-    
 }
 
 float4 PS(PixelInput input) : SV_TARGET
@@ -82,11 +78,7 @@ float4 PS(PixelInput input) : SV_TARGET
     {
         BaseColor = TextureD.Sample(SamplerD, input.Uv);
     }
-    
-    //if (!any(BaseColor.a))
-    //{
-    //    discard;
-    //}
+       
     
     return BaseColor;
 }

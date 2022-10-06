@@ -191,6 +191,7 @@ bool Collider::Intersect(Ray Ray, Vector3& Hit)
 		Ray.direction = Vector3::TransformNormal(Ray.direction, inverse);
 		Ray.direction.Normalize();
 
+
 		result = Ray.Intersects(box1, Dis);
 		Hit = Ray.position + Ray.direction * Dis;
 		Hit = Vector3::Transform(Hit, RT);

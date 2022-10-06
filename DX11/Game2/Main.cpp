@@ -10,14 +10,7 @@ Main::~Main()
 void Main::Init()
 {
 
-	//SOUND->AddSound("bgm.wav", "BGM", true);
-	//SOUND->AddSound("gun.wav", "GUN", false);
-
-	//SOUND->Play("BGM");
 	sky = Sky::Create();
-	sky->LoadFile("Sky.xml");
-	Map = Actor::Create();
-	Map->LoadFile("Map.xml");
 
 
 	Cam = Camera::Create();
@@ -33,13 +26,27 @@ void Main::Init()
 	inv.Init();
 	shop.Init(&inv);
 
-
+	Map = Actor::Create();
+	Map->LoadFile("Map.xml");
 
 	Cam->width = App.GetWidth();
 	Cam->height = App.GetHeight();
 	Cam->viewport.width = App.GetWidth();
 	Cam->viewport.height = App.GetHeight();
+
+	/*Ui->mouseDown = [&]() {PrevMouse = INPUT->NDCPosition; };
+	Ui->mousePress = bind(&Main::Resize, this);*/
 }
+//void Main::Resize()
+//{
+//	Vector3 mov = INPUT->NDCPosition - PrevMouse;
+//	Ui->MoveWorldPos(mov * 0.5f);
+//	Ui->scale.x += mov.x;
+//
+//	PrevMouse = INPUT->NDCPosition;
+//}
+
+
 
 void Main::Release()
 {
@@ -48,33 +55,23 @@ void Main::Release()
 
 void Main::Update()
 {
-	
+	ImGui::SliderFloat3("dirLight", (float*)(&LIGHT->dirLight.direction),-1,1);
 	Camera::ControlMainCam();
 	
 	//ImGui::Begin("Hierarchy");
 	////Ui->RenderHierarchy();
 	//ImGui::End();
-
+	sky->RenderHierarchy();
 	_Shop->RenderHierarchy();
 	Cam->RenderHierarchy();
-	sky->RenderHierarchy();
-	if (ImGui::Button("Change Sky"))
-	{
-		if (sky->texCube->file == "Sky.dds")
-			sky->texCube->LoadFile("Sky2.dds");
-		else
-			sky->texCube->LoadFile("Sky.dds");
-	}
-	ImGui::SliderFloat("hp bar", &_Shop->Find("None")->scale.x, -1.0f, 1.0f);
-
 
 	Cam->Update();
 	Grid->Update();
 	_Shop->Update();
 	Map->Update();
+	sky->Update();
 	inv.Update();
 	shop.Update();
-	sky->Update();
 
 	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
 		INPUT->NDCPosition.y);
@@ -96,48 +93,16 @@ void Main::LateUpdate()
 }
 void Main::Render()
 {
+	LIGHT->Set();
 	Cam->Set();
-	Grid->Render();
-	Map->Render();
 	sky->Render();
 
-	// World
-	Vector4 Top;
-	Top.x = _Shop->GetWorldPos().x;
-	Top.y = _Shop->GetWorldPos().y + 3.5f;
-	Top.z = _Shop->GetWorldPos().z;
-	Top.w = 1.0f;
-	// View
-	Top = Vector4::Transform(Top, Cam->view);
-
-	float Depth = 1280.0f / Top.z;
-
-	Top = Vector4::Transform(Top, Cam->proj);
-
-	//NDC
-	Top.x /= Top.w;
-	Top.y /= Top.w;
-
-
-	//Screen
-	Top.x = (Top.x + 1.0f )* App.GetHalfWidth();
-	//       
-	Top.y = (-Top.y + 1.0f )* App.GetHalfHeight();
-	Top.x -= Depth * 0.66f * 2.0f;
-	Top.y -= Depth * 0.66f;
-
-	//깊이 렌더링  off
-	//         l  t  r   b
-	RECT rc{ Top.x,Top.y,Top.x + 10000,Top.y + 10000 };
-	//                    출력할 문자열,텍스트박스 크기위치
-	if (Depth > 1)
-		DWRITE->RenderText(L"SHOP", rc, Depth,L"Verdana",Color(1,0,0,1));
+	Grid->Render();
+	Map->Render();
 	_Shop->Render();
 
 	inv.Render();
 	shop.Render();
-
-
 }
 
 void Main::ResizeScreen()

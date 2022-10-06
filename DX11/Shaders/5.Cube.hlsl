@@ -35,6 +35,9 @@ float4 PS(PixelInput input) : SV_TARGET
 {
     
     float4 BaseColor = TextureD.Sample(SamplerD, input.Uv);
+   
+    
+    
     float4 BaseColor2 = TextureN.Sample(SamplerN, input.Uv);
     BaseColor = BaseColor * input.Weights 
     + BaseColor2 * (1 - input.Weights);
@@ -44,6 +47,8 @@ float4 PS(PixelInput input) : SV_TARGET
     
     //                        ( r*0.6 ,g*0.3, b*0.1)
     BaseColor.rgb = saturate(BaseColor.rgb * DirectionLight);
+    
+   
     
     return BaseColor;
 }

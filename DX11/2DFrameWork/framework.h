@@ -116,12 +116,13 @@ extern Application App;//Extern Global
 #include "Camera.h"
 #include "Dijkstra.h"
 #include "Terrain.h"
+#include "Light.h"
 #include "UI.h"
+#include "Sky.h"
 #include "Billboard.h"
 #include "DepthState.h"
 #include "BlendState.h"
 #include "RasterState.h"
-#include "Sky.h"
 
 #include "Util.h"
 
@@ -140,3 +141,4 @@ extern Application App;//Extern Global
 #define BLEND		BlendState::GetInstance()
 #define RASTER		RasterState::GetInstance()
 #define SOUND		Sound::GetInstance()
+#define LIGHT		LightManager::GetInstance()

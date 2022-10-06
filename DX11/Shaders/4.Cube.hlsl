@@ -53,6 +53,7 @@ float4 PS(PixelInput input) : SV_TARGET
     else
     BaseColor = float4(1, 1, 1, 1);
     
+    
     float3 DirectionLight = DirLighting(normalize(input.Normal.xyz), input.wPosition);
     
     //                        ( r*0.6 ,g*0.3, b*0.1)

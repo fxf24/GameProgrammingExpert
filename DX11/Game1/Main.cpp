@@ -14,16 +14,16 @@ Main::~Main()
 
 void Main::Init()
 {
-    LoadingScene* temp = new LoadingScene();
-    SCENE->AddScene("LOADING", temp);
+    //LoadingScene* temp = new LoadingScene();
+    //SCENE->AddScene("LOADING", temp);
     SCENE->AddScene("SC1", new Scene1());
     SCENE->AddScene("SC2", new Scene2());
     //SCENE->AddScene("LOADING", new Scene1());
-    SCENE->ChangeScene("LOADING");
-    temp->LoadingTarget("SC1", 4, 
+    SCENE->ChangeScene("SC1")->Init();
+    /*temp->LoadingTarget("SC1", 4, 
         []()
         { SCENE->GetScene("SC1")->Init(); }
-        );
+        );*/
 
 }
 

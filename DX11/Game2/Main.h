@@ -4,10 +4,11 @@ class Main : public Scene
 private:
 
 	Camera* Cam;
+
+	Sky* sky;
 	Actor* Grid;
 	Actor* _Shop;
 	Actor* Map;
-	Sky* sky;
 
 	//UI* Ui;
 	Vector3 PrevMouse;

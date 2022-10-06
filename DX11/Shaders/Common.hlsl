@@ -49,6 +49,14 @@ cbuffer PS_Material : register(b1)
     float2 MaterialPadding;
 }
 
+cbuffer PS_DirLight : register(b2)
+{
+    float4 DirLight;
+    float4 DirColor;
+}
+
+//Texture3D a;
+
 Texture2D TextureN : register(t0);
 SamplerState SamplerN : register(s0);
 
@@ -78,7 +86,7 @@ matrix SkinWorld(float4 indices, float4 weights)
 
 float3 DirLighting(float3 Normal, float3 wPostion)
 {
-    float3 DirectionLight = normalize(float3(1, -1, 0));
+    float3 DirectionLight = normalize(DirLight.xyz);
     float Diffuse = saturate(dot(-DirectionLight, Normal));
     
     float3 RecflectLight = reflect(DirectionLight, Normal);

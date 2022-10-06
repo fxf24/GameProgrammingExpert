@@ -3,139 +3,136 @@ Mesh::Mesh()
     :vertices(nullptr), indices(nullptr)
     , vertexBuffer(nullptr), indexBuffer(nullptr)
 {
-    //VertexP* Vertex;
-
-    //vector<VertexP> v;
-    //v.push_back(VertexP(Vector3(0, 1, 0)));
-
-    //int stackCount = 36;
-    //int sliceCount = 72;
-    //float phiStep = XM_PI / stackCount;
-    //float thetaStep = 2.0f * XM_PI / sliceCount;
-
-    //for (UINT i = 1; i <= stackCount - 1; i++)
-    //{
-    //    float phi = i * phiStep;
-
-    //    for (UINT j = 0; j <= sliceCount; j++)
-    //    {
-    //        float theta = j * thetaStep;
-
-    //        Vector3 p = Vector3
-    //        (
-    //            (sinf(phi) * cosf(theta)),
-    //            (cosf(phi)),
-    //            (sinf(phi) * sinf(theta))
-    //        );
-    //        v.push_back(VertexP(p));
-    //    }
-
-    //}
-    //v.push_back(VertexP(Vector3(0, -1, 0)));
-
-    //Vertex = new VertexP[v.size()];
-    //vertexCount = v.size();
-    //copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexP*>(Vertex, vertexCount));
-
-    //vector<UINT> vecindices;
-
-    //for (UINT i = 1; i <= sliceCount; i++)
-    //{
-    //    vecindices.push_back(0);
-    //    vecindices.push_back(i + 1);
-    //    vecindices.push_back(i);
-    //}
-
-    //UINT baseIndex = 1;
-    //UINT ringVertexCount = sliceCount + 1;
-    //for (UINT i = 0; i < stackCount - 2; i++)
-    //{
-    //    for (UINT j = 0; j < sliceCount; j++)
-    //    {
-    //        vecindices.push_back(baseIndex + i * ringVertexCount + j);
-    //        vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
-    //        vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
-
-    //        vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
-    //        vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
-    //        vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j + 1);
-    //    }
-    //}
-
-    //UINT southPoleIndex = v.size() - 1;
-    //baseIndex = southPoleIndex - ringVertexCount;
-
-    //for (UINT i = 0; i < sliceCount; i++)
-    //{
-    //    vecindices.push_back(southPoleIndex);
-    //    vecindices.push_back(baseIndex + i);
-    //    vecindices.push_back(baseIndex + i + 1);
-    //}
-
-    //this->indices = new UINT[vecindices.size()];
-    //indexCount = vecindices.size();
-    //copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(this->indices, indexCount));
-    //////////////////////////////////////////////////////
-    //vertexType = VertexType::P;
-    //primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 
+    ////////////////////////////////////////////////////
+    /*vertexType = VertexType::P;
+    primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+
+    VertexP* Vertex;
+    byteWidth = sizeof(VertexP);
+    file = "0.Sphere.mesh";*/
+    //vertexCount = 1;
+    //indexCount = 1;
     //
-    //byteWidth = sizeof(VertexP);
-    ////vertexCount = 1;
-    ////indexCount = 1;
-    //file = "0.Sphere.mesh";
 
-    ///*Vertex = new VertexP[vertexCount];
+    //Vertex = new VertexPSP[vertexCount];
     //indices = new UINT[indexCount];
 
-    //Vertex[0].position = Vector3(0.0f, 0.0f, 0.0f);
-    //indices[0] = 0;*/
+    //Vertex[0].position = Vector3(-0.5f, -0.5f, 0.1f);
+    //Vertex[0].size = Vector2(0.0f, 1.0f);
+    //Vertex[0].pivot = Vector2(0.0f, 1.0f);
+    //indices[0] = 0;
 
-    ////Vertex[1].position = Vector3(-0.5f, 0.5f, 0.1f);
-    ////Vertex[1].uv = Vector2(0.0f, 0.0f);
-    ////indices[1] = 1;
 
-    ////Vertex[2].position = Vector3(0.5f, -0.5f, 0.1f);
-    ////Vertex[2].uv = Vector2(1.0f, 1.0f);
-    ////indices[2] = 2;
+   /* vector<VertexP> v;
+    v.push_back(VertexP(Vector3(0, 1, 0)));
 
-    ////Vertex[3].position = Vector3(0.5f, 0.5f, 0.1f);
-    ////Vertex[3].uv = Vector2(1.0f, 0.0f);
-    ////indices[3] = 3;
+    int stackCount = 36;
+    int sliceCount = 72;
+    float phiStep = XM_PI / stackCount;
+    float thetaStep = 2.0f * XM_PI / sliceCount;
 
-    /////////////////////////////////////////////////////////
-    //vertices = (void*)Vertex;
-    ////CreateVertexBuffer
-    //{
-    //    D3D11_BUFFER_DESC desc;
-    //    desc = { 0 };
-    //    desc.Usage = D3D11_USAGE_DEFAULT;
-    //    desc.ByteWidth = byteWidth * vertexCount;
-    //    desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    for (UINT i = 1; i <= stackCount - 1; i++)
+    {
+        float phi = i * phiStep;
 
-    //    D3D11_SUBRESOURCE_DATA data = { 0 };
-    //    data.pSysMem = vertices;
+        for (UINT j = 0; j <= sliceCount; j++)
+        {
+            float theta = j * thetaStep;
 
-    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
-    //    assert(SUCCEEDED(hr));
-    //}
+            Vector3 p = Vector3
+            (
+                (sinf(phi) * cosf(theta)),
+                (cosf(phi)),
+                (sinf(phi) * sinf(theta))
+            );
+            v.push_back(VertexP(p));
+        }
 
-    ////Create Index Buffer
-    //{
-    //    D3D11_BUFFER_DESC desc;
-    //    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-    //    desc.ByteWidth = sizeof(UINT) * indexCount;
-    //    desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    }
+    v.push_back(VertexP(Vector3(0, -1, 0)));
 
-    //    D3D11_SUBRESOURCE_DATA data = { 0 };
-    //    data.pSysMem = indices;
+    Vertex = new VertexP[v.size()];
+    vertexCount = v.size();
+    copy(v.begin(), v.end(), stdext::checked_array_iterator<VertexP*>(Vertex, vertexCount));
 
-    //    HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
-    //    assert(SUCCEEDED(hr));
-    //}
-    ////저장용
-    //SaveFile(file);
+    vector<UINT> vecindices;
+
+    for (UINT i = 1; i <= sliceCount; i++)
+    {
+        vecindices.push_back(0);
+        vecindices.push_back(i + 1);
+        vecindices.push_back(i);
+    }
+
+    UINT baseIndex = 1;
+    UINT ringVertexCount = sliceCount + 1;
+    for (UINT i = 0; i < stackCount - 2; i++)
+    {
+        for (UINT j = 0; j < sliceCount; j++)
+        {
+            vecindices.push_back(baseIndex + i * ringVertexCount + j);
+            vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
+            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
+
+            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j);
+            vecindices.push_back(baseIndex + i * ringVertexCount + j + 1);
+            vecindices.push_back(baseIndex + (i + 1) * ringVertexCount + j + 1);
+        }
+    }
+
+    UINT southPoleIndex = v.size() - 1;
+    baseIndex = southPoleIndex - ringVertexCount;
+
+    for (UINT i = 0; i < sliceCount; i++)
+    {
+        vecindices.push_back(southPoleIndex);
+        vecindices.push_back(baseIndex + i);
+        vecindices.push_back(baseIndex + i + 1);
+    }
+
+    this->indices = new UINT[vecindices.size()];
+    indexCount = vecindices.size();
+    copy(vecindices.begin(), vecindices.end(), stdext::checked_array_iterator<UINT*>(this->indices, indexCount));*/
+
+
+
+
+
+    ///////////////////////////////////////////////////////
+   /* vertices = (void*)Vertex;
+    CreateVertexBuffer
+    {
+        D3D11_BUFFER_DESC desc;
+        desc = { 0 };
+        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.ByteWidth = byteWidth * vertexCount;
+        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = vertices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+
+    Create Index Buffer
+    {
+        D3D11_BUFFER_DESC desc;
+        ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+        desc.ByteWidth = sizeof(UINT) * indexCount;
+        desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA data = { 0 };
+        data.pSysMem = indices;
+
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
+        assert(SUCCEEDED(hr));
+    }
+    저장용
+    SaveFile(file);*/
 }
 
 Mesh::Mesh(void* vertices, UINT vertexCount, UINT* indices, UINT indexCount, VertexType type)
@@ -247,7 +244,6 @@ Mesh::~Mesh()
     case VertexType::PSV:
         delete[](VertexPSV*)vertices;
         break;
-
     case VertexType::PSP:
         delete[](VertexPSP*)vertices;
         break;
@@ -668,6 +664,7 @@ const Vector3& Mesh::GetVertexPosition(UINT idx)
         VertexPSP* Vertices = (VertexPSP*)vertices;
         return Vertices[indices[idx]].position;
     }
+
     VertexP* Vertices = (VertexP*)vertices;
     return Vertices[indices[idx]].position;
 }
@@ -719,6 +716,7 @@ Vector3& Mesh::SetVertexPosition(UINT idx)
         VertexPSP* Vertices = (VertexPSP*)vertices;
         return Vertices[indices[idx]].position;
     }
+
     VertexP* Vertices = (VertexP*)vertices;
     return Vertices[indices[idx]].position;
 }
