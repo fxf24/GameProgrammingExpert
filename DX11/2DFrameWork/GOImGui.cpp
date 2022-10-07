@@ -392,6 +392,7 @@ void Camera::RenderDetail()
 		ImGui::EndTabBar();
 	}
 }
+
 void Terrain::RenderDetail()
 {
 	Actor::RenderDetail();

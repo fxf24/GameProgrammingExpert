@@ -19,7 +19,7 @@ void Main::Init()
     SCENE->AddScene("SC1", new Scene1());
     SCENE->AddScene("SC2", new Scene2());
     //SCENE->AddScene("LOADING", new Scene1());
-    SCENE->ChangeScene("SC1")->Init();
+    SCENE->ChangeScene("SC2")->Init();
     /*temp->LoadingTarget("SC1", 4, 
         []()
         { SCENE->GetScene("SC1")->Init(); }

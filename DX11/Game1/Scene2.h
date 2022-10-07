@@ -1,18 +1,16 @@
 #pragma once
+
+#define ARRAY_SIZE 10
+
 class Scene2 : public Scene
 {
 private:
 	Camera* Cam;
-	Terrain* Map;
+	Camera* Cam2;
 	Actor* Grid;
-	CubeMan* cubeMan;
-	Ray				cubeManTopRay;
 
-	Vector3			from, to;
-	float			lerpValue;
-
-	float			Rfrom, Rto;
-	float			RlerpValue;
+	Actor* Sphere[ARRAY_SIZE][ARRAY_SIZE][ARRAY_SIZE];
+	vector<Actor*> RenderList;
 public:
 	Scene2();
 	~Scene2();
