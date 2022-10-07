@@ -196,7 +196,10 @@ bool Camera::Intersect(Vector3 coord)
 	Frustum.Near = nearZ;
 	Frustum.Far = farZ;
 
-	
+	if (Frustum.Contains(coord) != DISJOINT)
+	{
+		return true;
+	}
 
 	return false;
 }
