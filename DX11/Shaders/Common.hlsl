@@ -98,3 +98,30 @@ float3 DirLighting(float3 Normal, float3 wPostion)
     float3 S = Specular * Ks.rgb;
     return D + S + Ka.rgb;
 }
+
+float4 DiffuseMapping(float2 Uv)
+{
+    [flatten]
+    if (Ka.a)
+        return TextureD.Sample(SamplerD, Uv);
+    
+    return float4(1, 1, 1, 1);
+}
+
+float3 NormalMapping(float3 T, float3 B, float3 N, float2 Uv)
+{
+    T = normalize(T);
+    B = normalize(B);
+    N = normalize(N);
+    
+    [flatten]
+    if (Ka.a)
+    {
+        float3 normal = TextureN.Sample(SamplerN, Uv).rgb;
+        
+        float3x3 TBN = float3x3(T, B, N);
+        N = normal * 2.0f - 1.0f;
+        N = normalize(mul(N, TBN));
+    }
+    return N;
+}
