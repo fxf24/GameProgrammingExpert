@@ -27,10 +27,6 @@ public:
 	void	Update() override;
 	void	Set();
 	void	RenderDetail();
-<<<<<<< HEAD
 	bool    Intersect(Vector3 coord);
-=======
-	bool	Intersect(Vector3 coord);
->>>>>>> 6b1bb4def680a2802e1f5abfe12097f77107fa9b
 };
 

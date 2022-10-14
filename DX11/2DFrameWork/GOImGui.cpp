@@ -393,7 +393,6 @@ void Camera::RenderDetail()
 	}
 }
 
-<<<<<<< HEAD
 void Light::RenderDetail()
 {
 	Actor::RenderDetail();
@@ -417,8 +416,6 @@ void Light::RenderDetail()
 }
 
 
-=======
->>>>>>> 6b1bb4def680a2802e1f5abfe12097f77107fa9b
 void Terrain::RenderDetail()
 {
 	Actor::RenderDetail();

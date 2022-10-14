@@ -47,14 +47,8 @@ PixelInput VS(VertexInput input)
 float4 PS(PixelInput input) : SV_TARGET
 {
     float4 BaseColor = DiffuseMapping(input.Uv);
-<<<<<<< HEAD
     
     float3 Normal = NormalMapping(input.Tangent, input.Binormal, input.Normal, input.Uv);
-=======
-    float3 Normal = NormalMapping(input.Tangent, input.Binormal, input.Normal, input.Uv);
-    
-    float3 DirectionLight = DirLighting(Normal, input.wPosition);
->>>>>>> 6b1bb4def680a2802e1f5abfe12097f77107fa9b
     
     BaseColor = Lighting(BaseColor, input.Uv, Normal, input.wPosition);
     

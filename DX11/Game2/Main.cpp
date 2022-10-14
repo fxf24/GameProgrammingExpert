@@ -49,6 +49,7 @@ void Main::Update()
 	//
 	////Ui->RenderHierarchy();
 	//
+	ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
 	ImGui::Begin("Hierarchy");
 	Point->RenderHierarchy();
 	Point2->RenderHierarchy();
@@ -81,12 +82,12 @@ void Main::Render()
 	Point2->Render();
 
 	Grid->Render();
-
-	//BLEND->Set(true);
-	Player->Render();
-	//BLEND->Set(false);
-
 	Map->Render();
+
+	BLEND->Set(true);
+	Player->Render();
+	BLEND->Set(false);
+
 	
 }
 

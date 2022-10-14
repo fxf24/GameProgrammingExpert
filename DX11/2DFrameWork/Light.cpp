@@ -62,18 +62,18 @@ void LightManager::RenderDetail()
 
 void LightManager::SetSize()
 {
-    int min = -1;
+    int max = -1;
     for (int i = 0; i < MAX_LIGHT; i++)
     {
         if (LIGHT->light[i].isActive)
         {
-            if (i > min)
+            if (i > max)
             {
-                min = i;
+                max = i;
             }
         }
     }
-    light[0].size = min;
+    light[0].size = max + 1;
 }
 
 Light* Light::Create(string name)
@@ -88,7 +88,6 @@ Light* Light::Create(string name)
             LIGHT->light[i].isActive = true;
             temp->light = &LIGHT->light[i];
             LIGHT->SetSize();
-            temp->lightIdx = i;
             temp->mesh = RESOURCE->meshes.Load("1.SphereCollider.mesh");
             temp->shader = RESOURCE->shaders.Load("1.Collider.hlsl");
             break;
@@ -107,6 +106,7 @@ void Light::Release()
 
 void Light::Update()
 {
+    scale.z = scale.y = scale.x = light->range * 0.5f;
     Actor::Update();
     light->position = GetWorldPos();
 }

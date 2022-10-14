@@ -39,7 +39,7 @@ struct LightBuffer
 };
 
 
-#define MAX_LIGHT 128
+#define MAX_LIGHT 8
 class LightManager : public Singleton<LightManager>
 {
 	
@@ -60,7 +60,6 @@ public:
 class Light : public Actor
 {
 	LightBuffer*	light;
-	int             lightIdx;
 public:
 	static Light*	Create(string name = "Light");
 	virtual void	Release();
