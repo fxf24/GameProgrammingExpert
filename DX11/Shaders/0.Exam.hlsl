@@ -34,6 +34,7 @@ float4 PS(PixelInput input) : SV_TARGET
     //광원과 법선의 내적값
     float d = saturate(dot(-Light, Nor));
     
+<<<<<<< HEAD
     //태양 그리기
     if (d > 0.9995f)
     {
@@ -47,5 +48,15 @@ float4 PS(PixelInput input) : SV_TARGET
     
     BaseColor.rgb += float3(d * 0.3f, d * 0.3f, d * 0.3f);
     
+=======
+    if (d > 0.9995f)
+    {
+        return float4(1, 1, 1, 1);
+    }  
+    
+    //큐브맵에서 가져온 색
+    BaseColor = TextureSky.Sample(SamplerD, input.Uv);
+    BaseColor.rgb += float3(d * 0.3f, d * 0.3f, d * 0.7f);
+>>>>>>> 6b1bb4def680a2802e1f5abfe12097f77107fa9b
     return BaseColor;
 }

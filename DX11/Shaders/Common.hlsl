@@ -191,6 +191,7 @@ float3 DirLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3 w
     float Specular = saturate(dot(ViewDir, RecflectLight));
     Specular = pow(Specular, Shininess);
     
+<<<<<<< HEAD
     //         계수 * 머터리얼 *  DiffuseMap
     float3 D = Diffuse * Kd.rgb * BaseColor;
     float3 S = Specular * Ks.rgb * SpecularMap;
@@ -263,4 +264,36 @@ float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
     
     // 0 ~ 1 가두기
     return saturate(Result);
+=======
+    float3 D = Diffuse * Kd.rgb;
+    float3 S = Specular * Ks.rgb;
+    return D + S + Ka.rgb;
+}
+
+float4 DiffuseMapping(float2 Uv)
+{
+    [flatten]
+    if (Ka.a)
+        return TextureD.Sample(SamplerD, Uv);
+    
+    return float4(1, 1, 1, 1);
+}
+
+float3 NormalMapping(float3 T, float3 B, float3 N, float2 Uv)
+{
+    T = normalize(T);
+    B = normalize(B);
+    N = normalize(N);
+    
+    [flatten]
+    if (Ka.a)
+    {
+        float3 normal = TextureN.Sample(SamplerN, Uv).rgb;
+        
+        float3x3 TBN = float3x3(T, B, N);
+        N = normal * 2.0f - 1.0f;
+        N = normalize(mul(N, TBN));
+    }
+    return N;
+>>>>>>> 6b1bb4def680a2802e1f5abfe12097f77107fa9b
 }
