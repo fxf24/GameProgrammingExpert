@@ -19,33 +19,21 @@ void Main::Init()
 	Grid = Actor::Create();
 	Grid->LoadFile("Grid.xml");
 
-	_Shop = Actor::Create();
-
-	_Shop->LoadFile("Sphere.xml");
-
-	inv.Init();
-	shop.Init(&inv);
+	Player = Actor::Create();
+	Player->LoadFile("Character2.xml");
 
 	Map = Actor::Create();
 	Map->LoadFile("Map.xml");
+
+	Point = Light::Create("L1");
+	Point2 = Light::Create("L2");
 
 	Cam->width = App.GetWidth();
 	Cam->height = App.GetHeight();
 	Cam->viewport.width = App.GetWidth();
 	Cam->viewport.height = App.GetHeight();
 
-	/*Ui->mouseDown = [&]() {PrevMouse = INPUT->NDCPosition; };
-	Ui->mousePress = bind(&Main::Resize, this);*/
 }
-//void Main::Resize()
-//{
-//	Vector3 mov = INPUT->NDCPosition - PrevMouse;
-//	Ui->MoveWorldPos(mov * 0.5f);
-//	Ui->scale.x += mov.x;
-//
-//	PrevMouse = INPUT->NDCPosition;
-//}
-
 
 
 void Main::Release()
@@ -55,54 +43,51 @@ void Main::Release()
 
 void Main::Update()
 {
-	ImGui::SliderFloat3("dirLight", (float*)(&LIGHT->dirLight.direction),-1,1);
+
 	Camera::ControlMainCam();
-	
-	//ImGui::Begin("Hierarchy");
+	LIGHT->RenderDetail();
+	//
 	////Ui->RenderHierarchy();
-	//ImGui::End();
+	//
+	ImGui::Begin("Hierarchy");
+	Point->RenderHierarchy();
+	Point2->RenderHierarchy();
 	sky->RenderHierarchy();
-	_Shop->RenderHierarchy();
+	Player->RenderHierarchy();
 	Cam->RenderHierarchy();
+	ImGui::End();
+
 
 	Cam->Update();
 	Grid->Update();
-	_Shop->Update();
+	Player->Update();
 	Map->Update();
+	Point->Update();
+	Point2->Update();
 	sky->Update();
-	inv.Update();
-	shop.Update();
-
-	ImGui::Text("Mouse  X: %f Y: %f", INPUT->NDCPosition.x,
-		INPUT->NDCPosition.y);
 
 }
 
 void Main::LateUpdate()
 {
-	Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
-
-	if (INPUT->KeyDown(VK_LBUTTON))
-	{
-		Vector3 Hit;
-		if (_Shop->collider->Intersect(Mouse, Hit))
-		{
-			inv.show = not inv.show;
-		}
-	}
+	
 }
 void Main::Render()
 {
 	LIGHT->Set();
 	Cam->Set();
 	sky->Render();
+	Point->Render();
+	Point2->Render();
 
 	Grid->Render();
-	Map->Render();
-	_Shop->Render();
 
-	inv.Render();
-	shop.Render();
+	//BLEND->Set(true);
+	Player->Render();
+	//BLEND->Set(false);
+
+	Map->Render();
+	
 }
 
 void Main::ResizeScreen()

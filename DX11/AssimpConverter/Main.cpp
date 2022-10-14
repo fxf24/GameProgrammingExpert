@@ -36,6 +36,7 @@ void Main::Release()
 void Main::Update()
 {
     Camera::ControlMainCam();
+	ImGui::SliderFloat3("dirLight", (float*)(&LIGHT->dirLight.direction), -1, 1);
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::Begin("Hierarchy");
@@ -57,8 +58,7 @@ void Main::Update()
 		file = ImGuiFileDialog::Instance()->GetCurrentFileName();
         string path = "../Assets/" + file;
         
-        Assimp::Importer importer; //지역변수로 선언된 객체
-
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
         scene = importer.ReadFile
         (
 			path,
@@ -107,9 +107,7 @@ void Main::Update()
 	{
 		file = ImGuiFileDialog::Instance()->GetCurrentFileName();
 		string path = "../Assets/" + file;
-
-		Assimp::Importer importer; //지역변수로 선언된 객체
-
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 		scene = importer.ReadFile
 		(
 			path,
@@ -133,16 +131,11 @@ void Main::Update()
 			Anim->file = file.substr(0, tok2) + to_string(i);
 			Anim->frameMax = (int)srcAnim->mDuration + 1;
 			Anim->tickPerSecond = srcAnim->mTicksPerSecond != 0.0 ? (float)srcAnim->mTicksPerSecond : 25.0f;
-			Anim->boneMax = actor->boneIndexCount + 1;
+			Anim->boneMax = actor->boneIndexCount;
 			Anim->arrFrameBone = new Matrix * [Anim->frameMax];
 			for (UINT j = 0; j < Anim->frameMax; j++)
 			{
-				Anim->arrFrameBone[j] = new Matrix[actor->boneIndexCount + 1];
-				for (auto it = actor->obList.begin(); it != actor->obList.end(); it++)
-				{
-					GameObject* temp = it->second;
-					Anim->arrFrameBone[j][temp->boneIndex] = temp->GetLocalInverse();
-				}
+				Anim->arrFrameBone[j] = new Matrix[actor->boneIndexCount];
 			}
 			
 			
@@ -203,7 +196,7 @@ void Main::Update()
 						R = Matrix::CreateFromQuaternion(quter);
 						T = Matrix::CreateTranslation(pos);
 						Matrix W = S * R * T;
-						Anim->arrFrameBone[k][chanel->boneIndex] *= W;
+						Anim->arrFrameBone[k][chanel->boneIndex] = chanel->GetLocalInverse()*W;
 					}
 				}
 				//여기서 채널끝(본)
@@ -247,6 +240,7 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
+	LIGHT->Set();
     Cam->Set();
     Grid->Render();
     for (size_t i = 0; i < List.size(); i++)
@@ -556,7 +550,7 @@ void Main::ReadMesh(GameObject* dest, aiNode* src)
 		{
 			string Name = srcMesh->mName.C_Str() + string("MeshObject");
 			GameObject* temp = GameObject::Create(Name);
-			dest->AddChild(temp);
+			dest->AddBone(temp);
 			temp->mesh = make_shared<Mesh>(VertexArray, VertexList.size(),
 				IndexArray, indexList.size(), VertexType::MODEL);
 			temp->shader = RESOURCE->shaders.Load("4.Cube.hlsl");
@@ -571,7 +565,7 @@ void Main::ReadMesh(GameObject* dest, aiNode* src)
 				}
 
 				string filePath = file.substr(0, tok) + "/";
-				temp->mesh->file = filePath + meshFile + ".mesh";
+				temp->mesh->file = filePath + Name + ".mesh";
 				temp->mesh->SaveFile(temp->mesh->file);
 			}
 		}

@@ -10,6 +10,7 @@ private:
 	const aiScene*  scene;
 	string			file;
 	Actor*			actor;
+	Assimp::Importer importer;
 public:
 	Main();
 	~Main();

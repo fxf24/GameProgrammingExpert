@@ -72,12 +72,7 @@ void GS(point VertexInput input[1], inout TriangleStream<PixelInput> output)
 float4 PS(PixelInput input) : SV_TARGET
 {
     
-    float4 BaseColor = float4(1, 1, 1, 1);
-    
-    if(Kd.w == 1.0f)
-    {
-        BaseColor = TextureD.Sample(SamplerD, input.Uv);
-    }
+    float4 BaseColor = DiffuseMapping(input.Uv);
        
     
     return BaseColor;

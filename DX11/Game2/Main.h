@@ -5,17 +5,12 @@ private:
 
 	Camera* Cam;
 
-	Sky* sky;
+	Sky*	sky;
 	Actor* Grid;
-	Actor* _Shop;
+	Actor* Player;
 	Actor* Map;
-
-	//UI* Ui;
-	Vector3 PrevMouse;
-	Inven   inv;
-	Shop	shop;
-	float	bgmscale = 1.0f;
-	float	Gunscale = 1.0f;
+	Light* Point;
+	Light* Point2;
 
 public:
 	Main();

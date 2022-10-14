@@ -46,18 +46,11 @@ PixelInput VS(VertexInput input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
-    float4 BaseColor;
+    float4 BaseColor = DiffuseMapping(input.Uv);
     
-    if(Kd.w == 1.0)
-    BaseColor = TextureD.Sample(SamplerD, input.Uv);
-    else
-    BaseColor = float4(1, 1, 1, 1);
+    float3 Normal = NormalMapping(input.Tangent, input.Binormal, input.Normal, input.Uv);
     
-    
-    float3 DirectionLight = DirLighting(normalize(input.Normal.xyz), input.wPosition);
-    
-    //                        ( r*0.6 ,g*0.3, b*0.1)
-    BaseColor.rgb = saturate(BaseColor.rgb * DirectionLight);
+    BaseColor = Lighting(BaseColor, input.Uv, Normal, input.wPosition);
     
     return BaseColor;
 }

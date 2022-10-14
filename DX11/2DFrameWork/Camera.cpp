@@ -183,3 +183,23 @@ void Camera::ControlMainCam(float scalar)
 	main->MoveWorldPos(main->GetForward() * INPUT->wheelMoveValue.z * DELTA);
 }
 
+bool Camera::Intersect(Vector3 coord)
+{
+	BoundingFrustum Frustum;
+
+	Frustum.Origin = GetWorldPos();
+	Frustum.Orientation = Quaternion::CreateFromRotationMatrix(R);
+	Frustum.RightSlope = tanf(fov);
+	Frustum.LeftSlope = -Frustum.RightSlope;
+	Frustum.TopSlope = Frustum.RightSlope * App.GetHeight() / App.GetWidth();
+	Frustum.BottomSlope = -Frustum.TopSlope;
+	Frustum.Near = nearZ;
+	Frustum.Far = farZ;
+
+	if (Frustum.Contains(coord) != DISJOINT)
+	{
+		return true;
+	}
+
+	return false;
+}

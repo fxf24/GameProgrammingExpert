@@ -392,6 +392,30 @@ void Camera::RenderDetail()
 		ImGui::EndTabBar();
 	}
 }
+
+void Light::RenderDetail()
+{
+	Actor::RenderDetail();
+	if (ImGui::BeginTabBar("MyTabBar3"))
+	{
+		if (ImGui::BeginTabItem("Light"))
+		{
+			
+			ImGui::ColorEdit3("Color", (float*)(&light->color));
+			ImGui::SliderFloat("Range", &light->range,0,200);
+			
+			if (light->lightType == (int)LightType::SPOT)
+			{
+				//ImGui::ColorEdit3("Color", (float*)(&light->direction));
+			}
+
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
+}
+
+
 void Terrain::RenderDetail()
 {
 	Actor::RenderDetail();

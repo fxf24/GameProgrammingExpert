@@ -41,7 +41,7 @@ protected:
 	void	SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc);
 	void	LoadObject(Xml::XMLElement* This);
 public:
-	void			Release();
+	virtual void	Release();
 	virtual void	Update();
 	virtual void	Render();
 	void			AddChild(GameObject* child);
@@ -60,7 +60,7 @@ private:
 	
 public:
 	unordered_map<string, GameObject*> obList;
-	int             boneIndexCount = 0;
+	int             boneIndexCount = 1;
 	string			file;
 	Skeleton*		skeleton;
 	Animations*		anim;
@@ -68,7 +68,7 @@ protected:
 	Actor();
 	virtual	~Actor();
 public:
-	void			Release();
+	virtual void	Release();
 	void			ReleaseMember();
 	static Actor*	Create(string name = "Actor");
 	GameObject*		Find(string name);

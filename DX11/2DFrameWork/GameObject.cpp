@@ -187,7 +187,9 @@ void GameObject::AddBone(GameObject* child)
 {
 	if (root->Find(child->name))
 		return;
-	child->boneIndex = ++root->boneIndexCount;
+	child->boneIndex = root->boneIndexCount;
+	root->boneIndexCount++;
+
 	root->obList[child->name] = child;
 	children[child->name] = child;
 	child->parent = this;
