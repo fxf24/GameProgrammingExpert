@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{5606A415-2
 		Contents\Mesh\2.Cube.mesh = Contents\Mesh\2.Cube.mesh
 		Contents\Mesh\2.Map.mesh = Contents\Mesh\2.Map.mesh
 		Contents\Mesh\2.Sphere.mesh = Contents\Mesh\2.Sphere.mesh
+		Contents\Mesh\3.Terrain2.mesh = Contents\Mesh\3.Terrain2.mesh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
@@ -54,9 +55,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", 
 		Contents\GameObject\Map.xml = Contents\GameObject\Map.xml
 		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
 		Contents\GameObject\Model.xml = Contents\GameObject\Model.xml
+		Contents\GameObject\RunMap.xml = Contents\GameObject\RunMap.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
 		Contents\GameObject\Terrain.xml = Contents\GameObject\Terrain.xml
+		Contents\GameObject\Wall.xml = Contents\GameObject\Wall.xml
+		Contents\GameObject\Wall2.xml = Contents\GameObject\Wall2.xml
 		Contents\GameObject\Window.xml = Contents\GameObject\Window.xml
 		Contents\GameObject\Window2.xml = Contents\GameObject\Window2.xml
 	EndProjectSection
@@ -134,6 +138,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vampire A Lusth", "Vampire 
 		Contents\Texture\Vampire A Lusth\Vampire_specular.png = Contents\Texture\Vampire A Lusth\Vampire_specular.png
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JumpGame", "JumpGame\JumpGame.vcxproj", "{12215958-4B63-41F0-A529-E85236F737D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -182,6 +191,14 @@ Global
 		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x64.Build.0 = Release|x64
 		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x86.ActiveCfg = Release|Win32
 		{24E46C3D-7264-43BF-8D42-43E35B2DB17A}.Release|x86.Build.0 = Release|Win32
+		{12215958-4B63-41F0-A529-E85236F737D2}.Debug|x64.ActiveCfg = Debug|x64
+		{12215958-4B63-41F0-A529-E85236F737D2}.Debug|x64.Build.0 = Debug|x64
+		{12215958-4B63-41F0-A529-E85236F737D2}.Debug|x86.ActiveCfg = Debug|Win32
+		{12215958-4B63-41F0-A529-E85236F737D2}.Debug|x86.Build.0 = Debug|Win32
+		{12215958-4B63-41F0-A529-E85236F737D2}.Release|x64.ActiveCfg = Release|x64
+		{12215958-4B63-41F0-A529-E85236F737D2}.Release|x64.Build.0 = Release|x64
+		{12215958-4B63-41F0-A529-E85236F737D2}.Release|x86.ActiveCfg = Release|Win32
+		{12215958-4B63-41F0-A529-E85236F737D2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

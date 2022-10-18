@@ -2,10 +2,15 @@
     <Skeleton File="Vampire A Lusth/Vampire A Lusth.skel" BoneIndexCount="103"/>
     <Animations AnimSize="2" File0="Idle/Idle0.anim" File1="Walking/Walking0.anim"/>
     <Shader File="4.cube.hlsl"/>
-    <Transform>
-        <Position X="0" Y="0" Z="0"/>
-        <Scale X="0.1" Y="0.1" Z="0.1"/>
+    <Collider ColliderType="1" Visible="false">
+        <Position X="0" Y="109" Z="0"/>
+        <Scale X="12" Y="100" Z="30"/>
         <Rotation X="0" Y="0" Z="0"/>
+    </Collider>
+    <Transform>
+        <Position X="-107.31223" Y="0" Z="-4.5331287"/>
+        <Scale X="0.1" Y="0.1" Z="0.1"/>
+        <Rotation X="-0" Y="-1.5707964" Z="0"/>
     </Transform>
     <Children Size="1"/>
     <Child0 Name="Offset" Visible="true" ObType="0" BoneIndex="1">

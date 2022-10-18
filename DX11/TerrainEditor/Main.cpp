@@ -34,6 +34,8 @@ void Main::Init()
 
     Sphere = Actor::Create();
     Sphere->LoadFile("Sphere.xml");
+
+    ResizeScreen();
 }
 
 void Main::Release()
@@ -51,8 +53,7 @@ void Main::Update()
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::SliderInt("BrushTexture", &brushTexture, 0, 1);
-    ImGui::SliderFloat("BrushRange", &brush.range
-        , 0.0f, 2000.0f);
+    ImGui::InputFloat("BrushRange", &brush.range, 0, 100.0f);
     ImGui::InputFloat("BrushHeight", &brushMaxHeight);
     ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
     if (ImGui::Button("Rect"))
