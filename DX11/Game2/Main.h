@@ -12,6 +12,8 @@ private:
 	Light* Point;
 	Light* Point2;
 
+	Actor* hammer;
+
 public:
 	Main();
 	~Main();

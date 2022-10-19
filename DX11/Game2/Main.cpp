@@ -28,6 +28,9 @@ void Main::Init()
 	Point = Light::Create("L1");
 	Point2 = Light::Create("L2");
 
+	hammer = Actor::Create();
+
+
 	Cam->width = App.GetWidth();
 	Cam->height = App.GetHeight();
 	Cam->viewport.width = App.GetWidth();
@@ -56,6 +59,7 @@ void Main::Update()
 	sky->RenderHierarchy();
 	Player->RenderHierarchy();
 	Cam->RenderHierarchy();
+	hammer->RenderHierarchy();
 	ImGui::End();
 
 
@@ -66,6 +70,7 @@ void Main::Update()
 	Point->Update();
 	Point2->Update();
 	sky->Update();
+	hammer->Update();
 
 }
 
@@ -83,6 +88,7 @@ void Main::Render()
 
 	Grid->Render();
 	Map->Render();
+	hammer->Render();
 
 	BLEND->Set(true);
 	Player->Render();
