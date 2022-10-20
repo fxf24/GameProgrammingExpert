@@ -55,7 +55,7 @@ cbuffer PS_DirLight : register(b2)
     float4 DirColor;
 }
 
-#define MAX_LIGHT 8
+#define MAX_LIGHT 16
 struct Light
 {
     //4
@@ -64,7 +64,7 @@ struct Light
     float Inner;
     float Outer;
 	//
-    int    Size;
+    int Size;
     float3 Direction;
     //4
     float3 Position;
@@ -159,7 +159,7 @@ float3 EmissiveMapping(float3 BaseColor, float2 Uv, float3 Normal, float3 wPosit
     //Emissive
     float3 Emissive = 0;
     float3 EmissiveMap = BaseColor;
-    float3 ViewDir = normalize(ViewPos.xyz -wPosition);
+    float3 ViewDir = normalize(ViewPos.xyz - wPosition);
     //반사색이 있을때만 Emissive 값을 계산한다.
     [flatten]
     //rgb중에 값이 하나라도 0 이 아니면
@@ -225,21 +225,34 @@ float3 PointLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3
 
 float3 SpotLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3 wPosition, int idx)
 {
-    //return float3(1, 1, 1);
+    //픽셀에서 라이트향하는 방향
     float3 DirectionLight = lights[idx].Position - wPosition;
     float distanceToLight = length(DirectionLight);
     DirectionLight /= distanceToLight;
     
     float distanceToLightNormal = 1.0f - saturate(distanceToLight / lights[idx].Range);
     float attention = distanceToLightNormal * distanceToLightNormal;
-    float cosAngle = dot(normalize(-lights[idx].Direction), DirectionLight);
     
+    float cosAngle = saturate(dot(normalize(-lights[idx].Direction),
+    DirectionLight));
     
+    //예시용
+    ////84도 -> 코사인값
+    //float inner = cos(radians(lights[idx].Inner));
+    ////Inner 이하인값만
+    //if (cosAngle > inner)
+    //{
+    //    attention = 1.0f;
+    //}
+    
+    // 0 ~ 90 -> 1 ~ 0 
     float outer = cos(radians(lights[idx].Outer));
+    // 0 ~ 90   -> 1 ~ 무한
     float inner = 1.0f / cos(radians(lights[idx].Inner));
     
     cosAngle = saturate((cosAngle - outer) * inner);
     attention *= cosAngle;
+    
     //빛의계수
     float Diffuse = saturate(dot(DirectionLight, Normal)) * attention;
   
@@ -255,13 +268,13 @@ float3 SpotLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3 
     return saturate((D + S) * lights[idx].Color.rgb);
 }
 
-float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
+float4 Lighting(float4 BaseColor, float2 Uv, float3 Normal, float3 wPosition)
 {
     float3 SpecularMap = SpecularMapping(Uv);
     
     
     // 디퓨즈 + 스펙큘러
-    float4 Result = float4(DirLighting(BaseColor.rgb, SpecularMap, 
+    float4 Result = float4(DirLighting(BaseColor.rgb, SpecularMap,
     Normal, wPosition),
     BaseColor.a);
     
@@ -282,7 +295,10 @@ float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
             Normal, wPosition, i);
         }
         else if (lights[i].Type == 1)
-            Result += SpotLighting(Normal, wPosition, Uv, i);
+        {
+            Result.rgb += SpotLighting(BaseColor.rgb, SpecularMap,
+            Normal, wPosition, i);
+        }
     }
     
     
