@@ -1,0 +1,40 @@
+<Root Name="Actor" Visible="false" ObType="1">
+    <Transform>
+        <Position X="0" Y="0" Z="-200"/>
+        <Scale X="1" Y="1" Z="1"/>
+        <Rotation X="0" Y="0" Z="0"/>
+    </Transform>
+    <Children Size="2"/>
+    <Child0 Name="Bottom" Visible="true" ObType="0">
+        <Mesh File="2.Cube.mesh"/>
+        <Shader File="2.Cube.hlsl"/>
+        <Material File="Cube.mtl"/>
+        <Collider ColliderType="1" Visible="false">
+            <Position X="0" Y="0" Z="0"/>
+            <Scale X="1" Y="1" Z="1"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Collider>
+        <Transform>
+            <Position X="0" Y="55" Z="0"/>
+            <Scale X="10" Y="30" Z="5"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Transform>
+        <Children Size="0"/>
+    </Child0>
+    <Child1 Name="Top" Visible="true" ObType="0">
+        <Mesh File="2.Cube.mesh"/>
+        <Shader File="2.Cube.hlsl"/>
+        <Material File="Cube.mtl"/>
+        <Collider ColliderType="1" Visible="false">
+            <Position X="0" Y="0" Z="0"/>
+            <Scale X="1" Y="1" Z="1"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Collider>
+        <Transform>
+            <Position X="0" Y="-55" Z="0"/>
+            <Scale X="10" Y="30" Z="5"/>
+            <Rotation X="0" Y="0" Z="0"/>
+        </Transform>
+        <Children Size="0"/>
+    </Child1>
+</Root>
