@@ -223,6 +223,37 @@ float3 PointLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3
     return saturate((D + S) * lights[idx].Color.rgb);
 }
 
+float3 SpotLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3 wPosition, int idx)
+{
+    //return float3(1, 1, 1);
+    float3 DirectionLight = lights[idx].Position - wPosition;
+    float distanceToLight = length(DirectionLight);
+    DirectionLight /= distanceToLight;
+    
+    float distanceToLightNormal = 1.0f - saturate(distanceToLight / lights[idx].Range);
+    float attention = distanceToLightNormal * distanceToLightNormal;
+    float cosAngle = dot(normalize(-lights[idx].Direction), DirectionLight);
+    
+    
+    float outer = cos(radians(lights[idx].Outer));
+    float inner = 1.0f / cos(radians(lights[idx].Inner));
+    
+    cosAngle = saturate((cosAngle - outer) * inner);
+    attention *= cosAngle;
+    //ºûÀÇ°è¼ö
+    float Diffuse = saturate(dot(DirectionLight, Normal)) * attention;
+  
+    
+    float3 RecflectLight = reflect(DirectionLight, Normal);
+    float3 ViewDir = normalize(ViewPos.xyz - wPosition);
+    float Specular = saturate(dot(ViewDir, RecflectLight)) * attention;
+    Specular = pow(Specular, Shininess);
+    
+    float3 D = Diffuse * Kd.rgb * BaseColor;
+    float3 S = Specular * Ks.rgb * SpecularMap;
+    
+    return saturate((D + S) * lights[idx].Color.rgb);
+}
 
 float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
 {
@@ -250,8 +281,8 @@ float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
             Result.rgb += PointLighting(BaseColor.rgb, SpecularMap,
             Normal, wPosition, i);
         }
-        //else if (lights[i].Type == 1)
-        //    Result += SpotLighting(Normal, wPosition, Uv, i);
+        else if (lights[i].Type == 1)
+            Result += SpotLighting(Normal, wPosition, Uv, i);
     }
     
     

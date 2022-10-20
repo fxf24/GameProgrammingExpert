@@ -400,13 +400,15 @@ void Light::RenderDetail()
 	{
 		if (ImGui::BeginTabItem("Light"))
 		{
-			
+			ImGui::SliderInt("Type", &light->lightType, 0, 1);
 			ImGui::ColorEdit3("Color", (float*)(&light->color));
 			ImGui::SliderFloat("Range", &light->range,0,200);
 			
 			if (light->lightType == (int)LightType::SPOT)
 			{
-				//ImGui::ColorEdit3("Color", (float*)(&light->direction));
+				ImGui::SliderFloat3("Dir", (float*)(&light->direction), -1, 1);
+				ImGui::SliderFloat("Outer", &light->outer, 0.0f, 360.0f);
+				ImGui::SliderFloat("Inner", &light->inner, 0.0f, 360.0f);
 			}
 
 			ImGui::EndTabItem();
