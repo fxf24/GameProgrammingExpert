@@ -3,6 +3,8 @@ class Camera : public Actor
 {
 private:
 	static ID3D11Buffer* VPBuffer;
+	static ID3D11Buffer* VBuffer;
+	static ID3D11Buffer* PBuffer;
 	static ID3D11Buffer* viewPosBuffer;
 	static ID3D11Buffer* viewUpBuffer;
 	static ID3D11Buffer* viewForwardBuffer;

@@ -8,11 +8,13 @@ private:
 	Sky*	sky;
 	Actor* Grid;
 	Actor* Player;
-	Actor* Map;
 	Light* Point;
 	Light* Point2;
+	Terrain* Map;
 
-	Actor* hammer;
+	Int2   Pos;
+
+	Actor* Sphere[3][3];
 
 public:
 	Main();

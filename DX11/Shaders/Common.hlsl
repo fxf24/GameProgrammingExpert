@@ -6,6 +6,21 @@ cbuffer VS_VP : register(b1)
 {
     matrix ViewProj;
 }
+//스켈레톤
+#define MAX_BONE 256
+cbuffer VS_Bones : register(b2)
+{
+    matrix Bones[MAX_BONE];
+}
+
+cbuffer VS_V : register(b3)
+{
+    matrix View;
+}
+cbuffer VS_P : register(b4)
+{
+    matrix Proj;
+}
 
 cbuffer GS_VP : register(b0)
 {
@@ -26,12 +41,7 @@ cbuffer GS_View : register(b3)
 
 
 
-//스켈레톤
-#define MAX_BONE 256
-cbuffer VS_Bones : register(b2)
-{
-    matrix Bones[MAX_BONE];
-}
+
 
 cbuffer PS_ViewPos : register(b0)
 {
@@ -64,7 +74,7 @@ struct Light
     float Inner;
     float Outer;
 	//
-    int Size;
+    int    Size;
     float3 Direction;
     //4
     float3 Position;
@@ -159,7 +169,7 @@ float3 EmissiveMapping(float3 BaseColor, float2 Uv, float3 Normal, float3 wPosit
     //Emissive
     float3 Emissive = 0;
     float3 EmissiveMap = BaseColor;
-    float3 ViewDir = normalize(ViewPos.xyz - wPosition);
+    float3 ViewDir = normalize(ViewPos.xyz -wPosition);
     //반사색이 있을때만 Emissive 값을 계산한다.
     [flatten]
     //rgb중에 값이 하나라도 0 이 아니면
@@ -268,13 +278,13 @@ float3 SpotLighting(float3 BaseColor, float3 SpecularMap, float3 Normal, float3 
     return saturate((D + S) * lights[idx].Color.rgb);
 }
 
-float4 Lighting(float4 BaseColor, float2 Uv, float3 Normal, float3 wPosition)
+float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
 {
     float3 SpecularMap = SpecularMapping(Uv);
     
     
     // 디퓨즈 + 스펙큘러
-    float4 Result = float4(DirLighting(BaseColor.rgb, SpecularMap,
+    float4 Result = float4(DirLighting(BaseColor.rgb, SpecularMap, 
     Normal, wPosition),
     BaseColor.a);
     

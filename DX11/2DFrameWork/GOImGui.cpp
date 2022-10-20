@@ -406,9 +406,9 @@ void Light::RenderDetail()
 			
 			if (light->lightType == (int)LightType::SPOT)
 			{
-				ImGui::SliderFloat3("Dir", (float*)(&light->direction), -1, 1);
-				ImGui::SliderFloat("Outer", &light->outer, 0.0f, 360.0f);
-				ImGui::SliderFloat("Inner", &light->inner, 0.0f, 360.0f);
+				ImGui::SliderFloat3("Dir", (float*)(&light->direction),-1,1);
+				ImGui::SliderFloat("Outer", &light->outer,0.0f,90.0f);
+				ImGui::SliderFloat("Inner", &light->inner,0.0f, 90.0f);
 			}
 
 			ImGui::EndTabItem();

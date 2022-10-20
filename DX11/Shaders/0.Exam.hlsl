@@ -15,10 +15,11 @@ PixelInput VS(VertexInput input)
    
     PixelInput output;
     output.Uv = normalize(input.Position.xyz);
-    
+    output.Position = input.Position;
     //  o           =  i X W
-    output.Position = mul(input.Position, World);
-    output.Position = mul(output.Position, ViewProj);
+    output.Position.xyz = mul(output.Position.xyz, (float3x3) World);
+    output.Position.xyz = mul(output.Position.xyz, (float3x3) View);
+    output.Position = mul(output.Position, Proj);
     return output;
 }
 

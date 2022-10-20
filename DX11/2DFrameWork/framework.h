@@ -123,6 +123,7 @@ extern Application App;//Extern Global
 #include "DepthState.h"
 #include "BlendState.h"
 #include "RasterState.h"
+#include "RenderTarget.h"
 
 #include "Util.h"
 

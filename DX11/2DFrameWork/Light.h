@@ -39,7 +39,7 @@ struct LightBuffer
 };
 
 
-#define MAX_LIGHT 8
+#define MAX_LIGHT 16
 class LightManager : public Singleton<LightManager>
 {
 	
@@ -54,8 +54,6 @@ public:
 	void                RenderDetail();
 	void				SetSize();
 };
-
-
 
 class Light : public Actor
 {

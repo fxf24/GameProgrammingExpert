@@ -44,10 +44,10 @@ private:
     RayDesc                     ray;
     ID3D11Buffer* rayBuffer;
 
+    Dijkstra                    dijkstra;
+    bool                        showNode = true;
 public:
     Terrain(string Name);
-    bool                        showNode = true;
-    Dijkstra                    dijkstra;
     float                       uvScale;
     int                         triSize;
     void	        RenderDetail();

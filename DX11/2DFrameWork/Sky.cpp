@@ -15,11 +15,6 @@ Sky* Sky::Create(string name)
 	return temp;
 }
 
-void Sky::Update()
-{
-	SetWorldPos(Camera::main->GetWorldPos());
-	Actor::Update();
-}
 
 void Sky::Render()
 {

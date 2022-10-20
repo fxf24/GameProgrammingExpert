@@ -22,13 +22,24 @@ void Main::Init()
 	Player = Actor::Create();
 	Player->LoadFile("Character2.xml");
 
-	Map = Actor::Create();
-	Map->LoadFile("Map.xml");
+	Map = Terrain::Create();
+	//Map->LoadFile("Map.xml");
+	Map->LoadFile("Map2.xml");
+	Map->CreateStructuredBuffer();
 
 	Point = Light::Create("L1");
 	Point2 = Light::Create("L2");
 
-	hammer = Actor::Create();
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			Sphere[i][j] = Actor::Create();
+			Sphere[i][j]->LoadFile("Sphere.xml");
+			Sphere[i][j]->SetWorldPos(Vector3(-85.0f + i * 85.0f, 0.0f,
+				85.0f - j * 85.0f));
+		}
+	}
 
 
 	Cam->width = App.GetWidth();
@@ -46,20 +57,26 @@ void Main::Release()
 
 void Main::Update()
 {
+	Pos.x = (Player->GetWorldPos().x + 128.0f) / (256.0f / 3.0f);
+	Pos.y = (Player->GetWorldPos().z - 128.0f) / (-256.0f / 3.0f);
 
+	ImGui::Text("X: %d  Y: %d ", Pos.x, Pos.y);
+
+	
+
+
+	ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
 	Camera::ControlMainCam();
 	LIGHT->RenderDetail();
 	//
 	////Ui->RenderHierarchy();
 	//
-	ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
 	ImGui::Begin("Hierarchy");
 	Point->RenderHierarchy();
 	Point2->RenderHierarchy();
 	sky->RenderHierarchy();
 	Player->RenderHierarchy();
 	Cam->RenderHierarchy();
-	hammer->RenderHierarchy();
 	ImGui::End();
 
 
@@ -70,13 +87,28 @@ void Main::Update()
 	Point->Update();
 	Point2->Update();
 	sky->Update();
-	hammer->Update();
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			Sphere[i][j]->Update();
 
+		}
+	}
 }
 
 void Main::LateUpdate()
 {
-	
+	Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+	Vector3 Hit;
+	//if (Map->ComPutePicking(Mouse, Hit))
+	if (Map->ComPutePicking(Mouse, Hit))
+	{
+		Player->SetWorldPos(Hit);
+		cout << endl;
+	}
+
+
 }
 void Main::Render()
 {
@@ -87,13 +119,24 @@ void Main::Render()
 	Point2->Render();
 
 	Grid->Render();
-	Map->Render();
-	hammer->Render();
 
-	BLEND->Set(true);
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			Sphere[i][j]->Render();
+
+		}
+	}
+
+	//BLEND->Set(true);
 	Player->Render();
-	BLEND->Set(false);
+	//BLEND->Set(false);
 
+
+
+	Map->Render();
 	
 }
 

@@ -17,6 +17,7 @@ namespace Util
 
 	bool RayIntersectTriNear(IN Ray WRay, IN GameObject* Target, OUT Vector3& HitPoint);
 
+	//수직으로 내다 꽂은 레이만 사용할것
 	bool RayIntersectMap(IN Ray WRay, IN GameObject* Terrain, OUT Vector3& HitPoint);
 
 

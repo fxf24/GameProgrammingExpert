@@ -31,12 +31,15 @@ void Camera::Update()
 }
 void Camera::Set()
 {
+
 	{
 		view = RT.Invert();
 		if (ortho)
 			proj = Matrix::CreateOrthographic(width, height, nearZ, farZ);
 		else
 			proj = Matrix::CreatePerspectiveFieldOfView(fov, width / height, nearZ, farZ);
+		Matrix TV = view.Transpose();
+		Matrix TP = proj.Transpose();
 		Matrix TVP = view * proj;
 		TVP = TVP.Transpose();
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -44,6 +47,18 @@ void Camera::Set()
 		memcpy_s(mappedResource.pData, sizeof(Matrix), &TVP, sizeof(Matrix));
 		D3D->GetDC()->Unmap(VPBuffer, 0);
 
+		D3D11_MAPPED_SUBRESOURCE mappedResource2;
+		D3D->GetDC()->Map(PBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource2);
+		memcpy_s(mappedResource2.pData, sizeof(Matrix), &TP, sizeof(Matrix));
+		D3D->GetDC()->Unmap(PBuffer, 0);
+
+		D3D11_MAPPED_SUBRESOURCE mappedResource3;
+		D3D->GetDC()->Map(VBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource3);
+		memcpy_s(mappedResource3.pData, sizeof(Matrix), &TV, sizeof(Matrix));
+		D3D->GetDC()->Unmap(VBuffer, 0);
+
+		D3D->GetDC()->VSSetConstantBuffers(3, 1, &VBuffer);
+		D3D->GetDC()->VSSetConstantBuffers(4, 1, &PBuffer);
 		D3D->GetDC()->VSSetConstantBuffers(1, 1, &VPBuffer);
 		D3D->GetDC()->GSSetConstantBuffers(0, 1, &VPBuffer);
 	}
@@ -76,6 +91,8 @@ void Camera::Set()
 }
 
 ID3D11Buffer* Camera::VPBuffer = nullptr;
+ID3D11Buffer* Camera::VBuffer = nullptr;
+ID3D11Buffer* Camera::PBuffer = nullptr;
 ID3D11Buffer* Camera::viewPosBuffer = nullptr;
 ID3D11Buffer* Camera::viewUpBuffer = nullptr;
 ID3D11Buffer* Camera::viewForwardBuffer = nullptr;
@@ -93,6 +110,30 @@ void Camera::CreateStaticMember()
 		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &VPBuffer);
 		assert(SUCCEEDED(hr));
 		
+	}
+	{
+		D3D11_BUFFER_DESC desc = { 0 };
+		desc.ByteWidth = sizeof(Matrix);
+		desc.Usage = D3D11_USAGE_DYNAMIC;
+		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		desc.MiscFlags = 0;
+		desc.StructureByteStride = 0;
+		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &VBuffer);
+		assert(SUCCEEDED(hr));
+
+	}
+	{
+		D3D11_BUFFER_DESC desc = { 0 };
+		desc.ByteWidth = sizeof(Matrix);
+		desc.Usage = D3D11_USAGE_DYNAMIC;
+		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		desc.MiscFlags = 0;
+		desc.StructureByteStride = 0;
+		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &PBuffer);
+		assert(SUCCEEDED(hr));
+
 	}
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
@@ -136,6 +177,8 @@ void Camera::CreateStaticMember()
 void Camera::DeleteStaticMember()
 {
     SafeRelease(VPBuffer);
+    SafeRelease(VBuffer);
+    SafeRelease(PBuffer);
     SafeRelease(viewPosBuffer);
     SafeRelease(viewUpBuffer);
     SafeRelease(viewForwardBuffer);
