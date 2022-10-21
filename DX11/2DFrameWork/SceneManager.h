@@ -23,6 +23,7 @@ public:
     void    Release();
     void    Update();
     void    LateUpdate();
+    void    PreRender();
     void    Render();
     void    ResizeScreen();
 

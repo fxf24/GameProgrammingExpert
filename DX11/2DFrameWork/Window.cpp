@@ -32,6 +32,7 @@ WPARAM Window::Run(Scene* main)
 			SOUND->Update();
 			main->Update();
 			main->LateUpdate();
+			main->PreRender();
 			D3D->SetRenderTarget();
 			DWRITE->GetDC()->BeginDraw();
 			D3D->Clear(App.background);

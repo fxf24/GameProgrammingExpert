@@ -105,6 +105,12 @@ void SceneManager::LateUpdate()
     currentScene->LateUpdate();
 }
 
+void SceneManager::PreRender()
+{
+    if (isChanging)return;
+    currentScene->PreRender();
+}
+
 void SceneManager::Render()
 {
     if (isChanging)return;

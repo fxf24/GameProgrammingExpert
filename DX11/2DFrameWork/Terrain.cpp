@@ -419,6 +419,8 @@ void Terrain::Render()
             //L    *   W
             Node->W *= W;
             Node->W = S.Invert() * Node->W;
+            for (auto it2 : Node->children) it2.second->Update();
+            if (Node->collider) Node->collider->Update(Node);
 
             Node->Render();
             for (auto it2 = it->second.linkedWay.begin();

@@ -80,6 +80,7 @@ public:
 	//Loop
 	virtual void Update() = 0;
 	virtual void LateUpdate() = 0;
+	virtual void PreRender() = 0;
 	virtual void Render() = 0;
 	//Window Resize
 	virtual void ResizeScreen() = 0;

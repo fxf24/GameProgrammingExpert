@@ -44,8 +44,15 @@ void Main::Init()
 
 	Cam->width = App.GetWidth();
 	Cam->height = App.GetHeight();
+
+	//ºäÆ÷Æ® Å©±â¿Í ·»´õÅ¸°Ù Å©±â¸¦ ¸ÂÃç¾ßÇÑ´Ù.
 	Cam->viewport.width = App.GetWidth();
 	Cam->viewport.height = App.GetHeight();
+
+	RT = new RenderTarget();
+
+	PostEffect = UI::Create();
+	PostEffect->LoadFile("Window2.xml");
 
 }
 
@@ -76,6 +83,7 @@ void Main::Update()
 	Point2->RenderHierarchy();
 	sky->RenderHierarchy();
 	Player->RenderHierarchy();
+	Map->RenderHierarchy();
 	Cam->RenderHierarchy();
 	ImGui::End();
 
@@ -108,19 +116,19 @@ void Main::LateUpdate()
 		cout << endl;
 	}
 
+	
 
 }
-void Main::Render()
+
+void Main::PreRender()
 {
+	RT->Set();
 	LIGHT->Set();
 	Cam->Set();
 	sky->Render();
 	Point->Render();
 	Point2->Render();
-
 	Grid->Render();
-
-
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -129,15 +137,17 @@ void Main::Render()
 
 		}
 	}
-
-	//BLEND->Set(true);
 	Player->Render();
-	//BLEND->Set(false);
-
-
-
 	Map->Render();
-	
+}
+
+void Main::Render()
+{
+	PostEffect->material->diffuseMap->srv
+		= RT->GetRTVSRV();
+	PostEffect->Update();
+	PostEffect->Render();
+
 }
 
 void Main::ResizeScreen()
@@ -146,6 +156,11 @@ void Main::ResizeScreen()
 	Cam->height = App.GetHeight();
 	Cam->viewport.width = App.GetWidth();
 	Cam->viewport.height = App.GetHeight();
+
+	if (RT)
+	{
+		RT->ResizeScreen(Cam->viewport.width, Cam->viewport.height);
+	}
 }
 
 

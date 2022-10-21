@@ -19,7 +19,7 @@ private:
 	struct Brush
 	{
 		Vector3 point;
-		float	range = 10.0f;
+		float	range = 2.0f;
 
 		float	shape;
 		float	type;
@@ -29,7 +29,7 @@ private:
 
 	//에디터에서만 존재하는 변수
 	float	brushMaxHeight = 1000.0f;
-	float	brushAddHeightScalr = 100.0f;
+	float	brushAddHeightScalr = 10.0f;
 	int		brushTexture = 0;
 	int		nodeEdit = 0;
 	int     prevPick = -1;

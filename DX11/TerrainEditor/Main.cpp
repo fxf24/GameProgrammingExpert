@@ -34,7 +34,6 @@ void Main::Init()
 
     Sphere = Actor::Create();
     Sphere->LoadFile("Sphere.xml");
-
     ResizeScreen();
 }
 
@@ -49,11 +48,14 @@ void Main::Release()
 
 void Main::Update()
 {
+   
     Camera::ControlMainCam();
+    LIGHT->RenderDetail();
+    Map->RenderDetail();
 
-    ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::SliderInt("BrushTexture", &brushTexture, 0, 1);
-    ImGui::InputFloat("BrushRange", &brush.range, 0, 100.0f);
+    ImGui::SliderFloat("BrushRange", &brush.range
+        , 0.0f, 200.0f);
     ImGui::InputFloat("BrushHeight", &brushMaxHeight);
     ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
     if (ImGui::Button("Rect"))
@@ -81,6 +83,8 @@ void Main::Update()
         brush.type = 2;
     }
 
+    //다익스트라
+    ImGui::Text("Di");
     if (ImGui::Button("AddNode"))
     {
         nodeEdit = 0;
@@ -100,10 +104,6 @@ void Main::Update()
 
 
 
-    ImGui::Begin("Hierarchy");
-    Grid->RenderHierarchy();
-    Map->RenderHierarchy();
-    ImGui::End();
 
     ImGui::Begin("LoadRawFile");
 
@@ -226,6 +226,10 @@ void Main::LateUpdate()
             Map->DeleteStructuredBuffer();
             Map->CreateStructuredBuffer();
         }
+        if (INPUT->KeyUp(VK_MBUTTON))
+        {
+            Map->UpdateMeshNormal();
+        }
 
         if (INPUT->KeyDown(VK_SPACE))
         {
@@ -291,6 +295,7 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
+    LIGHT->Set();
     Cam->Set();
     //Grid->Render();
 
