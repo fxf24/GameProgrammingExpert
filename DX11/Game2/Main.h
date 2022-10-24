@@ -25,7 +25,7 @@ private:
 		float width;
 		float height;
 		int select;
-		Color blendColor = Color(0.5f,0.5f, 0.5f, 0.5f);
+		Color blendColor = Color(0.5f,0.5f, 0.5f, 1.0f);
 		Vector2  center;
 		float   radius = 2000.0f;
 		float   padding;
