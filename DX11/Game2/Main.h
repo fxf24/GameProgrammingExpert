@@ -19,6 +19,19 @@ private:
 	RenderTarget*	RT = nullptr;
 	UI*				PostEffect;
 
+	struct Blur
+	{
+		int count;
+		float width;
+		float height;
+		int select;
+		Color blendColor = Color(0.5f,0.5f, 0.5f, 0.5f);
+		Vector2  center;
+		float   radius = 2000.0f;
+		float   padding;
+	} blur;
+	ID3D11Buffer* blurBuffer;
+
 public:
 	Main();
 	~Main();
