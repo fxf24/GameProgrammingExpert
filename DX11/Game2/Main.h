@@ -1,4 +1,6 @@
 #pragma once
+
+
 class Main : public Scene
 {
 private:
@@ -19,18 +21,7 @@ private:
 	RenderTarget*	RT = nullptr;
 	UI*				PostEffect;
 
-	struct Blur
-	{
-		int count;
-		float width;
-		float height;
-		int select;
-		Color blendColor = Color(0.5f,0.5f, 0.5f, 1.0f);
-		Vector2  center;
-		float   radius = 0.0f;
-		float   padding;
-	} blur;
-	ID3D11Buffer* blurBuffer;
+
 	bool changeScene = true;
 	bool action = true;
 public:

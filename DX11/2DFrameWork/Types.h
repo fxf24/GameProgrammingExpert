@@ -69,9 +69,17 @@ template <typename T>
 T* Singleton<T>::instance = nullptr;
 
 //씬타입으로는 객체를만들수 없다.
+enum class SceneState
+{
+	NONE,
+	FADEIN,
+	FADEOUT,
+};
 class Scene
 {
 public:
+	SceneState state = SceneState::NONE;
+	float time;
 	virtual ~Scene() {};
 	//초기화
 	virtual void Init() = 0;

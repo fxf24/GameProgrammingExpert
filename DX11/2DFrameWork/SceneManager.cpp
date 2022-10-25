@@ -45,12 +45,15 @@ Scene* SceneManager::ChangeScene(string key, float changingTime)
     if (temp)
     {
         nextScene = temp;
+        nextScene->state = SceneState::FADEIN;
+        if (currentScene)
+            currentScene->state = SceneState::FADEOUT;
         this->changingTime = changingTime;
         if (changingTime <= 0.0f)
         {
             isChanging = true;
             if(currentScene)
-            currentScene->Release();
+                currentScene->Release();
             //nextScene->Init();
         }
     }

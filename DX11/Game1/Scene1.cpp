@@ -1,3 +1,4 @@
+#include "..\Game2\Scene1.h"
 #include "stdafx.h"
 
 Scene1::Scene1()
@@ -171,6 +172,10 @@ void Scene1::LateUpdate()
             cubeMan->SetWorldPos(to);
         }
     }
+}
+
+void Scene1::PreRender()
+{
 }
 
 void Scene1::Render()
