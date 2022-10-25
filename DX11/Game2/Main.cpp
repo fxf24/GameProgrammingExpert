@@ -84,9 +84,82 @@ void Main::Update()
 	ImGui::ColorEdit3("BlendColor", (float*)&blur.blendColor);
 	ImGui::SliderFloat2("Center", (float*)&blur.center,0,2000.0f);
 	ImGui::SliderFloat("Radius", (float*)&blur.radius,0,2000.0f);
+	if (ImGui::Button("ChangeScene"))
+	{
+		if (changeScene)
+		{
+			changeScene = !changeScene;
+			action = true;
+		}
+		else
+		{
+			changeScene = !changeScene;
+			action = false;
+		}
+	}
 
-	blur.center.x = INPUT->position.x;
-	blur.center.y = INPUT->position.y;
+	if (changeScene)
+	{
+		if (blur.radius < 300.f && action)
+		{
+			blur.radius += 150.0f * DELTA;
+		}
+		else if (!action)
+		{
+			blur.blendColor -= Color(0.25f * DELTA, 0.25f * DELTA, 0.25f * DELTA, 0.25f * DELTA);
+
+			if (blur.blendColor.R() <= 0.0f)
+			{
+				action = true;
+				blur.blendColor = Color(0.5f, 0.5f, 0.5f, 1.0f);
+				blur.radius = 0.0f;
+			}
+		}
+	}
+	else
+	{
+		if (blur.radius > 0.0f && action)
+		{
+			blur.radius -= 150.0f * DELTA;	
+		}
+		else if (action)
+		{
+			action = false;
+			blur.radius = 2000.0f;
+			blur.blendColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+		else
+		{
+			if (blur.blendColor.R() > 0.5f)
+				blur.blendColor -= Color(0.25f * DELTA, 0.25f * DELTA, 0.25f * DELTA, 0.25f * DELTA);
+		}
+	}
+
+	
+
+
+
+	// World
+	Vector4 Top;
+	Top.x = Player->GetWorldPos().x;
+	Top.y = Player->GetWorldPos().y;
+	Top.z = Player->GetWorldPos().z;
+	Top.w = 1.0f;
+
+	// View
+	Top = Vector4::Transform(Top, Cam->view);
+	Top = Vector4::Transform(Top, Cam->proj);
+
+	//NDC
+	Top.x /= Top.w;
+	Top.y /= Top.w;
+
+	//Screen
+	Top.x = (Top.x + 1.0f) * App.GetHalfWidth();
+	Top.y = (-Top.y + 1.0f) * App.GetHalfHeight();
+
+	blur.center.x = Top.x;
+	blur.center.y = Top.y;
 	Pos.x = (Player->GetWorldPos().x + 128.0f) / (256.0f / 3.0f);
 	Pos.y = (Player->GetWorldPos().z - 128.0f) / (-256.0f / 3.0f);
 

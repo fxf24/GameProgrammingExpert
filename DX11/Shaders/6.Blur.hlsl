@@ -240,8 +240,8 @@ float4 PS(PixelInput input) : SV_TARGET
     if(Dis <radius)
     {
       
-        //return TextureColor;
-        return float4(TextureColor.rgb * (1.0f - Dis / radius), 1);
+        return TextureColor;
+        //return float4(TextureColor.rgb * (1.0f - Dis / radius), 1);
     }
     
     return float4(0, 0, 0, 1);

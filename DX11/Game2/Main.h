@@ -27,11 +27,12 @@ private:
 		int select;
 		Color blendColor = Color(0.5f,0.5f, 0.5f, 1.0f);
 		Vector2  center;
-		float   radius = 2000.0f;
+		float   radius = 0.0f;
 		float   padding;
 	} blur;
 	ID3D11Buffer* blurBuffer;
-
+	bool changeScene = true;
+	bool action = true;
 public:
 	Main();
 	~Main();
