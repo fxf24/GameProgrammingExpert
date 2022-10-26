@@ -30,6 +30,7 @@ void BlurManager::Update()
 	ImGui::ColorEdit3("BlendColor", (float*)&blur.blendColor);
 	ImGui::SliderFloat2("Center", (float*)&blur.center, 0, 2000.0f);
 	ImGui::SliderFloat("Radius", (float*)&blur.radius, 0, 2000.0f);
+	ImGui::SliderFloat("Slider", (float*)&blur.slider, 0, 1.0f);
 }
 
 void BlurManager::Set()

@@ -9,7 +9,7 @@ cbuffer Blur : register(b10)
     float4  blendColor;
     float2  center;
     float   radius;
-    float   padding;
+    float   slider;
 };
 
 
@@ -212,14 +212,43 @@ float4 PS(PixelInput input) : SV_TARGET
     //TextureColor.x *= 100.0f;
     //return float4(TextureColor.x, TextureColor.x, TextureColor.x, 1.0f);
     
+    
+    float minus;
     if (select == 0)
+    {
         TextureColor = TextureD.Sample(SamplerD, input.Uv);
+        minus = slider * 1.1f;
+    }
     else if (select == 1)
-        TextureColor = CrossBlur(input.Uv);
+    {
+        TextureColor = TextureD.Sample(SamplerD, input.Uv);
+        minus = slider * 1.1f - input.Uv.x;
+    }
     else if (select == 2)
-        TextureColor = OctaBlur(input.Uv);
+    {
+        float2 Dis = normalize(input.Position.xy - center);
+        float radius = atan2(Dis.y, Dis.x) + 3.1415926f;
+        
+        TextureColor = TextureD.Sample(SamplerD, input.Uv);
+        minus = slider * 6.2831853f * 1.1f - radius;
+    }
     else if (select == 3)
-        TextureColor = GaussianBlur(input.Uv);
+    {
+        float2 Dis2 = input.Uv - float2(0.5f, 0.5f);
+        Dis2 = saturate(float2(0.5f, 0.5f) + Dis2 * ((1.0f - slider) * 2.0f));
+    
+        float4 em;
+        em = TextureE.Sample(SamplerE, Dis2);
+    
+        if (em.a)
+        {
+            return TextureColor;
+        }
+        else
+        {
+            return float4(0, 0, 0, 1);
+        }
+    }
     else if (select == 4)
         TextureColor = Mosaic(input.Uv);
     else if (select == 5)
@@ -234,15 +263,12 @@ float4 PS(PixelInput input) : SV_TARGET
     
     TextureColor.rgb += blend.rgb;
     
-    float2 Distance = input.Position.xy - center.xy;
-    float Dis = length(Distance);
-    
-    if(Dis <radius)
+    if (minus > 0.1f)
     {
-      
-        return TextureColor;
-        //return float4(TextureColor.rgb * (1.0f - Dis / radius), 1);
+        return float4(TextureColor.rgb, 1);
     }
+    TextureColor.rgb *= (minus * 10.0f);
+    return float4(TextureColor.rgb, 1);
     
     return float4(0, 0, 0, 1);
 }

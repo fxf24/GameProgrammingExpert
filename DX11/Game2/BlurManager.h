@@ -9,7 +9,7 @@ struct Blur
 	Color blendColor = Color(0.5f, 0.5f, 0.5f, 1.0f);
 	Vector2  center;
 	float   radius = 2000.0f;
-	float   padding;
+	float	slider = 0.0f;
 };
 
 class BlurManager : public Singleton<BlurManager>

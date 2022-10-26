@@ -103,6 +103,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerrainEditor", "TerrainEdi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Texture", "Texture", "{EF86CA58-00FB-452E-B1F6-3660A2C02861}"
 	ProjectSection(SolutionItems) = preProject
+		Contents\Texture\1200719.png = Contents\Texture\1200719.png
 		Contents\Texture\2000000.png = Contents\Texture\2000000.png
 		Contents\Texture\2000001.png = Contents\Texture\2000001.png
 		Contents\Texture\2000002.png = Contents\Texture\2000002.png

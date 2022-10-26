@@ -16,7 +16,6 @@ class Scene2 : public Scene
 
 	RenderTarget* RT = nullptr;
 	UI* PostEffect;
-
 public:
 	Scene2();
 	~Scene2();

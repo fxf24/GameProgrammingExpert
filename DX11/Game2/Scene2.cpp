@@ -55,6 +55,8 @@ void Scene2::Update()
 
     if (state == SceneState::FADEIN)
     {
+        BLUR->blur.center.x = App.GetHalfWidth();
+        BLUR->blur.center.y = App.GetHalfHeight();
         BLUR->blur.blendColor.x = 0.5f;
         BLUR->blur.blendColor.y = 0.5f;
         BLUR->blur.blendColor.z = 0.5f;
@@ -94,6 +96,7 @@ void Scene2::Update()
     Player->RenderHierarchy();
     Map->RenderHierarchy();
     Cam->RenderHierarchy();
+    PostEffect->RenderHierarchy();
     ImGui::End();
 
 
@@ -123,6 +126,7 @@ void Scene2::PreRender()
 {
     RT->Set();
     LIGHT->Set();
+    BLUR->Set();
     Cam->Set();
     sky->Render();
     Point->Render();
@@ -135,10 +139,9 @@ void Scene2::PreRender()
 
 void Scene2::Render()
 {
-
-
     PostEffect->material->diffuseMap->srv
         = RT->GetRTVSRV();
+
     PostEffect->Update();
     PostEffect->Render();
 }
