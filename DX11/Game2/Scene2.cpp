@@ -107,6 +107,7 @@ void Scene2::Update()
     Point->Update();
     Point2->Update();
     sky->Update();
+    PostEffect->Update();
 
 }
 
@@ -139,10 +140,10 @@ void Scene2::PreRender()
 
 void Scene2::Render()
 {
+    BLUR->Set();
     PostEffect->material->diffuseMap->srv
         = RT->GetRTVSRV();
 
-    PostEffect->Update();
     PostEffect->Render();
 }
 

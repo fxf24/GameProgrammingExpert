@@ -8,7 +8,8 @@ public:
 	Color	emissive;
 	float	shininess;
 	float	opacity;
-	Vector2 padding;
+	float   environment;
+	float	padding;
 };
 class Material : public MaterialBuffer
 {
@@ -21,6 +22,7 @@ public:
 	shared_ptr<Texture>			diffuseMap;
 	shared_ptr<Texture>			specularMap;
 	shared_ptr<Texture>			emissiveMap;
+	shared_ptr<Texture>			environmentMap;
 	string						file;
 public:
 	Material();

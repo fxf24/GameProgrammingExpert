@@ -111,8 +111,4 @@ void Light::Update()
     light->position = GetWorldPos();
 }
 
-void Light::Render()
-{
-    Actor::Render();
-}
 

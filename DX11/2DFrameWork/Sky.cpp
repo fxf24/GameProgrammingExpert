@@ -16,13 +16,13 @@ Sky* Sky::Create(string name)
 }
 
 
-void Sky::Render()
+void Sky::Render(class Shader* otherShader)
 {
 	DEPTH->Set(false);
 	BLEND->Set(true);
 	RASTER->Set(D3D11_CULL_FRONT);
 	texCube->Set(4);
-	Actor::Render();
+	Actor::Render(otherShader);
 	RASTER->Set(D3D11_CULL_BACK);
 	DEPTH->Set(true);
 	BLEND->Set(false);

@@ -405,10 +405,10 @@ bool Terrain::PathFinding(deque<Vector3>& Way, int Start, int End)
     return temp;
 }
 
-void Terrain::Render()
+void Terrain::Render(class Shader* otherShader)
 {
-    Actor::Render();
-    Vector3 Up = Vector3(0, 2, 0);
+    Actor::Render(otherShader);
+    Vector3 Up = Vector3(0, 1, 0);
     if (showNode)
     {
         DEPTH->Set(false);

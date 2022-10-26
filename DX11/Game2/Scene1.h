@@ -1,6 +1,7 @@
 #pragma once
 class Scene1 : public Scene
 {
+private:
 	Camera* Cam;
 
 	Sky* sky;
@@ -12,9 +13,14 @@ class Scene1 : public Scene
 
 	Int2   Pos;
 
+
+	CubeMap* cubeMap = nullptr;
+	Shader* cubeMappingShader;
+	Shader* cubeMappingShader2;
+	Actor*	sphere;
+
 	RenderTarget* RT = nullptr;
 	UI* PostEffect;
-
 
 public:
 	Scene1();
@@ -26,6 +32,5 @@ public:
 	virtual void PreRender() override;
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
-
 };
 

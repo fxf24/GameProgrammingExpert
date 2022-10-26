@@ -62,6 +62,5 @@ public:
 	static Light*	Create(string name = "Light");
 	virtual void	Release();
 	virtual void	Update() override;
-	virtual void	Render() override;
 	virtual void	RenderDetail();
 };

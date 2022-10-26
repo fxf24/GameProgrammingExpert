@@ -71,7 +71,7 @@ public:
     //가장 가까운노드 반환
     int             PickNode(Vector3 pos);
     bool            PathFinding(deque<Vector3>& Way, int Start, int End);
-    void            Render() override;
+    void            Render(class Shader* otherShader = nullptr) override;
     bool            RayCastingCollider(Ray WRay, OUT Vector3& HitPoint);
 };
 

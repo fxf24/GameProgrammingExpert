@@ -12,6 +12,7 @@ struct PixelInput
     float4 Color : COLOR0;
     float4 Normal : NORMAL0;
     float3 wPosition : POSITION0;
+    //float3 oPosition : POSITION1;
 };
 
 PixelInput VS(VertexInput input)
@@ -22,6 +23,7 @@ PixelInput VS(VertexInput input)
     //  o           =  i X W
     output.Position = mul(input.Position, World);
     output.wPosition = output.Position.xyz;
+    //output.oPosition = input.Position.xyz;
     output.Position = mul(output.Position, ViewProj);
     input.Normal.w = 0.0f;
     output.Normal = mul(input.Normal, World);
@@ -35,6 +37,14 @@ float4 PS(PixelInput input) : SV_TARGET
     float3 Normal = normalize(input.Normal);
     
     BaseColor = Lighting(BaseColor, float2(1, 1), Normal, input.wPosition);
+    
+    
+    if (environment)
+    {
+        BaseColor.rgb += EnvironmentMap.
+        Sample(EnvironmentSampler, input.Normal.xyz);
+    }
+    
     
     return BaseColor;
 }

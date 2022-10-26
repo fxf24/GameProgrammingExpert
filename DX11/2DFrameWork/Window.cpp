@@ -12,6 +12,7 @@ WPARAM Window::Run(Scene* main)
 	Material::CreateStaticMember();
 	Skeleton::CreateStaticMember();
 	Terrain::CreateStaticMember();
+	CubeMap::CreateStaticMember();
 	BLEND->Set(false);
 	MSG msg = { 0 };
 	while (true)
@@ -33,6 +34,7 @@ WPARAM Window::Run(Scene* main)
 			main->Update();
 			main->LateUpdate();
 			main->PreRender();
+
 			D3D->SetRenderTarget();
 			DWRITE->GetDC()->BeginDraw();
 			D3D->Clear(App.background);
@@ -52,6 +54,7 @@ WPARAM Window::Run(Scene* main)
 	Material::DeleteStaticMember();
 	Skeleton::DeleteStaticMember();
 	Terrain::DeleteStaticMember();
+	CubeMap::DeleteStaticMember();
 	TIMER->DeleteSingleton();
 	INPUT->DeleteSingleton();
 	GUI->DeleteSingleton();

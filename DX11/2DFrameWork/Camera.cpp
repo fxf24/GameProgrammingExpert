@@ -9,8 +9,8 @@ Camera::Camera()
 	height = App.GetHeight();
 	viewport.width = App.GetWidth();
 	viewport.height = App.GetHeight();
-	nearZ = 0.001f;
-	farZ = 1000.0f;
+	nearZ = 0.1f;
+	farZ = 500.0f;
 	type = ObType::Camera;
 	ortho = false;
 }

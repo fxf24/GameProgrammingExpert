@@ -43,7 +43,7 @@ protected:
 public:
 	virtual void	Release();
 	virtual void	Update();
-	virtual void	Render();
+	virtual void	Render(class Shader* otherShader = nullptr);
 	void			AddChild(GameObject* child);
 	void			AddBone(GameObject* child);
 	bool			RenderHierarchy();
@@ -77,6 +77,6 @@ public:
 	void			LoadFile(string file);
 	virtual void	RenderDetail();
 	virtual void	Update();
-	virtual void    Render();
+	virtual void    Render(class Shader* otherShader = nullptr);
 };
 

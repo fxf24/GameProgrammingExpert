@@ -115,14 +115,21 @@ void GameObject::Update()
 		it->second->Update();
 }
 
-void GameObject::Render()
+void GameObject::Render(class Shader* otherShader)
 {
 	if (visible)
 	{
 		if (mesh and shader)
 		{
 			Transform::Set();
-			shader->Set();
+			if (otherShader)
+			{
+				otherShader->Set();
+			}
+			else
+			{
+				shader->Set();
+			}
 			mesh->Set();
 
 			if (material)
@@ -133,9 +140,13 @@ void GameObject::Render()
 			D3D->GetDC()->DrawIndexed(mesh->indexCount, 0, 0);
 		}
 
+
 		for (auto it = children.begin(); it != children.end(); it++)
 		{
-			it->second->Render();
+			if(it->second->type == ObType::GameObject)
+				it->second->Render(otherShader);
+			else
+				it->second->Render();
 		}
 	}
 
@@ -244,12 +255,12 @@ void Actor::Update()
 	GameObject::Update();
 }
 
-void Actor::Render()
+void Actor::Render(class Shader* otherShader)
 {
 	if (skeleton)
 	{
 		//if (anim)anim->Update();
 		skeleton->Set();
 	}
-	GameObject::Render();
+	GameObject::Render(otherShader);
 }

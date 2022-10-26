@@ -124,6 +124,7 @@ extern Application App;//Extern Global
 #include "BlendState.h"
 #include "RasterState.h"
 #include "RenderTarget.h"
+#include "CubeMap.h"
 
 #include "Util.h"
 

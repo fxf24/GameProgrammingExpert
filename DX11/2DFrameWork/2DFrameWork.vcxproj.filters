@@ -107,6 +107,9 @@
     <ClInclude Include="RenderTarget.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="CubeMap.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -232,6 +235,9 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMap.cpp">
       <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>

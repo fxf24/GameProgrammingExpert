@@ -25,7 +25,7 @@ public:
         UINT height = App.GetHeight());
     ~RenderTarget();
 
-    void Set(Color clear = Color(1, 1, 1, 1));
+    void Set(Color clear = Color(0, 0, 0, 1));
 
     ID3D11ShaderResourceView* GetRTVSRV() { return rtvSrv; }
     ID3D11ShaderResourceView* GetDSVSRV() { return dsvSrv; }

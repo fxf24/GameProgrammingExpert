@@ -39,6 +39,14 @@ cbuffer GS_View : register(b3)
     float4 GSViewForward;
 }
 
+cbuffer GS_CubeMap : register(b4)
+{
+    //uint CubeRenderType;
+    //float3 CB_DynamicCube_Padding;
+    
+    matrix CubeViews[6];
+    matrix CubeProjection;
+};
 
 
 
@@ -56,7 +64,8 @@ cbuffer PS_Material : register(b1)
     float4 Ke;
     float Shininess;
     float Opacity;
-    float2 MaterialPadding;
+    float environment;
+    float MaterialPadding;
 }
 
 cbuffer PS_DirLight : register(b2)
@@ -103,6 +112,9 @@ SamplerState SamplerE : register(s3);
 
 TextureCube TextureSky : register(t4);
 SamplerState SamplerSky : register(s4);
+
+TextureCube EnvironmentMap : register(t5);
+SamplerState EnvironmentSampler : register(s5);
 
 matrix SkinWorld(float4 indices, float4 weights)
 {

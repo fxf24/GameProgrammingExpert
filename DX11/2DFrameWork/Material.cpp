@@ -10,10 +10,12 @@ Material::Material()
     emissive = Color(0.2f, 0.2f, 0.2f, 0.0f);
     shininess = 30.0f;
     opacity = 1.0f;
+    environment = 0.0f;
     normalMap = nullptr;
     diffuseMap = nullptr;
     emissiveMap = nullptr;
     specularMap = nullptr;
+    environmentMap = nullptr;
 }
 
 
@@ -23,6 +25,7 @@ Material::~Material()
     SafeReset(diffuseMap);
     SafeReset(specularMap);
     SafeReset(emissiveMap);
+    SafeReset(environmentMap);
 }
 
 void Material::CreateStaticMember()
@@ -56,6 +59,7 @@ void Material::Set()
     if (diffuseMap)diffuseMap->Set(1);
     if (specularMap)specularMap->Set(2);
     if (emissiveMap)emissiveMap->Set(3);
+    if (environmentMap)environmentMap->Set(5);
 }
 
 void Material::RenderDetail()
@@ -66,6 +70,7 @@ void Material::RenderDetail()
     ImGui::ColorEdit3("emissive", (float*)&emissive, ImGuiColorEditFlags_PickerHueWheel);
     ImGui::DragFloat("shiness", &shininess, 0.05f);
     ImGui::DragFloat("opacity", &opacity, 0.05f);
+    ImGui::DragFloat("environment", &environment, 0.05f,0.0f,1.0f);
 
 
     if (normalMap)
