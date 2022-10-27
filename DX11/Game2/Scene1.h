@@ -14,11 +14,14 @@ private:
 	Int2   Pos;
 
 
+	//Ã¹¹ø¤Š ·£´õÅ¸°Ù
 	CubeMap* cubeMap = nullptr;
 	Shader* cubeMappingShader;
 	Shader* cubeMappingShader2;
+	Shader* cubeMappingShader3;
 	Actor*	sphere;
 
+	//µÎ¹øÂ° ·»´õ Å¸°Ù
 	RenderTarget* RT = nullptr;
 	UI* PostEffect;
 

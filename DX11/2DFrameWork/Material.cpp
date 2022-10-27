@@ -4,6 +4,7 @@ ID3D11Buffer* Material::materialBuffer = nullptr;
 
 Material::Material()
 {
+    file = "defalut.mtl";
     ambient = Color(0.3f, 0.3f, 0.3f, 0.0f);
     diffuse = Color(1.0f, 1.0f, 1.0f, 0.0f);
     specular = Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -25,7 +26,7 @@ Material::~Material()
     SafeReset(diffuseMap);
     SafeReset(specularMap);
     SafeReset(emissiveMap);
-    SafeReset(environmentMap);
+    SafeRelease(environmentMap);
 }
 
 void Material::CreateStaticMember()
@@ -59,7 +60,7 @@ void Material::Set()
     if (diffuseMap)diffuseMap->Set(1);
     if (specularMap)specularMap->Set(2);
     if (emissiveMap)emissiveMap->Set(3);
-    if (environmentMap)environmentMap->Set(5);
+    if (environmentMap)D3D->GetDC()->PSSetShaderResources(5, 1, &environmentMap);
 }
 
 void Material::RenderDetail()
@@ -218,7 +219,7 @@ void Material::LoadFile(string file)
     }
     shininess = in.Float();
     opacity = in.Float();
-
+    environment = in.Float();
 
     in.Close();
 
@@ -288,6 +289,7 @@ void Material::SaveFile(string file)
 
     out.Float(shininess);
     out.Float(opacity);
+    out.Float(environment);
 
     out.Close();
 }

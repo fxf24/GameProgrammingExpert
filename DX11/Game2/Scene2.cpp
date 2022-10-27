@@ -3,15 +3,12 @@
 Scene2::Scene2()
 {
     sky = Sky::Create();
-
     Cam = Camera::Create();
 
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
-
     Player = Actor::Create();
     Player->LoadFile("Character2.xml");
-
     Map = Terrain::Create();
     Map->LoadFile("Map2.xml");
     Map->CreateStructuredBuffer();
@@ -19,28 +16,31 @@ Scene2::Scene2()
     Point = Light::Create("L1");
     Point2 = Light::Create("L2");
 
-    RT = new RenderTarget();
 
+
+    RT = new RenderTarget();
     PostEffect = UI::Create();
     PostEffect->LoadFile("Window2.xml");
+
 }
 
 Scene2::~Scene2()
 {
-
+    Map->Release();
+    Grid->Release();
 }
 
 void Scene2::Init()
 {
     time = 0.0f;
-    ResizeScreen();
-    Cam->LoadFile("Cam.xml");
+    Cam->LoadFile("Cam2.xml");
     Camera::main = Cam;
+    ResizeScreen();
 }
 
 void Scene2::Release()
 {
-    RESOURCE->ReleaseAll();
+
 }
 
 
@@ -48,19 +48,17 @@ void Scene2::Update()
 {
     if (ImGui::Button("ChangeScene"))
     {
-        SCENE->ChangeScene("SC1", 1.0f)->Init();
+        SCENE->ChangeScene("SC1",1.0f)->Init();
         time = 0.0f;
         return;
     }
-
     if (state == SceneState::FADEIN)
     {
-        BLUR->blur.center.x = App.GetHalfWidth();
-        BLUR->blur.center.y = App.GetHalfHeight();
         BLUR->blur.blendColor.x = 0.5f;
         BLUR->blur.blendColor.y = 0.5f;
         BLUR->blur.blendColor.z = 0.5f;
-        BLUR->blur.radius = Util::Lerp(0.0f, 2000.0f, time);
+        BLUR->blur.radius = Util::Lerp(0.0f,2000.0f,time);
+        BLUR->blur.center = Vector2(App.GetHalfWidth(), App.GetHalfHeight());
         time += DELTA;
         if (time > 1.0f)
         {
@@ -72,8 +70,9 @@ void Scene2::Update()
         time += DELTA;
         BLUR->blur.radius = Util::Lerp(2000.0f, 0.0f, time);
     }
-
     BLUR->Update();
+
+
 
     Pos.x = (Player->GetWorldPos().x + 128.0f) / (256.0f / 3.0f);
     Pos.y = (Player->GetWorldPos().z - 128.0f) / (-256.0f / 3.0f);
@@ -96,7 +95,6 @@ void Scene2::Update()
     Player->RenderHierarchy();
     Map->RenderHierarchy();
     Cam->RenderHierarchy();
-    PostEffect->RenderHierarchy();
     ImGui::End();
 
 
@@ -108,7 +106,6 @@ void Scene2::Update()
     Point2->Update();
     sky->Update();
     PostEffect->Update();
-
 }
 
 void Scene2::LateUpdate()
@@ -121,19 +118,18 @@ void Scene2::LateUpdate()
         Player->SetWorldPos(Hit);
         cout << endl;
     }
+
 }
 
 void Scene2::PreRender()
 {
     RT->Set();
     LIGHT->Set();
-    BLUR->Set();
     Cam->Set();
     sky->Render();
     Point->Render();
     Point2->Render();
     Grid->Render();
-
     Player->Render();
     Map->Render();
 }
@@ -141,10 +137,11 @@ void Scene2::PreRender()
 void Scene2::Render()
 {
     BLUR->Set();
-    PostEffect->material->diffuseMap->srv
-        = RT->GetRTVSRV();
 
+    //텍스쳐 위에 그렸던걸 가져와서 매핑
+    PostEffect->material->diffuseMap->srv = RT->GetRTVSRV();
     PostEffect->Render();
+
 }
 
 void Scene2::ResizeScreen()
@@ -153,4 +150,9 @@ void Scene2::ResizeScreen()
     Cam->height = App.GetHeight();
     Cam->viewport.width = App.GetWidth();
     Cam->viewport.height = App.GetHeight();
+
+    if (RT)
+    {
+        RT->ResizeScreen(Cam->viewport.width, Cam->viewport.height);
+    }
 }

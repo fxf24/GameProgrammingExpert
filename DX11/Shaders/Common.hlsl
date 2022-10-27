@@ -114,7 +114,7 @@ TextureCube TextureSky : register(t4);
 SamplerState SamplerSky : register(s4);
 
 TextureCube EnvironmentMap : register(t5);
-SamplerState EnvironmentSampler : register(s5);
+//SamplerState EnvironmentSampler : register(s5);
 
 matrix SkinWorld(float4 indices, float4 weights)
 {
@@ -174,6 +174,19 @@ float3 SpecularMapping(float2 Uv)
         return TextureS.Sample(SamplerS, Uv).rgb;
     
     return float3(1, 1, 1);
+}
+
+float3 EnvironmentMapping(float2 Uv, float3 Normal, float3 wPosition)
+{
+    [flatten]
+    if (environment != 0.0f)
+    {
+        float3 ViewDir = normalize(wPosition -ViewPos.xyz);
+        float3 reflection = reflect(ViewDir, Normal);
+        return EnvironmentMap.Sample(SamplerD, reflection.xyz) * environment;
+        //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
+    }
+    return float3(0, 0, 0);
 }
 
 float3 EmissiveMapping(float3 BaseColor, float2 Uv, float3 Normal, float3 wPosition)
@@ -329,6 +342,8 @@ float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
     Result.rgb += Ka.rgb * BaseColor.rgb;
     //Emissive
     Result.rgb += EmissiveMapping(BaseColor.rgb, Uv, Normal, wPosition);
+    
+    Result.rgb += EnvironmentMapping(Uv, Normal, wPosition);
     
     // 0 ~ 1 °¡µÎ±â
     return saturate(Result);

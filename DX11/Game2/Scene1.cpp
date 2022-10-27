@@ -22,12 +22,12 @@ Scene1::Scene1()
     PostEffect = UI::Create();
     PostEffect->LoadFile("Window2.xml");
 
-    cubeMap = new CubeMap();
+    cubeMap = new CubeMap(1000,1000);
     sphere = Actor::Create();
     sphere->LoadFile("Sphere2.xml");
-    sphere->material = make_shared<Material>();
+    /*sphere->material = make_shared<Material>();
     sphere->material->environmentMap = make_shared<Texture>();
-    sphere->material->environment = 1.0f;
+    sphere->material->environment = 1.0f;*/
     cubeMappingShader = new Shader();
     cubeMappingShader->LoadFile("0.ExamCubeMap.hlsl");
     cubeMappingShader->LoadGeometry();
@@ -35,6 +35,10 @@ Scene1::Scene1()
     cubeMappingShader2 = new Shader();
     cubeMappingShader2->LoadFile("4.CubeMap.hlsl");
     cubeMappingShader2->LoadGeometry();
+
+    cubeMappingShader3 = new Shader();
+    cubeMappingShader3->LoadFile("5.CubeMap.hlsl");
+    cubeMappingShader3->LoadGeometry();
 }
 
 Scene1::~Scene1()
@@ -139,10 +143,13 @@ void Scene1::LateUpdate()
 
 void Scene1::PreRender()
 {
+    //atan2(1, 1);
     //환경맵 그리기
     LIGHT->Set();
     cubeMap->Set(sphere->GetWorldPos());
-    sky->Render(cubeMappingShader2);
+    sky->Render(cubeMappingShader);
+    Player->Render(cubeMappingShader2);
+    Map->Render(cubeMappingShader3);
 
 
     //포스트이펙트 텍스쳐에 그리기
@@ -154,8 +161,7 @@ void Scene1::PreRender()
     Grid->Render();
     Player->Render();
     Map->Render();
-    sphere->material->environmentMap->srv = cubeMap->GetRTVSRV();
-   
+    sphere->material->environmentMap = cubeMap->GetRTVSRV();
     sphere->Render();
 }
 
@@ -164,6 +170,7 @@ void Scene1::Render()
     //포스트이펙트 렌더
     BLUR->Set();
     PostEffect->material->diffuseMap->srv = RT->GetRTVSRV();
+  
     PostEffect->Render();
 }
 

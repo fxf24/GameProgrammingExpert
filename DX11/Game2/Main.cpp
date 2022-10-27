@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Main.h"
 
-Blur blur;
 
 Main::Main()
 {
@@ -12,53 +11,43 @@ Main::~Main()
 
 void Main::Init()
 {
-
-	SCENE->AddScene("SC1", new Scene1());
-	SCENE->AddScene("SC2", new Scene2());
-	//SCENE->AddScene("LOADING", new Scene1());
-	SCENE->ChangeScene("SC1")->Init();
 	BLUR->blur.blendColor.x = 0.0f;
 	BLUR->blur.blendColor.y = 0.0f;
 	BLUR->blur.blendColor.z = 0.0f;
+	SCENE->AddScene("SC1", new Scene1());
+	SCENE->AddScene("SC2", new Scene2());
+	SCENE->ChangeScene("SC1")->Init();
 }
-
 
 void Main::Release()
 {
 	SCENE->Release();
 }
 
+
 void Main::Update()
 {
 	SCENE->Update();
-
 }
 
 void Main::LateUpdate()
 {
 	SCENE->LateUpdate();
-
-
 }
-void Main::PreRender()
-{
-	SCENE->PreRender();
-}
+
 void Main::Render()
 {
 	SCENE->Render();
-
-	BLUR->Set();
 }
 
 void Main::ResizeScreen()
 {
 	SCENE->ResizeScreen();
+}
 
-	if (RT)
-	{
-		RT->ResizeScreen(Cam->viewport.width, Cam->viewport.height);
-	}
+void Main::PreRender()
+{
+	SCENE->PreRender();
 }
 
 

@@ -1,29 +1,16 @@
 #pragma once
 
 
+
 class Main : public Scene
 {
 private:
 
-	Camera* Cam;
+	
 
-	Sky*	sky;
-	Actor* Grid;
-	Actor* Player;
-	Light* Point;
-	Light* Point2;
-	Terrain* Map;
+	
+	
 
-	Int2   Pos;
-
-	Actor* Sphere[3][3];
-
-	RenderTarget*	RT = nullptr;
-	UI*				PostEffect;
-
-
-	bool changeScene = true;
-	bool action = true;
 public:
 	Main();
 	~Main();

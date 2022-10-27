@@ -1,6 +1,7 @@
 #pragma once
 class Scene2 : public Scene
 {
+private:
 	Camera* Cam;
 
 	Sky* sky;
@@ -12,10 +13,10 @@ class Scene2 : public Scene
 
 	Int2   Pos;
 
-	Actor* Sphere[3][3];
 
 	RenderTarget* RT = nullptr;
 	UI* PostEffect;
+
 public:
 	Scene2();
 	~Scene2();
@@ -26,6 +27,4 @@ public:
 	virtual void PreRender() override;
 	virtual void Render() override;
 	virtual void ResizeScreen() override;
-
 };
-

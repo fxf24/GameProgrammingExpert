@@ -22,7 +22,7 @@ public:
 	shared_ptr<Texture>			diffuseMap;
 	shared_ptr<Texture>			specularMap;
 	shared_ptr<Texture>			emissiveMap;
-	shared_ptr<Texture>			environmentMap;
+	ID3D11ShaderResourceView*   environmentMap;
 	string						file;
 public:
 	Material();
