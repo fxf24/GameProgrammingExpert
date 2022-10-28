@@ -98,7 +98,7 @@ CubeMap::CubeMap(UINT width, UINT height)
 		ZeroMemory(&desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 		desc.Format = DXGI_FORMAT_R32_FLOAT;
 		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-		desc.Texture2D.MipLevels = 1;
+		desc.TextureCube.MipLevels = 1;
 		Check(D3D->GetDevice()->CreateShaderResourceView(dsvTexture, &desc, &dsvSrv));
 	}*/
 
@@ -118,7 +118,7 @@ CubeMap::~CubeMap()
 	SafeRelease(dsv);
 }
 
-void CubeMap::Set(Vector3 position, float zNear, float zFar, Color clear)
+void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color clear)
 {
 
 
@@ -151,7 +151,16 @@ void CubeMap::Set(Vector3 position, float zNear, float zFar, Color clear)
 		}
 	}
 	desc.Projection=
-	Matrix::CreatePerspectiveFieldOfView(PI_DIV2, width / height, zNear, zFar);
+	Matrix::CreatePerspectiveFieldOfView(fov, width / height , zNear, zFar);
+	//Matrix::CreateOrthographic(2, 2, 1.0f, zFar);
+
+	desc.Projection._41 = -10.0f;
+	desc.Projection._32 = -20.0f * TORADIAN;
+	//desc.Projection._23 = 60.0f * TORADIAN;
+	
+	//desc.Projection._12 = 60.0f * TORADIAN;
+	//desc.Projection._43 = 0.0f;
+
 
 	desc.Projection = desc.Projection.Transpose();
 
@@ -167,6 +176,114 @@ void CubeMap::Set(Vector3 position, float zNear, float zFar, Color clear)
 	D3D->SetRenderTarget(rtv, dsv);
 	D3D->Clear(clear, rtv, dsv);
 
-	/*D3D::Get()->SetRenderTarget(rtv, dsv);
-	D3D::Get()->Clear(Color(0, 0, 0, 1), rtv, dsv);*/
+}
+
+void CubeMap::ResizeScreen(float width, float height)
+{
+	if (width < 1 || height < 1)
+		return;
+
+	this->width = width;
+	this->height = height;
+
+	DeleteBackBuffer();
+
+	CreateBackBuffer(width, height);
+}
+
+void CubeMap::CreateBackBuffer(float width, float height)
+{
+	DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	//Create Texture2D - RTV
+	{
+		D3D11_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+		desc.Width = width;
+		desc.Height = height;
+		desc.ArraySize = 6;
+		desc.Format = rtvFormat;
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+		desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+		desc.MipLevels = 1;
+		desc.SampleDesc.Count = 1;
+
+		Check(D3D->GetDevice()->CreateTexture2D(&desc, NULL, &rtvTexture));
+	}
+
+	//Create RTV
+	{
+		D3D11_RENDER_TARGET_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+		desc.Format = rtvFormat;
+		desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		desc.Texture2DArray.ArraySize = 6;
+
+		Check(D3D->GetDevice()->CreateRenderTargetView(rtvTexture, &desc, &rtv));
+	}
+
+	//Create SRV
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		desc.Format = rtvFormat;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		desc.TextureCube.MipLevels = 1;
+
+		Check(D3D->GetDevice()->CreateShaderResourceView(rtvTexture, &desc, &rtvSrv));
+	}
+
+
+	DXGI_FORMAT dsvFormat = DXGI_FORMAT_D32_FLOAT;
+	//Create Texture - DSV
+	{
+		D3D11_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+		desc.Width = width;
+		desc.Height = height;
+		desc.ArraySize = 6;
+		desc.Format = dsvFormat;
+		desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+		desc.MipLevels = 1;
+		desc.SampleDesc.Count = 1;
+
+		Check(D3D->GetDevice()->CreateTexture2D(&desc, NULL, &dsvTexture));
+	}
+
+	//CreateDSV
+	{
+		D3D11_DEPTH_STENCIL_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+		desc.Format = dsvFormat;
+		desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+		desc.Texture2DArray.ArraySize = 6;
+
+		Check(D3D->GetDevice()->CreateDepthStencilView(dsvTexture, &desc, &dsv));
+	}
+
+	//Create SRV2
+	/*{
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		desc.Format = DXGI_FORMAT_R32_FLOAT;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		desc.TextureCube.MipLevels = 1;
+		Check(D3D->GetDevice()->CreateShaderResourceView(dsvTexture, &desc, &dsvSrv));
+	}*/
+
+	viewport.width = (float)width;
+	viewport.height = (float)height;
+	this->width = (float)width;
+	this->height = (float)height;
+}
+
+void CubeMap::DeleteBackBuffer()
+{
+	SafeRelease(rtvTexture);
+	SafeRelease(dsvTexture);
+	//SafeRelease(dsvSrv);
+	SafeRelease(rtvSrv);
+	SafeRelease(rtv);
+	SafeRelease(dsv);
 }

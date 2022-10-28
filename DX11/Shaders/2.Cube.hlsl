@@ -39,12 +39,5 @@ float4 PS(PixelInput input) : SV_TARGET
     BaseColor = Lighting(BaseColor, float2(1, 1), Normal, input.wPosition);
     
     
-    if (environment)
-    {
-        BaseColor.rgb += EnvironmentMap.
-        Sample(EnvironmentSampler, input.Normal.xyz);
-    }
-    
-    
     return BaseColor;
 }

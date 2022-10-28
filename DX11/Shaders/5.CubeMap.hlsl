@@ -11,9 +11,9 @@ struct VertexInput
 struct GeometryInput
 {
     float4 Position : SV_POSITION;
+    float3 wPosition : POSITION0;
     float2 Uv : UV0;
     float4 Normal : NORMAL0;
-    float3 wPosition : POSITION0;
     float Weights : WEIGHTS0;
 };
 
@@ -60,8 +60,8 @@ void GS(triangle GeometryInput input[3], inout TriangleStream<PixelInput> stream
             output.Position = mul(output.Position, CubeViews[i]);
             output.Position = mul(output.Position, CubeProjection);
             output.Uv = input[vertex].Uv;
-            output.Normal = input[vertex].Normal;
             output.wPosition = input[vertex].Position;
+            output.Normal = input[vertex].Normal;
             output.Weights = input[vertex].Weights;
             stream.Append(output);
         }
@@ -76,8 +76,7 @@ float4 PS(PixelInput input) : SV_TARGET
     float4 BaseColor = TextureD.Sample(SamplerD, input.Uv);
    
     float4 BaseColor2 = TextureN.Sample(SamplerN, input.Uv);
-    BaseColor = BaseColor * input.Weights 
-    + BaseColor2 * (1 - input.Weights);
+    BaseColor = BaseColor * input.Weights + BaseColor2 * (1 - input.Weights);
     
     
     float3 Normal = normalize(input.Normal);

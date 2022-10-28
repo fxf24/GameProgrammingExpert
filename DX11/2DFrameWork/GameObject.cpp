@@ -122,6 +122,7 @@ void GameObject::Render(class Shader* otherShader)
 		if (mesh and shader)
 		{
 			Transform::Set();
+			//prerender같은곳에서만 다른 쉐이더 사용할경우
 			if (otherShader)
 			{
 				otherShader->Set();

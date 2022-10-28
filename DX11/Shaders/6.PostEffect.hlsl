@@ -23,8 +23,17 @@ PixelInput VS(VertexInput input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
+    float2 UV = input.Uv;
+    //UV.r = floor(UV.r);
+    //UV.g = floor(UV.g);
     
-    float4 BaseColor = DiffuseMapping(input.Uv);
+    //UV /= 100.0f;
+    
+    //            -1 ~ 1
+    UV.y = UV.y + sin(UV.y * 0.03);
+    
+    
+    float4 BaseColor = DiffuseMapping(UV);
     //float avg = BaseColor.r + BaseColor.g + BaseColor.b;
     //avg /= 3.0f;
     //float3 temp = avg;
@@ -47,23 +56,25 @@ float4 PS(PixelInput input) : SV_TARGET
     //    BaseColor.b = 0.0f;
     //}
     
-    //BaseColor.r *= 5.0f;
-    //BaseColor.g *= 5.0f;
-    //BaseColor.b *= 5.0f;
+    // 0.33 -> 3.3 -> 3 -> 0.3
+    
+    //BaseColor.r *= 100.0f;
+    //BaseColor.g *= 100.0f;
+    //BaseColor.b *= 100.0f;
     
     //BaseColor.r = floor(BaseColor.r);
     //BaseColor.g = floor(BaseColor.g);
     //BaseColor.b = floor(BaseColor.b);
     
-    //BaseColor.r /= 5.0f;
-    //BaseColor.g /= 5.0f;
-    //BaseColor.b /= 5.0f;
+    //BaseColor.r /= 100.0f;
+    //BaseColor.g /= 100.0f;
+    //BaseColor.b /= 100.0f;
        
     //모노
     //BaseColor.rgb = BaseColor.r * 0.3f + BaseColor.g * 0.59f + BaseColor.b * 0.11f;
-
+    //BaseColor.rgb = BaseColor.r * 0.33f + BaseColor.g * 0.33f + BaseColor.b * 0.33f;
+    
     //색 반전
     //BaseColor.rgb = (1.0f - BaseColor.rgb);
-    
     return BaseColor;
 }

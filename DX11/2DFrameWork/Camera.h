@@ -19,8 +19,8 @@ private:
 	
 public:
 	Matrix		view, proj;
-	bool		ortho;
 	Viewport	viewport;
+	bool		ortho;
 	float		fov,nearZ,farZ, width, height;
 protected:
 	Camera();
