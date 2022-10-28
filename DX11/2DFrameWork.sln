@@ -83,6 +83,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498
 		Shaders\4.Cube.hlsl = Shaders\4.Cube.hlsl
 		Shaders\4.CubeMap.hlsl = Shaders\4.CubeMap.hlsl
 		Shaders\5.Cube.hlsl = Shaders\5.Cube.hlsl
+		Shaders\5.CubeMap.hlsl = Shaders\5.CubeMap.hlsl
 		Shaders\5.TerrainEditor.hlsl = Shaders\5.TerrainEditor.hlsl
 		Shaders\6.Blur.hlsl = Shaders\6.Blur.hlsl
 		Shaders\6.Cube.hlsl = Shaders\6.Cube.hlsl

@@ -17,6 +17,7 @@ private:
 	CubeMap* cubeMap = nullptr;
 	Shader* cubeMappingShader;
 	Shader* cubeMappingShader2;
+	Shader* cubeMappingShader3;
 	Actor*	sphere;
 
 	RenderTarget* RT = nullptr;

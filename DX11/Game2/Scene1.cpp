@@ -35,6 +35,10 @@ Scene1::Scene1()
     cubeMappingShader2 = new Shader();
     cubeMappingShader2->LoadFile("4.CubeMap.hlsl");
     cubeMappingShader2->LoadGeometry();
+
+    cubeMappingShader3 = new Shader();
+    cubeMappingShader3->LoadFile("5.CubeMap.hlsl");
+    cubeMappingShader3->LoadGeometry();
 }
 
 Scene1::~Scene1()
@@ -142,8 +146,9 @@ void Scene1::PreRender()
     //환경맵 그리기
     LIGHT->Set();
     cubeMap->Set(sphere->GetWorldPos());
-    sky->Render(cubeMappingShader2);
-
+    sky->Render(cubeMappingShader);
+    Player->Render(cubeMappingShader2);
+    Map->Render(cubeMappingShader3);
 
     //포스트이펙트 텍스쳐에 그리기
     RT->Set();
@@ -152,8 +157,8 @@ void Scene1::PreRender()
     Point->Render();
     Point2->Render();
     Grid->Render();
-    Player->Render();
     Map->Render();
+    Player->Render();
     sphere->material->environmentMap->srv = cubeMap->GetRTVSRV();
    
     sphere->Render();
