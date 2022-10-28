@@ -13,7 +13,9 @@ Scene1::Scene1()
     Map->LoadFile("Map2.xml");
     Map->CreateStructuredBuffer();
 
-    Point = Light::Create("L1");
+    Point = Actor::Create();
+    Point->LoadFile("Sphere.xml");
+
     Point2 = Light::Create("L2");
 
 
@@ -139,14 +141,32 @@ void Scene1::LateUpdate()
         cout << endl;
     }
 
+    
 }
 
 void Scene1::PreRender()
 {
+    //¹Ý»ç
+    /*Vector3 Dir = sphere->GetWorldPos() - Camera::main->GetWorldPos();
+    float dis = Dir.Length();
+    Dir.Normalize();
+    Vector3 reflect = Vector3::Reflect(Dir, sphere->GetUp());
+    Vector3 Pos = sphere->GetWorldPos() - reflect * dis;
+    Point->SetWorldPos(Pos);*/
+
+    //±¼Àý
+    Vector3 Dir = sphere->GetWorldPos() - Camera::main->GetWorldPos();
+    float dis = Dir.Length();
+    Dir.Normalize();
+    Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), 1.333f);
+    Vector3 Pos = sphere->GetWorldPos() + refract * dis;
+    Point->SetWorldPos(Pos);
+
     //atan2(1, 1);
     //È¯°æ¸Ê ±×¸®±â
     LIGHT->Set();
-    cubeMap->Set(sphere->GetWorldPos());
+    cubeMap->Set(Pos);
+    //cubeMap->Set(sphere->GetWorldPos());
     sky->Render(cubeMappingShader);
     Player->Render(cubeMappingShader2);
     Map->Render(cubeMappingShader3);
@@ -162,7 +182,9 @@ void Scene1::PreRender()
     Player->Render();
     Map->Render();
     sphere->material->environmentMap = cubeMap->GetRTVSRV();
+    BLEND->Set(true);
     sphere->Render();
+    BLEND->Set(false);
 }
 
 void Scene1::Render()
@@ -170,7 +192,6 @@ void Scene1::Render()
     //Æ÷½ºÆ®ÀÌÆåÆ® ·»´õ
     BLUR->Set();
     PostEffect->material->diffuseMap->srv = RT->GetRTVSRV();
-  
     PostEffect->Render();
 }
 

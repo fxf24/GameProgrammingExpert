@@ -53,7 +53,7 @@ void Main::Update()
     ImGui::Begin("AssimpImporter");
 
     if (GUI->FileImGui("ModelImporter", "ModelImporter",
-        ".fbx,.obj,.x", "../Assets"))
+        ".fbx,.obj,.x,.dae", "../Assets"))
     {
 		file = ImGuiFileDialog::Instance()->GetCurrentFileName();
         string path = "../Assets/" + file;

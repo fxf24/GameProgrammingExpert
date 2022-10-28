@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlurManager.h" />
+    <ClInclude Include="Blur.h" />
     <ClInclude Include="Inven.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Scene1.h" />
@@ -28,12 +28,15 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlurManager.cpp" />
+    <ClCompile Include="Blur.cpp" />
     <ClCompile Include="Inven.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="Shop.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="window.ini" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

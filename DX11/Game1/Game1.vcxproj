@@ -30,7 +30,6 @@
     <ClCompile Include="CubeMan.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

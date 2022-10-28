@@ -3,35 +3,35 @@
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Shop.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Inven.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
     <ClInclude Include="Scene2.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene1.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Inven.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Shop.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BlurManager.h" />
+    <ClInclude Include="Blur.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Scene1.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene2.cpp">
-      <Filter>Scene</Filter>
+    <ClCompile Include="Shop.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Inven.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Shop.cpp">
-      <Filter>GameObject</Filter>
+    <ClCompile Include="Scene2.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="BlurManager.cpp" />
+    <ClCompile Include="Scene1.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Blur.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -40,5 +40,8 @@
     <Filter Include="GameObject">
       <UniqueIdentifier>{b626eecd-f76c-49d7-8a29-a4515a4fda19}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="window.ini" />
   </ItemGroup>
 </Project>

@@ -21,9 +21,6 @@
     <ClCompile Include="CubeMan.cpp">
       <Filter>Actors</Filter>
     </ClCompile>
-    <ClCompile Include="Scene1.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="LoadingScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>

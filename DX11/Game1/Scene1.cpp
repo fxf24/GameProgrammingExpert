@@ -174,9 +174,7 @@ void Scene1::LateUpdate()
     }
 }
 
-void Scene1::PreRender()
-{
-}
+
 
 void Scene1::Render()
 {

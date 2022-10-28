@@ -7,7 +7,7 @@ private:
 	Sky* sky;
 	Actor* Grid;
 	Actor* Player;
-	Light* Point;
+	Actor* Point;
 	Light* Point2;
 	Terrain* Map;
 

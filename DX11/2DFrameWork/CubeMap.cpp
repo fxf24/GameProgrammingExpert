@@ -151,8 +151,7 @@ void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color cle
 		}
 	}
 	desc.Projection=
-	//Matrix::CreatePerspectiveFieldOfView(fov, width / height, zNear, zFar);
-	Matrix::CreateOrthographic(width, height, zNear, zFar);
+	Matrix::CreatePerspectiveFieldOfView(fov, width / height, zNear, zFar);
 
 	desc.Projection = desc.Projection.Transpose();
 
