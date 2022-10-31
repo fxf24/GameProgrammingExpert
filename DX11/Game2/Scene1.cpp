@@ -41,6 +41,19 @@ Scene1::Scene1()
     cubeMappingShader3 = new Shader();
     cubeMappingShader3->LoadFile("5.CubeMap.hlsl");
     cubeMappingShader3->LoadGeometry();
+
+    {
+        D3D11_BUFFER_DESC desc = { 0 };
+        desc.ByteWidth = sizeof(Refraction);
+        desc.Usage = D3D11_USAGE_DYNAMIC;
+        desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
+        desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        desc.MiscFlags = 0;
+        desc.StructureByteStride = 0;
+        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &refractionBuffer);
+        assert(SUCCEEDED(hr));
+
+    }
 }
 
 Scene1::~Scene1()
@@ -101,6 +114,16 @@ void Scene1::Update()
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     ImGui::SliderFloat("refractionIdx", &refractionIdx, 0, 2.0f);
+
+    desc.RefractionIdx = refractionIdx;
+    {
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        D3D->GetDC()->Map(refractionBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        memcpy_s(mappedResource.pData, sizeof(Refraction), &desc, sizeof(Refraction));
+        D3D->GetDC()->Unmap(refractionBuffer, 0);
+        D3D->GetDC()->PSSetConstantBuffers(4, 1, &refractionBuffer);
+    }
+    
     Camera::ControlMainCam();
     LIGHT->RenderDetail();
     //
@@ -163,7 +186,7 @@ void Scene1::PreRender()
     //atan2(1, 1);
     //환경맵 그리기
     LIGHT->Set();
-    cubeMap->Set(Pos2, refractionIdx);
+    cubeMap->Set(Pos2);
     //cubeMap->Set(sphere->GetWorldPos());
     sky->Render(cubeMappingShader);
     Map->Render(cubeMappingShader3);

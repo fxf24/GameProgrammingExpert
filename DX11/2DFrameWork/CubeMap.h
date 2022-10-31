@@ -22,8 +22,6 @@ private:
     {
         Matrix Views[6];
         Matrix Projection;
-        float  refractionIdx;
-        Vector3  CubeMapPadding;
     } desc;
     Viewport    viewport;
     Vector3     position;
@@ -38,7 +36,7 @@ public:
     CubeMap(UINT width = 256, UINT height = 256);
     ~CubeMap();
 
-    void Set(Vector3  position, float refractionIdx, float fov = PI_DIV2,float zNear = 0.1f, float zFar = 500.0f, Color clear = Color(0, 0, 0, 1));
+    void Set(Vector3  position, float fov = PI_DIV2,float zNear = 0.1f, float zFar = 500.0f, Color clear = Color(0, 0, 0, 1));
 
     ID3D11ShaderResourceView* GetRTVSRV() { return rtvSrv; }
     //ID3D11ShaderResourceView* GetDSVSRV() { return dsvSrv; }

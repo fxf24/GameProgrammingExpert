@@ -118,7 +118,7 @@ CubeMap::~CubeMap()
 	SafeRelease(dsv);
 }
 
-void CubeMap::Set(Vector3 position, float refractionIdx, float fov,float zNear, float zFar, Color clear)
+void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color clear)
 {
 
 
@@ -155,7 +155,6 @@ void CubeMap::Set(Vector3 position, float refractionIdx, float fov,float zNear, 
 
 	desc.Projection = desc.Projection.Transpose();
 
-	desc.refractionIdx = refractionIdx;
 	D3D->GetDC()->RSSetViewports(1, viewport.Get11());
 
 	{

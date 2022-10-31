@@ -46,8 +46,6 @@ cbuffer GS_CubeMap : register(b4)
     
     matrix CubeViews[6];
     matrix CubeProjection;
-    float  refractionIdx;
-    float3 CubeMapPadding;
 };
 
 
@@ -56,6 +54,7 @@ cbuffer GS_CubeMap : register(b4)
 cbuffer PS_ViewPos : register(b0)
 {
     float4 ViewPos;
+    
 }
 
 cbuffer PS_Material : register(b1)
@@ -97,7 +96,11 @@ cbuffer PS_Lights : register(b3)
 {
     Light lights[MAX_LIGHT];
 }
-
+cbuffer PS_Refraction : register(b4)
+{
+    float  RefractionIdx;
+    float3 RefractionPadding;
+}
 //Texture3D a;
 
 Texture2D TextureN : register(t0);
@@ -185,7 +188,7 @@ float3 EnvironmentMapping(float2 Uv, float3 Normal, float3 wPosition)
     {
         float3 ViewDir = normalize(wPosition - ViewPos.xyz);
         float3 reflection = reflect(ViewDir, Normal);
-        float3 refraction = refract(ViewDir, Normal, refractionIdx);
+        float3 refraction = refract(ViewDir, Normal, RefractionIdx);
         
         return EnvironmentMap.Sample(SamplerD, refraction) * environment;
         //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
