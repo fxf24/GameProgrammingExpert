@@ -41,19 +41,6 @@ Scene1::Scene1()
     cubeMappingShader3 = new Shader();
     cubeMappingShader3->LoadFile("5.CubeMap.hlsl");
     cubeMappingShader3->LoadGeometry();
-
-    {
-        D3D11_BUFFER_DESC desc = { 0 };
-        desc.ByteWidth = sizeof(Refraction);
-        desc.Usage = D3D11_USAGE_DYNAMIC;
-        desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
-        desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        desc.MiscFlags = 0;
-        desc.StructureByteStride = 0;
-        HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &refractionBuffer);
-        assert(SUCCEEDED(hr));
-
-    }
 }
 
 Scene1::~Scene1()
@@ -113,17 +100,8 @@ void Scene1::Update()
     ImGui::Text("X: %d  Y: %d ", Pos.x, Pos.y);
 
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
-    ImGui::SliderFloat("refractionIdx", &refractionIdx, 0, 2.0f);
+    cubeMap->RenderDetail();
 
-    desc.RefractionIdx = refractionIdx;
-    {
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
-        D3D->GetDC()->Map(refractionBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-        memcpy_s(mappedResource.pData, sizeof(Refraction), &desc, sizeof(Refraction));
-        D3D->GetDC()->Unmap(refractionBuffer, 0);
-        D3D->GetDC()->PSSetConstantBuffers(4, 1, &refractionBuffer);
-    }
-    
     Camera::ControlMainCam();
     LIGHT->RenderDetail();
     //
@@ -174,23 +152,41 @@ void Scene1::PreRender()
     Vector3 reflect = Vector3::Reflect(Dir, sphere->GetUp());
     Vector3 Pos = sphere->GetWorldPos() - reflect * dis;
     Point->SetWorldPos(Pos);*/
+    Vector3 Pos;
+    Vector3 Dir = sphere->GetWorldPos() - Camera::main->GetWorldPos();
+    float dis = Dir.Length();
+    Dir.Normalize();
 
+    if (cubeMap->desc2.CubeMapType == 0)
+    {
+        Vector3 reflect = Vector3::Reflect(Dir, sphere->GetUp());
+        Pos = sphere->GetWorldPos() - reflect * dis;
+        Point->SetWorldPos(Pos);
+    }
+    else if (cubeMap->desc2.CubeMapType == 1)
+    {
+        Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractionIdx);
+        Pos = sphere->GetWorldPos() - refract * dis;
+        //Pos = Camera::main->GetWorldPos();
+        Point->SetWorldPos(Pos);
+    }
+    else if (cubeMap->desc2.CubeMapType == 2)
+    {
+        Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractionIdx);
+        Pos = sphere->GetWorldPos() - refract * dis;
+        //Pos = Camera::main->GetWorldPos();
+        Point->SetWorldPos(Pos);
+    }
     //굴절
-    Vector3 Dir2 = sphere->GetWorldPos() - Camera::main->GetWorldPos();
-    float dis2 = Dir2.Length();
-    Dir2.Normalize();
-    Vector3 refract = Vector3::Refract(Dir2, sphere->GetUp(), refractionIdx);
-    Vector3 Pos2 = sphere->GetWorldPos() - refract * dis2;
-    Point->SetWorldPos(Pos2);
-
+    
     //atan2(1, 1);
     //환경맵 그리기
     LIGHT->Set();
-    cubeMap->Set(Pos2);
+    cubeMap->Set(Pos);
     //cubeMap->Set(sphere->GetWorldPos());
     sky->Render(cubeMappingShader);
-    Map->Render(cubeMappingShader3);
     Player->Render(cubeMappingShader2);
+    Map->Render(cubeMappingShader3);
 
 
     //포스트이펙트 텍스쳐에 그리기

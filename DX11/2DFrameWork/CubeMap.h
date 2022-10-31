@@ -3,6 +3,7 @@ class CubeMap
 {
 private:
     static ID3D11Buffer* camBuffer;
+    static ID3D11Buffer* PSBuffer;
 
     UINT width, height;
 
@@ -26,9 +27,20 @@ private:
     Viewport    viewport;
     Vector3     position;
 
-  
+    ID3D11Buffer* refractionBuffer;
+    struct PSCubeMap
+    {
+        int CubeMapType = 0;
+        float RefractionIdx = 1.0f;
+        Vector2 CubeMapPadding;
+        Matrix Rotation;
+    };
+
 public:
-  
+    shared_ptr<Texture> water;
+    PSCubeMap desc2;
+    Vector3 rot;
+
     static void CreateStaticMember();
     static void DeleteStaticMember();
 
@@ -49,5 +61,7 @@ public:
     //창사이즈 조절
     void CreateBackBuffer(float width, float height);
     void DeleteBackBuffer();
+
+    void RenderDetail();
 };
 

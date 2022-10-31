@@ -1,5 +1,6 @@
 #include "framework.h"
 ID3D11Buffer* CubeMap::camBuffer = nullptr;
+ID3D11Buffer* CubeMap::PSBuffer = nullptr;
 void CubeMap::CreateStaticMember()
 {
 	{
@@ -12,17 +13,31 @@ void CubeMap::CreateStaticMember()
 		desc.StructureByteStride = 0;
 		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &camBuffer);
 		assert(SUCCEEDED(hr));
+	}
 
+	{
+		D3D11_BUFFER_DESC desc = { 0 };
+		desc.ByteWidth = sizeof(PSCubeMap);
+		desc.Usage = D3D11_USAGE_DYNAMIC;
+		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//상수버퍼
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		desc.MiscFlags = 0;
+		desc.StructureByteStride = 0;
+		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &PSBuffer);
+		assert(SUCCEEDED(hr));
 	}
 }
 
 void CubeMap::DeleteStaticMember()
 {
 	SafeRelease(camBuffer);
+	SafeRelease(PSBuffer);
 }
 
 CubeMap::CubeMap(UINT width, UINT height)
 {
+	water = RESOURCE->textures.Load("Water.dds");
+
 	DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	//Create Texture2D - RTV
@@ -120,7 +135,7 @@ CubeMap::~CubeMap()
 
 void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color clear)
 {
-
+	water->Set(6);
 
 	this->position = position;
 
@@ -157,6 +172,9 @@ void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color cle
 
 	D3D->GetDC()->RSSetViewports(1, viewport.Get11());
 
+	desc2.Rotation = Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	desc2.Rotation = desc2.Rotation.Transpose();
+
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		D3D->GetDC()->Map(camBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -164,6 +182,15 @@ void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color cle
 		D3D->GetDC()->Unmap(camBuffer, 0);
 		D3D->GetDC()->GSSetConstantBuffers(4, 1, &camBuffer);
 	}
+
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		D3D->GetDC()->Map(PSBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		memcpy_s(mappedResource.pData, sizeof(PSCubeMap), &desc2, sizeof(PSCubeMap));
+		D3D->GetDC()->Unmap(PSBuffer, 0);
+		D3D->GetDC()->PSSetConstantBuffers(4, 1, &PSBuffer);
+	}
+
 	D3D->SetRenderTarget(rtv, dsv);
 	D3D->Clear(clear, rtv, dsv);
 
@@ -277,4 +304,13 @@ void CubeMap::DeleteBackBuffer()
 	SafeRelease(rtvSrv);
 	SafeRelease(rtv);
 	SafeRelease(dsv);
+}
+
+void CubeMap::RenderDetail()
+{
+	ImGui::SliderInt("MappingType", &desc2.CubeMapType, 0, 2);
+	ImGui::SliderFloat("RefractIndex", &desc2.RefractionIdx, 0.0f, 2.0f);
+	ImGui::SliderAngle("rotationX", &rot.x);
+	ImGui::SliderAngle("rotationY", &rot.y);
+	ImGui::SliderAngle("rotationZ", &rot.z);
 }

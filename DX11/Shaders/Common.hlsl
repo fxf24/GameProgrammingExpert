@@ -96,10 +96,13 @@ cbuffer PS_Lights : register(b3)
 {
     Light lights[MAX_LIGHT];
 }
-cbuffer PS_Refraction : register(b4)
+
+cbuffer PS_CubeMap : register(b4)
 {
+    int    CubeMapType;
     float  RefractionIdx;
-    float3 RefractionPadding;
+    float2 CubeMapPadding;
+    matrix CubeMapRotation;
 }
 //Texture3D a;
 
@@ -119,7 +122,10 @@ TextureCube TextureSky : register(t4);
 SamplerState SamplerSky : register(s4);
 
 TextureCube EnvironmentMap : register(t5);
-//SamplerState EnvironmentSampler : register(s5);
+SamplerState SamplerDefault;
+
+TextureCube WaterMap : register(t6);
+SamplerState SamplerWater : register(s6);
 
 matrix SkinWorld(float4 indices, float4 weights)
 {
@@ -181,16 +187,34 @@ float3 SpecularMapping(float2 Uv)
     return float3(1, 1, 1);
 }
 
-float3 EnvironmentMapping(float2 Uv, float3 Normal, float3 wPosition)
+float3 EnvironmentMapping(float3 Normal, float3 wPosition)
 {
     [flatten]
     if (environment != 0.0f)
     {
         float3 ViewDir = normalize(wPosition - ViewPos.xyz);
-        float3 reflection = reflect(ViewDir, Normal);
-        float3 refraction = refract(ViewDir, Normal, RefractionIdx);
         
-        return EnvironmentMap.Sample(SamplerD, refraction) * environment;
+        if (CubeMapType == 0)
+        {
+            float3 reflection = reflect(ViewDir, Normal);
+            return EnvironmentMap.Sample(SamplerDefault, reflection.xyz) * environment;
+        }
+        else if (CubeMapType == 1)
+        {
+            float3 refraction = refract(ViewDir, Normal, RefractionIdx);
+            return EnvironmentMap.Sample(SamplerDefault, refraction.xyz) * environment;
+        }
+        else if (CubeMapType == 2)
+        {
+            float3 refraction = refract(ViewDir, Normal, RefractionIdx);
+            float4 env = EnvironmentMap.Sample(SamplerDefault, refraction.xyz);
+            
+            refraction = mul(refraction, (float3x3) CubeMapRotation);
+            
+            float4 water = WaterMap.Sample(SamplerWater, refraction.xyz);
+            return saturate(water * 0.1f + env) * environment;
+        }
+        return EnvironmentMap.Sample(SamplerD, Normal) * environment;
         //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
     }
     return float3(0, 0, 0);
@@ -350,7 +374,7 @@ float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
     //Emissive
     Result.rgb += EmissiveMapping(BaseColor.rgb, Uv, Normal, wPosition);
     
-    Result.rgb += EnvironmentMapping(Uv, Normal, wPosition);
+    Result.rgb += EnvironmentMapping(Normal, wPosition);
     
     // 0 ~ 1 °¡µÎ±â
     return saturate(Result);

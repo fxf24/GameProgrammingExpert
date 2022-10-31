@@ -26,13 +26,6 @@ private:
 	UI* PostEffect;
 	float refractionIdx = 1.0f;
 
-	ID3D11Buffer* refractionBuffer;
-	struct Refraction
-	{
-		float RefractionIdx;
-		Vector3 RefractionPadding;
-	}desc;
-	
 public:
 	Scene1();
 	~Scene1();
