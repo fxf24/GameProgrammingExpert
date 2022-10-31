@@ -172,10 +172,13 @@ void Scene1::PreRender()
     }
     else if (cubeMap->desc2.CubeMapType == 2)
     {
+        cubeMap->desc2.RefractionIdx = 1.05f;
         Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractionIdx);
         Pos = sphere->GetWorldPos() - refract * dis;
         //Pos = Camera::main->GetWorldPos();
         Point->SetWorldPos(Pos);
+
+        cubeMap->rot.x -= 0.5f * DELTA;
     }
     //±¼Àý
     

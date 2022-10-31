@@ -207,12 +207,18 @@ float3 EnvironmentMapping(float3 Normal, float3 wPosition)
         else if (CubeMapType == 2)
         {
             float3 refraction = refract(ViewDir, Normal, RefractionIdx);
-            float4 env = EnvironmentMap.Sample(SamplerDefault, refraction.xyz);
             
-            refraction = mul(refraction, (float3x3) CubeMapRotation);
+            float3 temp = mul(refraction, (float3x3) CubeMapRotation);
             
-            float4 water = WaterMap.Sample(SamplerWater, refraction.xyz);
-            return saturate(water * 0.1f + env) * environment;
+            float3 water = WaterMap.Sample(SamplerWater, temp.xyz).rgb;
+            
+            float3 waterN = (water.xyz * 2.0f) - 1.0f;
+            
+            refraction = refraction + (waterN * 0.05f);
+            
+            float3 waterC = EnvironmentMap.Sample(SamplerDefault, refraction);
+            
+            return (waterC) * environment;
         }
         return EnvironmentMap.Sample(SamplerD, Normal) * environment;
         //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
