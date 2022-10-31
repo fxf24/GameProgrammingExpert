@@ -46,6 +46,8 @@ cbuffer GS_CubeMap : register(b4)
     
     matrix CubeViews[6];
     matrix CubeProjection;
+    float  refractionIdx;
+    float3 CubeMapPadding;
 };
 
 
@@ -181,9 +183,11 @@ float3 EnvironmentMapping(float2 Uv, float3 Normal, float3 wPosition)
     [flatten]
     if (environment != 0.0f)
     {
-        float3 ViewDir = normalize(wPosition -ViewPos.xyz);
+        float3 ViewDir = normalize(wPosition - ViewPos.xyz);
         float3 reflection = reflect(ViewDir, Normal);
-        return EnvironmentMap.Sample(SamplerD, reflection.xyz) * environment;
+        float3 refraction = refract(ViewDir, Normal, refractionIdx);
+        
+        return EnvironmentMap.Sample(SamplerD, refraction) * environment;
         //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
     }
     return float3(0, 0, 0);

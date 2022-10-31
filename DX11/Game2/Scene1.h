@@ -24,6 +24,7 @@ private:
 	//µÎ¹øÂ° ·»´õ Å¸°Ù
 	RenderTarget* RT = nullptr;
 	UI* PostEffect;
+	float refractionIdx = 1.0f;
 
 public:
 	Scene1();

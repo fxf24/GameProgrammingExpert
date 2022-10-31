@@ -99,10 +99,8 @@ void Scene1::Update()
 
     ImGui::Text("X: %d  Y: %d ", Pos.x, Pos.y);
 
-
-
-
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
+    ImGui::SliderFloat("refractionIdx", &refractionIdx, 0, 2.0f);
     Camera::ControlMainCam();
     LIGHT->RenderDetail();
     //
@@ -155,21 +153,21 @@ void Scene1::PreRender()
     Point->SetWorldPos(Pos);*/
 
     //굴절
-    Vector3 Dir = sphere->GetWorldPos() - Camera::main->GetWorldPos();
-    float dis = Dir.Length();
-    Dir.Normalize();
-    Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), 1.333f);
-    Vector3 Pos = sphere->GetWorldPos() + refract * dis;
-    Point->SetWorldPos(Pos);
+    Vector3 Dir2 = sphere->GetWorldPos() - Camera::main->GetWorldPos();
+    float dis2 = Dir2.Length();
+    Dir2.Normalize();
+    Vector3 refract = Vector3::Refract(Dir2, sphere->GetUp(), refractionIdx);
+    Vector3 Pos2 = sphere->GetWorldPos() - refract * dis2;
+    Point->SetWorldPos(Pos2);
 
     //atan2(1, 1);
     //환경맵 그리기
     LIGHT->Set();
-    cubeMap->Set(Pos);
+    cubeMap->Set(Pos2, refractionIdx);
     //cubeMap->Set(sphere->GetWorldPos());
     sky->Render(cubeMappingShader);
-    Player->Render(cubeMappingShader2);
     Map->Render(cubeMappingShader3);
+    Player->Render(cubeMappingShader2);
 
 
     //포스트이펙트 텍스쳐에 그리기
