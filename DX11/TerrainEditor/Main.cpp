@@ -293,6 +293,11 @@ void Main::LateUpdate()
     }
 }
 
+void Main::PreRender()
+{
+    
+}
+
 void Main::Render()
 {
     LIGHT->Set();
