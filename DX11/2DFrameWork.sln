@@ -79,6 +79,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6498
 		Shaders\6.Cube.hlsl = Shaders\6.Cube.hlsl
 		Shaders\6.PostEffect.hlsl = Shaders\6.PostEffect.hlsl
 		Shaders\7.Cube.hlsl = Shaders\7.Cube.hlsl
+		Shaders\7.Rain.hlsl = Shaders\7.Rain.hlsl
 		Shaders\9.Cube.hlsl = Shaders\9.Cube.hlsl
 		Shaders\Common.hlsl = Shaders\Common.hlsl
 		Shaders\ComputeShader.hlsl = Shaders\ComputeShader.hlsl
