@@ -17,12 +17,17 @@ struct RAIN_DESC
 class Rain : public Actor
 {
 	static ID3D11Buffer* RainBuffer;
-	RAIN_DESC desc;
 
 public:
+	RAIN_DESC desc;
+	Vector2 particleScale;
+	int particleCount;
+
 	static void CreateStaticMember();
 	static void DeleteStaticMember();
 	static Rain* Create(string name = "Rain");
 	virtual void Render();
+	void RenderDetail();
+	void Reset();
 };
 

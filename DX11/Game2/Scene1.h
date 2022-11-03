@@ -26,6 +26,10 @@ private:
 	UI* PostEffect;
 	float refractionIdx = 1.0f;
 
+	Rain* rain;
+	Rain* skill;
+	float skill_time = 1.0f;
+
 public:
 	Scene1();
 	~Scene1();

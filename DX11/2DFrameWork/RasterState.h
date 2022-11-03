@@ -4,6 +4,7 @@ class RasterState :public Singleton<RasterState>
 private:
 	ID3D11RasterizerState* CullBackFillSolid;
 	ID3D11RasterizerState* CullFrontFillSolid;
+	ID3D11RasterizerState* CullNoneFillSolid;
 
 
 public:

@@ -155,6 +155,28 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
 		TerrainOb->dijkstra.SaveFile(TerrainOb->file);
 	}
+	else if (type == ObType::Light)
+	{
+		Xml::XMLElement* light = doc->NewElement("Light");
+		This->LinkEndChild(light);
+		Light* lightOb = dynamic_cast<Light*>(this);
+	}
+	else if (type == ObType::Rain)
+	{
+		Xml::XMLElement* rain = doc->NewElement("Rain");
+		This->LinkEndChild(rain);
+		Rain* RainOb = dynamic_cast<Rain*>(this);
+		rain->SetAttribute("particleScaleX", RainOb->particleScale.x);
+		rain->SetAttribute("particleScaleY", RainOb->particleScale.y);
+		rain->SetAttribute("particleCount", RainOb->particleCount);
+		rain->SetAttribute("rangeX", RainOb->desc.range.x);
+		rain->SetAttribute("rangeY", RainOb->desc.range.y);
+		rain->SetAttribute("rangeZ", RainOb->desc.range.z);
+		rain->SetAttribute("velocityX", RainOb->desc.velocity.x);
+		rain->SetAttribute("velocityY", RainOb->desc.velocity.y);
+		rain->SetAttribute("velocityZ", RainOb->desc.velocity.z);
+
+	}
 
 	Xml::XMLElement* Chidren = doc->NewElement("Children");
 	This->LinkEndChild(Chidren);
@@ -246,6 +268,28 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
 		TerrainOb->dijkstra.LoadFile(TerrainOb->file);
 	}
+	/*else if (type == ObType::Light)
+	{
+		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
+		TerrainOb->dijkstra.LoadFile(TerrainOb->file);
+	}*/
+	else if (type == ObType::Rain)
+	{
+		Rain* RainOb = dynamic_cast<Rain*>(this);
+		component = This->FirstChildElement("Rain");
+
+		RainOb->particleScale.x = component->FloatAttribute("particleScaleX");
+		RainOb->particleScale.y = component->FloatAttribute("particleScaleY");
+		RainOb->particleCount = component->FloatAttribute("particleCount");
+		RainOb->desc.range.x = component->FloatAttribute("rangeX");
+		RainOb->desc.range.y = component->FloatAttribute("rangeY");
+		RainOb->desc.range.z = component->FloatAttribute("rangeZ");
+		RainOb->desc.velocity.x = component->FloatAttribute("velocityX");
+		RainOb->desc.velocity.y = component->FloatAttribute("velocityY");
+		RainOb->desc.velocity.z = component->FloatAttribute("velocityZ");
+		RainOb->Reset();
+	}
+
 
 	Transform::LoadTransform(This);
 
@@ -291,6 +335,18 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		else if (Type == ObType::Billboard)
 		{
 			Billboard* temp = Billboard::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
+		else if (Type == ObType::Light)
+		{
+			Light* temp = Light::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
+		else if (Type == ObType::Rain)
+		{
+			Rain* temp = Rain::Create(childName);
 			AddChild(temp);
 			temp->LoadObject(ob);
 		}

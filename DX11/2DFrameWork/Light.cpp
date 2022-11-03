@@ -90,6 +90,7 @@ Light* Light::Create(string name)
             LIGHT->SetSize();
             temp->mesh = RESOURCE->meshes.Load("1.SphereCollider.mesh");
             temp->shader = RESOURCE->shaders.Load("1.Collider.hlsl");
+            temp->type = ObType::Light;
             break;
         }
     }

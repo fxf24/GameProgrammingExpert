@@ -452,3 +452,25 @@ void Terrain::RenderDetail()
 		ImGui::EndTabBar();
 	}
 }
+
+void Rain::RenderDetail()
+{
+	Actor::RenderDetail();
+	if (ImGui::BeginTabBar("MyTabBar3"))
+	{
+		if (ImGui::BeginTabItem("Rain"))
+		{
+			ImGui::SliderFloat3("Velocity", (float*)&desc.velocity, -1000, 1000);
+			ImGui::SliderFloat3("particleRange", (float*)&desc.range, 0, 1000);
+			ImGui::SliderFloat2("particleScale", (float*)&particleScale, 0, 100);
+			ImGui::SliderInt("particleCount", &particleCount, 1, 100);
+
+			if (ImGui::Button("Reset"))
+			{
+				Reset();
+			}
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
+}

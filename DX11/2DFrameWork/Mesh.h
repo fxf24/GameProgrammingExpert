@@ -8,7 +8,7 @@ class Mesh
     //색
     //텍스처 좌표 (uv)
     friend class GameObject;
-
+    friend class Rain;
 private:
     ID3D11Buffer*           vertexBuffer;
     ID3D11Buffer*           indexBuffer;

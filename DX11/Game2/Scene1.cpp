@@ -41,6 +41,16 @@ Scene1::Scene1()
     cubeMappingShader3 = new Shader();
     cubeMappingShader3->LoadFile("5.CubeMap.hlsl");
     cubeMappingShader3->LoadGeometry();
+
+    rain = Rain::Create();
+    rain->LoadFile("Rain.xml");
+
+    skill = Rain::Create();
+    skill->desc.velocity = Vector3(0, -100, 0);
+    skill->desc.range = Vector3(50, 100, 50);
+    skill->particleCount = 10;
+
+    skill->visible = false;
 }
 
 Scene1::~Scene1()
@@ -115,6 +125,8 @@ void Scene1::Update()
     Map->RenderHierarchy();
     Cam->RenderHierarchy();
     sphere->RenderHierarchy();
+    rain->RenderHierarchy();
+    skill->RenderHierarchy();
     ImGui::End();
 
 
@@ -127,6 +139,8 @@ void Scene1::Update()
     Point2->Update();
     sky->Update();
     PostEffect->Update();
+    rain->Update();
+    skill->Update();
 }
 
 void Scene1::LateUpdate()
@@ -137,10 +151,20 @@ void Scene1::LateUpdate()
     if (Map->ComPutePicking(Mouse, Hit))
     {
         Player->SetWorldPos(Hit);
+
+        if (INPUT->KeyDown(VK_LBUTTON))
+        {
+            skill->SetWorldPos(Hit);
+            skill->visible = true;
+            skill_time = 0.0f;
+        }
         cout << endl;
     }
 
-    
+    if (skill_time > 1.0f)
+        skill->visible = false;
+
+    skill_time += DELTA;
 }
 
 void Scene1::PreRender()
@@ -201,6 +225,8 @@ void Scene1::PreRender()
     Grid->Render();
     Player->Render();
     Map->Render();
+    rain->Render();
+    skill->Render();
     sphere->material->environmentMap = cubeMap->GetRTVSRV();
     BLEND->Set(true);
     sphere->Render();

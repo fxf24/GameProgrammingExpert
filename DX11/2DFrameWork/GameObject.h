@@ -7,7 +7,9 @@ enum class ObType
 	Camera,
 	Terrain,
 	UI,
-	Billboard
+	Billboard,
+	Light,
+	Rain
 };
 
 class GameObject : public Transform
