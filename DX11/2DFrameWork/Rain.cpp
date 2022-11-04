@@ -28,12 +28,15 @@ Rain* Rain::Create(string name)
 	temp->name = name;
 	//temp->type = ObType::UI;
 
+	/*temp->mesh = make_shared<Mesh>();
+	temp->mesh->LoadFile("7.Billboard.mesh");*/
 	temp->mesh = RESOURCE->meshes.Load("7.Billboard.mesh");
 	temp->shader = RESOURCE->shaders.Load("7.Rain.hlsl");
 	temp->shader->LoadGeometry();
 	temp->particleCount = 50;
-	temp->particleScale = Vector2(10, 10);
+	temp->particleScale = Vector2(1, 1);
 	temp->type = ObType::Rain;
+	temp->visible = false;
 
 	temp->Reset();
 	return temp;
@@ -51,7 +54,14 @@ void Rain::Render()
 		D3D->GetDC()->VSSetConstantBuffers(10, 1, &RainBuffer);
 	}
 
+	if (isPlaying)
 	Actor::Render();
+}
+
+void Rain::Update()
+{
+	Particle::UpdateParticle();
+	Actor::Update();
 }
 
 void Rain::Reset()
@@ -67,14 +77,14 @@ void Rain::Reset()
 
 	for (UINT i = 0; i < particleCount; i++)
 	{
-		scale.x = 1.0f;
-		scale.y = 1.0f;
+		scale.x = particleScale.x;
+		scale.y = particleScale.y;
 		/*scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
 		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);
 		scale.x = S._11 + scale.x;
-		scale.y = S._22 + scale.y;
+		scale.y = S._22 + scale.y;*/
 		if (scale.x < 1.0f) scale.x = 1.0f;
-		if (scale.y < 1.0f) scale.y = 1.0f;*/
+		if (scale.y < 1.0f) scale.y = 1.0f;
 
 		Vector3 position;
 		position.x = RANDOM->Float(-desc.range.x, desc.range.x);
@@ -116,4 +126,41 @@ void Rain::Reset()
 		assert(SUCCEEDED(hr));
 	}
 
+}
+
+void Rain::Play()
+{
+	Particle::Play();
+}
+
+void Rain::Stop()
+{
+	Particle::Stop();
+}
+
+void Particle::Gui()
+{
+	if (ImGui::Button("Play"))
+	{
+		Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		Stop();
+	}
+	ImGui::Text("Playtime : %f", PlayTime());
+	ImGui::SliderFloat("duration", &duration, 0.0f, 60.0f);
+}
+
+void Particle::UpdateParticle()
+{
+	if (isPlaying)
+	{
+		playTime += DELTA;
+		if (playTime > duration)
+		{
+			Stop();
+		}
+	}
 }

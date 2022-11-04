@@ -341,8 +341,11 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		else if (Type == ObType::Light)
 		{
 			Light* temp = Light::Create(childName);
-			AddChild(temp);
-			temp->LoadObject(ob);
+			if (temp)
+			{
+				AddChild(temp);
+				temp->LoadObject(ob);
+			}
 		}
 		else if (Type == ObType::Rain)
 		{

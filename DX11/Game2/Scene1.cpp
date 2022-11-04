@@ -48,9 +48,10 @@ Scene1::Scene1()
     skill = Rain::Create();
     skill->desc.velocity = Vector3(0, -100, 0);
     skill->desc.range = Vector3(50, 100, 50);
-    skill->particleCount = 10;
 
     skill->visible = false;
+    skill->material = make_shared<Material>();
+    skill->material->LoadFile("skill.mtl");
 }
 
 Scene1::~Scene1()
