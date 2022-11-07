@@ -8,7 +8,7 @@ Scene1::Scene1()
     Grid = Actor::Create();
     Grid->LoadFile("Grid.xml");
     Player = Actor::Create();
-    Player->LoadFile("Character2.xml");
+    Player->LoadFile("Archer.xml");
     Map = Terrain::Create();
     Map->LoadFile("Map2.xml");
     Map->CreateStructuredBuffer();
@@ -18,7 +18,7 @@ Scene1::Scene1()
 
     Point2 = Light::Create("L2");
 
-
+    Arrow = Actor::Create();
 
     RT = new RenderTarget();
     PostEffect = UI::Create();
@@ -131,6 +131,7 @@ void Scene1::Update()
     sphere->RenderHierarchy();
     rain->RenderHierarchy();
     skill->RenderHierarchy();
+    Arrow->RenderHierarchy();
     ImGui::End();
 
 
@@ -145,6 +146,7 @@ void Scene1::Update()
     PostEffect->Update();
     rain->Update();
     skill->Update();
+    Arrow->Update();
 }
 
 void Scene1::LateUpdate()
@@ -189,22 +191,22 @@ void Scene1::PreRender()
     {
         Vector3 reflect = Vector3::Reflect(Dir, sphere->GetUp());
         Pos = sphere->GetWorldPos() - reflect * dis;
-        Point->SetWorldPos(Pos);
+        //Point->SetWorldPos(Pos);
     }
     else if (cubeMap->desc2.CubeMapType == 1)
     {
-        Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractionIdx);
+        Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractIndex);
         Pos = sphere->GetWorldPos() - refract * dis;
         //Pos = Camera::main->GetWorldPos();
-        Point->SetWorldPos(Pos);
+        //Point->SetWorldPos(Pos);
     }
     else if (cubeMap->desc2.CubeMapType == 2)
     {
-        cubeMap->desc2.RefractionIdx = 1.05f;
-        Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractionIdx);
+        cubeMap->desc2.RefractIndex = 1.05f;
+        Vector3 refract = Vector3::Refract(Dir, sphere->GetUp(), cubeMap->desc2.RefractIndex);
         Pos = sphere->GetWorldPos() - refract * dis;
         //Pos = Camera::main->GetWorldPos();
-        Point->SetWorldPos(Pos);
+        //Point->SetWorldPos(Pos);
 
         cubeMap->rot.x -= 0.5f * DELTA;
     }
@@ -231,6 +233,7 @@ void Scene1::PreRender()
     Map->Render();
     rain->Render();
     skill->Render();
+    Arrow->Render();
     sphere->material->environmentMap = cubeMap->GetRTVSRV();
     BLEND->Set(true);
     sphere->Render();

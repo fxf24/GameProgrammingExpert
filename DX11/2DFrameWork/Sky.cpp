@@ -11,6 +11,7 @@ Sky* Sky::Create(string name)
 
 	temp->texCube = make_shared<Texture>();
 	temp->texCube->LoadFile("sky.dds");
+	//temp->texCube->LoadFile("sky.dds");
 
 	return temp;
 }

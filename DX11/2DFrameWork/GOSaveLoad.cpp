@@ -159,7 +159,22 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 	{
 		Xml::XMLElement* light = doc->NewElement("Light");
 		This->LinkEndChild(light);
-		Light* lightOb = dynamic_cast<Light*>(this);
+		Light* LightOb = dynamic_cast<Light*>(this);
+		light->SetAttribute("colorR", LightOb->light->color.x);
+		light->SetAttribute("colorG", LightOb->light->color.y);
+		light->SetAttribute("colorB", LightOb->light->color.z);
+		light->SetAttribute("directionX", LightOb->light->direction.x);
+		light->SetAttribute("directionY", LightOb->light->direction.y);
+		light->SetAttribute("directionZ", LightOb->light->direction.z);
+		light->SetAttribute("inner", LightOb->light->inner);
+		light->SetAttribute("outer", LightOb->light->outer);
+		light->SetAttribute("isActive", LightOb->light->isActive);
+		light->SetAttribute("lightType", LightOb->light->lightType);
+		light->SetAttribute("positionX", LightOb->light->position.x);
+		light->SetAttribute("positionY", LightOb->light->position.y);
+		light->SetAttribute("positionZ", LightOb->light->position.z);
+		light->SetAttribute("range", LightOb->light->range);
+		light->SetAttribute("num", LightOb->light->size);
 	}
 	else if (type == ObType::Rain)
 	{
@@ -175,7 +190,6 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		rain->SetAttribute("velocityX", RainOb->desc.velocity.x);
 		rain->SetAttribute("velocityY", RainOb->desc.velocity.y);
 		rain->SetAttribute("velocityZ", RainOb->desc.velocity.z);
-
 	}
 
 	Xml::XMLElement* Chidren = doc->NewElement("Children");
@@ -206,9 +220,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 	}
 	if (component = This->FirstChildElement("Mesh"))
 	{
-		file = component->Attribute("File");
-		SafeReset(mesh);
-		mesh = RESOURCE->meshes.Load(file);
+		if (type < ObType::Rain)
+		{
+			file = component->Attribute("File");
+			SafeReset(mesh);
+			mesh = RESOURCE->meshes.Load(file);
+		}
 	}
 	if (component = This->FirstChildElement("Shader"))
 	{
@@ -268,11 +285,28 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
 		TerrainOb->dijkstra.LoadFile(TerrainOb->file);
 	}
-	/*else if (type == ObType::Light)
+	else if (type == ObType::Light)
 	{
-		Terrain* TerrainOb = dynamic_cast<Terrain*>(this);
-		TerrainOb->dijkstra.LoadFile(TerrainOb->file);
-	}*/
+		Light* LightOb = dynamic_cast<Light*>(this);
+		component = This->FirstChildElement("Light");
+
+		LightOb->light->color.x = component->FloatAttribute("colorR");
+		LightOb->light->color.y = component->FloatAttribute("colorG");
+		LightOb->light->color.z = component->FloatAttribute("colorB");
+		LightOb->light->direction.x = component->FloatAttribute("directionX");
+		LightOb->light->direction.y = component->FloatAttribute("directionY");
+		LightOb->light->direction.z = component->FloatAttribute("directionZ");
+		LightOb->light->inner = component->FloatAttribute("inner");
+		LightOb->light->outer = component->FloatAttribute("outer");
+		LightOb->light->isActive = component->IntAttribute("isActive");
+		LightOb->light->lightType = component->IntAttribute("lightType");
+		LightOb->light->position.x = component->FloatAttribute("positionX");
+		LightOb->light->position.y = component->FloatAttribute("positionY");
+		LightOb->light->position.z = component->FloatAttribute("positionZ");
+		LightOb->light->range = component->FloatAttribute("range");
+		LightOb->light->size = component->IntAttribute("num");
+	}
+
 	else if (type == ObType::Rain)
 	{
 		Rain* RainOb = dynamic_cast<Rain*>(this);
@@ -280,7 +314,7 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 
 		RainOb->particleScale.x = component->FloatAttribute("particleScaleX");
 		RainOb->particleScale.y = component->FloatAttribute("particleScaleY");
-		RainOb->particleCount = component->FloatAttribute("particleCount");
+		RainOb->particleCount = component->IntAttribute("particleCount");
 		RainOb->desc.range.x = component->FloatAttribute("rangeX");
 		RainOb->desc.range.y = component->FloatAttribute("rangeY");
 		RainOb->desc.range.z = component->FloatAttribute("rangeZ");
@@ -338,6 +372,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 			AddChild(temp);
 			temp->LoadObject(ob);
 		}
+		else if (Type == ObType::Rain)
+		{
+			Rain* temp = Rain::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
 		else if (Type == ObType::Light)
 		{
 			Light* temp = Light::Create(childName);
@@ -346,12 +386,6 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 				AddChild(temp);
 				temp->LoadObject(ob);
 			}
-		}
-		else if (Type == ObType::Rain)
-		{
-			Rain* temp = Rain::Create(childName);
-			AddChild(temp);
-			temp->LoadObject(ob);
 		}
 	}
 }

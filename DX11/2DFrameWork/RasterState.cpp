@@ -2,6 +2,7 @@
 
 RasterState::RasterState()
 {
+
 	D3D11_RASTERIZER_DESC desc;
 	ZeroMemory(&desc,sizeof(D3D11_RASTERIZER_DESC));
 	desc.FillMode = D3D11_FILL_SOLID;
@@ -11,12 +12,14 @@ RasterState::RasterState()
 	D3D->GetDevice()->CreateRasterizerState(&desc, &CullNoneFillSolid);
 	desc.CullMode = D3D11_CULL_BACK;
 	D3D->GetDevice()->CreateRasterizerState(&desc, &CullBackFillSolid);
+	
 }
 
 RasterState::~RasterState()
 {
 	SafeRelease(CullBackFillSolid);
 	SafeRelease(CullFrontFillSolid);
+	SafeRelease(CullNoneFillSolid);
 }
 
 void RasterState::Set(D3D11_CULL_MODE cull, D3D11_FILL_MODE fill)

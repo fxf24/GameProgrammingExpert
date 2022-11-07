@@ -453,6 +453,7 @@ void Terrain::RenderDetail()
 	}
 }
 
+
 void Rain::RenderDetail()
 {
 	Actor::RenderDetail();

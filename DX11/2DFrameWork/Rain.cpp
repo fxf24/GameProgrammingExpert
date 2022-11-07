@@ -1,6 +1,5 @@
 #include "framework.h"
 ID3D11Buffer* Rain::RainBuffer = nullptr;
-
 void Rain::CreateStaticMember()
 {
 	{
@@ -28,33 +27,29 @@ Rain* Rain::Create(string name)
 	temp->name = name;
 	//temp->type = ObType::UI;
 
-	/*temp->mesh = make_shared<Mesh>();
-	temp->mesh->LoadFile("7.Billboard.mesh");*/
-	temp->mesh = RESOURCE->meshes.Load("7.Billboard.mesh");
+	temp->mesh = make_shared<Mesh>();
+	temp->mesh->LoadFile("7.Billboard.mesh");
 	temp->shader = RESOURCE->shaders.Load("7.Rain.hlsl");
 	temp->shader->LoadGeometry();
-	temp->particleCount = 50;
-	temp->particleScale = Vector2(1, 1);
 	temp->type = ObType::Rain;
-	temp->visible = false;
+	//temp->visible = false;
 
-	temp->Reset();
 	return temp;
 }
+
 
 void Rain::Render()
 {
 	desc.time = TIMER->GetWorldTime();
-
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		D3D->GetDC()->Map(RainBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		memcpy_s(mappedResource.pData, sizeof(RAIN_DESC), &desc, sizeof(RAIN_DESC));
+		memcpy_s(mappedResource.pData, sizeof(RAIN_DESC), &desc,
+			sizeof(RAIN_DESC));
 		D3D->GetDC()->Unmap(RainBuffer, 0);
 		D3D->GetDC()->VSSetConstantBuffers(10, 1, &RainBuffer);
 	}
-
-	if (isPlaying)
+	if(isPlaying)
 	Actor::Render();
 }
 
@@ -64,8 +59,14 @@ void Rain::Update()
 	Actor::Update();
 }
 
+
+
 void Rain::Reset()
 {
+	/*mesh.reset();
+	mesh = make_shared<Mesh>();*/
+
+
 	delete[](VertexPS*)mesh->vertices;
 	delete[] mesh->indices;
 	mesh->vertices = new VertexPS[particleCount];
@@ -75,23 +76,26 @@ void Rain::Reset()
 
 	Vector2 scale;
 
+
 	for (UINT i = 0; i < particleCount; i++)
 	{
-		scale.x = S._11 + particleScale.x;
-		scale.y = S._22 + particleScale.y;
-		/*scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
+		//이미지 크기 가로세로를 랜덤값
+		//4~8 사이값
+	
+		//오차값
+		scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
 		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);
 		scale.x = S._11 + scale.x;
 		scale.y = S._22 + scale.y;
-		*/
-
-		if (scale.x < 1.0f) scale.x = 1.0f;
-		if (scale.y < 1.0f) scale.y = 1.0f;
+		if (scale.x < 1.0f)scale.x = 1.0f;
+		if (scale.y < 1.0f)scale.y = 1.0f;
 
 		Vector3 position;
+		//생성될위치   //-4~8   ~ 4~ 8
 		position.x = RANDOM->Float(-desc.range.x, desc.range.x);
 		position.y = RANDOM->Float(-desc.range.y, desc.range.y);
 		position.z = RANDOM->Float(-desc.range.z, desc.range.z);
+
 		((VertexPS*)mesh->vertices)[i].position = position;
 		((VertexPS*)mesh->vertices)[i].size = scale;
 		mesh->indices[i] = i;
@@ -127,17 +131,30 @@ void Rain::Reset()
 		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, &data, &mesh->indexBuffer);
 		assert(SUCCEEDED(hr));
 	}
-
 }
 
 void Rain::Play()
 {
+	Reset();
 	Particle::Play();
 }
 
 void Rain::Stop()
 {
 	Particle::Stop();
+}
+
+void Particle::UpdateParticle()
+{
+	if (isPlaying)
+	{
+		playTime += DELTA;
+		if (playTime > duration)
+		{
+			Stop();
+		}
+	}
+	
 }
 
 void Particle::Gui()
@@ -152,17 +169,5 @@ void Particle::Gui()
 		Stop();
 	}
 	ImGui::Text("Playtime : %f", PlayTime());
-	ImGui::SliderFloat("duration", &duration, 0.0f, 60.0f);
-}
-
-void Particle::UpdateParticle()
-{
-	if (isPlaying)
-	{
-		playTime += DELTA;
-		if (playTime > duration)
-		{
-			Stop();
-		}
-	}
+	ImGui::SliderFloat("duration", &duration, 0.0f, 100.0f);
 }

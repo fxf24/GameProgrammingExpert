@@ -15,6 +15,7 @@ enum class ObType
 class GameObject : public Transform
 {
 	friend class Actor;
+
 	//static
 private:
 	static GameObject*		axis;

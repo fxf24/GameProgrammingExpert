@@ -69,7 +69,11 @@ void Actor::ReleaseMember()
 	{
 		it->second->Release();
 	}
-	SafeReset(mesh);
+	if (type < ObType::Rain)
+	{
+		SafeReset(mesh);
+	}
+	
 	SafeReset(shader);
 	SafeReset(material);
 	SafeDelete(collider);

@@ -8,6 +8,7 @@ private:
 	Actor* Grid;
 	Actor* Player;
 	Actor* Point;
+	Actor* Arrow;
 	Light* Point2;
 	Terrain* Map;
 

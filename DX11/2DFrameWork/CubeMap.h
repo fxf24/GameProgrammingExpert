@@ -24,23 +24,23 @@ private:
         Matrix Views[6];
         Matrix Projection;
     } desc;
-    Viewport    viewport;
-    Vector3     position;
-
-    ID3D11Buffer* refractionBuffer;
     struct PSCubeMap
     {
         int CubeMapType = 0;
-        float RefractionIdx = 1.0f;
-        Vector2 CubeMapPadding;
+        float RefractIndex = 1.0f;
+        float WaterIndex = 0.01f;
+        float CubeMapPadding;
         Matrix Rotation;
     };
+    Viewport    viewport;
+    Vector3     position;
 
+  
 public:
     shared_ptr<Texture> water;
     PSCubeMap desc2;
-    Vector3 rot;
-
+    Vector3   rot;
+  
     static void CreateStaticMember();
     static void DeleteStaticMember();
 

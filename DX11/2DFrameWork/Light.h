@@ -57,8 +57,8 @@ public:
 
 class Light : public Actor
 {
-	LightBuffer*	light;
 public:
+	LightBuffer*	light;
 	static Light*	Create(string name = "Light");
 	virtual void	Release();
 	virtual void	Update() override;

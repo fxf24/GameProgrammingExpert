@@ -13,8 +13,8 @@ void CubeMap::CreateStaticMember()
 		desc.StructureByteStride = 0;
 		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &camBuffer);
 		assert(SUCCEEDED(hr));
-	}
 
+	}
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
 		desc.ByteWidth = sizeof(PSCubeMap);
@@ -25,6 +25,7 @@ void CubeMap::CreateStaticMember()
 		desc.StructureByteStride = 0;
 		HRESULT hr = D3D->GetDevice()->CreateBuffer(&desc, NULL, &PSBuffer);
 		assert(SUCCEEDED(hr));
+
 	}
 }
 
@@ -135,8 +136,8 @@ CubeMap::~CubeMap()
 
 void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color clear)
 {
-	water->Set(6);
 
+	water->Set(6);
 	this->position = position;
 
 	//Create Views
@@ -190,7 +191,6 @@ void CubeMap::Set(Vector3 position, float fov,float zNear, float zFar, Color cle
 		D3D->GetDC()->Unmap(PSBuffer, 0);
 		D3D->GetDC()->PSSetConstantBuffers(4, 1, &PSBuffer);
 	}
-
 	D3D->SetRenderTarget(rtv, dsv);
 	D3D->Clear(clear, rtv, dsv);
 
@@ -309,7 +309,8 @@ void CubeMap::DeleteBackBuffer()
 void CubeMap::RenderDetail()
 {
 	ImGui::SliderInt("MappingType", &desc2.CubeMapType, 0, 2);
-	ImGui::SliderFloat("RefractIndex", &desc2.RefractionIdx, 0.0f, 2.0f);
+	ImGui::SliderFloat("RefractIndex", &desc2.RefractIndex, 0, 2);
+	ImGui::SliderFloat("WaterIndex", &desc2.WaterIndex, 0, 1);
 	ImGui::SliderAngle("rotationX", &rot.x);
 	ImGui::SliderAngle("rotationY", &rot.y);
 	ImGui::SliderAngle("rotationZ", &rot.z);
