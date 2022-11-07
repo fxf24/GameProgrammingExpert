@@ -32,7 +32,7 @@ Rain* Rain::Create(string name)
 	temp->shader = RESOURCE->shaders.Load("7.Rain.hlsl");
 	temp->shader->LoadGeometry();
 	temp->particleCount = 50;
-	temp->particleScale = Vector2(10, 10);
+	temp->particleScale = Vector2(1, 1);
 	temp->type = ObType::Rain;
 
 	temp->Reset();
@@ -67,14 +67,15 @@ void Rain::Reset()
 
 	for (UINT i = 0; i < particleCount; i++)
 	{
-		scale.x = 1.0f;
-		scale.y = 1.0f;
+		scale.x = S._11 + particleScale.x;
+		scale.y = S._22 + particleScale.y;
 		/*scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
 		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);
 		scale.x = S._11 + scale.x;
 		scale.y = S._22 + scale.y;
+		*/
 		if (scale.x < 1.0f) scale.x = 1.0f;
-		if (scale.y < 1.0f) scale.y = 1.0f;*/
+		if (scale.y < 1.0f) scale.y = 1.0f;
 
 		Vector3 position;
 		position.x = RANDOM->Float(-desc.range.x, desc.range.x);

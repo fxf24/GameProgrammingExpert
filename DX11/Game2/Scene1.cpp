@@ -44,13 +44,19 @@ Scene1::Scene1()
 
     rain = Rain::Create();
     rain->LoadFile("Rain.xml");
+    //rain->Reset();
 
     skill = Rain::Create();
+    //skill->LoadFile("skill.xml");
     skill->desc.velocity = Vector3(0, -100, 0);
     skill->desc.range = Vector3(50, 100, 50);
-    skill->particleCount = 10;
+    skill->particleScale = Vector2(10, 10);
 
     skill->visible = false;
+    skill->material = make_shared<Material>();
+    skill->material->LoadFile("skill.mtl");
+
+    //skill->Reset();
 }
 
 Scene1::~Scene1()
