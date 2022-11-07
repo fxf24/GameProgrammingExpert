@@ -1,12 +1,12 @@
-<Root Name="Rain" Visible="true" ObType="7">
+<Root Name="Rain" Visible="false" ObType="7">
     <Mesh File="7.Billboard.mesh"/>
     <Shader File="7.Rain.hlsl"/>
-    <Material File="skill.mtl"/>
+    <Material File="max.mtl"/>
     <Transform>
-        <Position X="-42.431011" Y="8.1733704" Z="-53.883255"/>
+        <Position X="-58.883305" Y="5.5344086" Z="-58.527603"/>
         <Scale X="1" Y="1" Z="1"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Transform>
-    <Rain particleScaleX="10" particleScaleY="10" particleCount="50" rangeX="50" rangeY="100" rangeZ="50" velocityX="0" velocityY="-100" velocityZ="0"/>
+    <Rain particleScaleX="1" particleScaleY="1" particleCount="50" rangeX="50" rangeY="100" rangeZ="50" velocityX="0" velocityY="-100" velocityZ="0"/>
     <Children Size="0"/>
 </Root>

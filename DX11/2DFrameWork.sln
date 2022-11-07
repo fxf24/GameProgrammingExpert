@@ -55,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", 
 		Contents\GameObject\MapSurface.xml = Contents\GameObject\MapSurface.xml
 		Contents\GameObject\Model.xml = Contents\GameObject\Model.xml
 		Contents\GameObject\Rain.xml = Contents\GameObject\Rain.xml
+		Contents\GameObject\skill.xml = Contents\GameObject\skill.xml
 		Contents\GameObject\Sphere.xml = Contents\GameObject\Sphere.xml
 		Contents\GameObject\Sphere2.xml = Contents\GameObject\Sphere2.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml

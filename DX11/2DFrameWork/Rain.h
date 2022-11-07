@@ -14,7 +14,32 @@ struct RAIN_DESC
 	}
 };
 
-class Rain : public Actor
+class Particle
+{
+protected:
+	// 총 재생시간
+	float duration = 1.0f;
+	// 현재 재상중인 시간
+	float playTime = 0.0f;
+	// 재생중인가
+	bool isPlaying = false;
+public:
+	virtual void Play()
+	{
+		playTime = 0.0f;
+		isPlaying = true;
+	};
+	virtual void Stop()
+	{
+		isPlaying = false;
+	};
+	void		 Gui();
+	void		 UpdateParticle();
+	bool		 IsPlaying() { return isPlaying; } // 재생중인가
+	float		 PlayTime() { return playTime / duration; } // 재생시간 비율
+};
+
+class Rain : public Actor, public Particle
 {
 	static ID3D11Buffer* RainBuffer;
 
@@ -27,7 +52,10 @@ public:
 	static void DeleteStaticMember();
 	static Rain* Create(string name = "Rain");
 	virtual void Render();
+	virtual void Update();
 	void RenderDetail();
 	void Reset();
+	virtual void Play();
+	virtual void Stop();
 };
 

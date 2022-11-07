@@ -50,13 +50,11 @@ Scene1::Scene1()
     //skill->LoadFile("skill.xml");
     skill->desc.velocity = Vector3(0, -100, 0);
     skill->desc.range = Vector3(50, 100, 50);
-    skill->particleScale = Vector2(10, 10);
 
     skill->visible = false;
     skill->material = make_shared<Material>();
     skill->material->LoadFile("skill.mtl");
 
-    //skill->Reset();
 }
 
 Scene1::~Scene1()

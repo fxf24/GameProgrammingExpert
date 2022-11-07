@@ -460,6 +460,7 @@ void Rain::RenderDetail()
 	{
 		if (ImGui::BeginTabItem("Rain"))
 		{
+			Particle::Gui();
 			ImGui::SliderFloat3("Velocity", (float*)&desc.velocity, -1000, 1000);
 			ImGui::SliderFloat3("particleRange", (float*)&desc.range, 0, 1000);
 			ImGui::SliderFloat2("particleScale", (float*)&particleScale, 0, 100);
