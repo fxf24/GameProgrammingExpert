@@ -10,7 +10,7 @@ Scene1::Scene1()
     Player = Actor::Create();
     Player->LoadFile("Archer.xml");
     Map = Terrain::Create();
-    Map->LoadFile("Map2.xml");
+    Map->LoadFile("Wasteland.xml");
     Map->CreateStructuredBuffer();
 
     Point = Actor::Create();

@@ -54,7 +54,7 @@ void Main::Update()
     Map->RenderDetail();
 
     ImGui::SliderInt("BrushTexture", &brushTexture, 0, 1);
-    ImGui::SliderFloat("BrushRange", &brush.range
+    ImGui::InputFloat("BrushRange", &brush.range
         , 0.0f, 200.0f);
     ImGui::InputFloat("BrushHeight", &brushMaxHeight);
     ImGui::InputFloat("BrushAddHeightScalr", &brushAddHeightScalr);
