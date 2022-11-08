@@ -32,8 +32,6 @@ void Main::Init()
     Map->CreateStructuredBuffer();
     Map->shader = RESOURCE->shaders.Load("5.TerrainEditor.hlsl");
 
-    Sphere = Actor::Create();
-    Sphere->LoadFile("Sphere.xml");
     ResizeScreen();
 }
 
@@ -42,7 +40,6 @@ void Main::Release()
     RESOURCE->ReleaseAll();
     Grid->Release();
     Map->Release();
-    Sphere->Release();
 }
 
 
@@ -51,7 +48,7 @@ void Main::Update()
    
     Camera::ControlMainCam();
     LIGHT->RenderDetail();
-    Map->RenderDetail();
+    Map->RenderHierarchy();
 
     ImGui::SliderInt("BrushTexture", &brushTexture, 0, 1);
     ImGui::InputFloat("BrushRange", &brush.range
@@ -210,7 +207,6 @@ void Main::Update()
     Cam->Update();
     Grid->Update();
     Map->Update();
-    Sphere->Update();
 }
 
 void Main::LateUpdate()
@@ -231,6 +227,15 @@ void Main::LateUpdate()
             Map->UpdateMeshNormal();
         }
 
+        if (INPUT->KeyDown(VK_F2))
+        {
+            int num = Map->children.size();
+            GameObject* collider = GameObject::Create("Collider" + to_string(num));
+            collider->SetWorldPos(brush.point);
+            collider->collider = new Collider(ColliderType::BOX);
+            Map->AddChild(collider);
+        }
+        
         if (INPUT->KeyDown(VK_SPACE))
         {
             if (nodeEdit == 0)
@@ -311,7 +316,6 @@ void Main::Render()
     
 
     Map->Render();
-    Sphere->Render();
 }
 
 void Main::ResizeScreen()

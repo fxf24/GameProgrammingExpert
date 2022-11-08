@@ -5,8 +5,6 @@ Scene1::Scene1()
     sky = Sky::Create();
     Cam = Camera::Create();
   
-    Grid = Actor::Create();
-    Grid->LoadFile("Grid.xml");
     Player = Actor::Create();
     Player->LoadFile("Archer.xml");
     Map = Terrain::Create();
@@ -17,9 +15,6 @@ Scene1::Scene1()
     Point->LoadFile("Sphere.xml");
 
     Point2 = Light::Create("L2");
-
-    Arrow = Actor::Create();
-
     RT = new RenderTarget();
     PostEffect = UI::Create();
     PostEffect->LoadFile("Window2.xml");
@@ -27,6 +22,7 @@ Scene1::Scene1()
     cubeMap = new CubeMap(1000,1000);
     sphere = Actor::Create();
     sphere->LoadFile("Sphere2.xml");
+    sphere->visible = false;
     /*sphere->material = make_shared<Material>();
     sphere->material->environmentMap = make_shared<Texture>();
     sphere->material->environment = 1.0f;*/
@@ -131,12 +127,10 @@ void Scene1::Update()
     sphere->RenderHierarchy();
     rain->RenderHierarchy();
     skill->RenderHierarchy();
-    Arrow->RenderHierarchy();
     ImGui::End();
 
 
     Cam->Update();
-    Grid->Update();
     Player->Update();
     Map->Update();
     Point->Update();
@@ -146,7 +140,6 @@ void Scene1::Update()
     PostEffect->Update();
     rain->Update();
     skill->Update();
-    Arrow->Update();
 }
 
 void Scene1::LateUpdate()
@@ -156,7 +149,7 @@ void Scene1::LateUpdate()
     //if (Map->ComPutePicking(Mouse, Hit))
     if (Map->ComPutePicking(Mouse, Hit))
     {
-        Player->SetWorldPos(Hit);
+        //Player->SetWorldPos(Hit);
 
         if (INPUT->KeyDown(VK_LBUTTON))
         {
@@ -228,12 +221,10 @@ void Scene1::PreRender()
     sky->Render();
     Point->Render();
     Point2->Render();
-    Grid->Render();
     Player->Render();
     Map->Render();
     rain->Render();
     skill->Render();
-    Arrow->Render();
     sphere->material->environmentMap = cubeMap->GetRTVSRV();
     BLEND->Set(true);
     sphere->Render();

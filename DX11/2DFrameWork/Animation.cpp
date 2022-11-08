@@ -71,7 +71,7 @@ void Animations::AnimatorUpdate(Animator& Animator)
 {
 	if (Animator.animState == AnimationState::LOOP)
 	{
-		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond;
+		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond * AniSpeed;
 		if (Animator.frameWeight >= 1.0f)
 		{
 			Animator.frameWeight = 0.0f;
@@ -86,7 +86,7 @@ void Animations::AnimatorUpdate(Animator& Animator)
 	}
 	else if (Animator.animState == AnimationState::ONCE)
 	{
-		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond;
+		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond * AniSpeed;
 		if (Animator.frameWeight >= 1.0f)
 		{
 			Animator.frameWeight = 0.0f;
@@ -168,6 +168,8 @@ void Animations::PlayAnimation(AnimationState state, UINT idx, float blendtime)
 
 void Animations::RenderDetail()
 {
+	ImGui::InputFloat("anispeed", &AniSpeed, 0.1, 10);
+
 	for (UINT i = 0; i < playList.size(); i++)
 	{
 		string name = to_string(i) + playList[i]->file;

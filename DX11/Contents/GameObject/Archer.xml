@@ -1,10 +1,10 @@
 <Root Name="RootNode" Visible="true" ObType="1" BoneIndex="0">
     <Skeleton File="Erika Archer With Bow Arrow/Erika Archer With Bow Arrow.skel" BoneIndexCount="78"/>
-    <Animations AnimSize="4" File0="Idle/Idle0.anim" File1="Walk/Walk0.anim" File2="Fast Run/Fast Run0.anim" File3="Shooting Arrow/Shooting Arrow0.anim"/>
+    <Animations AnimSize="4" File0="Idle/Idle0.anim" File1="Walk/Walk0.anim" File2="Fast Run/Fast Run0.anim" File3="Shoot/Shoot0.anim"/>
     <Shader File="4.cube.hlsl"/>
     <Transform>
         <Position X="0" Y="0" Z="0"/>
-        <Scale X="0.5" Y="0.5" Z="0.5"/>
+        <Scale X="0.050000001" Y="0.050000001" Z="0.050000001"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Transform>
     <Children Size="1"/>

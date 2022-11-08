@@ -47,6 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mesh", "Mesh", "{5606A415-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{0E99CD31-1395-431F-8187-ECD925CDC4F6}"
 	ProjectSection(SolutionItems) = preProject
+		Contents\GameObject\Archer.xml = Contents\GameObject\Archer.xml
 		Contents\GameObject\Cam.xml = Contents\GameObject\Cam.xml
 		Contents\GameObject\Character.xml = Contents\GameObject\Character.xml
 		Contents\GameObject\Character2.xml = Contents\GameObject\Character2.xml
@@ -60,6 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", 
 		Contents\GameObject\Sphere2.xml = Contents\GameObject\Sphere2.xml
 		Contents\GameObject\Sun.xml = Contents\GameObject\Sun.xml
 		Contents\GameObject\Terrain.xml = Contents\GameObject\Terrain.xml
+		Contents\GameObject\Wasteland.xml = Contents\GameObject\Wasteland.xml
 		Contents\GameObject\Window.xml = Contents\GameObject\Window.xml
 		Contents\GameObject\Window2.xml = Contents\GameObject\Window2.xml
 	EndProjectSection
