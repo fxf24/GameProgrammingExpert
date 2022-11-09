@@ -16,6 +16,9 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Blur.h" />
+    <ClInclude Include="CubeMan.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -32,6 +35,9 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Blur.cpp" />
+    <ClCompile Include="CubeMan.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">

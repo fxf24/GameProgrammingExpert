@@ -83,8 +83,8 @@ void Rain::Reset()
 		//4~8 사이값
 	
 		//오차값
-		scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
-		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);
+		/*scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
+		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);*/
 		scale.x = S._11 + scale.x;
 		scale.y = S._22 + scale.y;
 		if (scale.x < 1.0f)scale.x = 1.0f;

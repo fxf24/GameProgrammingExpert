@@ -5,8 +5,9 @@ private:
 	Camera* Cam;
 
 	Sky* sky;
-	Actor* Grid;
-	Actor* Player;
+	CubeMan* player;
+	Ray		cubeManTopRay;
+
 	Actor* Point;
 	Actor* Arrow;
 	Light* Point2;
@@ -30,6 +31,12 @@ private:
 	Rain* rain;
 	Rain* skill;
 	float skill_time = 1.0f;
+
+	Vector3			from, to;
+	float			lerpValue;
+
+	float			Rfrom, Rto;
+	float			RlerpValue;
 
 public:
 	Scene1();

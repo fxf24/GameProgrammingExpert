@@ -5,8 +5,9 @@ Scene1::Scene1()
     sky = Sky::Create();
     Cam = Camera::Create();
   
-    Player = Actor::Create();
-    Player->LoadFile("Archer.xml");
+    player = new CubeMan();
+    cubeManTopRay.direction = Vector3(0, -1, 0);
+
     Map = Terrain::Create();
     Map->LoadFile("Wasteland.xml");
     Map->CreateStructuredBuffer();
@@ -56,7 +57,6 @@ Scene1::Scene1()
 Scene1::~Scene1()
 {
     Map->Release();
-    Grid->Release();
 }
 
 void Scene1::Init()
@@ -104,8 +104,8 @@ void Scene1::Update()
 
 
 
-    Pos.x = (Player->GetWorldPos().x + 128.0f) / (256.0f / 3.0f);
-    Pos.y = (Player->GetWorldPos().z - 128.0f) / (-256.0f / 3.0f);
+    Pos.x = (player->GetWorldPos().x + 128.0f) / (256.0f / 3.0f);
+    Pos.y = (player->GetWorldPos().z - 128.0f) / (-256.0f / 3.0f);
 
     ImGui::Text("X: %d  Y: %d ", Pos.x, Pos.y);
 
@@ -121,7 +121,7 @@ void Scene1::Update()
     Point->RenderHierarchy();
     Point2->RenderHierarchy();
     sky->RenderHierarchy();
-    Player->RenderHierarchy();
+    player->RenderHierarchy();
     Map->RenderHierarchy();
     Cam->RenderHierarchy();
     sphere->RenderHierarchy();
@@ -131,7 +131,7 @@ void Scene1::Update()
 
 
     Cam->Update();
-    Player->Update();
+    player->Update();
     Map->Update();
     Point->Update();
     sphere->Update();
@@ -164,6 +164,103 @@ void Scene1::LateUpdate()
         skill->visible = false;
 
     skill_time += DELTA;
+
+    cubeManTopRay.position = player->GetWorldPos();
+    cubeManTopRay.position.y += 1000.0f;
+    Vector3 hit;
+
+    if (INPUT->KeyDown(VK_F1))
+    {
+        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+        Vector3 Hit;
+        if (Map->RayCastingCollider(Mouse, Hit))
+        {
+            cout << "콜라이더에 막힘" << endl;
+        }
+    }
+
+    if (INPUT->KeyDown(VK_MBUTTON))
+    {
+        Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
+        Vector3 Hit;
+        if (Map->ComPutePicking(Mouse, Hit))
+        {
+            //cubeMan->SetWorldPos(Hit);
+            from = player->GetWorldPos();
+            //from.y = 0.0f;
+            to = Hit;
+            //to.y = 0.0f;
+            lerpValue = 0.0f;
+
+            Vector3 Dir = Hit - player->GetWorldPos();
+            Dir.y = 0;
+            Dir.Normalize();
+            // -PI ~ PI
+            float Yaw = atan2f(Dir.x, Dir.z) + PI;
+            // -PI ~ PI
+            player->rotation.y = Util::NormalizeAngle(player->rotation.y);
+
+            //to Yaw;
+            if (fabs(Yaw - player->rotation.y) > PI)
+            {
+                if (Yaw > 0)
+                {
+                    Rfrom = player->rotation.y + PI * 2.0f;
+                    Rto = Yaw;
+                }
+                else
+                {
+                    Rfrom = player->rotation.y - PI * 2.0f;
+                    Rto = Yaw;
+                }
+            }
+            else
+            {
+                Rfrom = player->rotation.y;
+                Rto = Yaw;
+            }
+            RlerpValue = 0.0f;
+            //cubeMan->rotation.y = Yaw;
+        }
+
+    }
+    if (RlerpValue < 1.0f)
+    {
+        float minus = fabs(Rto - Rfrom);
+
+        RlerpValue += DELTA / minus * PI * 2.0f;
+        player->rotation.y = Util::Lerp(Rfrom, Rto, RlerpValue);
+        if (RlerpValue > 1.0f)
+        {
+            player->rotation.y = Rto;
+        }
+    }
+
+
+    if (lerpValue < 1.0f)
+    {
+        Vector3 coord = Util::Lerp(from, to, lerpValue);
+        player->SetWorldPos(coord);
+        Vector3 Dis = from - to;
+        lerpValue += DELTA / Dis.Length() * 10.0f;
+
+        Vector3 Hit2;
+        if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
+        {
+            player->SetWorldPosY(Hit2.y);
+            cout << "맵위에있다" << endl;
+        }
+        else
+        {
+            cout << "맵밖에있다" << endl;
+        }
+
+        if (lerpValue > 1.0f)
+        {
+            //lerpValue = 0.0f;
+            player->SetWorldPos(to);
+        }
+    }
 }
 
 void Scene1::PreRender()
@@ -211,7 +308,7 @@ void Scene1::PreRender()
     cubeMap->Set(Pos);
     //cubeMap->Set(sphere->GetWorldPos());
     sky->Render(cubeMappingShader);
-    Player->Render(cubeMappingShader2);
+    player->Render(cubeMappingShader2);
     Map->Render(cubeMappingShader3);
 
 
@@ -221,7 +318,7 @@ void Scene1::PreRender()
     sky->Render();
     Point->Render();
     Point2->Render();
-    Player->Render();
+    player->Render();
     Map->Render();
     rain->Render();
     skill->Render();
