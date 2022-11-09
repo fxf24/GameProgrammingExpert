@@ -157,7 +157,6 @@ void Scene1::LateUpdate()
             skill->visible = true;
             skill_time = 0.0f;
         }
-        cout << endl;
     }
 
     if (skill_time > 1.0f)
@@ -179,51 +178,125 @@ void Scene1::LateUpdate()
         }
     }
 
+    
+
     if (INPUT->KeyDown(VK_MBUTTON))
     {
+
         Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
-        Vector3 Hit;
-        if (Map->ComPutePicking(Mouse, Hit))
+        Vector3 Hit, Hit2;
+        Ray CharacterToMouse;
+        Map->ComPutePicking(Mouse, Hit);
+        CharacterToMouse.position = player->GetWorldPos();
+        CharacterToMouse.direction = Hit - player->GetWorldPos();
+        CharacterToMouse.direction.y = 0;
+        float dis = CharacterToMouse.direction.Length();
+        CharacterToMouse.direction.Normalize();
+
+        if (Map->RayCastingCollider(CharacterToMouse, Hit2))
         {
-            //cubeMan->SetWorldPos(Hit);
-            from = player->GetWorldPos();
-            //from.y = 0.0f;
-            to = Hit;
-            //to.y = 0.0f;
-            lerpValue = 0.0f;
+            Vector3 temp = Hit2 - player->GetWorldPos();
+            temp.y = 0;
+            findPath = false;
+            path.clear();
+            route = -1;
 
-            Vector3 Dir = Hit - player->GetWorldPos();
-            Dir.y = 0;
-            Dir.Normalize();
-            // -PI ~ PI
-            float Yaw = atan2f(Dir.x, Dir.z) + PI;
-            // -PI ~ PI
-            player->rotation.y = Util::NormalizeAngle(player->rotation.y);
-
-            //to Yaw;
-            if (fabs(Yaw - player->rotation.y) > PI)
+            cout << temp.Length() << " : " << dis << endl;
+            if (temp.Length() < dis)
             {
-                if (Yaw > 0)
-                {
-                    Rfrom = player->rotation.y + PI * 2.0f;
-                    Rto = Yaw;
-                }
-                else
-                {
-                    Rfrom = player->rotation.y - PI * 2.0f;
-                    Rto = Yaw;
-                }
+                cout << "콜라이더에 막힘" << endl;
+                path.push_back(player->GetWorldPos());
+                deque<Vector3> way;
+                Map->PathFinding(way, Map->PickNode(player->GetWorldPos()), Map->PickNode(Hit));
+                reverse(way.begin(), way.end());
+                path.insert(path.end(), way.begin(), way.end());
+                path.push_back(Hit);
+
+                findPath = true;
+                route = 0;
             }
             else
             {
-                Rfrom = player->rotation.y;
+                //cubeMan->SetWorldPos(Hit);
+                from = player->GetWorldPos();
+                //from.y = 0.0f;
+                to = Hit;
+                //to.y = 0.0f;
+                lerpValue = 0.0f;
+
+                Vector3 Dir = Hit - player->GetWorldPos();
+                Dir.y = 0;
+                Dir.Normalize();
+                // -PI ~ PI
+                float Yaw = atan2f(Dir.x, Dir.z) + PI;
+                // -PI ~ PI
+                player->rotation.y = Util::NormalizeAngle(player->rotation.y);
+
+                //to Yaw;
+                if (fabs(Yaw - player->rotation.y) > PI)
+                {
+                    if (Yaw > 0)
+                    {
+                        Rfrom = player->rotation.y + PI * 2.0f;
+                        Rto = Yaw;
+                    }
+                    else
+                    {
+                        Rfrom = player->rotation.y - PI * 2.0f;
+                        Rto = Yaw;
+                    }
+                }
+                else
+                {
+                    Rfrom = player->rotation.y;
+                    Rto = Yaw;
+                }
+                RlerpValue = 0.0f;
+                //cubeMan->rotation.y = Yaw;
+            }
+        }
+    }
+
+    if (findPath)
+    {
+        from = path[route];
+        //from.y = 0.0f;
+        to = path[route + 1];
+        //to.y = 0.0f;
+        lerpValue = 0.0f;
+
+        Vector3 Dir = path[route + 1] - path[route];
+        Dir.y = 0;
+        Dir.Normalize();
+        // -PI ~ PI
+        float Yaw = atan2f(Dir.x, Dir.z) + PI;
+        // -PI ~ PI
+        player->rotation.y = Util::NormalizeAngle(player->rotation.y);
+
+        //to Yaw;
+        if (fabs(Yaw - player->rotation.y) > PI)
+        {
+            if (Yaw > 0)
+            {
+                Rfrom = player->rotation.y + PI * 2.0f;
                 Rto = Yaw;
             }
-            RlerpValue = 0.0f;
-            //cubeMan->rotation.y = Yaw;
+            else
+            {
+                Rfrom = player->rotation.y - PI * 2.0f;
+                Rto = Yaw;
+            }
         }
-
+        else
+        {
+            Rfrom = player->rotation.y;
+            Rto = Yaw;
+        }
+        RlerpValue = 0.0f;
+        findPath = false;
     }
+
+
     if (RlerpValue < 1.0f)
     {
         float minus = fabs(Rto - Rfrom);
@@ -248,17 +321,18 @@ void Scene1::LateUpdate()
         if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
         {
             player->SetWorldPosY(Hit2.y);
-            cout << "맵위에있다" << endl;
-        }
-        else
-        {
-            cout << "맵밖에있다" << endl;
         }
 
         if (lerpValue > 1.0f)
         {
             //lerpValue = 0.0f;
             player->SetWorldPos(to);
+
+            if (route < path.size() - 2)
+            {
+                route++;
+                findPath = true;
+            }
         }
     }
 }

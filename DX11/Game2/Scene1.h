@@ -38,6 +38,9 @@ private:
 	float			Rfrom, Rto;
 	float			RlerpValue;
 
+	bool findPath = false;
+	int route = -1;
+	vector<Vector3> path;
 public:
 	Scene1();
 	~Scene1();
