@@ -74,5 +74,6 @@ public:
     void            Render(class Shader* otherShader = nullptr) override;
     bool            RayCastingCollider(Ray WRay, OUT Vector3& HitPoint);
     bool            RayCastingCollider(Ray WRay, OUT Vector3& HitPoint, float distance);
+
 };
 

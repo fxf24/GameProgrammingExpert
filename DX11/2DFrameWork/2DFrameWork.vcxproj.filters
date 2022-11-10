@@ -113,6 +113,9 @@
     <ClInclude Include="Rain.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Pop.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -244,6 +247,9 @@
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Rain.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Pop.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>

@@ -71,7 +71,7 @@ void Animations::AnimatorUpdate(Animator& Animator)
 {
 	if (Animator.animState == AnimationState::LOOP)
 	{
-		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond * AniSpeed;
+		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond * aniScale;
 		if (Animator.frameWeight >= 1.0f)
 		{
 			Animator.frameWeight = 0.0f;
@@ -86,7 +86,7 @@ void Animations::AnimatorUpdate(Animator& Animator)
 	}
 	else if (Animator.animState == AnimationState::ONCE)
 	{
-		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond * AniSpeed;
+		Animator.frameWeight += DELTA * playList[Animator.animIdx]->tickPerSecond * aniScale;
 		if (Animator.frameWeight >= 1.0f)
 		{
 			Animator.frameWeight = 0.0f;
@@ -94,8 +94,10 @@ void Animations::AnimatorUpdate(Animator& Animator)
 			Animator.nextFrame++;
 			if (Animator.nextFrame >= playList[Animator.animIdx]->frameMax)
 			{
-				Animator.currentFrame = 0;
-				Animator.nextFrame = 1;
+				Animator.currentFrame--;
+				Animator.nextFrame--;
+				/*Animator.currentFrame = 0;
+				Animator.nextFrame = 1;*/
 				Animator.animState = AnimationState::STOP;
 			}
 		}
@@ -168,12 +170,14 @@ void Animations::PlayAnimation(AnimationState state, UINT idx, float blendtime)
 
 void Animations::RenderDetail()
 {
-	ImGui::InputFloat("anispeed", &AniSpeed, 0.1, 10);
-
+	ImGui::Text("PlayTime : %f", GetPlayTime());
+	ImGui::SliderFloat("AniScale", &aniScale, 0.001f, 10.0f);
 	for (UINT i = 0; i < playList.size(); i++)
 	{
 		string name = to_string(i) + playList[i]->file;
 		string button = name + "Stop";
+
+	
 		if (ImGui::Button(button.c_str()))
 		{
 			PlayAnimation(AnimationState::STOP, i);
@@ -191,4 +195,15 @@ void Animations::RenderDetail()
 			PlayAnimation(AnimationState::LOOP, i);
 		}
 	}
+}
+
+float Animations::GetPlayTime()
+{
+	if (isChanging)
+	{
+		return (float)nextAnimator.nextFrame /
+			(float)(playList[nextAnimator.animIdx]->frameMax - 1);
+	}
+	return (float)currentAnimator.nextFrame /
+		(float)(playList[currentAnimator.animIdx]->frameMax - 1);
 }

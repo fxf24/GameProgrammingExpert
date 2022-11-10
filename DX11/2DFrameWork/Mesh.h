@@ -9,6 +9,7 @@ class Mesh
     //텍스처 좌표 (uv)
     friend class GameObject;
     friend class Rain;
+    friend class Pop;
 private:
     ID3D11Buffer*           vertexBuffer;
     ID3D11Buffer*           indexBuffer;
