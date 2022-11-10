@@ -192,68 +192,59 @@ void Scene1::LateUpdate()
         CharacterToMouse.direction.y = 0;
         float dis = CharacterToMouse.direction.Length();
         CharacterToMouse.direction.Normalize();
-
-        if (Map->RayCastingCollider(CharacterToMouse, Hit2))
+        findPath = false;
+        path.clear();
+        route = -1;
+        if (Map->RayCastingCollider(CharacterToMouse, Hit2, dis))
         {
-            Vector3 temp = Hit2 - player->GetWorldPos();
-            temp.y = 0;
-            findPath = false;
-            path.clear();
-            route = -1;
+            cout << "콜라이더에 막힘" << endl;
+            path.push_back(player->GetWorldPos());
+            deque<Vector3> way;
+            Map->PathFinding(way, Map->PickNode(Hit2), Map->PickNode(Hit));
+            reverse(way.begin(), way.end());
+            path.insert(path.end(), way.begin(), way.end());
+            path.push_back(Hit);
+            findPath = true;
+            route = 0;       
+        }
+        else
+        {
+            //cubeMan->SetWorldPos(Hit);
+            from = player->GetWorldPos();
+            //from.y = 0.0f;
+            to = Hit;
+            //to.y = 0.0f;
+            lerpValue = 0.0f;
 
-            cout << temp.Length() << " : " << dis << endl;
-            if (temp.Length() < dis)
+            Vector3 Dir = Hit - player->GetWorldPos();
+            Dir.y = 0;
+            Dir.Normalize();
+            // -PI ~ PI
+            float Yaw = atan2f(Dir.x, Dir.z) + PI;
+            // -PI ~ PI
+            player->rotation.y = Util::NormalizeAngle(player->rotation.y);
+
+            //to Yaw;
+            if (fabs(Yaw - player->rotation.y) > PI)
             {
-                cout << "콜라이더에 막힘" << endl;
-                path.push_back(player->GetWorldPos());
-                deque<Vector3> way;
-                Map->PathFinding(way, Map->PickNode(player->GetWorldPos()), Map->PickNode(Hit));
-                reverse(way.begin(), way.end());
-                path.insert(path.end(), way.begin(), way.end());
-                path.push_back(Hit);
-
-                findPath = true;
-                route = 0;
-            }
-            else
-            {
-                //cubeMan->SetWorldPos(Hit);
-                from = player->GetWorldPos();
-                //from.y = 0.0f;
-                to = Hit;
-                //to.y = 0.0f;
-                lerpValue = 0.0f;
-
-                Vector3 Dir = Hit - player->GetWorldPos();
-                Dir.y = 0;
-                Dir.Normalize();
-                // -PI ~ PI
-                float Yaw = atan2f(Dir.x, Dir.z) + PI;
-                // -PI ~ PI
-                player->rotation.y = Util::NormalizeAngle(player->rotation.y);
-
-                //to Yaw;
-                if (fabs(Yaw - player->rotation.y) > PI)
+                if (Yaw > 0)
                 {
-                    if (Yaw > 0)
-                    {
-                        Rfrom = player->rotation.y + PI * 2.0f;
-                        Rto = Yaw;
-                    }
-                    else
-                    {
-                        Rfrom = player->rotation.y - PI * 2.0f;
-                        Rto = Yaw;
-                    }
+                    Rfrom = player->rotation.y + PI * 2.0f;
+                    Rto = Yaw;
                 }
                 else
                 {
-                    Rfrom = player->rotation.y;
+                    Rfrom = player->rotation.y - PI * 2.0f;
                     Rto = Yaw;
                 }
-                RlerpValue = 0.0f;
-                //cubeMan->rotation.y = Yaw;
             }
+            else
+            {
+                Rfrom = player->rotation.y;
+                Rto = Yaw;
+            }
+            RlerpValue = 0.0f;
+            //cubeMan->rotation.y = Yaw;
         }
     }
 
@@ -315,7 +306,7 @@ void Scene1::LateUpdate()
         Vector3 coord = Util::Lerp(from, to, lerpValue);
         player->SetWorldPos(coord);
         Vector3 Dis = from - to;
-        lerpValue += DELTA / Dis.Length() * 10.0f;
+        lerpValue += DELTA / Dis.Length() * 20.0f;
 
         Vector3 Hit2;
         if (Util::RayIntersectMap(cubeManTopRay, Map, Hit2))
