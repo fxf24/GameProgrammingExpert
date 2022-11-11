@@ -14,6 +14,7 @@ WPARAM Window::Run(Scene* main)
 	Terrain::CreateStaticMember();
 	CubeMap::CreateStaticMember();
 	Rain::CreateStaticMember();
+	Pop::CreateStaticMember();
 	BLEND->Set(false);
 	MSG msg = { 0 };
 	while (true)
@@ -57,6 +58,7 @@ WPARAM Window::Run(Scene* main)
 	Terrain::DeleteStaticMember();
 	CubeMap::DeleteStaticMember();
 	Rain::DeleteStaticMember();
+	Pop::DeleteStaticMember();
 	TIMER->DeleteSingleton();
 	INPUT->DeleteSingleton();
 	GUI->DeleteSingleton();

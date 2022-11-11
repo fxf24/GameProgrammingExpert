@@ -121,6 +121,7 @@ extern Application App;//Extern Global
 #include "Sky.h"
 #include "Billboard.h"
 #include "Rain.h"
+#include "Pop.h"
 #include "DepthState.h"
 #include "BlendState.h"
 #include "RasterState.h"

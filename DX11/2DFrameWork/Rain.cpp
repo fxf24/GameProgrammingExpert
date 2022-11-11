@@ -30,7 +30,7 @@ Rain* Rain::Create(string name)
 	temp->mesh = make_shared<Mesh>();
 	temp->mesh->LoadFile("7.Billboard.mesh");
 	temp->shader = RESOURCE->shaders.Load("7.Rain.hlsl");
-	temp->shader->LoadGeometry();
+	//temp->shader->LoadGeometry();
 	temp->type = ObType::Rain;
 	//temp->visible = false;
 
@@ -63,10 +63,6 @@ void Rain::Update()
 
 void Rain::Reset()
 {
-	/*mesh.reset();
-	mesh = make_shared<Mesh>();*/
-
-
 	delete[](VertexPS*)mesh->vertices;
 	delete[] mesh->indices;
 	mesh->vertices = new VertexPS[particleCount];
@@ -83,8 +79,8 @@ void Rain::Reset()
 		//4~8 사이값
 	
 		//오차값
-		/*scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
-		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);*/
+		scale.x = RANDOM->Float(-particleScale.x, particleScale.x);
+		scale.y = RANDOM->Float(-particleScale.y, particleScale.y);
 		scale.x = S._11 + scale.x;
 		scale.y = S._22 + scale.y;
 		if (scale.x < 1.0f)scale.x = 1.0f;

@@ -41,9 +41,10 @@ public:
 	bool								isChanging;
 	float								blendtime;
 	float								Changedtime;
-	float								AniSpeed = 1.0f;
+	float								aniScale = 1.0f;
 	vector<shared_ptr<Animation>>		playList;
 	Matrix	GetFrameBone(int boneIndex);
 	void	PlayAnimation(AnimationState state, UINT idx, float blendtime = 0.2f);
 	void	RenderDetail();
+	float   GetPlayTime();// 0Ã³À½ ~ 1 ³¡
 };
