@@ -200,7 +200,9 @@ void Scene1::LateUpdate()
             cout << "콜라이더에 막힘" << endl;
             path.push_back(player->GetWorldPos());
             deque<Vector3> way;
+            cout << Map->PickNode(Hit2) << " : " << Map->PickNode(Hit) << endl;
             Map->PathFinding(way, Map->PickNode(Hit2), Map->PickNode(Hit));
+            
             reverse(way.begin(), way.end());
             path.insert(path.end(), way.begin(), way.end());
             path.push_back(Hit);

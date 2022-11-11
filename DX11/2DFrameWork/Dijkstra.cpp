@@ -115,7 +115,7 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
     DiNode* iter = &NodeList[End];
     while (1)
     {
-        //cout << iter->id << "->";
+        cout << iter->id << "->";
         Way.push_back(iter->pos);
 
         if (iter->prev == -1)return false;
@@ -124,7 +124,7 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
         if (iter == &NodeList[Start])
         {
             Way.push_back(iter->pos);
-            //cout << iter->id << endl;
+            cout << iter->id << endl;
             break;
         }
     }
