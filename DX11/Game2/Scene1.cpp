@@ -24,20 +24,6 @@ Scene1::Scene1()
     sphere = Actor::Create();
     sphere->LoadFile("Sphere2.xml");
     sphere->visible = false;
-    /*sphere->material = make_shared<Material>();
-    sphere->material->environmentMap = make_shared<Texture>();
-    sphere->material->environment = 1.0f;*/
-    cubeMappingShader = new Shader();
-    cubeMappingShader->LoadFile("0.ExamCubeMap.hlsl");
-    cubeMappingShader->LoadGeometry();
-
-    cubeMappingShader2 = new Shader();
-    cubeMappingShader2->LoadFile("4.CubeMap.hlsl");
-    cubeMappingShader2->LoadGeometry();
-
-    cubeMappingShader3 = new Shader();
-    cubeMappingShader3->LoadFile("5.CubeMap.hlsl");
-    cubeMappingShader3->LoadGeometry();
 
     rain = Rain::Create();
     rain->LoadFile("Rain.xml");
@@ -374,9 +360,9 @@ void Scene1::PreRender()
     LIGHT->Set();
     cubeMap->Set(Pos);
     //cubeMap->Set(sphere->GetWorldPos());
-    sky->Render(cubeMappingShader);
-    player->Render(cubeMappingShader2);
-    Map->Render(cubeMappingShader3);
+    sky->CubeMapRender();
+    player->CubeMapRender();
+    Map->CubeMapRender();
 
 
     //포스트이펙트 텍스쳐에 그리기
