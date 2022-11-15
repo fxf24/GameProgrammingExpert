@@ -19,15 +19,14 @@ cbuffer VS_Data : register(b10)
     float3 range;
     float time;
 }
-
 VertexInput VS(VertexInput input)
 {
-   
     VertexInput output;
     
     float3 displace = time * velocity;
     output.Position.xyz = World._41_42_43 +
-    (range.xyz + (input.Position.xyz + displace.xyz) % range.xyz) % range.xyz - (range.xyz * 0.5f);
+    (range.xyz + (input.Position.xyz + displace.xyz) % range.xyz) 
+    % range.xyz - (range.xyz * 0.5f);
     
     output.Size = input.Size;
     return output;

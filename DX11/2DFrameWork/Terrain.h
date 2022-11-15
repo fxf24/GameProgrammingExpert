@@ -27,7 +27,7 @@ class Terrain : public Actor
     static class Actor* Line; //¼± ¸ð¾ç
 public:
     static void		CreateStaticMember();
-    static void		ReleaseStaticMember();
+    static void		DeleteStaticMember();
     static Terrain* Create(string Name = "Terrain", int	terrainSize = 257, float uvScale = 1.0f);
 private:
     //compute Input
@@ -74,7 +74,5 @@ public:
     void            Render() override;
     virtual void	CubeMapRender() override;
     bool            RayCastingCollider(Ray WRay, OUT Vector3& HitPoint);
-    bool            RayCastingCollider(Ray WRay, OUT Vector3& HitPoint, float distance);
-
 };
 

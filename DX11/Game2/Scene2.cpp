@@ -54,11 +54,11 @@ void Scene2::Update()
     }
     if (state == SceneState::FADEIN)
     {
-        BLUR->blur.blendColor.x = 0.5f;
-        BLUR->blur.blendColor.y = 0.5f;
-        BLUR->blur.blendColor.z = 0.5f;
-        BLUR->blur.radius = Util::Lerp(0.0f,2000.0f,time);
-        BLUR->blur.center = Vector2(App.GetHalfWidth(), App.GetHalfHeight());
+        BLUR->blur._Color.x = 0.5f;
+        BLUR->blur._Color.y = 0.5f;
+        BLUR->blur._Color.z = 0.5f;
+        BLUR->blur._Radius = Util::Lerp(0.0f,2000.0f,time);
+        BLUR->blur._Screen = Vector2(App.GetHalfWidth(), App.GetHalfHeight());
         time += DELTA;
         if (time > 1.0f)
         {
@@ -68,7 +68,7 @@ void Scene2::Update()
     else if (state == SceneState::FADEOUT)
     {
         time += DELTA;
-        BLUR->blur.radius = Util::Lerp(2000.0f, 0.0f, time);
+        BLUR->blur._Radius = Util::Lerp(2000.0f, 0.0f, time);
     }
     BLUR->Update();
 

@@ -228,10 +228,11 @@ void GameObject::DeleteStaticMember()
 {
 	SafeDelete(axis);
 	SafeDelete(defalutMaterial);
-	for (int i = 0; i < 10; i++)
+	/*for (int i = 0; i < 10; i++)
 	{
 		SafeDelete(cubeMapShader[i]);
-	}
+	}*/
+	SafeDeleteArray(cubeMapShader);
 	
 }
 

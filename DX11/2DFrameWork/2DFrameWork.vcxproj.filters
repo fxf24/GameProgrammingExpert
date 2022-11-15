@@ -74,9 +74,6 @@
     <ClInclude Include="Terrain.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Dijkstra.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -115,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Pop.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstra.h">
+      <Filter>GameObject\Member</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +210,6 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Dijkstra.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -251,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="Pop.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Dijkstra.cpp">
+      <Filter>GameObject\Member</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

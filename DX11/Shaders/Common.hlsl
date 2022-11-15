@@ -22,6 +22,11 @@ cbuffer VS_P : register(b4)
     matrix Proj;
 }
 
+cbuffer VS_Shadow : register(b5)
+{
+    matrix ShadowVP;
+}
+
 cbuffer GS_VP : register(b0)
 {
     matrix GSViewProj;
@@ -41,20 +46,15 @@ cbuffer GS_View : register(b3)
 
 cbuffer GS_CubeMap : register(b4)
 {
-    //uint CubeRenderType;
-    //float3 CB_DynamicCube_Padding;
-    
     matrix CubeViews[6];
     matrix CubeProjection;
 };
 
 
 
-
 cbuffer PS_ViewPos : register(b0)
 {
     float4 ViewPos;
-    
 }
 
 cbuffer PS_Material : register(b1)
@@ -99,11 +99,13 @@ cbuffer PS_Lights : register(b3)
 
 cbuffer PS_CubeMap : register(b4)
 {
-    int    CubeMapType;
-    float  RefractionIdx;
-    float2 CubeMapPadding;
+    int CubeMapType;
+    float RefractIndex;
+    float WaterIndex;
+    float CubeMapPadding;
     matrix CubeMapRotation;
-}
+};
+
 //Texture3D a;
 
 Texture2D TextureN : register(t0);
@@ -121,11 +123,13 @@ SamplerState SamplerE : register(s3);
 TextureCube TextureSky : register(t4);
 SamplerState SamplerSky : register(s4);
 
-TextureCube EnvironmentMap : register(t5);
 SamplerState SamplerDefault;
+TextureCube EnvironmentMap : register(t5);
 
 TextureCube WaterMap : register(t6);
 SamplerState SamplerWater : register(s6);
+
+Texture2D ShadowMap : register(t7);
 
 matrix SkinWorld(float4 indices, float4 weights)
 {
@@ -192,36 +196,37 @@ float3 EnvironmentMapping(float3 Normal, float3 wPosition)
     [flatten]
     if (environment != 0.0f)
     {
-        float3 ViewDir = normalize(wPosition - ViewPos.xyz);
+        float3 ViewDir = normalize(wPosition -ViewPos.xyz);
         
         if (CubeMapType == 0)
         {
             float3 reflection = reflect(ViewDir, Normal);
             return EnvironmentMap.Sample(SamplerDefault, reflection.xyz) * environment;
+        
         }
         else if (CubeMapType == 1)
         {
-            float3 refraction = refract(ViewDir, Normal, RefractionIdx);
-            return EnvironmentMap.Sample(SamplerDefault, refraction.xyz) * environment;
+            float3 Refract = refract(ViewDir, Normal, RefractIndex);
+            return EnvironmentMap.Sample(SamplerDefault, Refract.xyz) * environment;
+        
         }
         else if (CubeMapType == 2)
         {
-            float3 refraction = refract(ViewDir, Normal, RefractionIdx);
+            float3 Refract = refract(ViewDir, Normal, RefractIndex);
             
-            float3 temp = mul(refraction, (float3x3) CubeMapRotation);
+            float3 WaterNormal = normalize(mul(Refract, (float3x3) CubeMapRotation));
+            WaterNormal = WaterMap.Sample(SamplerWater, WaterNormal.xyz);
             
-            float3 water = WaterMap.Sample(SamplerWater, temp.xyz).rgb;
+            WaterNormal = WaterNormal * 2 - 1;
+            //return float4(WaterNormal, 1);
+            //                   기존값  + 오차
+            Refract = normalize(Refract + WaterNormal * WaterIndex);
             
-            float3 waterN = (water.xyz * 2.0f) - 1.0f;
             
-            refraction = refraction + (waterN * 0.05f);
-            
-            float3 waterC = EnvironmentMap.Sample(SamplerDefault, refraction);
-            
-            return (waterC) * environment;
+            return EnvironmentMap.Sample(SamplerDefault, Refract.xyz) * environment;
+        
         }
-        return EnvironmentMap.Sample(SamplerD, Normal) * environment;
-        //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
+       //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
     }
     return float3(0, 0, 0);
 }

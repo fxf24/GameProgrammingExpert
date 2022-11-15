@@ -6,7 +6,7 @@ void Actor::SaveFile(string file)
 	Xml::XMLElement* ob = doc->NewElement("Root");
 	doc->LinkEndChild(ob);
 
-	if (skeleton)
+	if (skeleton and not parent)
 	{
 		Xml::XMLElement* Skeleton = doc->NewElement("Skeleton");
 		ob->LinkEndChild(Skeleton);
@@ -44,7 +44,7 @@ void Actor::LoadFile(string file)
 	Xml::XMLElement* ob;
 	ob = doc->FirstChildElement();
 	Xml::XMLElement* component;
-	if (component = ob->FirstChildElement("Skeleton"))
+	if ((component = ob->FirstChildElement("Skeleton"))and not parent)
 	{
 		file = component->Attribute("File");
 		SafeDelete(skeleton);
@@ -192,6 +192,19 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		rain->SetAttribute("velocityZ", RainOb->desc.velocity.z);
 	}
 
+	else if (type == ObType::Pop)
+	{
+		Xml::XMLElement* pop = doc->NewElement("Pop");
+		This->LinkEndChild(pop);
+		Pop* PopOb = dynamic_cast<Pop*>(this);
+		pop->SetAttribute("particleScaleX", PopOb->particleScale.x);
+		pop->SetAttribute("particleScaleY", PopOb->particleScale.y);
+		pop->SetAttribute("particleCount", PopOb->particleCount);
+		pop->SetAttribute("velocityScalar", PopOb->velocityScalar);
+		pop->SetAttribute("duration", PopOb->desc.duration);
+		pop->SetAttribute("gravity", PopOb->desc.gravity);
+	}
+
 	Xml::XMLElement* Chidren = doc->NewElement("Children");
 	This->LinkEndChild(Chidren);
 	Chidren->SetAttribute("Size", (int)children.size());
@@ -323,7 +336,18 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		RainOb->desc.velocity.z = component->FloatAttribute("velocityZ");
 		RainOb->Reset();
 	}
-
+	else if (type == ObType::Pop)
+	{
+		Pop* PopOb = dynamic_cast<Pop*>(this);
+		component = This->FirstChildElement("Pop");
+		PopOb->particleScale.x = component->FloatAttribute("particleScaleX");
+		PopOb->particleScale.y = component->FloatAttribute("particleScaleY");
+		PopOb->particleCount = component->IntAttribute("particleCount");
+		PopOb->velocityScalar = component->FloatAttribute("velocityScalar");
+		PopOb->desc.duration = component->FloatAttribute("duration");
+		PopOb->desc.gravity = component->FloatAttribute("gravity");
+		PopOb->Reset();
+	}
 
 	Transform::LoadTransform(This);
 
@@ -375,6 +399,12 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		else if (Type == ObType::Rain)
 		{
 			Rain* temp = Rain::Create(childName);
+			AddChild(temp);
+			temp->LoadObject(ob);
+		}
+		else if (Type == ObType::Pop)
+		{
+			Pop* temp = Pop::Create(childName);
 			AddChild(temp);
 			temp->LoadObject(ob);
 		}

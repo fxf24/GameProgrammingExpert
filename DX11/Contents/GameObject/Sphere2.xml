@@ -8,9 +8,9 @@
         <Rotation X="0" Y="0" Z="0"/>
     </Collider>
     <Transform>
-        <Position X="-90.5" Y="20" Z="0"/>
+        <Position X="-90.5" Y="25.65" Z="0"/>
         <Scale X="100" Y="1.4" Z="100"/>
-        <Rotation X="-0" Y="0" Z="0"/>
+        <Rotation X="1.9198622" Y="-0.57595867" Z="-0.06981317"/>
     </Transform>
     <Children Size="0"/>
 </Root>

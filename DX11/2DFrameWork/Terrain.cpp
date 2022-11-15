@@ -23,7 +23,7 @@ void Terrain::CreateStaticMember()
         nullptr, &computeShader);
 }
 
-void Terrain::ReleaseStaticMember()
+void Terrain::DeleteStaticMember()
 {
     SafeRelease(computeShader);
     SafeRelease(Node);
@@ -441,7 +441,6 @@ void Terrain::CubeMapRender()
 {
     Actor::CubeMapRender();
 }
-
 bool Terrain::RayCastingCollider(Ray WRay, OUT Vector3& HitPoint)
 {
     for (auto it = obList.begin(); it != obList.end(); it++)
@@ -451,24 +450,6 @@ bool Terrain::RayCastingCollider(Ray WRay, OUT Vector3& HitPoint)
         if (it->second->collider->Intersect(WRay, HitPoint))
         {
             return true;
-        }
-    }
-    return false;
-}
-
-bool Terrain::RayCastingCollider(Ray WRay, OUT Vector3& HitPoint, float distance)
-{
-    for (auto it = obList.begin(); it != obList.end(); it++)
-    {
-        if (not it->second->collider) continue;
-
-        if (it->second->collider->Intersect(WRay, HitPoint))
-        {
-            Vector3 temp = HitPoint - WRay.position;
-            temp.y = 0;
-            cout << temp.Length() << " : " << distance << endl;
-            if (temp.Length() < distance)
-                return true;
         }
     }
     return false;

@@ -16,9 +16,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Blur.h" />
-    <ClInclude Include="CubeMan.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -35,9 +32,6 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Blur.cpp" />
-    <ClCompile Include="CubeMan.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -46,8 +40,5 @@
     <Filter Include="GameObject">
       <UniqueIdentifier>{b626eecd-f76c-49d7-8a29-a4515a4fda19}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="window.ini" />
   </ItemGroup>
 </Project>

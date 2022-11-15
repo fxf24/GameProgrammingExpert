@@ -3,41 +3,15 @@ class Scene1 : public Scene
 {
 private:
 	Camera* Cam;
+	Camera* Cam2;
 
 	Sky* sky;
-	CubeMan* player;
-	Ray		cubeManTopRay;
-
-	Actor* Point;
-	Actor* Arrow;
-	Light* Point2;
+	Actor* Player;
 	Terrain* Map;
 
-	Int2   Pos;
-
-
-	//Ã¹¹ø¤Š ·£´õÅ¸°Ù
-	CubeMap* cubeMap = nullptr;
-	Actor*	sphere;
-
-	//µÎ¹øÂ° ·»´õ Å¸°Ù
 	RenderTarget* RT = nullptr;
-	UI* PostEffect;
-	float refractionIdx = 1.0f;
+	ID3D11ShaderResourceView* srv;
 
-	Rain* rain;
-	Rain* skill;
-	float skill_time = 1.0f;
-
-	Vector3			from, to;
-	float			lerpValue;
-
-	float			Rfrom, Rto;
-	float			RlerpValue;
-
-	bool findPath = false;
-	int route = -1;
-	vector<Vector3> path;
 public:
 	Scene1();
 	~Scene1();

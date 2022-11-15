@@ -115,7 +115,7 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
     DiNode* iter = &NodeList[End];
     while (1)
     {
-        cout << iter->id << "->";
+        //cout << iter->id << "->";
         Way.push_back(iter->pos);
 
         if (iter->prev == -1)return false;
@@ -124,7 +124,7 @@ bool Dijkstra::PathFinding(deque<Vector3>& Way, int Start, int End)
         if (iter == &NodeList[Start])
         {
             Way.push_back(iter->pos);
-            cout << iter->id << endl;
+            //cout << iter->id << endl;
             break;
         }
     }
@@ -146,7 +146,7 @@ void Dijkstra::SaveFile(string file)
         for (auto it2 = it->second.linkedWay.begin();
             it2 != it->second.linkedWay.end(); it2++)
         {
-            out.Int(it2->first); // id
+            out.Int(it2->first);    // id
             out.Float(it2->second); // cost
         }
     }
@@ -158,22 +158,24 @@ void Dijkstra::LoadFile(string file)
     this->file = file;
     BinaryReader in;
     wstring path = L"../Contents/Dijkstra/" + Util::ToWString(file);
-    in.Open(path);
-    NodeList.clear();
-    UINT Listsize = in.UInt();
-    for (UINT i = 0; i < Listsize; i++)
+    if (in.Open(path))
     {
-        DiNode temp;
-        temp.id = in.UInt();
-        temp.pos = in.vector3();
-        NodeList[temp.id] = temp;
-        UINT NodeListsize = in.UInt();
-        for (UINT j = 0; j < NodeListsize; j++)
+        NodeList.clear();
+        UINT Listsize = in.UInt();
+        for (UINT i = 0; i < Listsize; i++)
         {
-            int id = in.Int();
-            float cost = in.Float();
-            NodeList[temp.id].linkedWay[id] = cost;
+            DiNode temp;
+            temp.id = in.UInt();
+            temp.pos = in.vector3();
+            NodeList[temp.id] = temp;
+            UINT NodeListsize = in.UInt();
+            for (UINT j = 0; j < NodeListsize; j++)
+            {
+                int id = in.Int();
+                float cost = in.Float();
+                NodeList[temp.id].linkedWay[id] = cost;
+            }
         }
-    }
-    in.Close();
+    } in.Close();
+   
 }

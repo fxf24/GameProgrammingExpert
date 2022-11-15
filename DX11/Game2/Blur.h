@@ -1,14 +1,15 @@
 #pragma once
 struct Blur
 {
-	int count;
-	float width;
-	float height;
-	int select;
-	Color blendColor = Color(0.5f, 0.5f, 0.5f, 0.5f);
-	Vector2  center;
-	float   radius = 2000.0f;
-	float   padding;
+	int     _Filter = 0;
+	Vector3  _Color = Vector3(0.5, 0.5, 0.5);
+	Vector2  _Screen = Vector2(App.GetHalfWidth(), App.GetHalfHeight());
+	float   _Radius = 2000.0f;
+	int		_Count = 1;
+	int		_Select = 0;
+	float	_Width = App.GetWidth();
+	float	_Height = App.GetHeight();
+	float   _Padding;
 };
 
 class BlurManager :public Singleton< BlurManager>

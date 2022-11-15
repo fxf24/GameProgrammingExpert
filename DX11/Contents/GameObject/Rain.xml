@@ -2,10 +2,10 @@
     <Mesh File="7.Billboard.mesh"/>
     <Shader File="7.Rain.hlsl"/>
     <Transform>
-        <Position X="0" Y="0" Z="0"/>
+        <Position X="0" Y="44.700001" Z="0"/>
         <Scale X="1" Y="1" Z="1"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Transform>
-    <Rain particleScaleX="1" particleScaleY="1" particleCount="50" rangeX="500" rangeY="500" rangeZ="500" velocityX="148.14799" velocityY="-112.11" velocityZ="0"/>
+    <Rain particleScaleX="10" particleScaleY="10" particleCount="26" rangeX="185.185" rangeY="222.222" rangeZ="160.714" velocityX="-37.036999" velocityY="-38.036999" velocityZ="0"/>
     <Children Size="0"/>
 </Root>
