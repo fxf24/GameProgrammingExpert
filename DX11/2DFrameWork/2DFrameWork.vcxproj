@@ -168,7 +168,8 @@
     <ClInclude Include="Dijkstra.h" />
     <ClInclude Include="Direct3D11.h" />
     <ClInclude Include="Dwrite.h" />
-    <ClInclude Include="CubeMap.h" />
+    <ClInclude Include="CubeRenderTarget.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gui.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Pop.h" />
+    <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Rain.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="RasterState.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Sound.h" />
@@ -209,7 +212,8 @@
     <ClCompile Include="Dijkstra.cpp" />
     <ClCompile Include="Direct3D11.cpp" />
     <ClCompile Include="Dwrite.cpp" />
-    <ClCompile Include="CubeMap.cpp" />
+    <ClCompile Include="CubeRenderTarget.cpp" />
+    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GOImGui.cpp" />
     <ClCompile Include="Gui.cpp" />
@@ -218,6 +222,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Pop.cpp" />
+    <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Rain.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RasterState.cpp" />
@@ -226,6 +231,7 @@
     <ClCompile Include="GOSaveLoad.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Sound.cpp" />

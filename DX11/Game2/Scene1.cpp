@@ -4,18 +4,30 @@ Scene1::Scene1()
 {
     sky = Sky::Create();
     Cam = Camera::Create();
-    Cam2 = Camera::Create();
-    Cam2->LoadFile("Cam3.xml");
   
     Player = Actor::Create();
     Player->LoadFile("Character2.xml");
     Map = Terrain::Create();
     Map->LoadFile("Map2.xml");
     Map->CreateStructuredBuffer();
+    Map->material->shadow = 1.0f;
+    //Player->Find("Vampire")->material->shadow = 1.0f;
+    //Player->Find("VampireMeshObject")->material->shadow = 1.0f;
+
+   
 
 
+    cube1 = Actor::Create();
+    cube1->LoadFile("Sphere2.xml");
+    cube2 = Actor::Create();
+    cube2->LoadFile("Sphere3.xml");
 
-    RT = new RenderTarget();
+    shadow = new Shadow();
+    cubeMap1 = new Environment(512, 512);
+    cubeMap2 = new Environment(512, 512);
+    cubeMap1->desc2.CubeMapType = 0;
+    cubeMap2->desc2.CubeMapType = 2;
+    postEffect = new PostEffect();
 }
 
 Scene1::~Scene1()
@@ -40,102 +52,97 @@ void Scene1::Release()
 
 void Scene1::Update()
 {
-    ImGui::SliderFloat("App.deltaScale", &App.deltaScale, 0.01, 10);
-
-
-    if (ImGui::Button("1"))
-    {
-        PostQuitMessage(0);
-        return;
-    }
-    if (ImGui::Button("ChangeScene"))
-    {
-        SCENE->ChangeScene("SC2", 1.0f)->Init();
-        time = 0.0f;
-        return;
-    }
-    if (state == SceneState::FADEIN)
-    {
-        BLUR->blur._Radius = 2000.0f;
-        BLUR->blur._Color
-            = Util::Lerp(Vector3(0, 0, 0), Vector3(0.5f, 0.5f, 0.5f), time);
-        time += DELTA;
-        if (time > 1.0f)
-        {
-            state = SceneState::NONE;
-        }
-    }
-    else if (state == SceneState::FADEOUT)
-    {
-        time += DELTA;
-        BLUR->blur._Color
-            = Util::Lerp(Vector3(0.5f, 0.5f, 0.5f), Vector3(0, 0, 0), time);
-    }
-
-    BLUR->Update();
-
-
-
-
-
-
     ImGui::Text("FPS: %d", TIMER->GetFramePerSecond());
     Camera::ControlMainCam();
     LIGHT->RenderDetail();
-    //
-    ////Ui->RenderHierarchy();
-    //
+    shadow->RenderDetail();
+    //cubeMap1->RenderDetail();
+    //cubeMap2->RenderDetail();
+    postEffect->RenderDetail();
+
+
     ImGui::Begin("Hierarchy");
     sky->RenderHierarchy();
     Player->RenderHierarchy();
     Map->RenderHierarchy();
     Cam->RenderHierarchy();
-    Cam2->RenderHierarchy();
+    cube1->RenderHierarchy();
+    cube2->RenderHierarchy();
     ImGui::End();
 
 
     Cam->Update();
-    Cam2->Update();
     Player->Update();
     Map->Update();
     sky->Update();
+    cube1->Update();
+    cube2->Update();
 }
 
 void Scene1::LateUpdate()
 {
     Ray Mouse = Util::MouseToRay(INPUT->position, Camera::main);
     Vector3 Hit;
-    //if (Map->ComPutePicking(Mouse, Hit))
     if (Map->ComPutePicking(Mouse, Hit))
     {
         Player->SetWorldPos(Hit);
         cout << endl;
     }
-    
 }
 
 void Scene1::PreRender()
 {
-    //atan2(1, 1);
-    //환경맵 그리기
     LIGHT->Set();
-    Cam2->Set();
-    RT->Set();
-    Player->Render();
+    //환경 매핑 그리기
+    {
+        Vector3 Dir = cube1->GetWorldPos() - Camera::main->GetWorldPos();
+        float Distance = Dir.Length();
+        Dir.Normalize();
+        Vector3 reflect = Vector3::Reflect(Dir, cube1->GetUp());
+        cubeMap1->SetCapture(cube1->GetWorldPos() - reflect * Distance);
+        sky->CubeMapRender();
+        Player->CubeMapRender();
+        Map->CubeMapRender();
+    }
+    //환경 매핑 그리기
+    {
+        cubeMap2->SetCapture(Camera::main->GetWorldPos());
+        sky->CubeMapRender();
+        Player->CubeMapRender();
+        Map->CubeMapRender();
+    }
+    //그림자 텍스쳐 그리기
+    {
+        //shadow->SetCapture(Player->GetWorldPos());
+        shadow->SetCapture(Vector3(0,0,0));
+        Map->ShadowMapRender();
+        Player->ShadowMapRender();
+        cube1->ShadowMapRender();
+        cube2->ShadowMapRender();
+    }
+    //포스트이펙트 텍스쳐에 그리기
+    {
+        postEffect->SetCapture();
+        Cam->Set();
+        sky->Render();
 
+        cubeMap1->SetTexture();
+        cube1->Render();
+
+        cubeMap2->SetTexture();
+        cube2->Render();
+
+        shadow->SetTexture();
+        Map->Render();
+        Player->Render();
+
+    }
+    
 }
 
 void Scene1::Render()
 {
-    LIGHT->Set();
-    Cam->Set();
-    Cam2->SetShadow();
-    srv = RT->GetDSVSRV();
-    D3D->GetDC()->PSSetShaderResources(7, 1, &srv);
-
-    sky->Render();
-    Map->Render();
-    Player->Render();
+    postEffect->Render();
 }
 
 void Scene1::ResizeScreen()
@@ -145,15 +152,8 @@ void Scene1::ResizeScreen()
     Cam->viewport.width = App.GetWidth();
     Cam->viewport.height = App.GetHeight();
 
-    Cam2->width = App.GetWidth();
-    Cam2->height = App.GetHeight();
-    Cam2->viewport.width = App.GetWidth();
-    Cam2->viewport.height = App.GetHeight();
-
-
-
-    if (RT)
+    if (postEffect)
     {
-        RT->ResizeScreen(Cam2->viewport.width, Cam2->viewport.height);
+        postEffect->ResizeScreen(App.GetWidth(), App.GetHeight());
     }
 }

@@ -66,7 +66,7 @@ cbuffer PS_Material : register(b1)
     float Shininess;
     float Opacity;
     float environment;
-    float MaterialPadding;
+    float shadow;
 }
 
 cbuffer PS_DirLight : register(b2)
@@ -106,7 +106,15 @@ cbuffer PS_CubeMap : register(b4)
     matrix CubeMapRotation;
 };
 
-//Texture3D a;
+cbuffer PS_ShadowMap : register(b5)
+{
+    int ShadowQuality;
+    float ShadowBias;
+    float2 ShadowSize;
+}
+
+
+SamplerState SamplerDefault;
 
 Texture2D TextureN : register(t0);
 SamplerState SamplerN : register(s0);
@@ -123,13 +131,14 @@ SamplerState SamplerE : register(s3);
 TextureCube TextureSky : register(t4);
 SamplerState SamplerSky : register(s4);
 
-SamplerState SamplerDefault;
 TextureCube EnvironmentMap : register(t5);
+SamplerState SamplerEnvironment : register(s5);
 
 TextureCube WaterMap : register(t6);
 SamplerState SamplerWater : register(s6);
 
 Texture2D ShadowMap : register(t7);
+SamplerComparisonState ShadowPcfSampler : register(s7);
 
 matrix SkinWorld(float4 indices, float4 weights)
 {
@@ -201,13 +210,13 @@ float3 EnvironmentMapping(float3 Normal, float3 wPosition)
         if (CubeMapType == 0)
         {
             float3 reflection = reflect(ViewDir, Normal);
-            return EnvironmentMap.Sample(SamplerDefault, reflection.xyz) * environment;
+            return EnvironmentMap.Sample(SamplerEnvironment, reflection.xyz) * environment;
         
         }
         else if (CubeMapType == 1)
         {
             float3 Refract = refract(ViewDir, Normal, RefractIndex);
-            return EnvironmentMap.Sample(SamplerDefault, Refract.xyz) * environment;
+            return EnvironmentMap.Sample(SamplerEnvironment, Refract.xyz) * environment;
         
         }
         else if (CubeMapType == 2)
@@ -223,10 +232,9 @@ float3 EnvironmentMapping(float3 Normal, float3 wPosition)
             Refract = normalize(Refract + WaterNormal * WaterIndex);
             
             
-            return EnvironmentMap.Sample(SamplerDefault, Refract.xyz) * environment;
+            return EnvironmentMap.Sample(SamplerEnvironment, Refract.xyz) * environment;
         
         }
-       //return EnvironmentMap.Sample(SamplerD, Normal.xyz) * environment;
     }
     return float3(0, 0, 0);
 }
@@ -389,4 +397,85 @@ float4 Lighting(float4 BaseColor, float2 Uv ,float3 Normal, float3 wPosition)
     
     // 0 ~ 1 °¡µÎ±â
     return saturate(Result);
+}
+
+
+float4 AddShadow(float4 BaseColor,float4 vPosition)
+{
+     [flatten]
+    if (shadow == 0.0f)
+        return BaseColor;
+    
+    float4 position = vPosition;
+    position.xyz /= position.w;
+    
+    [flatten]
+    if (position.x < -1.0f || position.x > +1.0f ||
+        position.y < -1.0f || position.y > +1.0f ||
+        position.z < +0.0f || position.z > +1.0f)
+    {
+        return BaseColor;
+    }
+    
+    
+    position.x = position.x * 0.5f + 0.5f;
+    position.y = -position.y * 0.5f + 0.5f;
+    
+    
+    float CurrentDepth = position.z;
+    //
+   
+    if (ShadowQuality == 0)
+    {
+        float ShadowDepth = ShadowMap.Sample(SamplerDefault, position.xy).r;
+       
+        if (CurrentDepth > ShadowDepth + ShadowBias)
+        {
+            BaseColor.rgb *=0.5f;
+        }
+    }
+    else if (ShadowQuality == 1)
+    {
+        float ShadowDepth = ShadowMap.SampleCmpLevelZero(ShadowPcfSampler, position.xy, CurrentDepth).r;
+       
+        if (CurrentDepth > ShadowDepth + ShadowBias)
+        {
+            //float factor = saturate(CurrentDepth + ShadowDepth);
+            //BaseColor.rgb *= factor;
+            
+            BaseColor.rgb *= 0.5f;
+        }
+    }
+    else if (ShadowQuality == 2)
+    {
+        float2 size = 1.0f / ShadowSize;
+        float2 offsets[] =
+        {
+            float2(-size.x, -size.y), float2(0.0f, -size.y), float2(+size.x, -size.y),
+            float2(-size.x, 0.0f), float2(0.0f, 0.0f), float2(+size.x, 0.0f),
+            float2(-size.x, +size.y), float2(0.0f, +size.y), float2(+size.x, +size.y),
+        };
+        
+        
+        float2 uv = 0;
+        float sum = 0;
+        [unroll(9)]
+        for (int i = 0; i < 9; i++)
+        {
+            uv = position.xy + offsets[i];
+            sum += ShadowMap.SampleCmpLevelZero(ShadowPcfSampler, uv, CurrentDepth).r;
+        }
+        
+        float ShadowDepth = sum / 9.0f;
+        
+        if (CurrentDepth > ShadowDepth + ShadowBias)
+        {
+            //float factor = saturate(CurrentDepth + ShadowDepth);
+            //BaseColor.rgb *= factor;
+            
+            BaseColor.rgb *= 0.5f;
+        }
+    }
+    
+    return BaseColor;
 }

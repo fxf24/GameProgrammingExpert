@@ -17,6 +17,9 @@ struct PixelInput
     float4 vPosition : POSITION1;
 };
 
+
+
+
 PixelInput VS(VertexInput input)
 {
    
@@ -47,26 +50,7 @@ float4 PS(PixelInput input) : SV_TARGET
     
     BaseColor = Lighting(BaseColor, input.Uv, Normal, input.wPosition);
     
+    BaseColor = AddShadow(BaseColor, input.vPosition);
     
-    float depth = input.vPosition.z;
-    input.vPosition.xyz /= input.vPosition.w;
-    
-    // -1 ~ 1
-    input.vPosition.x = input.vPosition.x * 0.5f + 0.5f;
-    input.vPosition.y = -input.vPosition.y * 0.5f + 0.5f;
-    
-    float4 tex = ShadowMap.Sample(SamplerDefault, input.vPosition.xy);
-    
-    if (input.vPosition.x > -1.0f && input.vPosition.x < 1.0f &&
-        input.vPosition.y > -1.0f && input.vPosition.y < 1.0f &&
-        input.vPosition.z > 0.0f && input.vPosition.z < 1.0f)
-    {
-        if (tex.r == 1.0f)
-        {
-            return BaseColor;
-        }
-        
-        return tex;
-    }
     return BaseColor;
 }

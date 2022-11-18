@@ -8,7 +8,7 @@ private:
 	static ID3D11Buffer* viewPosBuffer;
 	static ID3D11Buffer* viewUpBuffer;
 	static ID3D11Buffer* viewForwardBuffer;
-	static ID3D11Buffer* shadowBuffer;
+	
 public:
 	static Camera* main;
 public:

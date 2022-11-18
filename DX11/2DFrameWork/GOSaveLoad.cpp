@@ -190,6 +190,8 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		rain->SetAttribute("velocityX", RainOb->desc.velocity.x);
 		rain->SetAttribute("velocityY", RainOb->desc.velocity.y);
 		rain->SetAttribute("velocityZ", RainOb->desc.velocity.z);
+		rain->SetAttribute("duration", RainOb->duration);
+
 	}
 
 	else if (type == ObType::Pop)
@@ -203,6 +205,7 @@ void GameObject::SaveObject(Xml::XMLElement* This, Xml::XMLDocument* doc)
 		pop->SetAttribute("velocityScalar", PopOb->velocityScalar);
 		pop->SetAttribute("duration", PopOb->desc.duration);
 		pop->SetAttribute("gravity", PopOb->desc.gravity);
+		pop->SetAttribute("duration", PopOb->duration);
 	}
 
 	Xml::XMLElement* Chidren = doc->NewElement("Children");
@@ -334,6 +337,7 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		RainOb->desc.velocity.x = component->FloatAttribute("velocityX");
 		RainOb->desc.velocity.y = component->FloatAttribute("velocityY");
 		RainOb->desc.velocity.z = component->FloatAttribute("velocityZ");
+		RainOb->duration = component->FloatAttribute("duration");
 		RainOb->Reset();
 	}
 	else if (type == ObType::Pop)
@@ -346,6 +350,7 @@ void GameObject::LoadObject(Xml::XMLElement* This)
 		PopOb->velocityScalar = component->FloatAttribute("velocityScalar");
 		PopOb->desc.duration = component->FloatAttribute("duration");
 		PopOb->desc.gravity = component->FloatAttribute("gravity");
+		PopOb->duration = component->FloatAttribute("duration");
 		PopOb->Reset();
 	}
 

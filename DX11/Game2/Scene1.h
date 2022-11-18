@@ -1,16 +1,21 @@
 #pragma once
+
 class Scene1 : public Scene
 {
 private:
 	Camera* Cam;
-	Camera* Cam2;
 
 	Sky* sky;
 	Actor* Player;
 	Terrain* Map;
+	Actor* cube1;
+	Actor* cube2;
+	
 
-	RenderTarget* RT = nullptr;
-	ID3D11ShaderResourceView* srv;
+	Shadow*			shadow;
+	Environment*	cubeMap1;
+	Environment*	cubeMap2;
+	PostEffect*		postEffect = nullptr;
 
 public:
 	Scene1();

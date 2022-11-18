@@ -78,7 +78,7 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="DepthState.h">
-      <Filter>Render</Filter>
+      <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Dwrite.h">
       <Filter>System</Filter>
@@ -90,22 +90,16 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="BlendState.h">
-      <Filter>Render</Filter>
+      <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Sky.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="RasterState.h">
-      <Filter>Render</Filter>
+      <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTarget.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMap.h">
-      <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="Rain.h">
       <Filter>GameObject</Filter>
@@ -115,6 +109,21 @@
     </ClInclude>
     <ClInclude Include="Dijkstra.h">
       <Filter>GameObject\Member</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeRenderTarget.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>RenderTarget\ChildClass</Filter>
+    </ClInclude>
+    <ClInclude Include="PostEffect.h">
+      <Filter>RenderTarget\ChildClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>RenderTarget\ChildClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,8 +139,14 @@
     <Filter Include="File">
       <UniqueIdentifier>{7c96a0eb-73ac-4004-9e3f-7512dbe02f2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
+    <Filter Include="State">
       <UniqueIdentifier>{84064ec8-79ce-439c-ac76-d82ee48452c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderTarget">
+      <UniqueIdentifier>{a3673e94-d1ce-45e5-857c-9b58f8b6848a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderTarget\ChildClass">
+      <UniqueIdentifier>{041ecc74-b59e-422b-b284-fe7357a97b73}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -214,7 +229,7 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="DepthState.cpp">
-      <Filter>Render</Filter>
+      <Filter>State</Filter>
     </ClCompile>
     <ClCompile Include="Dwrite.cpp">
       <Filter>System</Filter>
@@ -226,22 +241,16 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="BlendState.cpp">
-      <Filter>Render</Filter>
+      <Filter>State</Filter>
     </ClCompile>
     <ClCompile Include="Sky.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="RasterState.cpp">
-      <Filter>Render</Filter>
+      <Filter>State</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderTarget.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="CubeMap.cpp">
-      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Rain.cpp">
       <Filter>GameObject</Filter>
@@ -251,6 +260,21 @@
     </ClCompile>
     <ClCompile Include="Dijkstra.cpp">
       <Filter>GameObject\Member</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeRenderTarget.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>RenderTarget\ChildClass</Filter>
+    </ClCompile>
+    <ClCompile Include="PostEffect.cpp">
+      <Filter>RenderTarget\ChildClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>RenderTarget\ChildClass</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
