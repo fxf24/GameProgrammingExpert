@@ -1,7 +1,6 @@
 #include "framework.h"
 ID3D11Buffer* Shadow::shadowPSBuffer = nullptr;
 ID3D11Buffer* Shadow::shadowVSBuffer = nullptr;
-ID3D11SamplerState* Shadow::Sampler = nullptr;
 void Shadow::CreateStaticMember()
 {
     {
@@ -28,25 +27,12 @@ void Shadow::CreateStaticMember()
         assert(SUCCEEDED(hr));
 
     }
-    {
-        D3D11_SAMPLER_DESC desc;
-        ZeroMemory(&desc, sizeof(D3D11_SAMPLER_DESC));
-        desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
-        desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-        desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-        desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-        desc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
-        desc.MaxAnisotropy = 1;
-        desc.MaxLOD = FLT_MAX;
-        D3D->GetDevice()->CreateSamplerState(&desc, &Sampler);
-    }
 }
 
 void Shadow::DeleteStaticMember()
 {
     SafeRelease(shadowVSBuffer);
     SafeRelease(shadowPSBuffer);
-    SafeRelease(Sampler);
 }
 
 Shadow::Shadow()
@@ -86,7 +72,6 @@ void Shadow::SetCapture(Vector3 position)
 void Shadow::SetTexture()
 {
     D3D->GetDC()->PSSetShaderResources(7, 1, &rtvSrv);
-    D3D->GetDC()->PSSetSamplers(7, 1, &Sampler);
     {
         Matrix TVP = cam->view * cam->proj;
         TVP = TVP.Transpose();
@@ -123,7 +108,7 @@ void Shadow::RenderDetail()
         ResizeScreen(textureSize);
     }
     ImGui::SliderFloat("ShadowBias", &desc.ShadowBias, -0.1f, 0.1f);
-    ImGui::SliderInt("Quality", &desc.ShadowQuality,0,2);
+    ImGui::SliderInt("Quality", &desc.ShadowQuality,0,1);
 
     ImVec2 size(400, 400);
     ImGui::Image((void*)rtvSrv, size);

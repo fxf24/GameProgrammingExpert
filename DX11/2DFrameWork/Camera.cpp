@@ -32,7 +32,7 @@ void Camera::Update()
 void Camera::Set()
 {
 	{
-		view = RT.Invert();
+		view = (S.Invert()*W).Invert();
 		if (ortho)
 			proj = Matrix::CreateOrthographic(width, height, nearZ, farZ);
 		else

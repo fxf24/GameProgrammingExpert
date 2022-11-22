@@ -9,7 +9,6 @@ struct ShadowDesc
 class Shadow : public RenderTarget
 {
 	ShadowDesc			desc;
-	static ID3D11SamplerState*	Sampler;
 	static ID3D11Buffer*		shadowPSBuffer;
 	static ID3D11Buffer*		shadowVSBuffer;
 	Camera*				cam;
